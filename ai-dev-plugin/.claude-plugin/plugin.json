@@ -1,0 +1,23 @@
+{
+  "name": "ai-dev",
+  "version": "3.2.0",
+  "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
+  "author": {
+    "name": "foundj",
+    "url": "https://github.com/foundj"
+  },
+  "repository": "https://github.com/foundj/ai-dev-plugin",
+  "license": "MIT",
+  "keywords": [
+    "ai-development",
+    "orchestration",
+    "ooda-loop",
+    "code-generation",
+    "workflow-automation",
+    "knowledge-management",
+    "code-review",
+    "task-decomposition",
+    "autonomous-coding",
+    "7-phase-workflow"
+  ]
+}

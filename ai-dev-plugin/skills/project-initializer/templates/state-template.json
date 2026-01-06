@@ -1,0 +1,245 @@
+{
+  "$schema": "change-state-schema-v1.0",
+  "change_id": "CHANGE_ID",
+  "workflow_id": "WORKFLOW_ID",
+  "status": "not_started",
+
+  "phases": {
+    "phase-0-knowledge-check": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "decision": null,
+      "artifacts": [],
+      "notes": null
+    },
+    "phase-1-clarification": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "decision": null,
+      "artifacts": [],
+      "user_approval": null,
+      "notes": null
+    },
+    "phase-2-discovery": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "skipped": false,
+      "skip_reason": null,
+      "artifacts": [],
+      "files_identified": [],
+      "notes": null
+    },
+    "phase-3-design": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "approaches_generated": 0,
+      "selected_approach": null,
+      "artifacts": [],
+      "user_choice": null,
+      "notes": null
+    },
+    "phase-4-implementation": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "ooda_iteration": 0,
+      "max_iterations": 10,
+      "completion_promise": "PENDING",
+      "artifacts": [],
+      "current_task": null,
+      "tasks_completed": [],
+      "tasks_remaining": [],
+      "notes": null
+    },
+    "phase-5-quality": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "reviewers_count": 0,
+      "issues_found": 0,
+      "high_confidence_issues": 0,
+      "artifacts": [],
+      "user_decision": null,
+      "notes": null
+    },
+    "phase-6-finalization": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "git_committed": false,
+      "commit_hash": null,
+      "archived": false,
+      "archived_path": null,
+      "artifacts": [],
+      "notes": null
+    }
+  },
+
+  "resumability": {
+    "can_resume": false,
+    "resume_from": null,
+    "context_files": [],
+    "last_activity": null,
+    "interruption_reason": null
+  },
+
+  "metadata": {
+    "created_at": null,
+    "last_updated": null,
+    "total_duration": null,
+    "agents_invoked": [],
+    "user_interactions": 0
+  },
+
+  "_usage_notes": {
+    "description": "Persistent state for change workflow execution (Netflix Conductor pattern)",
+    "status_values": ["not_started", "in_progress", "completed", "failed", "cancelled"],
+    "phase_status_values": ["pending", "in_progress", "completed", "skipped", "failed"],
+    "decision_values": ["proceed", "skip", "cancel", "retry"],
+    "how_to_use": [
+      "1. Copy this template when starting a new change",
+      "2. Update phase status as workflow progresses",
+      "3. Record artifacts (proposal.md, design.md, etc.) in each phase",
+      "4. Enable resumability by setting can_resume=true and context_files",
+      "5. Track OODA iterations in phase-4-implementation"
+    ]
+  },
+
+  "_example_progression": {
+    "description": "Example of state evolution during a feature implementation",
+    "states": [
+      {
+        "step": 1,
+        "description": "After Phase 0 completion",
+        "state": {
+          "status": "in_progress",
+          "phases.phase-0-knowledge-check.status": "completed",
+          "phases.phase-0-knowledge-check.artifacts": ["phase0-context.md"],
+          "phases.phase-1-clarification.status": "in_progress"
+        }
+      },
+      {
+        "step": 2,
+        "description": "After user approves Phase 1",
+        "state": {
+          "phases.phase-1-clarification.status": "completed",
+          "phases.phase-1-clarification.decision": "proceed",
+          "phases.phase-1-clarification.user_approval": "yes",
+          "phases.phase-1-clarification.artifacts": ["proposal.md"],
+          "phases.phase-2-discovery.status": "in_progress"
+        }
+      },
+      {
+        "step": 3,
+        "description": "Simple task - Phase 2 skipped",
+        "state": {
+          "phases.phase-2-discovery.status": "skipped",
+          "phases.phase-2-discovery.skipped": true,
+          "phases.phase-2-discovery.skip_reason": "complexity=simple",
+          "phases.phase-3-design.status": "in_progress"
+        }
+      },
+      {
+        "step": 4,
+        "description": "User selects approach in Phase 3",
+        "state": {
+          "phases.phase-3-design.status": "completed",
+          "phases.phase-3-design.approaches_generated": 3,
+          "phases.phase-3-design.selected_approach": "2-clean",
+          "phases.phase-3-design.user_choice": "2-clean",
+          "phases.phase-3-design.artifacts": ["design.md"],
+          "phases.phase-4-implementation.status": "in_progress"
+        }
+      },
+      {
+        "step": 5,
+        "description": "OODA loop in progress (iteration 3)",
+        "state": {
+          "phases.phase-4-implementation.ooda_iteration": 3,
+          "phases.phase-4-implementation.current_task": "Add tests",
+          "phases.phase-4-implementation.tasks_completed": ["Design schema", "Create repository", "Implement service"],
+          "phases.phase-4-implementation.tasks_remaining": ["Add tests", "Integrate frontend"],
+          "phases.phase-4-implementation.completion_promise": "PENDING"
+        }
+      },
+      {
+        "step": 6,
+        "description": "Implementation complete, quality review",
+        "state": {
+          "phases.phase-4-implementation.status": "completed",
+          "phases.phase-4-implementation.completion_promise": "DONE",
+          "phases.phase-4-implementation.artifacts": ["tasks.md", "implemented code"],
+          "phases.phase-5-quality.status": "in_progress"
+        }
+      },
+      {
+        "step": 7,
+        "description": "Quality issues found, user decides to fix",
+        "state": {
+          "phases.phase-5-quality.status": "completed",
+          "phases.phase-5-quality.reviewers_count": 3,
+          "phases.phase-5-quality.issues_found": 5,
+          "phases.phase-5-quality.high_confidence_issues": 2,
+          "phases.phase-5-quality.user_decision": "fix-high-only",
+          "phases.phase-4-implementation.status": "in_progress",
+          "phases.phase-4-implementation.ooda_iteration": 4
+        }
+      },
+      {
+        "step": 8,
+        "description": "All issues fixed, finalization",
+        "state": {
+          "phases.phase-5-quality.status": "completed",
+          "phases.phase-5-quality.user_decision": "proceed",
+          "phases.phase-6-finalization.status": "in_progress"
+        }
+      },
+      {
+        "step": 9,
+        "description": "Complete!",
+        "state": {
+          "status": "completed",
+          "phases.phase-6-finalization.status": "completed",
+          "phases.phase-6-finalization.git_committed": true,
+          "phases.phase-6-finalization.commit_hash": "abc123...",
+          "phases.phase-6-finalization.archived": true,
+          "phases.phase-6-finalization.archived_path": "changes/archived/2025-01/001-user-auth/",
+          "resumability.can_resume": false
+        }
+      }
+    ]
+  },
+
+  "_resumability_example": {
+    "description": "How to enable session resumption",
+    "scenario": "User stops mid-implementation, resumes next session",
+    "state_when_interrupted": {
+      "status": "in_progress",
+      "phases.phase-4-implementation.status": "in_progress",
+      "phases.phase-4-implementation.ooda_iteration": 3,
+      "resumability": {
+        "can_resume": true,
+        "resume_from": "phase-4-implementation",
+        "context_files": [
+          "proposal.md",
+          "design.md",
+          "tasks.md",
+          "phase0-context.md"
+        ],
+        "last_activity": "2025-01-02T15:30:00Z",
+        "interruption_reason": "user_stopped"
+      }
+    },
+    "how_to_resume": [
+      "1. session-manager detects incomplete change via state.json",
+      "2. Reads context_files to restore context",
+      "3. Identifies resume_from = phase-4-implementation",
+      "4. Continues OODA loop from iteration 3",
+      "5. Reads tasks.md to see completed vs pending tasks"
+    ]
+  }
+}

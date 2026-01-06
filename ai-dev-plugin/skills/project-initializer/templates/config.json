@@ -1,0 +1,22 @@
+{
+  "project_name": "PROJECT_NAME",
+  "tech_stack": [],
+  "mode": "long-running",
+  "created": "YYYY-MM-DDTHH:MM:SSZ",
+  "quality_rules": {
+    "max_function_lines": 30,
+    "max_file_lines": 400,
+    "max_pr_files": 8,
+    "max_single_change_lines": 150
+  },
+  "test_commands": {
+    "smoke": "npm run test:quick",
+    "full": "npm test",
+    "e2e": "npm run test:e2e"
+  },
+  "file_limits": {
+    "progress_txt_lines": 2000,
+    "feature_list_max_features": 500,
+    "archive_after_days": 30
+  }
+}

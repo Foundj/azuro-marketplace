@@ -1,0 +1,120 @@
+{
+  "hooks": [
+    {
+      "id": "ooda-stop-hook",
+      "type": "Stop",
+      "description": "OODA loop control - prevents session exit during active implementation phase, feeds output back as input for autonomous completion. Enhanced with smart completion detection and TODO continuation.",
+      "script": "hooks/ooda-stop-hook.sh",
+      "conditions": {
+        "activeChangeExists": true,
+        "currentPhase": 4,
+        "oodaEnabled": true
+      },
+      "priority": 100
+    },
+    {
+      "id": "todo-continuation",
+      "type": "Stop",
+      "description": "TODO continuation enforcer - blocks exit when unchecked tasks remain in tasks.md. Works for non-OODA scenarios.",
+      "script": "hooks/todo-continuation.sh",
+      "conditions": {
+        "tasksFileExists": true
+      },
+      "priority": 90
+    },
+    {
+      "id": "comment-checker",
+      "type": "PostToolUse",
+      "description": "Comment quality checker - warns about redundant comments that describe WHAT instead of WHY",
+      "script": "hooks/comment-checker.sh",
+      "conditions": {
+        "toolNames": ["Edit", "Write", "edit", "write"]
+      },
+      "priority": 30
+    },
+    {
+      "id": "pre-change-check",
+      "type": "PreToolUse",
+      "description": "Phase 0 knowledge check - queries knowledge base before making changes to avoid repeating past mistakes",
+      "script": "scripts/query-knowledge.sh",
+      "conditions": {
+        "toolNames": ["Edit", "Write", "Bash"],
+        "activeChangeExists": true
+      },
+      "priority": 50
+    },
+    {
+      "id": "post-phase-verify",
+      "type": "PostToolUse",
+      "description": "Triggers verification-agent after Phase 4/5 completion",
+      "agent": "verification-agent",
+      "conditions": {
+        "phaseTransition": [4, 5],
+        "autoVerify": true
+      },
+      "priority": 75
+    },
+    {
+      "id": "learning-capture",
+      "type": "UserPromptSubmit",
+      "description": "Captures user corrections for learning (integrates with claude-reflect)",
+      "externalScript": "~/.claude/skills/claude-reflect/scripts/capture_learning.py",
+      "fallback": "Skip if claude-reflect not available",
+      "priority": 25
+    },
+    {
+      "id": "post-phase-learning",
+      "type": "PostToolUse",
+      "description": "Triggers learning-coordinator after Phase 6/7 to capture patterns and errors",
+      "agent": "learning-coordinator",
+      "conditions": {
+        "phaseTransition": [6, 7],
+        "autoLearn": true
+      },
+      "priority": 50
+    },
+    {
+      "id": "keyword-detector",
+      "type": "UserPromptSubmit",
+      "description": "Detect keywords (ulw/ultrathink/think/quick) in user prompts and inject mode instructions. Priority: ulw > ultrathink > think > quick",
+      "script": "hooks/keyword-detector.sh",
+      "priority": 100
+    },
+    {
+      "id": "context-window-monitor",
+      "type": "PostToolUse",
+      "description": "Monitor context window usage and warn at 85% threshold. Implements Context Window Anxiety Management pattern.",
+      "script": "hooks/context-window-monitor.sh",
+      "conditions": {
+        "contextInfoAvailable": true
+      },
+      "priority": 20
+    }
+  ],
+  "config": {
+    "stateFile": "codebox/changes/active/{changeId}/state.json",
+    "oodaStateKey": "ooda",
+    "completionPromise": "DONE",
+    "maxIterations": 50,
+    "logLevel": "info",
+    "learningQueue": "~/.claude/learnings-queue.json",
+    "contextWindowThreshold": 85,
+    "keywordPriority": ["ulw", "ultrathink", "think", "quick"],
+    "loopNotification": {
+      "ranges": [
+        {"from": 1, "to": 10, "interval": 5},
+        {"from": 11, "to": 50, "interval": 10},
+        {"from": 51, "to": 100, "interval": 20}
+      ],
+      "alertOnNoProgress": 3,
+      "alertOnMaxIterationPercent": 90
+    }
+  },
+  "externalDependencies": {
+    "claude-reflect": {
+      "path": "~/.claude/skills/claude-reflect",
+      "required": false,
+      "description": "Learning capture and /reflect command"
+    }
+  }
+}

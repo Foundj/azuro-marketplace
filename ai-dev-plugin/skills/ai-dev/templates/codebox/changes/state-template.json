@@ -1,0 +1,66 @@
+{
+  "change_id": "",
+  "workflow_id": "feature-development-v3",
+  "status": "initialized",
+  "created_at": "",
+  "updated_at": "",
+  
+  "phases": {
+    "phase-0-context": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "artifacts": []
+    },
+    "phase-0.5-research": {
+      "status": "pending",
+      "skipped": false,
+      "skip_reason": null,
+      "artifacts": []
+    },
+    "phase-1-requirement": {
+      "status": "pending",
+      "user_approval": null,
+      "interview_rounds": 0,
+      "artifacts": []
+    },
+    "phase-2-discovery": {
+      "status": "pending",
+      "skipped": false,
+      "files_identified": [],
+      "artifacts": []
+    },
+    "phase-3-design": {
+      "status": "pending",
+      "selected_approach": null,
+      "user_choice": null,
+      "artifacts": []
+    },
+    "phase-4-implementation": {
+      "status": "pending",
+      "ooda_iteration": 0,
+      "max_iterations": 50,
+      "completion_promise": "PENDING",
+      "artifacts": []
+    },
+    "phase-5-quality": {
+      "status": "pending",
+      "issues_found": 0,
+      "high_confidence_issues": 0,
+      "user_decision": null,
+      "artifacts": []
+    },
+    "phase-6-finalization": {
+      "status": "pending",
+      "git_committed": false,
+      "commit_hash": null,
+      "archived": false
+    }
+  },
+  
+  "resumability": {
+    "can_resume": false,
+    "resume_from": null,
+    "context_files": []
+  }
+}

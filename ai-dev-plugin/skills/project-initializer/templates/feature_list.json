@@ -1,0 +1,173 @@
+{
+  "$schema": "feature-list-schema-v2.0-enhanced",
+  "project": "PROJECT_NAME",
+  "version": "2.0-enhanced",
+  "created": "YYYY-MM-DD",
+  "tech_stack": [],
+
+  "changes": {
+    "active": [],
+    "staged": [],
+    "archived_count": 0
+  },
+
+  "features": [],
+
+  "ooda_loops": [],
+
+  "statistics": {
+    "total_features": 0,
+    "completed_features": 0,
+    "completion_rate": 0,
+    "average_confidence": 0,
+    "total_ooda_iterations": 0,
+    "average_time_per_feature": null,
+    "most_used_agent": null,
+    "most_common_risk_level": null
+  },
+
+  "metadata": {
+    "last_updated": "YYYY-MM-DD",
+    "current_session": 1,
+    "global_constraints_version": "1.0",
+    "knowledge_base_entries": 0
+  },
+
+  "_example_feature": {
+    "id": 1,
+    "change_id": "001-user-auth",
+    "description": "用户可以使用邮箱和密码登录",
+    "created": "2025-01-02",
+
+    "lifecycle": {
+      "stage": "implementation",
+      "phase": "phase-4-implementation",
+      "workflow_id": "feature-development-v1",
+      "workflow_state": {
+        "current_task": "Create JWT service",
+        "completed_tasks": ["Design schema", "Create repository"],
+        "pending_tasks": ["Add tests", "Integrate with frontend"],
+        "completion_promise": "PENDING"
+      },
+      "started_at": "2025-01-02T10:00:00Z",
+      "completed_at": null,
+      "estimated_duration": "3 hours",
+      "actual_duration": null
+    },
+
+    "quality": {
+      "confidence_scores": [
+        {
+          "phase": "phase-5-quality",
+          "reviewer": "code-reviewer-1",
+          "issues_found": 3,
+          "avg_confidence": 85,
+          "high_confidence_issues": 2
+        }
+      ],
+      "issues": [
+        {
+          "id": "auth-001",
+          "title": "Missing input validation",
+          "confidence": 90,
+          "severity": "high",
+          "status": "fixed"
+        }
+      ],
+      "test_coverage": 0,
+      "build_status": "pending",
+      "lint_errors": 0,
+      "type_errors": 0
+    },
+
+    "agents": {
+      "primary": "api-helper",
+      "supporting": ["frontend-developer", "code-reviewer"],
+      "total_invocations": 5
+    },
+
+    "knowledge": {
+      "related_patterns": ["PATTERN-001", "PATTERN-002"],
+      "related_errors": ["ERROR-001"],
+      "risk_level": "medium",
+      "prevention_measures_applied": [
+        "使用 Repository Pattern",
+        "所有 async 函数 try-catch"
+      ]
+    },
+
+    "artifacts": {
+      "proposal": "changes/active/001-user-auth/proposal.md",
+      "design": "changes/active/001-user-auth/design.md",
+      "tasks": "changes/active/001-user-auth/tasks.md",
+      "evidence": "changes/active/001-user-auth/evidence.md",
+      "phase0_context": "changes/active/001-user-auth/phase0-context.md",
+      "state": "changes/active/001-user-auth/state.json"
+    },
+
+    "passes": false,
+    "archived": false,
+    "archived_path": null
+  },
+
+  "_example_ooda_loop": {
+    "change_id": "001-user-auth",
+    "feature_id": 1,
+    "iteration": 3,
+    "timestamp": "2025-01-02T11:30:00Z",
+
+    "observe": {
+      "tasks_completed": 2,
+      "tasks_remaining": 3,
+      "tests_status": "23/25 passing",
+      "build_status": "success",
+      "completion_promise": "PENDING"
+    },
+
+    "orient": {
+      "next_task": "Create JWT service",
+      "blockers": [],
+      "files_to_modify": ["src/lib/services/AuthService.ts"],
+      "estimated_time": "30 minutes"
+    },
+
+    "decide": {
+      "action": "implement",
+      "rationale": "Next task is ready, no blockers",
+      "alternative_considered": null
+    },
+
+    "act": {
+      "action_taken": "Implementing JWT service",
+      "files_modified": ["src/lib/services/AuthService.ts"],
+      "tests_added": ["src/lib/services/AuthService.test.ts"],
+      "outcome": "Task completed, 24/25 tests passing"
+    },
+
+    "completion_criteria": {
+      "all_tasks_done": false,
+      "all_tests_pass": false,
+      "build_succeeds": true,
+      "promise_done": false
+    },
+
+    "will_continue": true,
+    "next_iteration": 4
+  },
+
+  "_schema_notes": {
+    "description": "Enhanced feature_list.json schema v2.0",
+    "changes_from_v1": [
+      "Added 'changes' object for OpenSpec-style tracking",
+      "Added 'lifecycle' to features for detailed progress",
+      "Added 'quality' metrics with confidence scores",
+      "Added 'agents' tracking",
+      "Added 'knowledge' integration (patterns, errors, risk)",
+      "Added 'ooda_loops' array for autonomous loop tracking",
+      "Added enhanced statistics",
+      "Added metadata section"
+    ],
+    "migration_path": "Use migrate-schema.sh to upgrade v1 → v2",
+    "backward_compatible": "Partially - old features will work but won't have new fields"
+  }
+}

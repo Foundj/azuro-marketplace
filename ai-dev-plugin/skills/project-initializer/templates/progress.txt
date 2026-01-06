@@ -1,0 +1,23 @@
+# Project Progress Log
+
+## Project Overview
+- **Project**: PROJECT_NAME
+- **Goal**: Brief project description
+- **Started**: YYYY-MM-DD
+- **Mode**: long-running
+
+---
+
+## Session 1 - YYYY-MM-DD HH:MM
+
+### Initialization
+- Initialized project structure
+- Created feature_list.json with X features
+- Set up init.sh for environment management
+
+### Current State
+- Project is set up and ready
+- All features marked as "passes": false
+
+### Next Steps
+- Begin with Feature #1: [first feature description]

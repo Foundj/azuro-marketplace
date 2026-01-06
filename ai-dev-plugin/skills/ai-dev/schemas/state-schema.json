@@ -1,0 +1,332 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://claude.ai/schemas/ai-dev/change-state.json",
+  "title": "Change State Schema",
+  "description": "JSON Schema for validating change state.json files in ai-dev",
+  "type": "object",
+  "required": ["changeId", "currentPhase", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "changeId": {
+      "type": "string",
+      "pattern": "^[0-9]{3}-[a-z0-9-]+$",
+      "description": "Change ID in format: NNN-description (e.g., 001-user-login)",
+      "examples": ["001-user-login", "002-payment-api", "003-comment-system"]
+    },
+    "currentPhase": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 6,
+      "description": "Current phase number (0-6)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "completed", "cancelled", "paused"],
+      "description": "Change status"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when change was created"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when state was last updated"
+    },
+    "userDecisions": {
+      "type": "object",
+      "description": "User decisions at approval gates",
+      "properties": {
+        "phase1Approval": {
+          "type": "object",
+          "required": ["decision", "timestamp"],
+          "properties": {
+            "decision": {
+              "type": "string",
+              "enum": ["yes", "no", "refine"]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "refineCount": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of times refined"
+            },
+            "feedback": {
+              "type": "string",
+              "description": "User feedback for refinement"
+            }
+          }
+        },
+        "phase3SelectedApproach": {
+          "type": "object",
+          "required": ["approach", "timestamp"],
+          "properties": {
+            "approach": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3,
+              "description": "Selected design approach (1=Minimal, 2=Clean, 3=Pragmatic)"
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "phase5IssueDecision": {
+          "type": "object",
+          "required": ["decision", "timestamp"],
+          "properties": {
+            "decision": {
+              "type": "string",
+              "enum": ["fix-all", "fix-critical", "accept"]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "ooda": {
+      "type": "object",
+      "required": ["iterationCount", "completionPromise"],
+      "properties": {
+        "iterationCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 50,
+          "description": "Current OODA iteration number"
+        },
+        "maxIterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50,
+          "default": 50
+        },
+        "lastCompletedTask": {
+          "type": "string",
+          "description": "Last completed task identifier"
+        },
+        "completionPromise": {
+          "type": "string",
+          "enum": ["PENDING", "DONE"],
+          "description": "OODA completion status"
+        },
+        "iterationHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["iteration", "timestamp"],
+            "properties": {
+              "iteration": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "completedTasks": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "testsStatus": {
+                "type": "string",
+                "enum": ["passed", "failed", "skipped"]
+              },
+              "buildStatus": {
+                "type": "string",
+                "enum": ["success", "failed", "skipped"]
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "duration": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Duration in seconds"
+              }
+            }
+          }
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "description": "Phase output file paths",
+      "properties": {
+        "phase0Context": {
+          "type": "string",
+          "pattern": "^changes/active/[^/]+/phase0-context\\.md$"
+        },
+        "phase1Proposal": {
+          "type": "string",
+          "pattern": "^changes/active/[^/]+/proposal\\.md$"
+        },
+        "phase2Discovery": {
+          "type": "string",
+          "pattern": "^changes/active/[^/]+/discovery\\.md$"
+        },
+        "phase3Design": {
+          "type": "string",
+          "pattern": "^changes/active/[^/]+/design\\.md$"
+        },
+        "phase4Tasks": {
+          "type": "string",
+          "pattern": "^changes/active/[^/]+/tasks\\.md$"
+        },
+        "phase5IssuesRaw": {
+          "type": "string",
+          "pattern": "^changes/active/[^/]+/issues-raw\\.json$"
+        },
+        "phase5IssuesScored": {
+          "type": "string",
+          "pattern": "^changes/active/[^/]+/issues-scored\\.json$"
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "description": "Quality metrics",
+      "properties": {
+        "testCoverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Test coverage percentage"
+        },
+        "issuesFound": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total issues found in Phase 5"
+        },
+        "issuesFixed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of issues fixed"
+        },
+        "confidenceThreshold": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 80,
+          "description": "Confidence score threshold for filtering"
+        },
+        "finalScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Final quality score"
+        }
+      }
+    },
+    "knowledge": {
+      "type": "object",
+      "required": ["appliedPatterns", "preventedErrors"],
+      "properties": {
+        "appliedPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^PATTERN-[0-9]{3}$"
+          },
+          "description": "Applied pattern IDs"
+        },
+        "preventedErrors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^ERROR-[0-9]{3}$"
+          },
+          "description": "Prevented error IDs"
+        },
+        "relatedPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^PATTERN-[0-9]{3}$"
+          },
+          "description": "Related but not applied patterns"
+        },
+        "relatedErrors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^ERROR-[0-9]{3}$"
+          },
+          "description": "Related historical errors"
+        }
+      }
+    },
+    "phaseHistory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase", "startTime", "status"],
+        "properties": {
+          "phase": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Duration in seconds"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["in_progress", "completed", "failed", "skipped"]
+          },
+          "verificationStatus": {
+            "type": "string",
+            "enum": ["passed", "failed", "skipped"]
+          },
+          "verificationTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "resumability": {
+      "type": "object",
+      "required": ["canResume", "resumeFrom", "lastSessionTime", "nextAction"],
+      "properties": {
+        "canResume": {
+          "type": "boolean",
+          "description": "Whether change can be resumed"
+        },
+        "resumeFrom": {
+          "type": "string",
+          "description": "Human-readable resume point (e.g., 'Phase 4, Task 5')"
+        },
+        "lastSessionTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last session timestamp"
+        },
+        "nextAction": {
+          "type": "string",
+          "description": "Next action to take when resuming"
+        },
+        "resumeAttempts": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of resume attempts"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

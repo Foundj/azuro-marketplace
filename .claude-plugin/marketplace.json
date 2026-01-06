@@ -1,0 +1,15 @@
+{
+  "name": "azuro",
+  "owner": {
+    "name": "foundj",
+    "url": "https://github.com/Foundj"
+  },
+  "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
+  "plugins": [
+    {
+      "name": "ai-dev",
+      "source": "./ai-dev-plugin",
+      "description": "Industrial-grade AI development orchestration with 7-phase workflow"
+    }
+  ]
+}

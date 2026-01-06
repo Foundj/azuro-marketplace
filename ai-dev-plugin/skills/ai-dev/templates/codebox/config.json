@@ -1,0 +1,19 @@
+{
+  "project_name": "",
+  "version": "1.0.0",
+  "created_at": "",
+  "ai_dev_version": "3.0.0",
+  "settings": {
+    "auto_research": true,
+    "auto_research_triggers": ["implement", "build", "create", "design", "实现", "开发", "设计"],
+    "skip_research_triggers": ["fix", "update", "refactor", "typo", "修复", "更新", "重构"],
+    "ooda_max_iterations": 50,
+    "confidence_threshold": 80,
+    "auto_scan_on_session": true,
+    "deep_scan_interval_days": 7
+  },
+  "backends": {
+    "web_search": "gemini",
+    "code_analysis": "codex"
+  }
+}

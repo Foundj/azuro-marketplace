@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "last_updated": "",
+  "features": [],
+  "patterns": [
+    {
+      "name": "Repository Pattern",
+      "description": "Data access layer abstraction",
+      "files": ["src/lib/repositories/*.ts"],
+      "interface_template": "src/lib/repositories/IRepository.ts"
+    },
+    {
+      "name": "Service Layer",
+      "description": "Business logic encapsulation",
+      "files": ["src/lib/services/*.ts"],
+      "base_template": "src/lib/services/BaseService.ts"
+    }
+  ]
+}

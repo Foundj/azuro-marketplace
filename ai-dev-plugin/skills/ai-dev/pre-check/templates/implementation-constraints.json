@@ -1,0 +1,40 @@
+{
+  "version": "1.0",
+  "generated": "",
+  "tech_stack": [],
+  "forbidden_deps": [],
+  "directories": {
+    "services": "src/lib/services/",
+    "repositories": "src/lib/repositories/",
+    "components": "src/components/",
+    "types": "src/types/",
+    "hooks": "src/hooks/",
+    "utils": "src/lib/utils/"
+  },
+  "naming": {
+    "service_file": "PascalCase.ts",
+    "component_file": "PascalCase.tsx",
+    "hook_file": "use-kebab-case.ts",
+    "function": "camelCase",
+    "type": "PascalCase",
+    "constant": "UPPER_SNAKE_CASE"
+  },
+  "patterns": {
+    "import": "@/ alias",
+    "export": "named",
+    "async": "async/await",
+    "error": "try-catch"
+  },
+  "forbidden": [
+    "no any type",
+    "no var keyword",
+    "no console.log in production",
+    "no default exports (except pages/routes)",
+    "no new dependencies without approval"
+  ],
+  "templates": {
+    "service": "",
+    "repository": "",
+    "component": ""
+  }
+}
