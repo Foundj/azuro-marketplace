@@ -14,16 +14,13 @@
 
 ### From GitHub
 ```bash
-/plugin install from github foundj/ai-dev-plugin
+/plugin marketplace add Foundj/azuro-marketplace
 ```
 
 ### Local Development
 ```bash
-# Clone to plugins directory
-git clone https://github.com/foundj/ai-dev-plugin ~/.claude/plugins/local/ai-dev-plugin
-
 # Enable the plugin
-/plugin enable ai-dev
+/plugin install ai-dev@azuro
 ```
 
 ## Commands
