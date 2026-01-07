@@ -1,6 +1,7 @@
 ---
+name: "skill-audit:one"
 description: Audit a single skill by name or path - validate structure, quality, and best practices
-argument-hint: <skill-name-or-path> [--fix] [--verbose]
+argument-hint: "<skill-name-or-path> [--fix] [--verbose]"
 allowed-tools: Read, Bash, Glob
 ---
 

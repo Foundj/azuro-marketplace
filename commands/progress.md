@@ -1,14 +1,14 @@
 ---
 name: progress
-description: Display current project progress, status, and health check for long-running projects
-allowed-tools: Read, Bash, Grep
+description: Quick project progress shortcut - display status and health check for long-running projects
 argument-hint: "[--detailed]"
+allowed-tools: Read, Bash, Grep
 ---
 
 # Progress Command - 项目进度命令
 
 ## 用途
-快速查看长运行项目的当前进度、状态和健康信息。
+快速查看长运行项目的当前进度、状态和健康信息。本命令是 `/ai:status` 的快捷别名。
 
 **注意**：使用 `/progress` 而非 `/status`（避免与 Claude Code 系统命令冲突）
 

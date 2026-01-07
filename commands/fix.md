@@ -1,8 +1,8 @@
 ---
-description: Quick bug fix - auto-selects quick-fixer or debugger based on complexity
-argument-hint: <bug-description>
+name: fix
+description: Quick bug fix shortcut - auto-selects quick-fixer or debugger based on complexity
+argument-hint: "<bug-description>"
 allowed-tools: Task, Read, Grep, Glob, Bash, Edit, Write
-model: haiku
 ---
 
 Fix bug: $ARGUMENTS

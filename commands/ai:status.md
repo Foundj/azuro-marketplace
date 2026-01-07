@@ -1,6 +1,7 @@
 ---
+name: ai:status
 description: AI development status - show current phase, progress, and next steps
-argument-hint: [--detailed]
+argument-hint: "[--detailed]"
 allowed-tools: Read, Bash, Grep, Glob
 ---
 

@@ -1,8 +1,8 @@
 ---
 name: dev
-description: Quick development command - implements features using ai-dev with optimal agent selection
-allowed-tools: Task, Read, Grep, Glob
+description: Quick development shortcut - implements features using ai:dev with optimal agent selection
 argument-hint: "<feature-description>"
+allowed-tools: Task, Read, Grep, Glob
 ---
 
 # Dev Command - 快速开发命令

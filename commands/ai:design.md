@@ -1,7 +1,8 @@
 ---
-description: AI-powered design review - generate and evaluate design approaches
-argument-hint: <feature-description> [--from-proposal]
-allowed-tools: Task, Read, Write, Grep, Glob, Bash
+name: ai:design
+description: Design phase - evaluate architecture options and generate design.md
+argument-hint: "[--from-proposal]"
+allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
 ---
 
 Design review for: $ARGUMENTS

@@ -1,7 +1,8 @@
 ---
-name: feature-resume
-description: 恢复归档的功能或继续未完成的功能，支持跨会话恢复和状态恢复
-invocation: /feature-resume <id>
+name: ai:resume
+description: Resume an archived feature or continue incomplete work across sessions
+argument-hint: "<id> [--continue]"
+allowed-tools: Bash, Read, Write, Task
 ---
 
 # Feature Resume Command

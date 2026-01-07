@@ -25,21 +25,32 @@
 /ai:archive   # 智能归档
 /ai:loop      # 自引用循环
 /ai:auto      # 自动完成任务
-/ai:status    # 查看进度
+/ai:status    # 项目整体状态
+/ai:list      # 列出所有功能 (原 /feature-list)
+/ai:show      # 显示功能详情 (原 /feature-show)
+/ai:resume    # 恢复功能 (原 /feature-resume)
 /ai:fix       # 修复问题
 /ai:review    # 代码审查
 /ai:research  # 竞品调研
 /ai:design    # 设计阶段
 /ai:implement # 实现阶段
 /ai:interview # 需求访谈
+/ai:knowledge # 知识图谱查询
+/ai:quality   # 质量门禁检查
+```
+
+**工具与审计**:
+```bash
+/skill-audit      # 审计所有技能质量
+/skill-audit:one  # 审计单个技能质量
 ```
 
 **快捷命令** (无前缀):
 ```bash
 /dev        # 快速开发 (ai:dev 别名)
 /fix        # 快速修复 (ai:fix 别名)
-/research   # 竞品调研
-/progress   # 查看项目进度
+/research   # 竞品调研 (ai:research 别名)
+/progress   # 查看项目进度 (ai:status 别名)
 ```
 
 ## 📝 可用命令列表
@@ -214,6 +225,6 @@ grep "^name:" ${CLAUDE_PLUGIN_ROOT}/commands/*.md
 
 ---
 
-**版本：1.3.0**
-**更新日期：2025-01-06**
-**重大变更：命令统一使用 `ai:` 前缀 (ai-xxx → ai:xxx)**
+**版本：1.4.0**
+**更新日期：2026-01-07**
+**重大变更：统一命令命名空间，重构 feature-* 为 ai:*，并移除冗余命令**

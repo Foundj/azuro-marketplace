@@ -1,8 +1,8 @@
 ---
-description: Multi-model competitor research using codeagent-wrapper
-argument-hint: <topic> [--backend gemini|codex|claude] [--deep]
+name: research
+description: Multi-source research shortcut for best practices, patterns, and pitfalls
+argument-hint: "<topic> [--backend] [--deep]"
 allowed-tools: Bash, Read, Write
-model: sonnet
 ---
 
 Research best practices for: $ARGUMENTS

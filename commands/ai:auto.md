@@ -1,6 +1,7 @@
 ---
+name: ai:auto
 description: Automatically complete all unchecked tasks in the active change - wrapper for /ai:loop
-argument-hint: [--dry-run] [--from-task N.N]
+argument-hint: "[--dry-run] [--from-task N.N]"
 allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
 ---
 

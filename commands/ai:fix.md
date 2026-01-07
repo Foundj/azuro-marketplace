@@ -1,6 +1,7 @@
 ---
+name: ai:fix
 description: AI-powered fix with review-fix-verify cycle - auto-detect complexity and run verification loop
-argument-hint: <bug-description> [--deep] [--no-verify] [--max-retries N]
+argument-hint: "<bug-description> [--deep] [--no-verify] [--max-retries N]"
 allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
 ---
 

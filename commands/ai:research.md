@@ -1,6 +1,7 @@
 ---
+name: ai:research
 description: AI-powered competitor research - multi-source best practices analysis
-argument-hint: <topic> [--deep] [--save]
+argument-hint: "<topic> [--deep] [--save]"
 allowed-tools: Task, Bash, Read, Write
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: ai:quality
-description: 执行代码质量门禁检查，评估安全性、代码质量、文档和架构
+description: Execute quality gate checks - evaluate security, code quality, documentation and architecture
 ---
 
 # Quality Gate 快捷命令

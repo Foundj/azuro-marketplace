@@ -1,7 +1,8 @@
 ---
-name: feature-show
-description: 显示指定功能的详细信息，包括状态、进度、质量指标和任务列表
-invocation: /feature-show [id]
+name: ai:show
+description: Show detailed information for a specific feature by ID
+argument-hint: "<id>"
+allowed-tools: Read, Bash, Grep, Glob
 ---
 
 # Feature Show Command

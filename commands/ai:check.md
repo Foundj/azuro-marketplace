@@ -1,6 +1,7 @@
 ---
+name: ai:check
 description: Pre-implementation check - analyze codebase before coding to prevent errors and duplication
-argument-hint: <task-description> [--deep] [--report]
+argument-hint: "<task-description> [--deep] [--report]"
 allowed-tools: Task, Read, Grep, Glob, Bash
 ---
 

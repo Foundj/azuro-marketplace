@@ -1,6 +1,7 @@
 ---
+name: ai:dev
 description: AI-powered 7-phase development workflow for complete feature implementation
-argument-hint: <feature-description> [--skip-research] [--quick]
+argument-hint: "<feature-description> [--skip-research] [--quick]"
 allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
 ---
 

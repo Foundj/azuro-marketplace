@@ -1,6 +1,7 @@
 ---
+name: skill-audit
 description: Audit all skills in project - validate structure, quality, and best practices compliance
-argument-hint: [--summary] [--fix] [--report] [--json]
+argument-hint: "[--summary] [--fix] [--report] [--json]"
 allowed-tools: Read, Bash, Glob, Grep
 ---
 

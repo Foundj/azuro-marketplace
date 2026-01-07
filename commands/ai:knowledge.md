@@ -1,10 +1,10 @@
 ---
-description: 查询项目知识图谱，发现相关知识和解决方案
-arguments:
-  - name: query
-    description: 搜索关键词（可选，留空显示所有）
-    required: false
+name: ai:knowledge
+description: Query project knowledge graph to discover related knowledge and solutions
+argument-hint: "[query] [add] [stats]"
+allowed-tools: Bash, Read, Grep
 ---
+
 
 # /ai:knowledge
 

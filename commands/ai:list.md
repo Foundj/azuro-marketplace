@@ -1,7 +1,8 @@
 ---
-name: feature-list
-description: 列出所有功能及其状态，支持按阶段、状态和优先级过滤
-invocation: /feature-list [--filter=<stage|status>]
+name: ai:list
+description: List all features and their status, support filtering by stage, status and priority
+argument-hint: "[--active] [--staged] [--archived] [--stage=X]"
+allowed-tools: Read, Bash, Grep, Glob
 ---
 
 # Feature List Command

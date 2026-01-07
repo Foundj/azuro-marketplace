@@ -1,6 +1,7 @@
 ---
+name: ai:review
 description: AI-powered code review - comprehensive quality analysis with confidence scoring
-argument-hint: [files...] [--staged] [--diff <branch>]
+argument-hint: "[files...] [--staged] [--diff <branch>]"
 allowed-tools: Task, Read, Grep, Glob, Bash
 ---
 

@@ -1,6 +1,7 @@
 ---
+name: ai:interview
 description: AI-powered requirement interview - clarify requirements through multi-round conversation
-argument-hint: <feature-description>
+argument-hint: "<feature-description>"
 allowed-tools: Task, Read, Write, Grep, Glob, Bash
 ---
 
