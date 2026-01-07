@@ -390,13 +390,56 @@ For detailed documentation:
 
 ---
 
+## Integrated Skills
+
+ai-dev 工作流集成以下辅助 Skills：
+
+| Skill | Phase | 作用 |
+|-------|-------|------|
+| `quality-gate` | 5 (Review) | 4 维度质量评分（安全 40%，代码 30%，文档 20%，架构 10%），自动建议在 Phase 5 后执行 |
+| `thinking-engine` | 0 (Pre-check) | think/ultrathink 模式的结构化思考支持，5-6 步分析流程 |
+| `knowledge-graph` | 0, 4, 6 | 跨项目知识图谱，查询历史方案，记录新知识，最大 50 条，自动清理 30 天 |
+
+### Quality Gate 集成
+
+Phase 5 完成后自动建议：
+```
+[ai-dev] Phase 5 completed. Run quality gate? (recommended)
+```
+
+手动执行：参考 `/ai:quality-gate` 或提示 "执行质量门禁"
+
+### Thinking Engine 集成
+
+think 模式触发时自动激活：
+```
+[Thinking Engine] Task Analysis Mode
+├── Step 1: 理解任务
+├── Step 2: 分析上下文
+├── Step 3: 评估复杂度
+├── Step 4: 选择策略
+└── Step 5: 验证方案
+```
+
+### Knowledge Graph 集成
+
+- **Phase 0**: 查询相关知识和历史方案
+- **Phase 4**: 参考类似项目的实现
+- **Phase 6**: 记录新知识到图谱
+
+手动查询：`/ai:knowledge [关键词]`
+
+---
+
 ## Dependencies
 
 - `competitor-research` skill for Phase 0.5
 - `project-initializer` skill for codebox setup
 - `session-manager` skill for cross-session continuity
 - `claude-reflect` skill for learning capture and /reflect command
-- `~/.claude/common/lib/codeagent-wrapper.sh` for multi-backend execution (gemini/codex/claude)
+- `quality-gate` skill for Phase 5 quality validation (v3.3.0+)
+- `thinking-engine` skill for structured thinking (v3.3.0+)
+- `knowledge-graph` skill for cross-project knowledge (v3.3.0+)
 
 ---
 

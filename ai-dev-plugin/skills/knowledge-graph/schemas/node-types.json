@@ -1,0 +1,84 @@
+{
+  "node_types": [
+    {
+      "type": "project",
+      "description": "项目节点",
+      "icon": "📁",
+      "fields": ["name", "tech_stack", "description"]
+    },
+    {
+      "type": "technology",
+      "description": "技术栈节点",
+      "icon": "🔧",
+      "fields": ["name", "version", "category"]
+    },
+    {
+      "type": "pattern",
+      "description": "设计模式节点",
+      "icon": "🎨",
+      "fields": ["name", "category", "use_case"]
+    },
+    {
+      "type": "decision",
+      "description": "技术决策节点",
+      "icon": "🎯",
+      "fields": ["title", "context", "choice", "reason"]
+    },
+    {
+      "type": "solution",
+      "description": "解决方案节点",
+      "icon": "💡",
+      "fields": ["title", "problem", "solution", "key_files"]
+    },
+    {
+      "type": "error",
+      "description": "错误记录节点",
+      "icon": "🐛",
+      "fields": ["title", "symptom", "cause", "fix"]
+    }
+  ],
+  "relation_types": [
+    {
+      "type": "uses",
+      "description": "使用关系",
+      "from": ["project"],
+      "to": ["technology", "pattern"]
+    },
+    {
+      "type": "implements",
+      "description": "实现关系",
+      "from": ["project"],
+      "to": ["pattern", "solution"]
+    },
+    {
+      "type": "similar_to",
+      "description": "相似关系",
+      "from": ["project"],
+      "to": ["project"]
+    },
+    {
+      "type": "depends_on",
+      "description": "依赖关系",
+      "from": ["project", "solution"],
+      "to": ["technology", "solution"]
+    },
+    {
+      "type": "solved_by",
+      "description": "被解决关系",
+      "from": ["error"],
+      "to": ["solution"]
+    },
+    {
+      "type": "learned_from",
+      "description": "学习关系",
+      "from": ["solution", "decision"],
+      "to": ["error"]
+    }
+  ],
+  "config": {
+    "max_nodes": 50,
+    "max_relations": 100,
+    "retention_days": 30,
+    "auto_cleanup": true
+  }
+}

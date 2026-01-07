@@ -1,0 +1,103 @@
+{
+  "thinking_patterns": {
+    "task_analysis": {
+      "name": "任务分析模式",
+      "description": "深度分析用户任务意图和复杂度",
+      "steps": [
+        "理解任务描述和关键要素",
+        "分析项目技术栈和上下文",
+        "评估任务复杂度和依赖关系",
+        "选择最优 Agent 组合",
+        "验证和调优方案"
+      ],
+      "total_steps": 5,
+      "trigger_keywords": ["实现", "开发", "功能", "新增", "添加", "创建", "构建"]
+    },
+    "problem_solving": {
+      "name": "问题解决模式",
+      "description": "系统化解决复杂技术问题",
+      "steps": [
+        "问题识别和定义",
+        "根因分析",
+        "解决方案设计",
+        "实施计划制定",
+        "验证和优化"
+      ],
+      "total_steps": 5,
+      "trigger_keywords": ["修复", "bug", "错误", "问题", "不工作", "失败", "异常", "解决"]
+    },
+    "architecture_design": {
+      "name": "架构设计模式",
+      "description": "系统架构设计和规划",
+      "steps": [
+        "需求分析和约束识别",
+        "系统分解和模块划分",
+        "技术选型和架构设计",
+        "接口设计和数据流",
+        "性能和扩展性评估",
+        "安全性和可靠性考量"
+      ],
+      "total_steps": 6,
+      "trigger_keywords": ["架构", "设计", "系统", "规划", "重构"]
+    }
+  },
+  "agent_capabilities": {
+    "feature-planner": {
+      "expertise": ["需求分析", "功能设计", "用户体验", "业务逻辑"],
+      "complexity_preference": ["MEDIUM", "COMPLEX"],
+      "thinking_depth": "deep"
+    },
+    "api-helper": {
+      "expertise": ["API 设计", "接口规范", "数据结构", "后端开发"],
+      "complexity_preference": ["SIMPLE", "MEDIUM", "COMPLEX"],
+      "thinking_depth": "medium"
+    },
+    "frontend-developer": {
+      "expertise": ["用户界面", "前端框架", "响应式设计", "用户交互"],
+      "complexity_preference": ["SIMPLE", "MEDIUM"],
+      "thinking_depth": "medium"
+    },
+    "backend-architect": {
+      "expertise": ["系统架构", "数据库设计", "性能优化", "安全设计"],
+      "complexity_preference": ["COMPLEX"],
+      "thinking_depth": "deep"
+    },
+    "code-reviewer": {
+      "expertise": ["代码质量", "安全审查", "性能分析", "最佳实践"],
+      "complexity_preference": ["SIMPLE", "MEDIUM", "COMPLEX"],
+      "thinking_depth": "deep"
+    },
+    "quick-fixer": {
+      "expertise": ["快速修复", "问题定位", "临时解决", "紧急响应"],
+      "complexity_preference": ["SIMPLE"],
+      "thinking_depth": "shallow"
+    },
+    "debugger": {
+      "expertise": ["问题诊断", "根因分析", "调试技术", "系统分析"],
+      "complexity_preference": ["MEDIUM", "COMPLEX"],
+      "thinking_depth": "deep"
+    },
+    "test-automator": {
+      "expertise": ["测试设计", "自动化测试", "质量保证", "持续集成"],
+      "complexity_preference": ["MEDIUM", "COMPLEX"],
+      "thinking_depth": "medium"
+    }
+  },
+  "complexity_scoring": {
+    "keywords": {
+      "high_complexity": ["系统", "架构", "完整", "全部", "所有", "认证", "权限", "安全", "加密", "分布式", "微服务"],
+      "medium_complexity": ["包括", "支持", "以及", "同时", "数据库", "存储", "缓存", "API", "接口"],
+      "simple_indicators": ["修复", "简单", "快速", "临时", "小", "单个", "一个"]
+    },
+    "weights": {
+      "high_keyword": 3,
+      "medium_keyword": 2,
+      "simple_indicator": -2
+    },
+    "thresholds": {
+      "simple_max": 3,
+      "medium_max": 6,
+      "complex_min": 7
+    }
+  }
+}
