@@ -1,144 +1,137 @@
 # Azuro Marketplace
 
-Azuro 是一个 Claude Code 插件市场，提供 AI 开发工具和工作流自动化扩展。
+[中文文档](./README.zh-CN.md)
 
-## 快速开始
+Azuro is a Claude Code plugin marketplace providing AI development tools and workflow automation extensions.
 
-### 安装 Marketplace
+## Quick Start
+
+### Install Marketplace
 
 ```bash
-# 通过 GitHub（推送后）
+# From GitHub
 /plugin marketplace add Foundj/azuro-marketplace
 ```
 
-### 安装插件
+### Install Plugin
 
 ```bash
 /plugin install ai-dev@azuro
 ```
 
-## 可用插件
+## Available Plugins
 
-| 插件 | 版本 | 描述 |
-|------|------|------|
-| [ai-dev](./ai-dev-plugin/) | 3.2.0 | 工业级 AI 开发编排系统，包含 7 阶段工作流、OODA 自主循环、知识管理 |
+| Plugin | Version | Description |
+|--------|---------|-------------|
+| [ai-dev](./ai-dev-plugin/) | 3.2.0 | Industrial-grade AI development orchestration with 7-phase workflow, OODA loop, knowledge management |
 
-## ai-dev 插件功能
+## ai-dev Plugin Features
 
-### 命令 (23个)
+### Commands (25)
 
-| 命令 | 描述 |
-|------|------|
-| `/ai:dev` | 主入口 - 启动 AI 开发工作流 |
-| `/ai:loop` | OODA 自主循环 |
-| `/ai:auto` | 自动模式开发 |
-| `/ai:check` | 代码检查 |
-| `/ai:fix` | 快速修复 |
-| `/ai:review` | 代码审查 |
-| `/ai:design` | 设计阶段 |
-| `/ai:implement` | 实现阶段 |
-| `/ai:research` | 研究模式 |
-| `/ai:interview` | 需求访谈 |
-| `/ai:status` | 状态查看 |
-| `/ai:archive` | 归档变更 |
-| `/ai:update-constraints` | 更新约束 |
-| `/ai:update-feature-index` | 更新功能索引 |
-| `/dev` | 快捷开发命令 |
-| `/fix` | 快捷修复命令 |
-| `/research` | 快捷研究命令 |
-| `/progress` | 进度查看 |
-| `/feature-list` | 功能列表 |
-| `/feature-show` | 显示功能详情 |
-| `/feature-resume` | 恢复功能开发 |
-| `/feature-archive` | 归档功能 |
+| Command | Description |
+|---------|-------------|
+| `/ai:dev` | Main entry - Start AI development workflow |
+| `/ai:loop` | OODA autonomous loop |
+| `/ai:auto` | Auto-complete remaining tasks |
+| `/ai:check` | Pre-implementation check |
+| `/ai:fix` | Quick bug fix |
+| `/ai:review` | Code review |
+| `/ai:design` | Design phase |
+| `/ai:implement` | Implementation phase |
+| `/ai:research` | Research mode |
+| `/ai:interview` | Requirement gathering |
+| `/ai:status` | View status |
+| `/ai:archive` | Archive changes |
+| `/ai:update-constraints` | Update constraints |
+| `/ai:update-feature-index` | Update feature index |
+| `/skill-audit` | Audit all skills in project |
+| `/skill-audit:one` | Audit single skill |
+| `/dev` | Quick dev alias |
+| `/fix` | Quick fix alias |
+| `/research` | Quick research alias |
+| `/progress` | View progress |
+| `/feature-list` | List features |
+| `/feature-show` | Show feature details |
+| `/feature-resume` | Resume feature development |
+| `/feature-archive` | Archive feature |
 
-### Agents (24个)
+### Agents (24)
 
-专业化代理，支持不同开发任务：
+Specialized agents for different development tasks:
 
-- **架构类**: code-architect, backend-architect, frontend-developer
-- **质量类**: code-reviewer, quality-guardian, confidence-scorer
-- **开发类**: javascript-pro, typescript-pro, quick-fixer
-- **调试类**: debugger, error-detective, project-doctor
-- **规划类**: feature-planner, task-decomposer, requirement-analyzer
-- **测试类**: test-automator
-- **其他**: api-helper, code-explorer, code-mentor, master-controller, ooda-manager, sprint-manager, task-orchestrator
+- **Architecture**: code-architect, backend-architect, frontend-developer
+- **Quality**: code-reviewer, quality-guardian, confidence-scorer
+- **Development**: javascript-pro, typescript-pro, quick-fixer
+- **Debugging**: debugger, error-detective, project-doctor
+- **Planning**: feature-planner, task-decomposer, requirement-analyzer
+- **Testing**: test-automator
+- **Other**: api-helper, code-explorer, code-mentor, master-controller, ooda-manager, sprint-manager, task-orchestrator
 
-### Skills (5个)
+### Skills (6)
 
-| Skill | 描述 |
-|-------|------|
-| ai-dev | 核心 AI 开发技能，7 阶段工作流 |
-| claude-reflect | 会话学习和反思系统 |
-| project-initializer | 项目初始化和长期开发模式 |
-| session-manager | 会话管理和上下文恢复 |
-| competitor-research | 竞品研究 |
+| Skill | Description |
+|-------|-------------|
+| ai-dev | Core AI development skill, 7-phase workflow |
+| claude-reflect | Session learning and reflection system |
+| project-initializer | Project initialization and long-running dev mode |
+| session-manager | Session management and context recovery |
+| competitor-research | Competitor research |
+| skill-auditor | Skill quality audit and validation |
 
-## 目录结构
+## Directory Structure
 
 ```
 azuro-marketplace/
 ├── .claude-plugin/
-│   └── marketplace.json      # Marketplace 清单
-├── ai-dev-plugin/            # AI Dev 插件
+│   └── marketplace.json      # Marketplace manifest
+├── ai-dev-plugin/            # AI Dev plugin
 │   ├── .claude-plugin/
-│   │   └── plugin.json       # 插件清单
-│   ├── commands/             # 23 个命令
-│   ├── agents/               # 24 个 agents
-│   ├── skills/               # 5 个 skills
-│   ├── hooks/                # 钩子配置
-│   └── scripts/              # 自动化脚本
-├── docs/                     # 文档
-│   ├── plugins.md            # 插件开发指南
-│   ├── plugin-marketplaces.md # Marketplace 指南
-│   └── plugins-reference.md  # 插件参考
+│   │   └── plugin.json       # Plugin manifest
+│   ├── commands/             # 25 commands
+│   ├── agents/               # 24 agents
+│   ├── skills/               # 6 skills
+│   ├── hooks/                # Hook configurations
+│   └── scripts/              # Utility scripts
 └── README.md
 ```
 
-## 开发指南
+## Development Guide
 
-### 添加新插件
+### Adding New Plugins
 
-1. 在 `azuro-marketplace/` 下创建插件目录
-2. 创建 `.claude-plugin/plugin.json`
-3. 添加 commands/, agents/, skills/ 等组件
-4. 更新根目录的 `marketplace.json`
+1. Create plugin directory under `azuro-marketplace/`
+2. Create `.claude-plugin/plugin.json`
+3. Add commands/, agents/, skills/ components
+4. Update root `marketplace.json`
 
-### 本地测试
+### Local Testing
 
 ```bash
-# 添加本地 marketplace
-/plugin marketplace add /Users/xxx
+# Add local marketplace
+/plugin marketplace add /path/to/azuro-marketplace
 
-# 安装插件测试
+# Install plugin for testing
 /plugin install ai-dev@azuro
 
-# 重启 Claude Code 生效
+# Restart Claude Code to apply
 ```
 
-## 官方文档
+## Documentation
 
-详细的 Claude Code 插件开发文档已保存在 `docs/` 目录：
+- [Plugins](https://code.claude.com/docs/plugins)
+- [Plugin Marketplaces](https://code.claude.com/docs/plugin-marketplaces)
+- [Plugins Reference](https://code.claude.com/docs/plugins-reference)
+- [Slash Commands](https://code.claude.com/docs/slash-commands)
+- [Sub-agents](https://code.claude.com/docs/sub-agents)
+- [Agent Skills](https://code.claude.com/docs/skills)
+- [Hooks](https://code.claude.com/docs/hooks)
+- [MCP](https://code.claude.com/docs/mcp)
 
-- [插件开发指南](./docs/plugins.md)
-- [插件市场指南](./docs/plugin-marketplaces.md)
-- [插件技术参考](./docs/plugins-reference.md)
-
-### 在线文档链接
-
-- [插件](https://code.claude.com/docs/zh-CN/plugins)
-- [插件市场](https://code.claude.com/docs/zh-CN/plugin-marketplaces)
-- [插件参考](https://code.claude.com/docs/zh-CN/plugins-reference)
-- [斜杠命令](https://code.claude.com/docs/zh-CN/slash-commands)
-- [子代理](https://code.claude.com/docs/zh-CN/sub-agents)
-- [Agent Skills](https://code.claude.com/docs/zh-CN/skills)
-- [Hooks](https://code.claude.com/docs/zh-CN/hooks)
-- [MCP](https://code.claude.com/docs/zh-CN/mcp)
-
-## 许可证
+## License
 
 MIT License
 
-## 作者
+## Author
 
 foundj - https://github.com/Foundj
