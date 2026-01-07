@@ -1,6 +1,6 @@
 {
   "name": "ai-dev",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
   "author": {
     "name": "foundj",
