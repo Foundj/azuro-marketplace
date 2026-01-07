@@ -1,53 +1,68 @@
 ---
 name: competitor-research
 description: |
-  Multi-model research skill for gathering competitor insights and best practices.
-  Uses ~/.claude/common/lib/codeagent-wrapper.sh (gemini for web search, codex for code analysis, claude for code review).
+  This skill should be used when the user asks to "research competitors", "find best practices",
+  "调研", "竞品分析", "alternatives", "compare options", or uses keywords like "research", 
+  "investigate", "benchmark". Provides multi-model research using Gemini for web search, 
+  Codex for code analysis, and Claude for code review.
   
-  **TRIGGERS**: research, 调研, 竞品, alternatives, 最佳实践, best practices
-  
-  **AUTO-TRIGGER**: When ai-dev detects new feature requirement
-  **MANUAL**: /research "feature" or "帮我调研一下 XX"
-  
-  Provides structured research results to requirement-interviewer for better suggestions.
+  Integrates with ai-dev workflow to provide research context before requirement interviews.
 version: 1.0.0
 ---
 
-# Competitor Research Skill
+# Competitor Research
 
-Research competitors and best practices to improve requirement quality.
+> Multi-model research engine for gathering competitor insights and best practices
+
+## Overview
+
+Competitor Research gathers insights from multiple sources to improve requirement quality:
+
+- **Web Search** (Gemini): Best practices, library comparisons, security guidelines
+- **Code Analysis** (Codex): Open-source patterns, implementation examples
+- **Code Review** (Claude): Security review, quality assessment
+
+---
 
 ## When to Use
 
 ### Auto-Trigger (by ai-dev)
-- New feature development detected
+
+Activates automatically for new feature development:
 - Keywords: `implement`, `build`, `create`, `design`, `实现`, `开发`, `设计`
 
 ### Manual Trigger
-```
+
+```bash
 /research "user authentication"
 /research "支付功能" --deep
 帮我调研一下用户登录的最佳实践
 ```
 
 ### Skip Research
-- Simple fixes: `fix`, `update`, `refactor`, `typo`
-- User explicitly says: "不需要调研" or "skip research"
+
+Skip for simple tasks:
+- Keywords: `fix`, `update`, `refactor`, `typo`, `修复`, `更新`
+- User says: "不需要调研" or "skip research"
 
 ---
 
 ## Usage
 
 ### Quick Research (Default)
+
 ```bash
 /research "feature name"
 ```
+
 Output: 3-5 bullet points with recommendations
 
 ### Deep Research
+
 ```bash
 /research "feature name" --deep
 ```
+
 Output: Full JSON report saved to `codebox/research/`
 
 ---
@@ -55,6 +70,8 @@ Output: Full JSON report saved to `codebox/research/`
 ## Research Process
 
 ### Step 1: Web Search (Gemini)
+
+Search for best practices, popular libraries, and common pitfalls.
 
 ```bash
 ~/.claude/common/lib/codeagent-wrapper.sh --backend gemini --yolo <<'EOF'
@@ -72,6 +89,8 @@ EOF
 
 ### Step 2: Code Analysis (Codex)
 
+Analyze how the feature is implemented in popular open-source projects.
+
 ```bash
 ~/.claude/common/lib/codeagent-wrapper.sh --backend codex --yolo <<'EOF'
 Analyze how [FEATURE] is implemented in popular open-source projects.
@@ -88,29 +107,18 @@ EOF
 
 ### Step 3: Code Review (Claude)
 
-```bash
-~/.claude/common/lib/codeagent-wrapper.sh --backend claude --yolo <<'EOF'
-Review security and quality aspects of [FEATURE] implementation.
-
-Check for:
-1. Security vulnerabilities
-2. Best practices compliance
-3. Edge case handling
-4. Error resilience
-
-Provide actionable recommendations.
-EOF
-```
+Review security and quality aspects of the feature implementation.
 
 ### Step 4: Synthesize Results
 
-Combine web search and code analysis into structured output.
+Combine findings into structured recommendations.
 
 ---
 
 ## Output Format
 
-### Quick Mode (Console)
+### Quick Mode
+
 ```
 📊 Research: User Authentication
 
@@ -131,18 +139,17 @@ Combine web search and code analysis into structured output.
 ```
 
 ### Deep Mode (JSON)
+
 ```json
 {
   "feature": "user-authentication",
-  "research_date": "2025-01-05",
-  "tech_stack": "next.js",
+  "research_date": "2025-01-07",
   "alternatives": [
     {
       "name": "NextAuth.js",
       "pros": ["Built-in providers", "Session management"],
       "cons": ["Configuration complexity"],
-      "adoption": "high",
-      "recommendation": "mvp"
+      "adoption": "high"
     }
   ],
   "best_practices": [
@@ -155,16 +162,6 @@ Combine web search and code analysis into structured output.
       "impact": "critical",
       "prevention": "Use bcrypt with salt"
     }
-  ],
-  "recommendations": {
-    "for_mvp": "NextAuth.js with credentials provider",
-    "for_production": "Custom JWT with refresh tokens"
-  },
-  "references": [
-    {
-      "title": "OWASP Authentication Cheatsheet",
-      "url": "https://cheatsheetseries.owasp.org/..."
-    }
   ]
 }
 ```
@@ -173,14 +170,14 @@ Combine web search and code analysis into structured output.
 
 ## Integration with ai-dev
 
-### Pre-Interview Research
+### Pre-Interview Research Flow
 
 ```
 User: "ai 实现用户登录"
          │
          ▼
 ┌────────────────────────────────┐
-│ ai-dev detects:       │
+│ ai-dev detects:                │
 │ - New feature (implement)      │
 │ - Triggers competitor-research │
 └────────────────────────────────┘
@@ -197,11 +194,10 @@ User: "ai 实现用户登录"
 ┌────────────────────────────────┐
 │ requirement-interviewer uses   │
 │ research results as context    │
-│ for interview questions        │
 └────────────────────────────────┘
 ```
 
-### Research Results in Interview
+### Research in Interview
 
 ```
 Q1: How do you want to implement authentication?
@@ -221,129 +217,49 @@ Q1: How do you want to implement authentication?
       - Passwordless, email-based
       - High security, depends on email delivery
 
-⚠️ Research Warning:
-   73% of security vulnerabilities come from custom password storage
-   Recommendation: Use bcrypt + salt
-
 📝 Your choice:
 ```
 
 ---
 
-## Risk Detection & Rejection
+## Risk Detection
 
 When research reveals significant risks:
 
 ```
 ⚠️ Research Found Potential Risks:
 
-You want to "implement custom encryption algorithm".
-Research indicates:
-
 1. 🔴 Security Risk (Critical)
    - Custom crypto is a common vulnerability source
    - No major projects implement custom encryption
 
-2. 🔴 Complexity Risk (High)
-   - Requires deep cryptographic knowledge
-   - High maintenance burden
-
 💡 Suggested Alternatives:
    a) Use bcrypt for password hashing
    b) Use crypto standard library for encryption
-   c) Use Argon2 for key derivation
-
-📝 Options:
-   a) Accept suggestion - use standard libraries
-   b) Proceed anyway - acknowledge risks (requires confirmation)
-   c) Modify requirement - describe what you actually need
 ```
 
 ---
 
 ## Configuration
 
-### Auto-Research Settings
 ```json
 {
   "auto_research": true,
-  "auto_triggers": ["implement", "build", "create", "design", "实现", "开发"],
-  "skip_triggers": ["fix", "update", "refactor", "typo", "修复", "更新"],
+  "auto_triggers": ["implement", "build", "create", "design"],
+  "skip_triggers": ["fix", "update", "refactor", "typo"],
   "backends": {
     "web_search": "gemini",
     "code_analysis": "codex"
   },
   "default_mode": "quick",
-  "save_results": true,
   "results_path": "codebox/research/"
 }
 ```
 
-### Backend Requirements
-- `~/.claude/common/lib/codeagent-wrapper.sh` installed and executable
-- Gemini CLI available for web search (`gemini` or via npx)
-- Codex CLI available for code analysis (`codex` or via npx)
-- Claude CLI available for code review (`claude` or via npx)
-
 ---
 
-## Storage
+## Dependencies
 
-Research results are stored in:
-```
-codebox/research/
-├── user-authentication-research.json
-├── payment-integration-research.json
-└── search-functionality-research.json
-```
-
-- No automatic expiration
-- User can force refresh: `/research "feature" --force`
-- Shows research date for user to decide freshness
-
----
-
-## Examples
-
-### Example 1: Quick Research
-```
-User: /research "pagination"
-
-📊 Research: Pagination
-
-💡 Recommendations:
-  1. Use cursor-based pagination for large datasets
-  2. Implement virtual scrolling for 1000+ items
-  3. Consider infinite scroll for mobile UX
-  4. Cache page results for back navigation
-
-⚠️ Common Pitfalls:
-  - Offset pagination breaks with concurrent inserts
-  - Missing loading states frustrate users
-
-Time: 4.2s | Sources: 3 web + 2 repos
-```
-
-### Example 2: Deep Research
-```
-User: /research "real-time notifications" --deep
-
-🔍 Deep Research: Real-time Notifications
-Saving to: codebox/research/real-time-notifications-research.json
-
-Researching...
-├─ Gemini: WebSocket vs SSE comparison ✓
-├─ Gemini: Push notification best practices ✓
-├─ Codex: Analyzing socket.io patterns ✓
-├─ Codex: Analyzing Pusher implementations ✓
-└─ Synthesizing results ✓
-
-✅ Research complete (12.8s)
-
-Summary:
-- WebSocket recommended for bidirectional
-- SSE sufficient for server-to-client only
-- Consider Pusher/Ably for managed solution
-
-Full report: codebox/research/real-time-notifications-research.json
-```
+- `~/.claude/common/lib/codeagent-wrapper.sh` - Multi-backend CLI wrapper
+- `gemini` CLI - Web search capability
+- `codex` CLI - Code analysis capability

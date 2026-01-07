@@ -1,234 +1,222 @@
 ---
 name: thinking-engine
 description: |
-  Sequential Thinking 深度思考引擎，提供结构化的任务分析和决策支持。
+  This skill should be used when the user asks to "think deeply", "analyze task", "think step by step",
+  "好好思考", "仔细想", "深度分析", or uses keywords like "think", "ultrathink", "思考".
+  Provides structured sequential thinking with 5-6 step analysis for task planning, 
+  problem solving, and architecture design decisions.
   
-  **触发词**: think, 思考, 深度分析, 仔细想, ultrathink, 好好思考
-  
-  **思考模式**:
-  - task-analysis: 5 步任务分析 (默认)
-  - problem-solving: 5 步问题解决
-  - architecture: 6 步架构设计
-  
-  **输出方式**: 直接输出到会话（不保存日志文件）
-  
-  **与 ai-dev 集成**: think/ultrathink 模式自动激活
-
+  Integrates with ai-dev workflow for complex task analysis and agent selection.
 version: 1.0.0
 ---
 
 # Thinking Engine
 
-> 结构化深度思考引擎 - 让 AI 思考更系统化
+> Structured deep thinking engine for systematic AI analysis
 
-## 思考模式
+## Overview
 
-### 1. Task Analysis (任务分析)
+Thinking Engine provides structured multi-step analysis for:
 
-**适用场景**: 开发新功能、实现需求
+- **Task Analysis**: 5-step workflow for new feature development
+- **Problem Solving**: 5-step workflow for bug fixing and issue resolution
+- **Architecture Design**: 6-step workflow for system design decisions
 
-**5 步思考流程**:
+Automatically activates in ai-dev `think` and `ultrathink` modes.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   TASK ANALYSIS MODE                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  Step 1: 理解任务                                           │
-│  ├─ 任务类型: [开发/修复/优化/重构]                          │
-│  ├─ 关键动词: [实现/修复/添加/删除/更新]                      │
-│  └─ 领域识别: [前端/后端/数据库/安全/...]                    │
-│                                                             │
-│  Step 2: 分析上下文                                         │
-│  ├─ 项目技术栈                                              │
-│  ├─ 现有代码结构                                            │
-│  └─ 相关依赖                                                │
-│                                                             │
-│  Step 3: 评估复杂度                                         │
-│  ├─ 复杂度等级: [SIMPLE/MEDIUM/COMPLEX]                     │
-│  ├─ 风险因素                                                │
-│  └─ 依赖关系                                                │
-│                                                             │
-│  Step 4: 选择策略                                           │
-│  ├─ 推荐 Agent 组合                                         │
-│  ├─ 工作流步骤                                              │
-│  └─ 预估时间                                                │
-│                                                             │
-│  Step 5: 验证方案                                           │
-│  ├─ 可行性检查                                              │
-│  ├─ 潜在问题                                                │
-│  └─ 备选方案                                                │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
+---
 
-### 2. Problem Solving (问题解决)
+## Thinking Modes
 
-**适用场景**: 修复 Bug、排查问题
+### 1. Task Analysis Mode
 
-**5 步思考流程**:
+**Use when**: Developing new features, implementing requirements
+
+**5-Step Process**:
 
 ```
-Step 1: 问题定义
-├─ 症状描述
-├─ 影响范围
-└─ 复现条件
+Step 1: Understand Task
+├── Task type: [develop/fix/optimize/refactor]
+├── Key verbs: [implement/fix/add/delete/update]
+└── Domain: [frontend/backend/database/security/...]
 
-Step 2: 根因分析
-├─ 假设列表
-├─ 验证方法
-└─ 数据收集
+Step 2: Analyze Context
+├── Project tech stack
+├── Existing code structure
+└── Related dependencies
 
-Step 3: 方案设计
-├─ 解决选项
-├─ 利弊分析
-└─ 推荐方案
+Step 3: Evaluate Complexity
+├── Complexity level: [SIMPLE/MEDIUM/COMPLEX]
+├── Risk factors
+└── Dependencies
 
-Step 4: 实施计划
-├─ 修改文件
-├─ 测试策略
-└─ 回滚方案
+Step 4: Select Strategy
+├── Recommended agent combination
+├── Workflow steps
+└── Time estimate
 
-Step 5: 验证确认
-├─ 测试结果
-├─ 边界情况
-└─ 监控指标
+Step 5: Validate Approach
+├── Feasibility check
+├── Potential issues
+└── Alternative solutions
 ```
 
-### 3. Architecture Design (架构设计)
+### 2. Problem Solving Mode
 
-**适用场景**: 系统设计、技术选型、重大重构
+**Use when**: Fixing bugs, troubleshooting issues
 
-**6 步思考流程**:
+**5-Step Process**:
 
 ```
-Step 1: 需求分析
-├─ 功能需求
-├─ 非功能需求 (性能/安全/可用性)
-└─ 约束条件
+Step 1: Define Problem
+├── Symptoms description
+├── Impact scope
+└── Reproduction steps
 
-Step 2: 系统分解
-├─ 模块划分
-├─ 边界定义
-└─ 职责分配
+Step 2: Root Cause Analysis
+├── Hypothesis list
+├── Verification methods
+└── Data collection
 
-Step 3: 技术选型
-├─ 候选技术
-├─ 评估标准
-└─ 最终选择
+Step 3: Design Solution
+├── Solution options
+├── Pros/cons analysis
+└── Recommended approach
 
-Step 4: 接口设计
-├─ API 规范
-├─ 数据流
-└─ 消息协议
+Step 4: Implementation Plan
+├── Files to modify
+├── Testing strategy
+└── Rollback plan
 
-Step 5: 性能与扩展
-├─ 瓶颈分析
-├─ 扩展策略
-└─ 容量规划
+Step 5: Verification
+├── Test results
+├── Edge cases
+└── Monitoring metrics
+```
 
-Step 6: 安全与可靠
-├─ 威胁建模
-├─ 防护措施
-└─ 故障恢复
+### 3. Architecture Design Mode
+
+**Use when**: System design, technology selection, major refactoring
+
+**6-Step Process**:
+
+```
+Step 1: Requirements Analysis
+├── Functional requirements
+├── Non-functional requirements (performance/security/availability)
+└── Constraints
+
+Step 2: System Decomposition
+├── Module partitioning
+├── Boundary definitions
+└── Responsibility assignment
+
+Step 3: Technology Selection
+├── Candidate technologies
+├── Evaluation criteria
+└── Final selection
+
+Step 4: Interface Design
+├── API specifications
+├── Data flow
+└── Message protocols
+
+Step 5: Performance & Scaling
+├── Bottleneck analysis
+├── Scaling strategy
+└── Capacity planning
+
+Step 6: Security & Reliability
+├── Threat modeling
+├── Protection measures
+└── Failure recovery
 ```
 
 ---
 
-## 复杂度评估规则
+## Complexity Evaluation
 
-### 关键词权重
+### Keyword Weights
 
-```yaml
-high_complexity:  # +3 分/词
-  - 系统, 架构, 完整, 全部, 所有
-  - 认证, 权限, 安全, 加密
-  - 分布式, 微服务, 集群
+| Complexity | Keywords | Weight |
+|------------|----------|--------|
+| High | system, architecture, complete, all, auth, security, distributed | +3 |
+| Medium | includes, supports, database, storage, cache, API, integration | +2 |
+| Simple | fix, simple, quick, temporary, small, single | -2 |
 
-medium_complexity:  # +2 分/词
-  - 包括, 支持, 以及, 同时
-  - 数据库, 存储, 缓存
-  - API, 接口, 集成
+### Complexity Levels
 
-simple_indicators:  # -2 分/词
-  - 修复, 简单, 快速, 临时
-  - 小, 单个, 一个
-```
-
-### 复杂度等级
-
-| 评分 | 等级 | 建议模式 |
-|------|------|----------|
+| Score | Level | Recommended Mode |
+|-------|-------|------------------|
 | 1-3 | SIMPLE | quick |
 | 4-6 | MEDIUM | standard |
 | 7+ | COMPLEX | think |
 
 ---
 
-## Agent 能力矩阵
+## Agent Capability Matrix
 
-| Agent | 专长领域 | 复杂度偏好 | 思考深度 |
-|-------|---------|-----------|---------|
-| feature-planner | 需求分析, 功能设计 | MEDIUM, COMPLEX | deep |
-| api-helper | API 设计, 接口规范 | ALL | medium |
-| frontend-developer | UI/UX, 前端框架 | SIMPLE, MEDIUM | medium |
-| backend-architect | 系统架构, 数据库 | COMPLEX | deep |
-| code-reviewer | 代码质量, 安全审查 | ALL | deep |
-| quick-fixer | 快速修复, 问题定位 | SIMPLE | shallow |
-| debugger | 问题诊断, 根因分析 | MEDIUM, COMPLEX | deep |
-| test-automator | 测试设计, 自动化 | MEDIUM, COMPLEX | medium |
+| Agent | Expertise | Complexity | Thinking Depth |
+|-------|-----------|------------|----------------|
+| feature-planner | Requirements, design | MEDIUM, COMPLEX | deep |
+| api-helper | API design, specs | ALL | medium |
+| frontend-developer | UI/UX, frameworks | SIMPLE, MEDIUM | medium |
+| backend-architect | System, database | COMPLEX | deep |
+| code-reviewer | Quality, security | ALL | deep |
+| quick-fixer | Fast fixes | SIMPLE | shallow |
+| debugger | Diagnosis, root cause | MEDIUM, COMPLEX | deep |
+| test-automator | Test design, automation | MEDIUM, COMPLEX | medium |
 
 ---
 
-## 使用示例
+## Integration with ai-dev
 
-### 自动模式选择
+Thinking Engine activates automatically in:
+
+1. **think mode**: `ai think <task>`
+2. **ultrathink mode**: `ai ultrathink <task>` or `ai 好好思考 <task>`
+3. **Complex task detection**: When complexity score >= 7
+
+Output integrates directly into conversation flow.
+
+---
+
+## Usage Examples
 
 ```bash
+# Automatic mode selection
 ai implement user authentication   # → task-analysis (COMPLEX)
 dev fix login button bug           # → problem-solving (SIMPLE)
 ai think design payment system     # → architecture (COMPLEX)
 ```
 
-### 思考输出示例
+### Example Output
 
 ```
 [Thinking Engine] Task Analysis Mode
 
-📝 Step 1: 理解任务
-   任务类型: 开发创建
-   关键动词: 实现 (implement)
-   领域识别: 安全认证
+📝 Step 1: Understand Task
+   Type: Development
+   Verb: implement
+   Domain: Security/Auth
 
-📊 Step 2: 分析上下文
-   技术栈: Next.js, TypeScript, Prisma
-   相关文件: src/auth/, src/middleware/
-   依赖: next-auth, bcrypt
+📊 Step 2: Analyze Context
+   Stack: Next.js, TypeScript, Prisma
+   Files: src/auth/, src/middleware/
+   Deps: next-auth, bcrypt
 
-⚖️ Step 3: 评估复杂度
-   复杂度: COMPLEX (7/10)
-   风险: 安全漏洞, 会话管理
-   依赖: 数据库 schema, API routes
+⚖️ Step 3: Evaluate Complexity
+   Level: COMPLEX (7/10)
+   Risks: Security vulnerabilities, session management
+   Dependencies: Database schema, API routes
 
-🎯 Step 4: 选择策略
-   Agent 组合: feature-planner → api-helper → code-reviewer → test-automator
-   预估步骤: 8 个任务
-   预估时间: 30-45 分钟
+🎯 Step 4: Select Strategy
+   Agents: feature-planner → api-helper → code-reviewer → test-automator
+   Steps: 8 tasks
+   Time: 30-45 minutes
 
-✅ Step 5: 验证方案
-   可行性: 高
-   潜在问题: 需要确认 session 存储方案
-   备选: 使用 OAuth 代替自建认证
+✅ Step 5: Validate Approach
+   Feasibility: High
+   Issues: Need to confirm session storage
+   Alternative: Use OAuth instead of custom auth
 ```
-
----
-
-## 与 ai-dev 集成
-
-Thinking Engine 在以下场景自动激活：
-
-1. **think 模式**: `ai think <task>`
-2. **ultrathink 模式**: `ai ultrathink <task>` 或 `ai 好好思考 <task>`
-3. **复杂任务检测**: 当任务复杂度 >= 7 时自动建议
-
-输出直接嵌入会话流，无需查看单独日志。

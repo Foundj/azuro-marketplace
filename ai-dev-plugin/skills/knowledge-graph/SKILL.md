@@ -1,76 +1,67 @@
 ---
 name: knowledge-graph
 description: |
-  项目知识图谱系统，管理跨项目的知识关联和经验复用。
+  This skill should be used when the user asks to "query knowledge", "find related solutions",
+  "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
+  "knowledge", "experience", "历史方案", "经验复用". Manages cross-project knowledge relationships
+  and enables experience reuse across projects.
   
-  **触发词**: knowledge, 知识, 知识库, 经验, 相关项目
-  **命令**: /ai:knowledge
-  
-  **功能**:
-  - 项目间依赖和关联发现
-  - 历史解决方案查询
-  - 技术选型推荐
-  - 经验知识复用
-  
-  **数据管理**:
-  - 最大记录: 50 条
-  - 自动清理: 30 天前的记录
-  - 存储位置: .claude-project/knowledge/
-
+  Integrates with ai-dev workflow in Phase 0 (Pre-check) and Phase 6 (Archive).
 version: 1.0.0
 ---
 
 # Knowledge Graph
 
-> 跨项目知识图谱 - 让经验得以传承和复用
+> Cross-project knowledge management for experience reuse
 
-## 概述
+## Overview
 
-Knowledge Graph 构建项目间的知识关联网络，帮助：
-- 发现相似项目和解决方案
-- 复用历史经验
-- 避免重复踩坑
-- 加速技术决策
+Knowledge Graph builds a network of project relationships to:
 
----
-
-## 知识节点类型
-
-| 类型 | 说明 | 示例 |
-|------|------|------|
-| `project` | 项目节点 | my-web-app |
-| `technology` | 技术栈 | React, TypeScript, Prisma |
-| `pattern` | 设计模式 | Repository Pattern, MVC |
-| `decision` | 技术决策 | 选择 PostgreSQL 而非 MySQL |
-| `solution` | 解决方案 | JWT 认证实现 |
-| `error` | 错误记录 | CORS 问题解决 |
-
-## 关系类型
-
-| 关系 | 说明 |
-|------|------|
-| `uses` | 项目使用技术 |
-| `implements` | 项目实现模式 |
-| `similar_to` | 相似项目 |
-| `depends_on` | 依赖关系 |
-| `solved_by` | 问题被方案解决 |
-| `learned_from` | 从错误中学习 |
+- Discover similar projects and solutions
+- Reuse historical experience
+- Avoid repeating mistakes
+- Accelerate technical decisions
 
 ---
 
-## 使用方式
+## Knowledge Node Types
 
-### 查询知识
+| Type | Description | Example |
+|------|-------------|---------|
+| `project` | Project node | my-web-app |
+| `technology` | Tech stack | React, TypeScript, Prisma |
+| `pattern` | Design pattern | Repository Pattern, MVC |
+| `decision` | Technical decision | Chose PostgreSQL over MySQL |
+| `solution` | Solution record | JWT authentication implementation |
+| `error` | Error record | CORS problem resolution |
+
+## Relationship Types
+
+| Relationship | Description |
+|--------------|-------------|
+| `uses` | Project uses technology |
+| `implements` | Project implements pattern |
+| `similar_to` | Similar projects |
+| `depends_on` | Dependency relationship |
+| `solved_by` | Problem solved by solution |
+| `learned_from` | Learned from error |
+
+---
+
+## Usage
+
+### Query Knowledge
 
 ```bash
-/ai:knowledge                    # 查询当前项目相关知识
-/ai:knowledge auth               # 查询认证相关经验
-/ai:knowledge similar            # 查找相似项目
+/ai:knowledge                    # Query current project related knowledge
+/ai:knowledge auth               # Query authentication related experience
+/ai:knowledge similar            # Find similar projects
 ```
 
-### 自动集成
+### Auto Integration
 
-在 ai-dev Phase 0 (Pre-check) 中自动查询：
+In ai-dev Phase 0 (Pre-check), automatically queries:
 
 ```
 [Knowledge Graph] Searching related knowledge...
@@ -88,18 +79,18 @@ Knowledge Graph 构建项目间的知识关联网络，帮助：
 
 ---
 
-## 数据结构
+## Data Structure
 
-### 知识记录
+### Knowledge Record
 
 ```json
 {
   "id": "know-20250107-001",
   "type": "solution",
-  "title": "JWT 认证实现",
+  "title": "JWT Authentication Implementation",
   "project": "user-portal",
   "tech_stack": ["Next.js", "TypeScript", "Prisma"],
-  "description": "完整的 JWT 认证流程，包含刷新令牌",
+  "description": "Complete JWT auth flow with refresh tokens",
   "key_files": [
     "src/auth/jwt.ts",
     "src/middleware/auth.ts"
@@ -111,7 +102,7 @@ Knowledge Graph 构建项目间的知识关联网络，帮助：
 }
 ```
 
-### 关系记录
+### Relationship Record
 
 ```json
 {
@@ -119,99 +110,98 @@ Knowledge Graph 构建项目间的知识关联网络，帮助：
   "to": "jwt-authentication",
   "type": "implements",
   "strength": 0.9,
-  "context": "用于用户登录和 API 保护"
+  "context": "Used for user login and API protection"
 }
 ```
 
 ---
 
-## 数据管理
+## Data Management
 
-### 存储位置
+### Storage Location
 
-项目级别：`.claude-project/knowledge/`
+Project level: `.claude-project/knowledge/`
 
 ```
 .claude-project/
 └── knowledge/
-    ├── nodes.json      # 知识节点
-    ├── relations.json  # 关系
-    └── index.json      # 索引
+    ├── nodes.json      # Knowledge nodes
+    ├── relations.json  # Relationships
+    └── index.json      # Index
 ```
 
-### 自动清理策略
+### Auto Cleanup Strategy
 
 ```yaml
-max_records: 50           # 最大记录数
-retention_days: 30        # 保留天数
-cleanup_on_start: true    # 启动时清理
+max_records: 50           # Maximum records
+retention_days: 30        # Retention period
+cleanup_on_start: true    # Cleanup on startup
 
 cleanup_priority:
-  1. 超过 30 天的记录
-  2. success_count = 0 的记录
-  3. 最旧的记录 (当超过 50 条)
+  1. Records older than 30 days
+  2. Records with success_count = 0
+  3. Oldest records (when exceeding 50)
 ```
 
-### 手动清理
+### Manual Cleanup
 
 ```bash
-# 在项目目录执行
 ${CLAUDE_PLUGIN_ROOT}/skills/knowledge-graph/scripts/cleanup.sh
 ```
 
 ---
 
-## 知识录入
+## Knowledge Recording
 
-### 自动录入
+### Automatic Recording
 
-ai-dev 工作流完成后自动记录：
-- Phase 6 (Archive) 成功时
-- 标记为有价值的解决方案时
+ai-dev workflow automatically records:
+- On Phase 6 (Archive) success
+- When solution is marked as valuable
 
-### 手动录入
+### Manual Recording
 
 ```bash
-/ai:knowledge add "实现了 OAuth2 第三方登录"
+/ai:knowledge add "Implemented OAuth2 third-party login"
 ```
 
 ---
 
-## 查询示例
+## Query Examples
 
-### 技术栈匹配
+### Tech Stack Matching
 
 ```
-Query: "React + TypeScript 项目的状态管理"
+Query: "React + TypeScript state management"
 
 Results:
 1. Zustand (from: dashboard-app)
-   - 简单易用，适合中小项目
-   - 使用次数: 5
+   - Simple and easy to use, suitable for small/medium projects
+   - Usage count: 5
 
 2. Redux Toolkit (from: enterprise-portal)  
-   - 功能完整，适合大型项目
-   - 使用次数: 3
+   - Full-featured, suitable for large projects
+   - Usage count: 3
 ```
 
-### 错误解决
+### Error Resolution
 
 ```
-Query: "CORS 跨域问题"
+Query: "CORS cross-origin issues"
 
 Results:
-1. Next.js API Routes CORS 配置
-   - 解决方案: next.config.js headers 配置
-   - 成功率: 100%
+1. Next.js API Routes CORS Configuration
+   - Solution: next.config.js headers configuration
+   - Success rate: 100%
 
-2. Express CORS 中间件
-   - 解决方案: cors npm 包
-   - 注意: 需要配置 credentials
+2. Express CORS Middleware
+   - Solution: cors npm package
+   - Note: Need to configure credentials
 ```
 
 ---
 
-## 与 ai-dev 集成
+## Integration with ai-dev
 
 ```
 ┌─────────────────────────────────────────┐
@@ -219,21 +209,28 @@ Results:
 ├─────────────────────────────────────────┤
 │                                         │
 │  Phase 0 (Pre-check)                    │
-│  └── knowledge-graph: 查询相关知识      │
+│  └── knowledge-graph: Query knowledge   │
 │                                         │
 │  Phase 4 (Implementation)               │
-│  └── knowledge-graph: 参考历史方案      │
+│  └── knowledge-graph: Reference history │
 │                                         │
 │  Phase 6 (Archive)                      │
-│  └── knowledge-graph: 记录新知识        │
+│  └── knowledge-graph: Record knowledge  │
 │                                         │
 └─────────────────────────────────────────┘
 ```
 
 ---
 
-## 隐私说明
+## Privacy
 
-- 知识图谱数据**仅存储在本地**
-- 不包含敏感信息（密钥、密码等）
-- 可随时删除 `.claude-project/knowledge/` 清除所有数据
+- Knowledge graph data is **stored locally only**
+- Does not contain sensitive information (keys, passwords)
+- Delete `.claude-project/knowledge/` to clear all data
+
+---
+
+## Dependencies
+
+- `jq` - JSON processing
+- `bash` - Script execution
