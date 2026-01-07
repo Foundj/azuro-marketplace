@@ -41,7 +41,7 @@ git log --oneline -5
 
 ### File Health
 - `feature_list.json`: Feature count
-- `progress.txt`: Recent entries
+- `progress.txt`: Recent entries (monitors long-running agents)
 - `knowledge/`: Pattern and error counts
 
 **Step 3: Display Status**

@@ -1,13 +1,18 @@
 ---
-name: "skill-audit:one"
+name: "ai:skills-audit:one"
 description: Audit a single skill by name or path - validate structure, quality, and best practices
 argument-hint: "<skill-name-or-path> [--fix] [--verbose]"
 allowed-tools: Read, Bash, Glob
 ---
 
-# Skill Audit One - 单个技能审计
+# /ai:skills-audit:one - 单个技能审计
 
 Audit a single skill for quality and best practices compliance.
+
+## Usage
+```bash
+/ai:skills-audit:one <skill-name>
+```
 
 ## Arguments
 
@@ -67,16 +72,16 @@ Display the validation results with scores and issues.
 
 ```bash
 # Audit by name
-/skill-audit:one ai-dev
+/ai:skills-audit:one ai-dev
 
 # Audit by path
-/skill-audit:one ./skills/skill-auditor
+/ai:skills-audit:one ./skills/skill-auditor
 
 # With auto-fix
-/skill-audit:one ai-dev --fix
+/ai:skills-audit:one ai-dev --fix
 
 # Verbose output
-/skill-audit:one ai-dev --verbose
+/ai:skills-audit:one ai-dev --verbose
 ```
 
 ---

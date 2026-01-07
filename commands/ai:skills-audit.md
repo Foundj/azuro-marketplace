@@ -1,13 +1,18 @@
 ---
-name: skill-audit
+name: ai:skills-audit
 description: Audit all skills in project - validate structure, quality, and best practices compliance
 argument-hint: "[--summary] [--fix] [--report] [--json]"
 allowed-tools: Read, Bash, Glob, Grep
 ---
 
-# Skill Audit - 技能质量审计
+# /ai:skills-audit - 技能质量审计
 
 Audit all skills in the current project for quality and best practices compliance.
+
+## Usage
+```bash
+/ai:skills-audit
+```
 
 ## Options
 
@@ -99,19 +104,19 @@ Generate `skill-audit-report.md` with:
 
 ```bash
 # Audit all skills in project
-/skill-audit
+/ai:skills-audit
 
 # Quick summary only
-/skill-audit --summary
+/ai:skills-audit --summary
 
 # Auto-fix simple issues
-/skill-audit --fix
+/ai:skills-audit --fix
 
 # Generate report file
-/skill-audit --report
+/ai:skills-audit --report
 
 # JSON output for CI/CD
-/skill-audit --json
+/ai:skills-audit --json
 ```
 
 ---
@@ -122,8 +127,8 @@ Use with quality-gate workflow:
 
 ```yaml
 quality_checks:
-  - /skill-audit      # Check skill quality first
-  - /ai:quality       # Then check code quality
+  - /ai:skills-audit      # Check skill quality first
+  - /ai:quality           # Then check code quality
 ```
 
 ---

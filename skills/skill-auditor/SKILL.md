@@ -29,33 +29,33 @@ Skill Auditor validates Claude Code skills against best practices, providing:
 
 ```bash
 # Scan and audit all skills
-/skill-audit
+/ai:skills-audit
 
 # Summary only
-/skill-audit --summary
+/ai:skills-audit --summary
 
 # Auto-fix simple issues
-/skill-audit --fix
+/ai:skills-audit --fix
 ```
 
 ### Audit Single Skill
 
 ```bash
 # By name
-/skill-audit ai-dev
+/ai:skills-audit:one ai-dev
 
 # By path
-/skill-audit ./path/to/skill
+/ai:skills-audit:one ./path/to/skill
 ```
 
 ### Generate Reports
 
 ```bash
 # Markdown report
-/skill-audit --report
+/ai:skills-audit --report
 
 # JSON output
-/skill-audit --json
+/ai:skills-audit --json
 ```
 
 ---

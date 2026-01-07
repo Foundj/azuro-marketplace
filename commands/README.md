@@ -20,79 +20,64 @@
 
 **AI-Dev 系列** (使用 `ai:` 前缀):
 ```bash
-/ai:dev       # 完整开发工作流
-/ai:check     # 预实现检查
-/ai:archive   # 智能归档
-/ai:loop      # 自引用循环
-/ai:auto      # 自动完成任务
-/ai:status    # 项目整体状态
-/ai:list      # 列出所有功能 (原 /feature-list)
-/ai:show      # 显示功能详情 (原 /feature-show)
-/ai:resume    # 恢复功能 (原 /feature-resume)
-/ai:fix       # 修复问题
-/ai:review    # 代码审查
-/ai:research  # 竞品调研
-/ai:design    # 设计阶段
-/ai:implement # 实现阶段
-/ai:interview # 需求访谈
-/ai:knowledge # 知识图谱查询
-/ai:quality   # 质量门禁检查
-```
-
-**工具与审计**:
-```bash
-/skill-audit      # 审计所有技能质量
-/skill-audit:one  # 审计单个技能质量
-```
-
-**快捷命令** (无前缀):
-```bash
-/dev        # 快速开发 (ai:dev 别名)
-/fix        # 快速修复 (ai:fix 别名)
-/research   # 竞品调研 (ai:research 别名)
-/progress   # 查看项目进度 (ai:status 别名)
+/ai:dev           # 完整开发工作流
+/ai:check         # 预实现检查
+/ai:archive       # 智能归档
+/ai:loop          # 自引用循环
+/ai:auto          # 自动完成任务
+/ai:status        # 项目整体状态
+/ai:list          # 列出所有功能
+/ai:show          # 显示功能详情
+/ai:resume        # 恢复功能
+/ai:fix           # 修复问题
+/ai:review        # 代码审查
+/ai:research      # 竞品调研
+/ai:design        # 设计阶段
+/ai:implement     # 实现阶段
+/ai:interview     # 需求访谈
+/ai:knowledge     # 知识图谱查询
+/ai:quality       # 质量门禁检查
+/ai:skills-audit  # 审计所有技能质量
+/ai:skills-audit:one # 审计单个技能质量
 ```
 
 ## 📝 可用命令列表
 
-### `/dev <feature>`
-快速开发功能，自动调用 ai-dev。
+### `/ai:dev <feature>`
+完整开发功能工作流。
 
 **示例：**
 ```bash
-/dev user login
-/dev add search功能
-/dev implement avatar upload
+/ai:dev user login
+/ai:dev add search功能
+/ai:dev implement avatar upload
 ```
 
-### `/fix <bug>`
-快速修复 bug，自动选择合适的 agent。
+### `/ai:fix <bug>`
+修复 bug，自动选择合适的 agent。
 
 **示例：**
 ```bash
-/fix login button
-/fix 登录按钮点击没反应
-/fix memory leak
+/ai:fix login button
+/ai:fix 登录按钮点击没反应
 ```
 
-### `/research <topic> [--backend] [--deep]`
+### `/ai:research <topic> [--backend] [--deep]`
 多后端竞品调研（gemini/codex/claude）。
 
 **示例：**
 ```bash
-/research JWT authentication
-/research 用户认证最佳实践
-/research payment integration --deep
-/research React patterns --backend gemini
+/ai:research JWT authentication
+/ai:research 用户认证最佳实践
 ```
 
-### `/progress [--detailed]`
+### `/ai:status [--detailed]`
 查看长运行项目的进度和健康状态。
 
 **示例：**
 ```bash
-/progress
-/progress --detailed
+/ai:status
+/ai:status --detailed
 ```
 
 ### `/ai:loop <task> [--max-iterations N]`
