@@ -18,7 +18,7 @@ if [[ ! -f "$PLUGIN_JSON" ]]; then
 fi
 
 # 获取当前版本
-current_version=$(grep '"version"' "$PLUGIN_JSON" | sed 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
+current_version=$(jq -r '.metadata.version' "$PLUGIN_JSON")
 
 # 分割版本号
 IFS='.' read -ra VERSION <<< "$current_version"
@@ -39,14 +39,7 @@ case "$BUMP_TYPE" in
         ;;
 esac
 
-# 更新 plugin.json
-if [[ "$(uname)" == "Darwin" ]]; then
-    # macOS
-    sed -i '' "s/\"version\"[[:space:]]*:[[:space:]]*\"[^\"]*\"/\"version\": \"$new_version\"/" "$PLUGIN_JSON"
-else
-    # Linux
-    sed -i "s/\"version\"[[:space:]]*:[[:space:]]*\"[^\"]*\"/\"version\": \"$new_version\"/" "$PLUGIN_JSON"
-fi
+jq ".metadata.version = \"$new_version\" | .plugins[].version = \"$new_version\"" "$PLUGIN_JSON" > "$PLUGIN_JSON.tmp" && mv "$PLUGIN_JSON.tmp" "$PLUGIN_JSON"
 
 echo -e "${GREEN}✅ Version bumped: $current_version → $new_version${NC}"
 echo ""

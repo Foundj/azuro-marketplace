@@ -387,8 +387,19 @@ echo ""
 echo "🔗 Integration Checks"
 echo "──────────────────────────────────────────────────"
 
+PROJECT_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+if [[ -f "$PROJECT_ROOT/hooks/hooks.json" ]]; then
+    if bash "$PROJECT_ROOT/hooks/scripts/validate-hooks.sh" "$PROJECT_ROOT/hooks/hooks.json" >/dev/null 2>&1; then
+        log_pass "Global hooks.json is valid (+3)"
+        INTEGRATION_SCORE=$((INTEGRATION_SCORE + 3))
+    else
+        log_error "Global hooks.json has structural errors"
+    fi
+fi
+
 # Check for workflow integration
 if grep -qiE "(workflow|phase|ai-dev|pipeline)" "$SKILL_MD"; then
+
     log_pass "Workflow integration documented (+6)"
     INTEGRATION_SCORE=$((INTEGRATION_SCORE + 6))
 else

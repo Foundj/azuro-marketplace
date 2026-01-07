@@ -1,11 +1,15 @@
 ---
 name: claude-reflect
-description: Self-learning system that captures corrections during sessions and reminds users to run /reflect to update CLAUDE.md. Use when discussing learnings, corrections, or when the user mentions remembering something for future sessions.
+description: |
+  This skill provides a self-learning system that captures corrections during sessions and reminds users to run /reflect to update CLAUDE.md. 
+  It should be used when discussing learnings, corrections, or when the user mentions remembering something for future sessions.
+  **Triggers**: "remember this", "actually", "no, use X", "don't do that", "use X instead", "perfect", "exactly right", "correct".
+version: 1.2.0
 ---
 
 # Claude Reflect - Self-Learning System
 
-A two-stage system that helps Claude Code learn from user corrections.
+This skill enables a two-stage system that helps Claude Code learn from user corrections.
 
 ## How It Works
 
@@ -13,7 +17,13 @@ A two-stage system that helps Claude Code learn from user corrections.
 Hooks detect correction patterns ("no, use X", "actually...", "use X not Y") and queue them to `~/.claude/learnings-queue.json`.
 
 **Stage 2: Process (Manual)**
-User runs `/reflect` to review and apply queued learnings to CLAUDE.md files.
+The user runs `/reflect` to review and apply queued learnings to CLAUDE.md files.
+
+## Prerequisites & Dependencies
+- Python 3.6+
+- `jq` for JSON processing
+- Git (for post-commit hooks)
+- Claude Code CLI
 
 ## Available Commands
 
@@ -25,27 +35,27 @@ User runs `/reflect` to review and apply queued learnings to CLAUDE.md files.
 | `/skip-reflect` | Discard all queued learnings |
 | `/view-queue` | View pending learnings without processing |
 
-## When to Remind Users
+## Trigger Phrases & Synonyms
+Users may trigger this skill by using phrases such as:
+- "Remember this for next time"
+- "Actually, I meant..."
+- "No, that's wrong, use..."
+- "Don't use X, use Y instead"
+- "That's perfect, keep doing that"
+- "From now on, always..."
 
-Remind users about `/reflect` when:
-- They complete a feature or meaningful work unit
-- They make corrections you should remember for future sessions
-- They explicitly say "remember this" or similar
-- Context is about to compact and queue has items
+## When to Remind Users
+- After completing a feature or meaningful work unit.
+- After corrections are made that should be remembered.
+- When explicitly asked to "remember" something.
 
 ## Correction Detection Patterns
-
-High-confidence corrections:
+High-confidence corrections include:
 - Tool rejections (user stops an action with guidance)
 - "no, use X" / "don't use Y"
 - "actually..." / "I meant..."
 - "use X not Y" / "X instead of Y"
 - "remember:" (explicit marker)
-
-## CLAUDE.md Destinations
-
-- `~/.claude/CLAUDE.md` - Global learnings (model names, general patterns)
-- `./CLAUDE.md` - Project-specific learnings (conventions, tools, structure)
 
 ## Example Interaction
 
@@ -60,3 +70,6 @@ Claude: Found 1 learning queued. "Use gpt-5.1 for reasoning tasks"
         Scope: global
         Apply to ~/.claude/CLAUDE.md? [y/n]
 ```
+
+## Workflow Integration
+This skill integrates with the `ai-dev` workflow by ensuring that patterns learned during development are persisted across sessions, improving agent performance in subsequent phases.

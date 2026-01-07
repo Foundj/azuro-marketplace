@@ -16,7 +16,7 @@ NC='\033[0m'
 # 获取当前版本
 get_current_version() {
     if [[ -f "$PLUGIN_JSON" ]]; then
-        grep '"version"' "$PLUGIN_JSON" | sed 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/'
+        jq -r '.metadata.version' "$PLUGIN_JSON"
     else
         echo "0.0.0"
     fi
@@ -24,7 +24,7 @@ get_current_version() {
 
 # 获取上次提交的版本
 get_cached_version() {
-    local plugin_name=$(grep '"name"' "$PLUGIN_JSON" 2>/dev/null | sed 's/.*"name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
+    local plugin_name=$(jq -r '.name' "$PLUGIN_JSON" 2>/dev/null)
     local cache_file="${VERSION_CACHE}/${plugin_name:-unknown}.version"
     
     if [[ -f "$cache_file" ]]; then
@@ -37,7 +37,7 @@ get_cached_version() {
 # 缓存当前版本
 cache_version() {
     local version="$1"
-    local plugin_name=$(grep '"name"' "$PLUGIN_JSON" 2>/dev/null | sed 's/.*"name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
+    local plugin_name=$(jq -r '.name' "$PLUGIN_JSON" 2>/dev/null)
     local cache_file="${VERSION_CACHE}/${plugin_name:-unknown}.version"
     
     mkdir -p "$VERSION_CACHE"
@@ -73,20 +73,54 @@ main() {
     local cached_version=$(get_cached_version)
     
     echo "╔════════════════════════════════════════════════════════════╗"
-    echo "║                    VERSION GATE CHECK                      ║"
+    echo "║                    PRE-COMMIT VALIDATION                   ║"
     echo "╠════════════════════════════════════════════════════════════╣"
     printf "║  Cached version:  %-40s ║\n" "$cached_version"
     printf "║  Current version: %-40s ║\n" "$current_version"
     echo "╚════════════════════════════════════════════════════════════╝"
+
+    echo -e "${YELLOW}🔍 Validating hooks.json...${NC}"
+    if ! bash hooks/scripts/validate-hooks.sh; then
+        echo -e "${RED}❌ hooks.json validation failed${NC}"
+        exit 1
+    fi
+
+    echo -e "${YELLOW}🔍 Auditing all skills...${NC}"
+    local skill_fail=0
+    for skill_dir in skills/*/; do
+        if [[ -d "$skill_dir" ]]; then
+            set +e
+            bash skills/skill-auditor/scripts/validate-skill.sh "$skill_dir" > /tmp/audit_log 2>&1
+            local exit_code=$?
+            set -e
+            
+            if [[ $exit_code -eq 1 ]] || [[ $exit_code -eq 2 ]]; then
+                skill_fail=1
+                echo -e "${RED}❌ Critical audit failure for $(basename "$skill_dir")${NC}"
+                cat /tmp/audit_log
+            fi
+            
+            local score=$(grep "TOTAL:" /tmp/audit_log | sed 's/.*TOTAL:[[:space:]]*\([0-9]*\).*/\1/')
+            if [[ -n "$score" ]] && [[ "$score" -lt 80 ]]; then
+                skill_fail=1
+                echo -e "${RED}❌ Skill $(basename "$skill_dir") quality too low: $score/100 (Required: 80+)${NC}"
+                grep "TOTAL:" /tmp/audit_log
+            fi
+        fi
+    done
+
+    if [[ $skill_fail -ne 0 ]]; then
+        echo -e "${RED}❌ SKILL AUDIT FAILED. Please fix skills before committing.${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✅ All skills passed quality audit (80+)${NC}"
     
-    # 首次提交，缓存版本
     if [[ "$cached_version" == "0.0.0" ]]; then
         echo -e "${GREEN}✅ First commit - caching version${NC}"
         cache_version "$current_version"
         exit 0
     fi
     
-    # 检查版本是否更新
     if version_gt "$current_version" "$cached_version"; then
         echo -e "${GREEN}✅ Version updated: $cached_version → $current_version${NC}"
         cache_version "$current_version"
@@ -101,15 +135,14 @@ main() {
         echo "Required: > $cached_version"
         echo ""
         echo "To fix, run one of:"
-        echo "  bump patch  →  $(echo "$cached_version" | awk -F. '{print $1"."$2"."$3+1}')"
-        echo "  bump minor  →  $(echo "$cached_version" | awk -F. '{print $1"."$2+1".0"}')"
-        echo "  bump major  →  $(echo "$cached_version" | awk -F. '{print $1+1".0.0"}')"
-        echo ""
-        echo "Or update .claude-plugin/marketplace.json manually."
+        echo "  bash hooks/scripts/bump.sh patch"
+        echo "  bash hooks/scripts/bump.sh minor"
+        echo "  bash hooks/scripts/bump.sh major"
         echo ""
         exit 1
     fi
 }
+
 
 # 如果直接运行（不是被 source）
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
