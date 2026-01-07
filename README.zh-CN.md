@@ -16,14 +16,14 @@ Azuro 是一个 Claude Code 插件市场，提供 AI 开发工具和工作流自
 ### 安装插件
 
 ```bash
-/plugin install ai-dev@azuro
+/plugin install ai-dev@azuro-marketplace
 ```
 
 ## 可用插件
 
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| ai-dev | 3.4.7 | 工业级 AI 开发编排系统，包含 7 阶段工作流、OODA 自主循环、知识管理 |
+| ai-dev | 3.4.9 | 工业级 AI 开发编排系统，包含 7 阶段工作流、OODA 自主循环、知识管理 |
 
 ## ai-dev 插件功能
 
