@@ -16,14 +16,14 @@ Azuro is a Claude Code plugin marketplace providing AI development tools and wor
 ### Install Plugin
 
 ```bash
-/plugin install ai-dev@azuro
+/plugin install ai-dev@dev-marketplace
 ```
 
 ## Available Plugins
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| ai-dev | 3.4.0 | Industrial-grade AI development orchestration with 7-phase workflow, OODA loop, knowledge management |
+| ai-dev | 3.4.5 | Industrial-grade AI development orchestration with 7-phase workflow, OODA loop, knowledge management |
 
 ## ai-dev Plugin Features
 
