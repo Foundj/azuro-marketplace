@@ -1,10 +1,10 @@
 #!/bin/bash
-# Bump version in plugin.json
+# Bump version in marketplace.json
 # Usage: bump.sh [patch|minor|major]
 
 set -e
 
-PLUGIN_JSON="${2:-$(dirname "$0")/../../.claude-plugin/plugin.json}"
+PLUGIN_JSON="${2:-$(dirname "$0")/../../.claude-plugin/marketplace.json}"
 BUMP_TYPE="${1:-patch}"
 
 # 颜色定义
@@ -13,7 +13,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 if [[ ! -f "$PLUGIN_JSON" ]]; then
-    echo "Error: plugin.json not found at $PLUGIN_JSON"
+    echo "Error: marketplace.json not found at $PLUGIN_JSON"
     exit 1
 fi
 

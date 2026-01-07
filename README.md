@@ -23,11 +23,11 @@ Azuro is a Claude Code plugin marketplace providing AI development tools and wor
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| [ai-dev](./ai-dev-plugin/) | 3.2.0 | Industrial-grade AI development orchestration with 7-phase workflow, OODA loop, knowledge management |
+| ai-dev | 3.4.0 | Industrial-grade AI development orchestration with 7-phase workflow, OODA loop, knowledge management |
 
 ## ai-dev Plugin Features
 
-### Commands (25)
+### Commands (27)
 
 | Command | Description |
 |---------|-------------|
@@ -43,18 +43,12 @@ Azuro is a Claude Code plugin marketplace providing AI development tools and wor
 | `/ai:interview` | Requirement gathering |
 | `/ai:status` | View status |
 | `/ai:archive` | Archive changes |
-| `/ai:update-constraints` | Update constraints |
-| `/ai:update-feature-index` | Update feature index |
+| `/ai:quality` | Quality gate check |
 | `/skill-audit` | Audit all skills in project |
 | `/skill-audit:one` | Audit single skill |
 | `/dev` | Quick dev alias |
 | `/fix` | Quick fix alias |
 | `/research` | Quick research alias |
-| `/progress` | View progress |
-| `/feature-list` | List features |
-| `/feature-show` | Show feature details |
-| `/feature-resume` | Resume feature development |
-| `/feature-archive` | Archive feature |
 
 ### Agents (24)
 
@@ -66,9 +60,8 @@ Specialized agents for different development tasks:
 - **Debugging**: debugger, error-detective, project-doctor
 - **Planning**: feature-planner, task-decomposer, requirement-analyzer
 - **Testing**: test-automator
-- **Other**: api-helper, code-explorer, code-mentor, master-controller, ooda-manager, sprint-manager, task-orchestrator
 
-### Skills (6)
+### Skills (9)
 
 | Skill | Description |
 |-------|-------------|
@@ -78,32 +71,27 @@ Specialized agents for different development tasks:
 | session-manager | Session management and context recovery |
 | competitor-research | Competitor research |
 | skill-auditor | Skill quality audit and validation |
+| thinking-engine | Extended thinking and reasoning |
+| knowledge-graph | Knowledge graph management |
+| quality-gate | Code quality gate checks |
 
 ## Directory Structure
 
 ```
 azuro-marketplace/
 ├── .claude-plugin/
-│   └── marketplace.json      # Marketplace manifest
-├── ai-dev-plugin/            # AI Dev plugin
-│   ├── .claude-plugin/
-│   │   └── plugin.json       # Plugin manifest
-│   ├── commands/             # 25 commands
-│   ├── agents/               # 24 agents
-│   ├── skills/               # 6 skills
-│   ├── hooks/                # Hook configurations
-│   └── scripts/              # Utility scripts
+│   └── marketplace.json      # Marketplace manifest (includes plugin config)
+├── agents/                   # 24 agents
+├── commands/                 # 27 commands
+├── skills/                   # 9 skills
+├── hooks/                    # Hook configurations
+├── scripts/                  # Utility scripts
+├── docs/                     # Documentation reference
+├── bak/                      # Reference projects
 └── README.md
 ```
 
 ## Development Guide
-
-### Adding New Plugins
-
-1. Create plugin directory under `azuro-marketplace/`
-2. Create `.claude-plugin/plugin.json`
-3. Add commands/, agents/, skills/ components
-4. Update root `marketplace.json`
 
 ### Local Testing
 
@@ -117,16 +105,32 @@ azuro-marketplace/
 # Restart Claude Code to apply
 ```
 
+### Version Management
+
+```bash
+# Bump version before commit
+bash hooks/scripts/bump.sh patch   # 3.4.0 → 3.4.1
+bash hooks/scripts/bump.sh minor   # 3.4.0 → 3.5.0
+bash hooks/scripts/bump.sh major   # 3.4.0 → 4.0.0
+```
+
+### Skill Quality Audit
+
+```bash
+# Audit single skill
+bash skills/skill-auditor/scripts/validate-skill.sh skills/<skill-name>
+
+# Audit all skills
+for skill in skills/*/; do
+  bash skills/skill-auditor/scripts/validate-skill.sh "$skill"
+done
+```
+
 ## Documentation
 
 - [Plugins](https://code.claude.com/docs/plugins)
 - [Plugin Marketplaces](https://code.claude.com/docs/plugin-marketplaces)
 - [Plugins Reference](https://code.claude.com/docs/plugins-reference)
-- [Slash Commands](https://code.claude.com/docs/slash-commands)
-- [Sub-agents](https://code.claude.com/docs/sub-agents)
-- [Agent Skills](https://code.claude.com/docs/skills)
-- [Hooks](https://code.claude.com/docs/hooks)
-- [MCP](https://code.claude.com/docs/mcp)
 
 ## License
 

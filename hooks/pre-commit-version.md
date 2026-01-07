@@ -20,9 +20,9 @@ trigger: pre-commit
 
 ```bash
 #!/bin/bash
-# Version gate for ai-dev-plugin
+# Version gate for azuro marketplace
 
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(git rev-parse --show-toplevel)/ai-dev-plugin}"
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(git rev-parse --show-toplevel)}"
 bash "$PLUGIN_ROOT/hooks/scripts/version-gate.sh" "$PLUGIN_ROOT/.claude-plugin/plugin.json"
 ```
 

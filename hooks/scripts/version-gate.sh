@@ -1,10 +1,10 @@
 #!/bin/bash
 # Version Gate - Pre-commit hook script
-# 检查 plugin.json 版本号是否更新，阻止未更新版本的提交
+# 检查 marketplace.json 版本号是否更新，阻止未更新版本的提交
 
 set -e
 
-PLUGIN_JSON="${1:-$(dirname "$0")/../../.claude-plugin/plugin.json}"
+PLUGIN_JSON="${1:-$(dirname "$0")/../../.claude-plugin/marketplace.json}"
 VERSION_CACHE="${HOME}/.claude/.version-cache"
 
 # 颜色定义
@@ -105,7 +105,7 @@ main() {
         echo "  bump minor  →  $(echo "$cached_version" | awk -F. '{print $1"."$2+1".0"}')"
         echo "  bump major  →  $(echo "$cached_version" | awk -F. '{print $1+1".0.0"}')"
         echo ""
-        echo "Or update .claude-plugin/plugin.json manually."
+        echo "Or update .claude-plugin/marketplace.json manually."
         echo ""
         exit 1
     fi

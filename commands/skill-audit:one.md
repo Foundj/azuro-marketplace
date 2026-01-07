@@ -36,8 +36,8 @@ if [[ -d "$SKILL_INPUT" ]]; then
     SKILL_PATH="$SKILL_INPUT"
 elif [[ -d "./skills/$SKILL_INPUT" ]]; then
     SKILL_PATH="./skills/$SKILL_INPUT"
-elif [[ -d "./ai-dev-plugin/skills/$SKILL_INPUT" ]]; then
-    SKILL_PATH="./ai-dev-plugin/skills/$SKILL_INPUT"
+elif [[ -d "./skills/$SKILL_INPUT" ]]; then
+    SKILL_PATH="./skills/$SKILL_INPUT"
 else
     echo "Skill not found: $SKILL_INPUT"
     exit 1
@@ -47,7 +47,7 @@ fi
 ### Step 2: Run Validation
 
 ```bash
-SCRIPT_PATH="ai-dev-plugin/skills/skill-auditor/scripts/validate-skill.sh"
+SCRIPT_PATH="skills/skill-auditor/scripts/validate-skill.sh"
 
 if [[ -x "$SCRIPT_PATH" ]]; then
     bash "$SCRIPT_PATH" "$SKILL_PATH"
@@ -69,7 +69,7 @@ Display the validation results with scores and issues.
 /skill-audit:one ai-dev
 
 # Audit by path
-/skill-audit:one ./ai-dev-plugin/skills/skill-auditor
+/skill-audit:one ./skills/skill-auditor
 
 # With auto-fix
 /skill-audit:one ai-dev --fix

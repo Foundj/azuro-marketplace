@@ -1,15 +1,39 @@
 {
   "name": "azuro",
+  "metadata": {
+    "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
+    "version": "3.4.0"
+  },
   "owner": {
     "name": "foundj",
     "url": "https://github.com/Foundj"
   },
-  "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
   "plugins": [
     {
       "name": "ai-dev",
-      "source": "./ai-dev-plugin",
-      "description": "Industrial-grade AI development orchestration with 7-phase workflow"
+      "source": "./",
+      "strict": false,
+      "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
+      "version": "3.4.0",
+      "author": {
+        "name": "foundj",
+        "url": "https://github.com/foundj"
+      },
+      "repository": "https://github.com/Foundj/azuro-marketplace",
+      "license": "MIT",
+      "category": "development",
+      "keywords": [
+        "ai-development",
+        "orchestration",
+        "ooda-loop",
+        "code-generation",
+        "workflow-automation",
+        "knowledge-management",
+        "code-review",
+        "task-decomposition",
+        "autonomous-coding",
+        "7-phase-workflow"
+      ]
     }
   ]
 }

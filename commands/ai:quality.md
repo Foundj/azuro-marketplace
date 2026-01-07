@@ -18,7 +18,7 @@ description: 执行代码质量门禁检查，评估安全性、代码质量、�
 1. **加载 skill**: 加载 `quality-gate` skill 获取完整指导
 2. **运行检查脚本**:
    ```bash
-   bash ~/.claude/plugins/ai-dev-plugin/skills/quality-gate/scripts/quality-check.sh [path] [format]
+   bash ${CLAUDE_PLUGIN_ROOT}/skills/quality-gate/scripts/quality-check.sh [path] [format]
    ```
 3. **分析结果**: 根据评分提供改进建议
 

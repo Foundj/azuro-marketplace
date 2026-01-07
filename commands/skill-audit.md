@@ -34,7 +34,7 @@ done
 For each skill found, run the validation script:
 
 ```bash
-SCRIPT_PATH="ai-dev-plugin/skills/skill-auditor/scripts/validate-skill.sh"
+SCRIPT_PATH="skills/skill-auditor/scripts/validate-skill.sh"
 
 if [[ -x "$SCRIPT_PATH" ]]; then
     for skill_dir in $(find . -name "SKILL.md" -type f -exec dirname {} \;); do
@@ -137,4 +137,4 @@ quality_checks:
 | 60-69 | D | Poor |
 | <60 | F | Failing |
 
-For detailed scoring rules, see `ai-dev-plugin/skills/skill-auditor/references/scoring-rules.md`.
+For detailed scoring rules, see `skills/skill-auditor/references/scoring-rules.md`.
