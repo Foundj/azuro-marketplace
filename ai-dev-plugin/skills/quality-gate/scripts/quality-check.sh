@@ -3,7 +3,8 @@
 # Quality Gate - 快速质量检查脚本
 # 用于 ai-dev quality-gate skill
 
-set -e
+# 不使用 set -e，让脚本能处理 grep 无结果的情况
+# set -e
 
 PROJECT_DIR="${1:-.}"
 OUTPUT_FORMAT="${2:-text}"  # text | json
@@ -33,8 +34,8 @@ ARCH_ISSUES=()
 check_security() {
     echo -e "${BLUE}[1/4] 安全检查...${NC}"
     
-    # 检查硬编码密钥
-    local secrets=$(grep -rn --include="*.{js,ts,jsx,tsx,py,go,java,rb}" \
+    # 检查硬编码密钥 (限制匹配数量以提高性能)
+    local secrets=$(grep -rn -m 10 --include="*.js" --include="*.ts" --include="*.jsx" --include="*.tsx" --include="*.py" --include="*.go" --include="*.java" --include="*.rb" \
         -E "(password|secret|api_key|apikey|token|credential)\s*[:=]\s*['\"][^'\"]+['\"]" \
         "$PROJECT_DIR" 2>/dev/null | grep -v node_modules | grep -v ".min." | head -5)
     
@@ -51,8 +52,8 @@ check_security() {
         fi
     fi
     
-    # 检查 SQL 注入风险 (简单检测)
-    local sql_concat=$(grep -rn --include="*.{js,ts,py,go,java,php}" \
+    # 检查 SQL 注入风险 (简单检测，限制匹配数量)
+    local sql_concat=$(grep -rn -m 5 --include="*.js" --include="*.ts" --include="*.py" --include="*.go" --include="*.java" --include="*.php" \
         -E "(SELECT|INSERT|UPDATE|DELETE).*\+.*\$|f['\"].*SELECT" \
         "$PROJECT_DIR" 2>/dev/null | grep -v node_modules | head -3)
     
@@ -72,8 +73,8 @@ check_security() {
 check_code_quality() {
     echo -e "${BLUE}[2/4] 代码质量检查...${NC}"
     
-    # 检查 TODO/FIXME
-    local todos=$(grep -rn --include="*.{js,ts,jsx,tsx,py,go,java,rb}" \
+    # 检查 TODO/FIXME (限制匹配数量)
+    local todos=$(grep -rn -m 20 --include="*.js" --include="*.ts" --include="*.jsx" --include="*.tsx" --include="*.py" --include="*.go" --include="*.java" --include="*.rb" \
         -E "(TODO|FIXME|XXX|HACK):" "$PROJECT_DIR" 2>/dev/null | \
         grep -v node_modules | wc -l | tr -d ' ')
     
@@ -83,7 +84,7 @@ check_code_quality() {
     fi
     
     # 检查超长文件 (> 500 行)
-    local long_files=$(find "$PROJECT_DIR" -name "*.{js,ts,py,go}" \
+    local long_files=$(find "$PROJECT_DIR" \( -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" \) \
         -not -path "*/node_modules/*" -not -name "*.min.*" \
         -exec wc -l {} \; 2>/dev/null | awk '$1 > 500 {print}' | wc -l | tr -d ' ')
     
@@ -92,8 +93,8 @@ check_code_quality() {
         CODE_QUALITY_SCORE=$((CODE_QUALITY_SCORE - 15))
     fi
     
-    # 检查 console.log / print 调试语句
-    local debug_logs=$(grep -rn --include="*.{js,ts,jsx,tsx}" \
+    # 检查 console.log / print 调试语句 (限制匹配数量)
+    local debug_logs=$(grep -rn -m 20 --include="*.js" --include="*.ts" --include="*.jsx" --include="*.tsx" \
         "console\.log" "$PROJECT_DIR" 2>/dev/null | \
         grep -v node_modules | wc -l | tr -d ' ')
     
@@ -128,13 +129,15 @@ check_documentation() {
     fi
     
     # 检查主要源文件是否有注释
-    local source_files=$(find "$PROJECT_DIR" -name "*.{js,ts,py}" \
+    local source_files=$(find "$PROJECT_DIR" \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) \
         -not -path "*/node_modules/*" -not -name "*.test.*" \
         -not -name "*.spec.*" 2>/dev/null | head -10)
     
     local files_without_comments=0
     for file in $source_files; do
-        local comment_lines=$(grep -c "^[[:space:]]*//" "$file" 2>/dev/null || echo "0")
+        local comment_lines=$(grep -c "^[[:space:]]*//" "$file" 2>/dev/null | tr -d '\n' || echo "0")
+        # 确保是有效数字
+        [[ ! "$comment_lines" =~ ^[0-9]+$ ]] && comment_lines=0
         if [[ $comment_lines -lt 3 ]]; then
             files_without_comments=$((files_without_comments + 1))
         fi
@@ -158,7 +161,10 @@ check_architecture() {
     # 检查目录结构
     local has_src=$(test -d "$PROJECT_DIR/src" && echo "1" || echo "0")
     local has_lib=$(test -d "$PROJECT_DIR/lib" && echo "1" || echo "0")
-    local has_tests=$(test -d "$PROJECT_DIR/tests" || test -d "$PROJECT_DIR/__tests__" || test -d "$PROJECT_DIR/test" && echo "1" || echo "0")
+    local has_tests="0"
+    if [[ -d "$PROJECT_DIR/tests" ]] || [[ -d "$PROJECT_DIR/__tests__" ]] || [[ -d "$PROJECT_DIR/test" ]]; then
+        has_tests="1"
+    fi
     
     if [[ "$has_src" == "0" ]] && [[ "$has_lib" == "0" ]]; then
         ARCH_ISSUES+=("缺少标准目录结构 (src/ 或 lib/)")
@@ -170,8 +176,8 @@ check_architecture() {
         ARCHITECTURE_SCORE=$((ARCHITECTURE_SCORE - 15))
     fi
     
-    # 检查配置分离
-    local config_in_code=$(grep -rn --include="*.{js,ts,py}" \
+    # 检查配置分离 (限制匹配数量)
+    local config_in_code=$(grep -rn -m 5 --include="*.js" --include="*.ts" --include="*.py" \
         -E "^(const|let|var)\s+\w*(config|Config|CONFIG)\w*\s*=\s*\{" \
         "$PROJECT_DIR" 2>/dev/null | grep -v node_modules | grep -v "\.config\." | head -3)
     
@@ -209,6 +215,25 @@ calculate_and_report() {
     fi
     
     if [[ "$OUTPUT_FORMAT" == "json" ]]; then
+        # 处理空数组
+        local sec_issues="[]"
+        local code_issues="[]"
+        local doc_issues="[]"
+        local arch_issues="[]"
+        
+        if [[ ${#SECURITY_ISSUES[@]} -gt 0 ]]; then
+            sec_issues=$(printf '%s\n' "${SECURITY_ISSUES[@]}" | jq -R . | jq -s .)
+        fi
+        if [[ ${#CODE_ISSUES[@]} -gt 0 ]]; then
+            code_issues=$(printf '%s\n' "${CODE_ISSUES[@]}" | jq -R . | jq -s .)
+        fi
+        if [[ ${#DOC_ISSUES[@]} -gt 0 ]]; then
+            doc_issues=$(printf '%s\n' "${DOC_ISSUES[@]}" | jq -R . | jq -s .)
+        fi
+        if [[ ${#ARCH_ISSUES[@]} -gt 0 ]]; then
+            arch_issues=$(printf '%s\n' "${ARCH_ISSUES[@]}" | jq -R . | jq -s .)
+        fi
+        
         cat <<EOF
 {
   "total_score": $total_score,
@@ -220,10 +245,10 @@ calculate_and_report() {
     "architecture": {"score": $ARCHITECTURE_SCORE, "weight": 10, "weighted": $weighted_arch}
   },
   "issues": {
-    "security": $(printf '%s\n' "${SECURITY_ISSUES[@]}" | jq -R . | jq -s .),
-    "code_quality": $(printf '%s\n' "${CODE_ISSUES[@]}" | jq -R . | jq -s .),
-    "documentation": $(printf '%s\n' "${DOC_ISSUES[@]}" | jq -R . | jq -s .),
-    "architecture": $(printf '%s\n' "${ARCH_ISSUES[@]}" | jq -R . | jq -s .)
+    "security": $sec_issues,
+    "code_quality": $code_issues,
+    "documentation": $doc_issues,
+    "architecture": $arch_issues
   }
 }
 EOF
