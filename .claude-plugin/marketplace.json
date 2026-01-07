@@ -1,8 +1,8 @@
 {
-  "name": "dev-marketplace",
+  "name": "azuro",
   "metadata": {
     "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
-    "version": "3.4.6"
+    "version": "3.4.7"
   },
   "owner": {
     "name": "foundj",
@@ -11,10 +11,10 @@
   "plugins": [
     {
       "name": "ai-dev",
-      "source": "./",
+      "source": "../",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "3.4.6",
+      "version": "3.4.7",
       "author": {
         "name": "foundj",
         "url": "https://github.com/foundj"
