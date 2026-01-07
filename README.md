@@ -2,140 +2,107 @@
 
 [中文文档](./README.zh-CN.md)
 
-Azuro is a Claude Code plugin marketplace providing AI development tools and workflow automation extensions.
+Azuro is a Claude Code plugin marketplace providing industrial-grade AI development tools and workflow automation extensions.
 
 ## Quick Start
 
-### Install Marketplace
+### 1. Install Marketplace
 
 ```bash
 # From GitHub
 /plugin marketplace add Foundj/azuro-marketplace
 ```
 
-### Install Plugin
+### 2. Browse & Install Plugins
 
 ```bash
+# Browse available plugins
+/plugin
+
+# Install the full suite
 /plugin install ai-dev@azuro-marketplace
 ```
 
 ## Available Plugins
 
+The marketplace offers specialized toolkits that can be installed individually:
+
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| ai-dev | 3.4.9 | Industrial-grade AI development orchestration with 7-phase workflow, OODA loop, knowledge management |
+| **ai-dev** | 3.5.0 | **Full Suite**: 7-phase gated workflow, OODA loop, all skills included |
+| **skills-audit-toolkit** | 1.1.0 | Professional quality gate for plugin developers |
+| **self-learning** | 1.3.0 | Reflection system that learns from session corrections |
+| **research-assistant** | 1.0.0 | AI-powered competitor research and best practices analysis |
+| **knowledge-manager** | 1.0.0 | Project-specific knowledge graph management |
+| **thinking-toolbox** | 1.0.0 | Advanced CoT reasoning engine for complex logic |
 
-## ai-dev Plugin Features
+## Main Plugin (ai-dev) Features
 
-### Commands (27)
+### Commands (Core)
 
 | Command | Description |
 |---------|-------------|
-| `/ai:dev` | Main entry - Start AI development workflow |
-| `/ai:loop` | OODA autonomous loop |
-| `/ai:auto` | Auto-complete remaining tasks |
-| `/ai:check` | Pre-implementation check |
-| `/ai:fix` | Quick bug fix |
-| `/ai:review` | Code review |
-| `/ai:design` | Design phase |
-| `/ai:implement` | Implementation phase |
-| `/ai:research` | Research mode |
-| `/ai:interview` | Requirement gathering |
-| `/ai:status` | View status |
-| `/ai:archive` | Archive changes |
-| `/ai:quality` | Quality gate check |
-| `/skill-audit` | Audit all skills in project |
-| `/skill-audit:one` | Audit single skill |
-| `/dev` | Quick dev alias |
-| `/fix` | Quick fix alias |
-| `/research` | Quick research alias |
+| `/ai:dev` | Start AI development workflow (Phases 0-6) |
+| `/ai:loop` | Autonomous OODA loop execution |
+| `/ai:auto` | Auto-complete remaining tasks in active change |
+| `/ai:status` | View project health and agent progress |
+| `/ai:fix` | Intelligent bug fix with verification loop |
+| `/ai:review` | Multi-perspective code review |
+| `/ai:skills-audit` | Professional skill quality validation |
 
-### Agents (24)
+### Specialized Agents (24)
 
-Specialized agents for different development tasks:
+- **Architecture**: `code-architect`, `backend-architect`, `frontend-developer`
+- **Quality**: `code-reviewer`, `quality-guardian`, `confidence-scorer`
+- **Development**: `javascript-pro`, `typescript-pro`, `quick-fixer`
+- **Debugging**: `debugger`, `error-detective`, `project-doctor`
+- **Planning**: `requirement-analyzer`, `feature-planner`, `task-decomposer`
 
-- **Architecture**: code-architect, backend-architect, frontend-developer
-- **Quality**: code-reviewer, quality-guardian, confidence-scorer
-- **Development**: javascript-pro, typescript-pro, quick-fixer
-- **Debugging**: debugger, error-detective, project-doctor
-- **Planning**: feature-planner, task-decomposer, requirement-analyzer
-- **Testing**: test-automator
+### Agent Skills (9)
 
-### Skills (9)
-
-| Skill | Description |
-|-------|-------------|
-| ai-dev | Core AI development skill, 7-phase workflow |
-| claude-reflect | Session learning and reflection system |
-| project-initializer | Project initialization and long-running dev mode |
-| session-manager | Session management and context recovery |
-| competitor-research | Competitor research |
-| skill-auditor | Skill quality audit and validation |
-| thinking-engine | Extended thinking and reasoning |
-| knowledge-graph | Knowledge graph management |
-| quality-gate | Code quality gate checks |
+- `thinking-engine`: Chain-of-thought logic
+- `claude-reflect`: Self-learning reflection
+- `competitor-research`: Competitive analysis
+- `knowledge-graph`: Solution persistence
+- `skill-auditor`: Professional auditing
 
 ## Directory Structure
 
+This project follows a "Professional Suite" layout to support multiple isolated plugins in one repository:
+
 ```
 azuro-marketplace/
-├── .claude-plugin/
-│   └── marketplace.json      # Marketplace manifest (includes plugin config)
-├── agents/                   # 24 agents
-├── commands/                 # 27 commands
-├── skills/                   # 9 skills
-├── hooks/                    # Hook configurations
-├── scripts/                  # Utility scripts
-├── docs/                     # Documentation reference
-├── bak/                      # Reference projects
+├── components/                # Core plugin components (shared)
+│   ├── agents/                # Agent definitions
+│   ├── commands/              # Slash command definitions
+│   ├── hooks/                 # Event hooks and scripts
+│   └── scripts/               # Internal utility scripts
+├── skills/                    # Agent skills (isolated)
+├── .claude-plugin/            # Marketplace configuration
+├── docs/                      # Official documentation reference
+├── bak/                       # Reference implementations
 └── README.md
 ```
 
 ## Development Guide
 
-### Local Testing
-
-```bash
-# Add local marketplace
-/plugin marketplace add /path/to/azuro-marketplace
-
-# Install plugin for testing
-/plugin install ai-dev@azuro
-
-# Restart Claude Code to apply
-```
-
 ### Version Management
 
-```bash
-# Bump version before commit
-bash hooks/scripts/bump.sh patch   # 3.4.0 → 3.4.1
-bash hooks/scripts/bump.sh minor   # 3.4.0 → 3.5.0
-bash hooks/scripts/bump.sh major   # 3.4.0 → 4.0.0
-```
-
-### Skill Quality Audit
+The marketplace enforces a version gate. You MUST increment the version in `.claude-plugin/marketplace.json` before any commit:
 
 ```bash
-# Audit single skill
-bash skills/skill-auditor/scripts/validate-skill.sh skills/<skill-name>
-
-# Audit all skills
-for skill in skills/*/; do
-  bash skills/skill-auditor/scripts/validate-skill.sh "$skill"
-done
+# In components/hooks/scripts/
+bash components/hooks/scripts/bump.sh patch
 ```
 
-## Documentation
+### Quality Gate
 
-- [Plugins](https://code.claude.com/docs/plugins)
-- [Plugin Marketplaces](https://code.claude.com/docs/plugin-marketplaces)
-- [Plugins Reference](https://code.claude.com/docs/plugins-reference)
+Any skill with a score < 80 will block the commit. Run the auditor manually:
+
+```bash
+/ai:skills-audit
+```
 
 ## License
 
-MIT License
-
-## Author
-
-foundj - https://github.com/Foundj
+MIT License | **Author**: [foundj](https://github.com/Foundj)

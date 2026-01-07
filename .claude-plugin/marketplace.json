@@ -2,7 +2,7 @@
   "name": "azuro-marketplace",
   "metadata": {
     "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
-    "version": "3.4.11"
+    "version": "3.5.1"
   },
   "owner": {
     "name": "foundj",
@@ -14,25 +14,118 @@
       "source": "./",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "3.4.11",
-      "author": {
-        "name": "foundj",
-        "url": "https://github.com/foundj"
-      },
+      "version": "3.5.1",
       "repository": "https://github.com/Foundj/azuro-marketplace",
-      "license": "MIT",
-      "category": "development",
       "keywords": [
         "ai-development",
         "orchestration",
         "ooda-loop",
         "code-generation",
         "workflow-automation",
-        "knowledge-management",
-        "code-review",
-        "task-decomposition",
-        "autonomous-coding",
         "7-phase-workflow"
+      ],
+      "skills": [
+        "./skills/thinking-engine",
+        "./skills/competitor-research",
+        "./skills/requirement-interview",
+        "./skills/project-context",
+        "./skills/ooda-loop",
+        "./skills/code-review",
+        "./skills/knowledge-graph",
+        "./skills/skill-auditor",
+        "./skills/claude-reflect"
+      ],
+      "commands": [
+        "./components/commands/"
+      ],
+      "agents": [
+        "./components/agents/"
+      ],
+      "hooks": "./components/hooks/hooks.json"
+    },
+    {
+      "name": "skills-audit-toolkit",
+      "source": "./",
+      "description": "Professional quality gate system for Claude Code plugins - ensure your skills follow best practices",
+      "version": "3.5.1",
+      "keywords": [
+        "plugin-dev",
+        "audit",
+        "quality",
+        "validation"
+      ],
+      "skills": [
+        "./skills/skill-auditor"
+      ],
+      "commands": [
+        "./components/commands/ai:skills-audit.md",
+        "./components/commands/ai:skills-audit:one.md"
+      ]
+    },
+    {
+      "name": "self-learning",
+      "source": "./",
+      "description": "Self-learning system that captures corrections during sessions and updates your project conventions",
+      "version": "3.5.1",
+      "keywords": [
+        "learning",
+        "reflection",
+        "conventions",
+        "automation"
+      ],
+      "skills": [
+        "./skills/claude-reflect"
+      ]
+    },
+    {
+      "name": "research-assistant",
+      "source": "./",
+      "description": "AI-powered competitor research and best practices analysis tool",
+      "version": "3.5.1",
+      "keywords": [
+        "research",
+        "analysis",
+        "competitors",
+        "benchmarking"
+      ],
+      "skills": [
+        "./skills/competitor-research"
+      ],
+      "commands": [
+        "./components/commands/ai:research.md"
+      ]
+    },
+    {
+      "name": "knowledge-manager",
+      "source": "./",
+      "description": "Personal knowledge graph for projects - discover related solutions and prevent duplication",
+      "version": "3.5.1",
+      "keywords": [
+        "knowledge",
+        "graph",
+        "documentation",
+        "organization"
+      ],
+      "skills": [
+        "./skills/knowledge-graph"
+      ],
+      "commands": [
+        "./components/commands/ai:knowledge.md"
+      ]
+    },
+    {
+      "name": "thinking-toolbox",
+      "source": "./",
+      "description": "Advanced reasoning and chain-of-thought engine for complex problem solving",
+      "version": "3.5.1",
+      "keywords": [
+        "thinking",
+        "cot",
+        "reasoning",
+        "logic"
+      ],
+      "skills": [
+        "./skills/thinking-engine"
       ]
     }
   ]

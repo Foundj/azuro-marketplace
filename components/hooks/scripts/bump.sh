@@ -4,7 +4,7 @@
 
 set -e
 
-PLUGIN_JSON="${2:-$(dirname "$0")/../../.claude-plugin/marketplace.json}"
+PLUGIN_JSON="${2:-$(dirname "$0")/../../../.claude-plugin/marketplace.json}"
 BUMP_TYPE="${1:-patch}"
 
 # 颜色定义

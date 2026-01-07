@@ -2,140 +2,107 @@
 
 [English](./README.md)
 
-Azuro 是一个 Claude Code 插件市场，提供 AI 开发工具和工作流自动化扩展。
+Azuro 是一个 Claude Code 插件市场，提供工业级的 AI 开发工具和工作流自动化扩展。
 
 ## 快速开始
 
-### 安装市场
+### 1. 安装市场
 
 ```bash
 # 从 GitHub
 /plugin marketplace add Foundj/azuro-marketplace
 ```
 
-### 安装插件
+### 2. 浏览并安装插件
 
 ```bash
+# 浏览可用插件
+/plugin
+
+# 安装全量套件
 /plugin install ai-dev@azuro-marketplace
 ```
 
 ## 可用插件
 
+市场提供多个专业工具包，可以根据需要单独安装：
+
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| ai-dev | 3.4.9 | 工业级 AI 开发编排系统，包含 7 阶段工作流、OODA 自主循环、知识管理 |
+| **ai-dev** | 3.5.0 | **全量套件**: 7 阶段门禁工作流、OODA 循环，包含所有技能 |
+| **skills-audit-toolkit** | 1.1.0 | 插件开发者的专业质量门禁系统 |
+| **self-learning** | 1.3.0 | 从会话修正中学习并更新项目规范的反思系统 |
+| **research-assistant** | 1.0.0 | AI 驱动的竞品调研和最佳实践分析工具 |
+| **knowledge-manager** | 1.0.0 | 项目特定知识图谱管理，防止重复实现 |
+| **thinking-toolbox** | 1.0.0 | 处理复杂逻辑的高级思维链 (CoT) 推理引擎 |
 
-## ai-dev 插件功能
+## 主插件 (ai-dev) 功能
 
-### 命令 (27个)
+### 核心命令
 
 | 命令 | 描述 |
 |------|------|
-| `/ai:dev` | 主入口 - 启动 AI 开发工作流 |
-| `/ai:loop` | OODA 自主循环 |
-| `/ai:auto` | 自动完成剩余任务 |
-| `/ai:check` | 预实现检查 |
-| `/ai:fix` | 快速修复 |
-| `/ai:review` | 代码审查 |
-| `/ai:design` | 设计阶段 |
-| `/ai:implement` | 实现阶段 |
-| `/ai:research` | 调研模式 |
-| `/ai:interview` | 需求收集 |
-| `/ai:status` | 查看状态 |
-| `/ai:archive` | 归档变更 |
-| `/ai:quality` | 质量门禁检查 |
-| `/skill-audit` | 审计项目中所有技能 |
-| `/skill-audit:one` | 审计单个技能 |
-| `/dev` | 快速开发别名 |
-| `/fix` | 快速修复别名 |
-| `/research` | 快速调研别名 |
+| `/ai:dev` | 启动 AI 开发工作流 (Phase 0-6) |
+| `/ai:loop` | OODA 自主执行循环 |
+| `/ai:auto` | 自动完成当前变更中的剩余任务 |
+| `/ai:status` | 查看项目健康状况和代理进度 |
+| `/ai:fix` | 带验证循环的智能 Bug 修复 |
+| `/ai:review` | 多维度代码审查 |
+| `/ai:skills-audit` | 专业技能质量验证 |
 
-### 代理 (24个)
+### 专业代理 (24个)
 
-用于不同开发任务的专业代理：
+- **架构**: `code-architect`, `backend-architect`, `frontend-developer`
+- **质量**: `code-reviewer`, `quality-guardian`, `confidence-scorer`
+- **开发**: `javascript-pro`, `typescript-pro`, `quick-fixer`
+- **调试**: `debugger`, `error-detective`, `project-doctor`
+- **规划**: `requirement-analyzer`, `feature-planner`, `task-decomposer`
 
-- **架构**: code-architect, backend-architect, frontend-developer
-- **质量**: code-reviewer, quality-guardian, confidence-scorer
-- **开发**: javascript-pro, typescript-pro, quick-fixer
-- **调试**: debugger, error-detective, project-doctor
-- **规划**: feature-planner, task-decomposer, requirement-analyzer
-- **测试**: test-automator
+### 代理技能 (9个)
 
-### 技能 (9个)
-
-| 技能 | 描述 |
-|------|------|
-| ai-dev | 核心 AI 开发技能，7 阶段工作流 |
-| claude-reflect | 会话学习和反思系统 |
-| project-initializer | 项目初始化和长期开发模式 |
-| session-manager | 会话管理和上下文恢复 |
-| competitor-research | 竞品调研 |
-| skill-auditor | 技能质量审计和验证 |
-| thinking-engine | 扩展思考和推理 |
-| knowledge-graph | 知识图谱管理 |
-| quality-gate | 代码质量门禁检查 |
+- `thinking-engine`: 思维链推理逻辑
+- `claude-reflect`: 自学习反思系统
+- `competitor-research`: 竞品分析工具
+- `knowledge-graph`: 解决方案持久化
+- `skill-auditor`: 专业审计工具
 
 ## 目录结构
 
+本项目采用“专业套件”布局，支持在单个仓库中管理多个隔离的插件：
+
 ```
 azuro-marketplace/
-├── .claude-plugin/
-│   └── marketplace.json      # 市场清单（包含插件配置）
-├── agents/                   # 24 个代理
-├── commands/                 # 27 个命令
-├── skills/                   # 9 个技能
-├── hooks/                    # 钩子配置
-├── scripts/                  # 工具脚本
-├── docs/                     # 文档参考
-├── bak/                      # 参考项目
+├── components/                # 核心插件组件 (共享)
+│   ├── agents/                # 代理定义
+│   ├── commands/              # 斜杠命令定义
+│   ├── hooks/                 # 事件钩子及脚本
+│   └── scripts/               # 内部工具脚本
+├── skills/                    # 代理技能 (隔离)
+├── .claude-plugin/            # 市场配置
+├── docs/                      # 官方文档参考
+├── bak/                       # 参考实现
 └── README.md
 ```
 
 ## 开发指南
 
-### 本地测试
-
-```bash
-# 添加本地市场
-/plugin marketplace add /path/to/azuro-marketplace
-
-# 安装插件进行测试
-/plugin install ai-dev@azuro
-
-# 重启 Claude Code 以应用
-```
-
 ### 版本管理
 
-```bash
-# 提交前递增版本
-bash hooks/scripts/bump.sh patch   # 3.4.0 → 3.4.1
-bash hooks/scripts/bump.sh minor   # 3.4.0 → 3.5.0
-bash hooks/scripts/bump.sh major   # 3.4.0 → 4.0.0
-```
-
-### 技能质量审计
+市场强制执行版本门禁。在任何提交之前，你必须递增 `.claude-plugin/marketplace.json` 中的版本：
 
 ```bash
-# 审计单个技能
-bash skills/skill-auditor/scripts/validate-skill.sh skills/<skill-name>
-
-# 审计所有技能
-for skill in skills/*/; do
-  bash skills/skill-auditor/scripts/validate-skill.sh "$skill"
-done
+# 在 components/hooks/scripts/ 目录下执行
+bash components/hooks/scripts/bump.sh patch
 ```
 
-## 文档
+### 质量门禁
 
-- [插件](https://code.claude.com/docs/zh-CN/plugins)
-- [插件市场](https://code.claude.com/docs/zh-CN/plugin-marketplaces)
-- [插件参考](https://code.claude.com/docs/zh-CN/plugins-reference)
+任何评分低于 80 的技能都将阻止提交。请手动运行审计：
+
+```bash
+/ai:skills-audit
+```
 
 ## 许可证
 
-MIT License
-
-## 作者
-
-foundj - https://github.com/Foundj
+MIT License | **作者**: [foundj](https://github.com/Foundj)

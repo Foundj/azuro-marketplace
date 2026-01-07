@@ -12,7 +12,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-HOOKS_JSON="${1:-hooks/hooks.json}"
+HOOKS_JSON="${1:-components/hooks/hooks.json}"
 
 if [[ ! -f "$HOOKS_JSON" ]]; then
     echo -e "${RED}❌ hooks.json not found: $HOOKS_JSON${NC}"

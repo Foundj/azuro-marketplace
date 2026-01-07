@@ -388,8 +388,8 @@ echo "🔗 Integration Checks"
 echo "──────────────────────────────────────────────────"
 
 PROJECT_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
-if [[ -f "$PROJECT_ROOT/hooks/hooks.json" ]]; then
-    if bash "$PROJECT_ROOT/hooks/scripts/validate-hooks.sh" "$PROJECT_ROOT/hooks/hooks.json" >/dev/null 2>&1; then
+if [[ -f "$PROJECT_ROOT/components/hooks/hooks.json" ]]; then
+    if bash "$PROJECT_ROOT/components/hooks/scripts/validate-hooks.sh" "$PROJECT_ROOT/components/hooks/hooks.json" >/dev/null 2>&1; then
         log_pass "Global hooks.json is valid (+3)"
         INTEGRATION_SCORE=$((INTEGRATION_SCORE + 3))
     else
