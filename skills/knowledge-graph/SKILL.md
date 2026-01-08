@@ -5,8 +5,6 @@ description: |
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
   "knowledge", "experience", "历史方案", "经验复用". Manages cross-project knowledge relationships
   and enables experience reuse across projects.
-  
-  Integrates with ai-dev workflow in Phase 0 (Pre-check) and Phase 6 (Archive).
 version: 1.0.0
 ---
 
@@ -14,7 +12,26 @@ version: 1.0.0
 
 > Cross-project knowledge management for experience reuse
 
+## Trigger Phrases
+- "query knowledge"
+- "find related solutions"
+- "查知识库"
+- "知识图谱"
+- "related projects"
+- "similar implementations"
+
 ## Overview
+...
+(existing content)
+...
+
+## Agent Collaboration
+- **@librarian**: Uses knowledge graph to provide historical context during research.
+- **feature-planner**: Queries graph for similar project structures during Phase 1.
+
+## Version History
+- **1.0.0**: Initial release with local storage and ai-dev integration.
+
 
 Knowledge Graph builds a network of project relationships to:
 

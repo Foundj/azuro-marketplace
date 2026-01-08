@@ -1,12 +1,8 @@
 ---
 name: skill-auditor
 description: |
-  This skill should be used when the user asks to "audit skill", "validate skill", "check skill quality", 
-  "review skill structure", "skill-check", "verify skill", "score skill", or wants to ensure skills 
-  follow Claude Code best practices. Also triggers on Chinese phrases: "审计技能", "校验技能", 
-  "检查技能质量", "技能评分".
-  
-  Provides multi-dimensional quality assessment with scoring, issue detection, and optimization recommendations.
+  Audit Claude Code skills against best practices.
+  Provides quality scoring, issue detection, and optimization guidance.
 version: 1.0.0
 ---
 

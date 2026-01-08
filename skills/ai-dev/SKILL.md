@@ -2,40 +2,8 @@
 name: ai-dev
 description: |
   Industrial-grade AI development orchestration with 7-phase gated workflow.
-  Features intelligent requirement interviewing, competitor research, OODA autonomous completion, 
-  knowledge management, and project context awareness.
-
-  **TRIGGERS**: ai, dev, build, implement, fix, review, optimize, refactor
-  **中文触发**: 开发, 实现, 构建, 修复, 优化, 重构
-  
-  **MODIFIERS** (append to trigger, priority: ulw > ultrathink > think > quick):
-  - `ulw` / `ultrawork` / `全力` / `全自动` → Ultrawork mode (parallel agents, continuous execution)
-  - `ultrathink` / `好好思考` / `深思熟虑` → Ultra-think mode (maximum thinking budget)
-  - `think` / `思考` / `想一想` / `仔细` / `深度` → Extended thinking mode
-  - `quick` / `快速` / `简单` / `快点` → Quick mode (skip phases 0.5/1/2)
-  
-  **AUTO-DETECT** (based on task verb):
-  - fix/update/patch/修复/修改 → quick mode
-  - implement/build/create/实现/构建/创建 → standard workflow
-  - design/architect/plan/设计/架构/规划 → think mode
-  
-  **AGENTS** (call directly with @):
-  - `@oracle` → Strategic reasoning, debugging, architecture decisions
-  - `@librarian` → Documentation lookup, codebase research
-  - `@explore-fast` → Quick file discovery, pattern matching
-  - `@frontend-engineer` → UI/UX implementation
-  
-  **LOOP COMMANDS**:
-  - `/ai:loop <task>` → Self-referential loop until <promise>DONE</promise>
-  - `/ai:auto` → Auto-complete remaining tasks
-  - `/ai:cancel-loop` → Cancel running loop
-  
-  Example: "ai implement user login" → triggers full workflow
-  Example: "dev fix the auth bug" → quick mode (auto-detected)
-  Example: "ai ulw 重构整个模块" → ultrawork mode with parallel agents
-  Example: "@oracle review this architecture" → direct agent call
-  
-  For quick tasks, use /research for competitor insights or /ai:status for progress.
+  Features requirement interviewing, competitor research, OODA autonomous implementation,
+  knowledge management, and Worker Session context scaling.
 version: 4.0.0
 ---
 

@@ -1,24 +1,9 @@
 ---
 name: project-initializer
 description: |
-  Initialize AI development mode for projects. Creates codebox/ with configuration,
-  knowledge base, and performs deep project scan.
-
-  **TRIGGER WITH SHORT KEYWORDS**: init, setup, initialize, enable ai-dev, create project
-
-  Use when you need to:
-  - Start new projects ("init project TODO app")
-  - Enable AI dev mode ("setup ai-dev")
-  - Create project structure ("initialize project with user management")
-
-  **Simple Usage Examples**:
-  - "init project 博客系统" → Creates codebox/ with deep scan
-  - "setup ai-dev" → Enables AI development mode
-  - "initialize 待办事项应用" → Full project initialization
-
-  Essential for multi-session AI-assisted development.
-allowed-tools: Read, Write, Bash, Glob, Grep
-model: sonnet
+  Initialize AI development mode for projects. Creates codebox/ directory,
+  initializes knowledge base, and performs deep project structure scanning.
+version: 1.0.0
 ---
 
 # Project Initializer - 项目初始化系统

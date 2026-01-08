@@ -1,9 +1,8 @@
 ---
 name: claude-reflect
 description: |
-  This skill provides a self-learning system that captures corrections during sessions and reminds users to run /reflect to update CLAUDE.md. 
-  It should be used when discussing learnings, corrections, or when the user mentions remembering something for future sessions.
-  **Triggers**: "remember this", "actually", "no, use X", "don't do that", "use X instead", "perfect", "exactly right", "correct".
+  A self-learning system that captures user corrections and updates project rules.
+  Automatically detects feedback patterns and prompts users to sync learnings to CLAUDE.md.
 version: 1.2.0
 ---
 

@@ -20,7 +20,11 @@
 
 set -uo pipefail
 
+# Initialize Logger
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_CONTEXT="Worker"
+source "${SCRIPT_DIR}/logger.sh"
+
 TASKS_FILE="tasks.md"
 STATE_FILE="state.json"
 TEMPLATES_DIR="${SCRIPT_DIR}/templates"
@@ -32,8 +36,8 @@ TASK_ID=""
 DRY_RUN=false
 FORCE=false
 
-log_info() { echo "🤖 [Worker] $1"; }
-log_error() { echo "❌ [Worker] ERROR: $1" >&2; }
+# Legacy logging functions now use the unified logger
+# (Removed local definitions to use the sourced ones)
 
 usage() {
     echo "Usage: spawn-worker.sh <task_id> [--dry-run] [--force]"

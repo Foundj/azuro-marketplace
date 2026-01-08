@@ -1,23 +1,8 @@
 ---
 name: quality-gate
 description: |
-  自动化质量门禁系统，在代码实现完成后进行综合质量评估。
-  
-  **触发词**: quality, gate, 质量, 门禁, 质量检查, 代码审查
-  
-  **评分维度** (总分 100):
-  - 安全性 (40%): 敏感信息泄露、注入漏洞、认证问题
-  - 代码质量 (30%): 复杂度、重复代码、命名规范
-  - 文档完整性 (20%): 注释、README、API 文档
-  - 架构合理性 (10%): 模块化、依赖关系、可扩展性
-  
-  **最低阈值**:
-  - 总分: 70/100 (PASS)
-  - 安全: 85/100 (CRITICAL)
-  - 文档: 60/100 (WARNING)
-  
-  **自动触发**: Phase 5 (Review) 完成后建议执行
-  
+  Automated quality gate system for comprehensive code assessment.
+  Scores security, code quality, documentation, and architecture.
 version: 1.0.0
 ---
 

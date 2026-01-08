@@ -1,5 +1,8 @@
 docs/
 bak/
-tests/
+
 .claude/
 AGENTS.md
+codebox/
+components/
+tests/

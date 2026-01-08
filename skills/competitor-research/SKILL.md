@@ -1,12 +1,8 @@
 ---
 name: competitor-research
 description: |
-  This skill should be used when the user asks to "research competitors", "find best practices",
-  "调研", "竞品分析", "alternatives", "compare options", or uses keywords like "research", 
-  "investigate", "benchmark". Provides multi-model research using Gemini for web search, 
-  Codex for code analysis, and Claude for code review.
-  
-  Integrates with ai-dev workflow to provide research context before requirement interviews.
+  Multi-model research engine for gathering competitor insights and best practices.
+  Uses Gemini for web search, Codex for code analysis, and Claude for review.
 version: 1.0.0
 ---
 

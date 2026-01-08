@@ -21,6 +21,11 @@
 
 set -uo pipefail
 
+# Initialize Logger
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_CONTEXT="Parser"
+source "${SCRIPT_DIR}/logger.sh"
+
 SCRIPT_NAME="$(basename "$0")"
 TASKS_FILE=""
 TASK_ID=""
@@ -46,14 +51,14 @@ EOF
     exit 0
 }
 
+# Legacy logging functions now use the unified logger
 log_warning() {
     WARNINGS+=("$1")
-    echo "WARNING: $1" >&2
+    log_warn "$1"
 }
 
-log_error() {
-    echo "ERROR: $1" >&2
-}
+# Override local log_error to use unified one
+# (Removed local definition to use the sourced one)
 
 parse_args() {
     while [[ $# -gt 0 ]]; do
