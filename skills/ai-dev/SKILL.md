@@ -36,12 +36,33 @@ description: |
   Example: "@oracle review this architecture" → direct agent call
   
   For quick tasks, use /research for competitor insights or /ai:status for progress.
-version: 3.2.0
+version: 4.0.0
 ---
 
-# AI-Dev v3.2
+# AI-Dev v4.0 (Evolution Edition)
 
-> Industrial-grade AI development orchestration with 7-phase gated workflow, parallel Task subagents, and integrated learning system.
+> The next generation of autonomous development agents. Featuring **Evaluation-Driven Development (EDD)**, **Worker Sessions**, and a **Reflexion System**.
+
+## New in v4.0
+
+### 1. Hard Gates (Verification Enforcement)
+The OODA Loop now enforces quality through automated verification.
+- **`verify_with`**: Tasks in `tasks.md` can specify a shell command for verification.
+- **Blocking Mechanism**: Claude cannot output `<promise>DONE</promise>` until the verification command passes.
+- **Escape Hatch**: Use `verify_with: true` to skip verification for impossible-to-test tasks.
+
+### 2. Reflexion System (Self-Improving Memory)
+A persistent knowledge base of errors and their solutions.
+- **Automatic Logging**: Every verification failure is analyzed and logged to `solutions_learned.jsonl`.
+- **Intelligent Querying**: Before starting a task, the agent queries previous solutions to avoid repeating mistakes.
+
+### 3. Worker Sessions (Manager-Worker Model)
+Scales horizontally to handle complex features without context overflow.
+- **Context Awareness**: Spawns a dedicated sub-agent when context reaches **80%**.
+- **Handover Protocol**: Semantic context transfer via `handover.md`.
+- **Safety**: Strict **Max Depth = 2** to prevent infinite agent recursion.
+
+---
 
 ## Quick Start
 

@@ -58,6 +58,18 @@ create_change() {
   "phaseHistory": [],
   "implementationComplete": false,
   "qualityValidationComplete": false,
+  "workerConfig": {
+    "enabled": true,
+    "maxDepth": 2,
+    "spawnThreshold": 80,
+    "handbackTimeout": 1800
+  },
+  "workerHierarchy": {
+    "sessionType": "parent",
+    "depth": 0,
+    "parentChain": []
+  },
+  "workerSessions": [],
   "ooda": {
     "active": false,
     "iteration": 0,

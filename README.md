@@ -29,7 +29,7 @@ The marketplace offers specialized toolkits that can be installed individually:
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 3.5.0 | **Full Suite**: 7-phase gated workflow, OODA loop, all skills included |
+| **ai-dev** | 4.0.0 | **Evolution Suite**: Task Verification (Hard Gates), Self-Improving Reflexion, and Autonomous Worker Sessions |
 | **skills-audit-toolkit** | 1.1.0 | Professional quality gate for plugin developers |
 | **self-learning** | 1.3.0 | Reflection system that learns from session corrections |
 | **research-assistant** | 1.0.0 | AI-powered competitor research and best practices analysis |

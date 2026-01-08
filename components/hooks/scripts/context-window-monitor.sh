@@ -11,6 +11,12 @@ LOG_PREFIX="📊 Context"
 
 # Configuration
 THRESHOLD_WARN=85
+THRESHOLD_SPAWN=80
+
+# Find active change directory and state
+ACTIVE_CHANGE=$(find codebox/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
+STATE_FILE="${ACTIVE_CHANGE}/state.json"
+SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../scripts" && pwd)"
 
 # Read hook input from stdin
 HOOK_INPUT=$(cat)
@@ -45,6 +51,24 @@ fi
 
 # Calculate percentage
 USAGE_PCT=$((CONTEXT_USED * 100 / CONTEXT_MAX))
+
+# --- Stage 2: Experimental Worker Sessions logic ---
+if [[ -f "$STATE_FILE" ]]; then
+    WORKER_ENABLED=$(jq -r '.workerConfig.enabled // false' "$STATE_FILE")
+    if [[ "$WORKER_ENABLED" == "true" && "$USAGE_PCT" -ge "$THRESHOLD_SPAWN" ]]; then
+        CURRENT_TASK=$(jq -r '.ooda.currentTask // empty' "$STATE_FILE")
+        if [[ -n "$CURRENT_TASK" ]]; then
+            echo "${LOG_PREFIX}: Threshold reached (${USAGE_PCT}%). Attempting to spawn worker for task ${CURRENT_TASK}..." >&2
+
+            if [[ -x "${SCRIPTS_DIR}/spawn-worker.sh" ]]; then
+                # Only spawn if it's a valid candidate (has subtasks or is complex)
+                # In this version, we trigger the script which handles the depth and validation
+                "${SCRIPTS_DIR}/spawn-worker.sh" "$CURRENT_TASK"
+                # If spawn-worker.sh outputs the ACTION REQUIRED message, the agent will see it
+            fi
+        fi
+    fi
+fi
 
 # Check if above threshold
 if [[ "$USAGE_PCT" -ge "$THRESHOLD_WARN" ]]; then
