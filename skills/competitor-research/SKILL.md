@@ -4,7 +4,7 @@ description: |
   This skill provides multi-model research capabilities for gathering competitor insights and best practices.
   Use when implementing new features, researching libraries, or analyzing open-source patterns.
   Triggers: "research competitors", "analyze best practices", "compare libraries", "研究竞品", "最佳实践".
-version: 4.1.14
+version: 4.1.15
 ---
 
 # Competitor Research
