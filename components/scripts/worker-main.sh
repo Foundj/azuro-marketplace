@@ -13,13 +13,14 @@
 
 set -uo pipefail
 
+# Initialize Logger
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_CONTEXT="Worker-Core"
+source "${SCRIPT_DIR}/logger.sh"
+
 STATE_FILE="state.json"
 HANDOVER_FILE="handover.md"
 TASKS_FILE="tasks.md"
-
-log_info() { echo "👷 [Worker-Core] $1"; }
-log_error() { echo "❌ [Worker-Core] ERROR: $1" >&2; }
 
 # Auto-detect active change if not in CWD
 if [[ ! -f "$STATE_FILE" || ! -f "$TASKS_FILE" || ! -f "$HANDOVER_FILE" ]]; then

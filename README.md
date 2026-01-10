@@ -50,13 +50,13 @@ Azuro is a Claude Code plugin marketplace providing industrial-grade AI developm
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 4.1.12 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **skills-audit-toolkit** | 4.1.12 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
-| **self-learning** | 4.1.12 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **research-assistant** | 4.1.12 | AI-powered competitor research and best practices analysis tool |
-| **knowledge-manager** | 4.1.12 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
-| **thinking-toolbox** | 4.1.12 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 4.1.12 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 4.1.13 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **skills-audit-toolkit** | 4.1.13 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
+| **self-learning** | 4.1.13 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **research-assistant** | 4.1.13 | AI-powered competitor research and best practices analysis tool |
+| **knowledge-manager** | 4.1.13 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
+| **thinking-toolbox** | 4.1.13 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 4.1.13 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features

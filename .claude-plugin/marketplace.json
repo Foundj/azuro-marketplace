@@ -2,7 +2,7 @@
   "name": "azuro-marketplace",
   "metadata": {
     "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
-    "version": "4.1.12"
+    "version": "4.1.13"
   },
   "owner": {
     "name": "foundj"
@@ -13,7 +13,7 @@
       "source": "./",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "4.1.12",
+      "version": "4.1.13",
       "repository": "https://github.com/Foundj/azuro-marketplace",
       "keywords": [
         "ai-development",
@@ -67,7 +67,7 @@
       "source": "./",
       "strict": false,
       "description": "Professional quality gate system for Claude Code plugins - ensure your skills follow best practices",
-      "version": "4.1.12",
+      "version": "4.1.13",
       "keywords": [
         "plugin-dev",
         "audit",
@@ -87,7 +87,7 @@
       "source": "./",
       "strict": false,
       "description": "Self-learning system that captures corrections during sessions and updates your project conventions",
-      "version": "4.1.12",
+      "version": "4.1.13",
       "keywords": [
         "learning",
         "reflection",
@@ -103,7 +103,7 @@
       "source": "./",
       "strict": false,
       "description": "AI-powered competitor research and best practices analysis tool",
-      "version": "4.1.12",
+      "version": "4.1.13",
       "keywords": [
         "research",
         "analysis",
@@ -122,7 +122,7 @@
       "source": "./",
       "strict": false,
       "description": "Personal knowledge graph for projects - discover related solutions and prevent duplication",
-      "version": "4.1.12",
+      "version": "4.1.13",
       "keywords": [
         "knowledge",
         "graph",
@@ -141,7 +141,7 @@
       "source": "./",
       "strict": false,
       "description": "Advanced reasoning and chain-of-thought engine for complex problem solving",
-      "version": "4.1.12",
+      "version": "4.1.13",
       "keywords": [
         "thinking",
         "cot",
@@ -157,7 +157,7 @@
       "source": "./",
       "strict": false,
       "description": "Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow",
-      "version": "4.1.12",
+      "version": "4.1.13",
       "keywords": [
         "context",
         "session",

@@ -16,7 +16,7 @@ THRESHOLD_SPAWN=80
 # Find active change directory and state
 ACTIVE_CHANGE=$(find codebox/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
 STATE_FILE="${ACTIVE_CHANGE}/state.json"
-SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../scripts" && pwd)"
+SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../components/scripts" && pwd)"
 
 # Read hook input from stdin
 HOOK_INPUT=$(cat)
