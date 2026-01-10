@@ -4,7 +4,7 @@
 
 set -e
 
-PLUGIN_JSON="${1:-$(dirname "$0")/../../../.claude-plugin/marketplace.json}"
+PLUGIN_JSON="${1:-$(dirname "$0")/../../.claude-plugin/marketplace.json}"
 VERSION_CACHE="${HOME}/.claude/.version-cache"
 
 # 颜色定义
@@ -91,7 +91,7 @@ main() {
     fi
 
     echo -e "${YELLOW}🔍 Validating hooks.json...${NC}"
-    if ! bash components/hooks/scripts/validate-hooks.sh components/hooks/hooks.json; then
+    if ! bash hooks/scripts/validate-hooks.sh hooks/hooks.json; then
         echo -e "${RED}❌ hooks.json validation failed${NC}"
         exit 1
     fi

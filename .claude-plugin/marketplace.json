@@ -2,7 +2,7 @@
   "name": "azuro-marketplace",
   "metadata": {
     "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
-    "version": "4.1.6"
+    "version": "4.1.9"
   },
   "owner": {
     "name": "foundj",
@@ -14,7 +14,7 @@
       "source": "./",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "4.1.6",
+      "version": "4.1.9",
       "repository": "https://github.com/Foundj/azuro-marketplace",
       "keywords": [
         "ai-development",
@@ -35,17 +35,15 @@
         "./skills/skill-auditor",
         "./skills/claude-reflect"
       ],
-      "commands": [
-        "./components/commands/"
-      ],
-      "agents": "./components/agents/",
-      "hooks": "./components/hooks/hooks.json"
+      "commands": "./commands/",
+      "agents": "./agents/",
+      "hooks": "./hooks/hooks.json"
     },
     {
       "name": "skills-audit-toolkit",
       "source": "./",
       "description": "Professional quality gate system for Claude Code plugins - ensure your skills follow best practices",
-      "version": "4.1.6",
+      "version": "4.1.9",
       "keywords": [
         "plugin-dev",
         "audit",
@@ -56,15 +54,15 @@
         "./skills/skill-auditor"
       ],
       "commands": [
-        "./components/commands/ai:skills-audit.md",
-        "./components/commands/ai:skills-audit:one.md"
+        "./commands/ai:skills-audit.md",
+        "./commands/ai:skills-audit:one.md"
       ]
     },
     {
       "name": "self-learning",
       "source": "./",
       "description": "Self-learning system that captures corrections during sessions and updates your project conventions",
-      "version": "4.1.6",
+      "version": "4.1.9",
       "keywords": [
         "learning",
         "reflection",
@@ -79,7 +77,7 @@
       "name": "research-assistant",
       "source": "./",
       "description": "AI-powered competitor research and best practices analysis tool",
-      "version": "4.1.6",
+      "version": "4.1.9",
       "keywords": [
         "research",
         "analysis",
@@ -90,14 +88,14 @@
         "./skills/competitor-research"
       ],
       "commands": [
-        "./components/commands/ai:research.md"
+        "./commands/ai:research.md"
       ]
     },
     {
       "name": "knowledge-manager",
       "source": "./",
       "description": "Personal knowledge graph for projects - discover related solutions and prevent duplication",
-      "version": "4.1.6",
+      "version": "4.1.9",
       "keywords": [
         "knowledge",
         "graph",
@@ -108,14 +106,14 @@
         "./skills/knowledge-graph"
       ],
       "commands": [
-        "./components/commands/ai:knowledge.md"
+        "./commands/ai:knowledge.md"
       ]
     },
     {
       "name": "thinking-toolbox",
       "source": "./",
       "description": "Advanced reasoning and chain-of-thought engine for complex problem solving",
-      "version": "4.1.6",
+      "version": "4.1.9",
       "keywords": [
         "thinking",
         "cot",
@@ -130,7 +128,7 @@
       "name": "context-bridge",
       "source": "./",
       "description": "Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow",
-      "version": "4.1.6",
+      "version": "4.1.9",
       "keywords": [
         "context",
         "session",
@@ -143,8 +141,8 @@
         "./skills/context-bridge"
       ],
       "commands": [
-        "./components/commands/session:save.md",
-        "./components/commands/session:resume.md"
+        "./commands/session:save.md",
+        "./commands/session:resume.md"
       ]
     }
   ]
