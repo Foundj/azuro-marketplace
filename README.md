@@ -30,13 +30,13 @@ The marketplace offers specialized toolkits that can be installed individually:
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 4.1.0 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **skills-audit-toolkit** | 4.1.0 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
-| **self-learning** | 4.1.0 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **research-assistant** | 4.1.0 | AI-powered competitor research and best practices analysis tool |
-| **knowledge-manager** | 4.1.0 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
-| **thinking-toolbox** | 4.1.0 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 4.1.0 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 4.1.1 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **skills-audit-toolkit** | 4.1.1 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
+| **self-learning** | 4.1.1 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **research-assistant** | 4.1.1 | AI-powered competitor research and best practices analysis tool |
+| **knowledge-manager** | 4.1.1 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
+| **thinking-toolbox** | 4.1.1 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 4.1.1 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features
