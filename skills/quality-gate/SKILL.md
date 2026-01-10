@@ -3,7 +3,7 @@ name: quality-gate
 description: |
   Automated quality gate system for comprehensive code assessment.
   Scores security, code quality, documentation, and architecture.
-version: 4.1.4
+version: 4.1.5
 ---
 
 # Quality Gate

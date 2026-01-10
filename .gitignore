@@ -3,6 +3,8 @@ bak/
 
 .claude/
 AGENTS.md
+CLAUDE.md
+
 codebox/
 components/
 tests/

@@ -7,7 +7,7 @@ description: |
   problem solving, and architecture design decisions.
   
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 4.1.4
+version: 4.1.5
 ---
 
 # Thinking Engine
