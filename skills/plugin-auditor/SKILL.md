@@ -7,7 +7,7 @@ description: |
   "检查插件质量", "插件评分".
   
   Provides multi-dimensional quality assessment with scoring, issue detection, and optimization recommendations for Claude Code Plugins.
-version: 1.0.0
+version: 4.0.2
 ---
 
 # Plugin Auditor

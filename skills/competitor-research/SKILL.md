@@ -3,7 +3,7 @@ name: competitor-research
 description: |
   Multi-model research engine for gathering competitor insights and best practices.
   Uses Gemini for web search, Codex for code analysis, and Claude for review.
-version: 1.0.0
+version: 4.0.2
 ---
 
 # Competitor Research

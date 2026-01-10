@@ -79,6 +79,14 @@ main() {
     printf "║  Current version: %-40s ║\n" "$current_version"
     echo "╚════════════════════════════════════════════════════════════╝"
 
+    echo -e "${YELLOW}🔍 Synchronizing documentation...${NC}"
+    if [[ -f "components/scripts/sync-docs.sh" ]]; then
+        bash components/scripts/sync-docs.sh
+    else
+        echo -e "${RED}❌ sync-docs.sh not found${NC}"
+        exit 1
+    fi
+
     echo -e "${YELLOW}🔍 Validating hooks.json...${NC}"
     if ! bash components/hooks/scripts/validate-hooks.sh components/hooks/hooks.json; then
         echo -e "${RED}❌ hooks.json validation failed${NC}"

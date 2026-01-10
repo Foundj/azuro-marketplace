@@ -27,14 +27,17 @@ Azuro 是一个 Claude Code 插件市场，提供工业级的 AI 开发工具和
 
 市场提供多个专业工具包，可以根据需要单独安装：
 
+<!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 4.0.0 | **进化套件**: 强制任务验证 (Hard Gates)、自我反思进化 (Reflexion) 及自主 Worker 会话 |
-| **skills-audit-toolkit** | 1.1.0 | 插件开发者的专业质量门禁系统 |
-| **self-learning** | 1.3.0 | 从会话修正中学习并更新项目规范的反思系统 |
-| **research-assistant** | 1.0.0 | AI 驱动的竞品调研和最佳实践分析工具 |
-| **knowledge-manager** | 1.0.0 | 项目特定知识图谱管理，防止重复实现 |
-| **thinking-toolbox** | 1.0.0 | 处理复杂逻辑的高级思维链 (CoT) 推理引擎 |
+| **ai-dev** | 4.0.2 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **skills-audit-toolkit** | 4.0.2 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
+| **self-learning** | 4.0.2 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **research-assistant** | 4.0.2 | AI-powered competitor research and best practices analysis tool |
+| **knowledge-manager** | 4.0.2 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
+| **thinking-toolbox** | 4.0.2 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 4.0.2 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+<!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能
 

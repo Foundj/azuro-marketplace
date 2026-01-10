@@ -3,13 +3,95 @@ name: ai-dev
 description: |
   Industrial-grade AI development orchestration with 7-phase gated workflow.
   Features requirement interviewing, competitor research, OODA autonomous implementation,
-  knowledge management, and Worker Session context scaling.
-version: 4.0.0
+  knowledge management, Worker Session context scaling, and attention management.
+version: 4.0.2
 ---
 
-# AI-Dev v4.0 (Evolution Edition)
+# AI-Dev v4.2 (Evolution Edition)
 
-> The next generation of autonomous development agents. Featuring **Evaluation-Driven Development (EDD)**, **Worker Sessions**, and a **Reflexion System**.
+> The next generation of autonomous development agents. Featuring **Evaluation-Driven Development (EDD)**, **Worker Sessions**, **Reflexion System**, and **Attention Management**.
+
+## New in v4.2
+
+### Smart Empty Command Detection
+
+当 `/ai:dev` 或 `/ai:auto` 不带参数时，自动检测并继续现有任务：
+
+```bash
+/ai:dev                # 无参数 → 检测现有任务
+/ai:auto               # 无参数 → 继续未完成任务
+```
+
+**检测逻辑**：
+
+```
+用户输入: "/ai:dev" (无参数)
+  ↓
+检测 codebox/changes/active/ 是否有未完成的 change
+  ↓
+├─ 有 active change →
+│   ━━━━━━━━━━━━━━━━━━━━━━━━━
+│   📍 Found Active Change
+│   ━━━━━━━━━━━━━━━━━━━━━━━━━
+│   Change: 001-user-auth
+│   Phase: 4 (Implementation)
+│   Tasks: 5/7 completed
+│
+│   Options:
+│   1. Continue this change (y)
+│   2. Start new change (n)
+│   3. Show details (/ai:status)
+│   ━━━━━━━━━━━━━━━━━━━━━━━━━
+│
+└─ 无 active change → 检测 codebox/context/tasks.md (Lite Mode)
+    ↓
+    ├─ 有 tasks.md → 询问是否升级到 Full Mode
+    └─ 无任务 → 提示 "Usage: /ai:dev <feature>"
+```
+
+**`/ai:auto` 空命令行为**：
+
+```
+用户输入: "/ai:auto" (无参数)
+  ↓
+检测 codebox/changes/active/*/tasks.md
+  ↓
+├─ 有未完成任务 → 自动继续执行
+├─ 全部完成 →
+│   ━━━━━━━━━━━━━━━━━━━━━━━━━
+│   ✅ All Tasks Completed!
+│   ━━━━━━━━━━━━━━━━━━━━━━━━━
+│   Run /session:save or /feature-archive
+│   ━━━━━━━━━━━━━━━━━━━━━━━━━
+└─ 无任务 → 提示 "No pending tasks. Start with: /ai:dev <feature>"
+```
+
+### Enhanced Context Bridge Integration (v4.2)
+
+增强与 context-bridge 的集成：
+
+- **Auto Checkpoint (90%)**: 当 context 达到 90% 时自动保存
+- **Lite Mode 统一**: 共享 `codebox/context/` 目录
+- **任务完成检测**: 所有任务完成时自动提示保存/归档
+
+---
+
+## New in v4.1
+
+### Attention Management (Read Before Decide)
+
+Integrates Manus-style "Read Before Decide" pattern to prevent goal drift during long OODA loops.
+
+**Key Changes:**
+- **OODA Attention Management**: Each iteration starts by reading `tasks.md` to refresh goals
+- **Periodic Focus Refresh**: Every 5 iterations, run `/focus` to refresh attention window
+- **Context Bridge Integration**: Works with `/focus`, `/progress`, `/session:save` commands
+- **Lost in the Middle Prevention**: Goals stay in attention window even after 50+ tool calls
+
+**New Dependencies:**
+- `context-bridge` skill (optional but recommended)
+
+---
 
 ## New in v4.0
 
@@ -187,6 +269,36 @@ Maximum thinking budget for complex decisions:
 **Controls:**
 - Max iterations: 50 (configurable)
 - State tracking: `codebox/changes/active/[id]/state.json`
+
+#### OODA 注意力管理 (v4.1.0)
+
+> **Read Before Decide** — 每次迭代开始时刷新目标
+
+**每次 OODA 迭代必须**：
+
+1. **OBSERVE 阶段开始时**：
+   ```
+   Read tasks.md              # 刷新任务列表到注意力窗口
+   Read state.json            # 获取当前进度
+   ```
+
+2. **重大决策前**：
+   ```
+   Read design.md             # 参考架构约束
+   Read requirements.md       # 确认符合全局需求
+   ```
+
+3. **每 5 次迭代后**：
+   ```
+   运行 /focus                # 强制刷新目标
+   ```
+
+**原因**：在长时间 OODA 循环中（50+ iterations），原始目标可能被 "遗忘"（Lost in the Middle 问题）。
+通过周期性读取目标文件，将目标重新注入注意力窗口末端，保持决策质量。
+
+**与 context-bridge 集成**：
+- 如果 `codebox/context/current_focus.md` 存在，每次迭代也读取它
+- 上下文超过 70% 时，建议运行 `/session:save` 保存进度
 
 ### Phase 5: Quality Validation
 

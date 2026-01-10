@@ -27,14 +27,17 @@ Azuro is a Claude Code plugin marketplace providing industrial-grade AI developm
 
 The marketplace offers specialized toolkits that can be installed individually:
 
+<!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 4.0.0 | **Evolution Suite**: Task Verification (Hard Gates), Self-Improving Reflexion, and Autonomous Worker Sessions |
-| **skills-audit-toolkit** | 1.1.0 | Professional quality gate for plugin developers |
-| **self-learning** | 1.3.0 | Reflection system that learns from session corrections |
-| **research-assistant** | 1.0.0 | AI-powered competitor research and best practices analysis |
-| **knowledge-manager** | 1.0.0 | Project-specific knowledge graph management |
-| **thinking-toolbox** | 1.0.0 | Advanced CoT reasoning engine for complex logic |
+| **ai-dev** | 4.0.2 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **skills-audit-toolkit** | 4.0.2 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
+| **self-learning** | 4.0.2 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **research-assistant** | 4.0.2 | AI-powered competitor research and best practices analysis tool |
+| **knowledge-manager** | 4.0.2 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
+| **thinking-toolbox** | 4.0.2 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 4.0.2 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+<!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features
 
