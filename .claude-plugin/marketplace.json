@@ -2,7 +2,7 @@
   "name": "azuro-marketplace",
   "metadata": {
     "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
-    "version": "4.1.13"
+    "version": "4.1.14"
   },
   "owner": {
     "name": "foundj"
@@ -13,7 +13,7 @@
       "source": "./",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "4.1.13",
+      "version": "4.1.14",
       "repository": "https://github.com/Foundj/azuro-marketplace",
       "keywords": [
         "ai-development",
@@ -67,7 +67,7 @@
       "source": "./",
       "strict": false,
       "description": "Professional quality gate system for Claude Code plugins - ensure your skills follow best practices",
-      "version": "4.1.13",
+      "version": "4.1.14",
       "keywords": [
         "plugin-dev",
         "audit",
@@ -84,10 +84,10 @@
     },
     {
       "name": "self-learning",
-      "source": "./",
+      "source": "./skills/claude-reflect",
       "strict": false,
       "description": "Self-learning system that captures corrections during sessions and updates your project conventions",
-      "version": "4.1.13",
+      "version": "4.1.14",
       "keywords": [
         "learning",
         "reflection",
@@ -95,7 +95,12 @@
         "automation"
       ],
       "skills": [
-        "./skills/claude-reflect"
+        "./SKILL.md"
+      ],
+      "commands": [
+        "./commands/reflect.md",
+        "./commands/skip-reflect.md",
+        "./commands/view-queue.md"
       ]
     },
     {
@@ -103,7 +108,7 @@
       "source": "./",
       "strict": false,
       "description": "AI-powered competitor research and best practices analysis tool",
-      "version": "4.1.13",
+      "version": "4.1.14",
       "keywords": [
         "research",
         "analysis",
@@ -122,7 +127,7 @@
       "source": "./",
       "strict": false,
       "description": "Personal knowledge graph for projects - discover related solutions and prevent duplication",
-      "version": "4.1.13",
+      "version": "4.1.14",
       "keywords": [
         "knowledge",
         "graph",
@@ -138,10 +143,10 @@
     },
     {
       "name": "thinking-toolbox",
-      "source": "./",
+      "source": "./skills/thinking-engine",
       "strict": false,
       "description": "Advanced reasoning and chain-of-thought engine for complex problem solving",
-      "version": "4.1.13",
+      "version": "4.1.14",
       "keywords": [
         "thinking",
         "cot",
@@ -149,15 +154,16 @@
         "logic"
       ],
       "skills": [
-        "./skills/thinking-engine"
-      ]
+        "./SKILL.md"
+      ],
+      "commands": []
     },
     {
       "name": "context-bridge",
-      "source": "./",
+      "source": "./skills/context-bridge",
       "strict": false,
       "description": "Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow",
-      "version": "4.1.13",
+      "version": "4.1.14",
       "keywords": [
         "context",
         "session",
@@ -167,7 +173,14 @@
         "manus"
       ],
       "skills": [
-        "./skills/context-bridge"
+        "./SKILL.md"
+      ],
+      "commands": [
+        "./commands/checkpoint.md",
+        "./commands/resume.md",
+        "./commands/focus.md",
+        "./commands/lite-save.md",
+        "./commands/lite-resume.md"
       ]
     }
   ]

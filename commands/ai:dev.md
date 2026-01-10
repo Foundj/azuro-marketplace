@@ -87,8 +87,17 @@ Present findings and let user decide which issues to fix.
 
 **Phase 6: Archive & Commit**
 
-1. Stage changes: !`git add -A`
+Check if git repository: `git rev-parse --git-dir 2>/dev/null && echo "GIT_OK" || echo "NO_GIT"`
+
+If the above command outputs GIT_OK:
+1. Stage changes: `git add -A`
 2. Create commit with descriptive message
+
+If the above command outputs NO_GIT:
+- Skip git operations
+- Inform user: "Note: Not a git repository, skipping commit step"
+
+Always:
 3. Update codebox/feature_list.json
 4. Archive change to codebox/changes/archived/
 5. Update knowledge base with learnings
