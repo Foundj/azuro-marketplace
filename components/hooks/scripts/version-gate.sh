@@ -82,6 +82,9 @@ main() {
     echo -e "${YELLOW}🔍 Synchronizing documentation...${NC}"
     if [[ -f "components/scripts/sync-docs.sh" ]]; then
         bash components/scripts/sync-docs.sh
+        # Auto-stage files modified by sync-docs.sh to avoid post-commit drift
+        git add README.md README.zh-CN.md .claude-plugin/marketplace.json 2>/dev/null || true
+        git add skills/*/SKILL.md 2>/dev/null || true
     else
         echo -e "${RED}❌ sync-docs.sh not found${NC}"
         exit 1
