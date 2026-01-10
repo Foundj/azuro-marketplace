@@ -90,6 +90,12 @@ main() {
         exit 1
     fi
 
+    echo -e "${YELLOW}🔍 Validating marketplace.json schema...${NC}"
+    if ! bash hooks/scripts/validate-marketplace.sh .claude-plugin/marketplace.json; then
+        echo -e "${RED}❌ marketplace.json validation failed${NC}"
+        exit 1
+    fi
+
     echo -e "${YELLOW}🔍 Validating hooks.json...${NC}"
     if ! bash hooks/scripts/validate-hooks.sh hooks/hooks.json; then
         echo -e "${RED}❌ hooks.json validation failed${NC}"

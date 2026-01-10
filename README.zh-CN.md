@@ -19,24 +19,44 @@ Azuro 是一个 Claude Code 插件市场，提供工业级的 AI 开发工具和
 # 浏览可用插件
 /plugin
 
-# 安装全量套件
+# 安装全量套件（推荐）
 /plugin install ai-dev@azuro-marketplace
+
+# 或安装特定独立插件
+/plugin install context-bridge@azuro-marketplace
+/plugin install skills-audit-toolkit@azuro-marketplace
+```
+
+### 3. 市场管理
+
+```bash
+# 更新市场（获取最新版本）
+/plugin marketplace update azuro-marketplace
+
+# 移除市场
+/plugin marketplace remove azuro-marketplace
+
+# 查看已安装插件
+/plugin list
 ```
 
 ## 可用插件
 
-市场提供多个专业工具包，可以根据需要单独安装：
+**插件关系：**
+- **ai-dev** 是完整套件，包含所有 skills、commands、agents 和 hooks
+- 其他插件（context-bridge、skills-audit-toolkit 等）是针对特定功能的独立替代方案
+- 安装 ai-dev 即包含所有功能，无需单独安装其他插件
 
 <!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 4.1.11 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **skills-audit-toolkit** | 4.1.11 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
-| **self-learning** | 4.1.11 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **research-assistant** | 4.1.11 | AI-powered competitor research and best practices analysis tool |
-| **knowledge-manager** | 4.1.11 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
-| **thinking-toolbox** | 4.1.11 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 4.1.11 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 4.1.12 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **skills-audit-toolkit** | 4.1.12 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
+| **self-learning** | 4.1.12 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **research-assistant** | 4.1.12 | AI-powered competitor research and best practices analysis tool |
+| **knowledge-manager** | 4.1.12 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
+| **thinking-toolbox** | 4.1.12 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 4.1.12 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能
@@ -71,19 +91,20 @@ Azuro 是一个 Claude Code 插件市场，提供工业级的 AI 开发工具和
 
 ## 目录结构
 
-本项目采用“专业套件”布局，支持在单个仓库中管理多个隔离的插件：
+本项目遵循 Claude Code 插件官方标准结构：
 
 ```
 azuro-marketplace/
-├── components/                # 核心插件组件 (共享)
-│   ├── agents/                # 代理定义
-│   ├── commands/              # 斜杠命令定义
-│   ├── hooks/                 # 事件钩子及脚本
-│   └── scripts/               # 内部工具脚本
-├── skills/                    # 代理技能 (隔离)
 ├── .claude-plugin/            # 市场配置
+│   └── marketplace.json
+├── agents/                    # 代理定义（标准位置）
+├── commands/                  # 斜杠命令定义（标准位置）
+├── hooks/                     # 事件钩子及脚本（标准位置）
+│   ├── hooks.json
+│   └── scripts/
+├── skills/                    # 代理技能（隔离）
+├── components/scripts/        # 内部工具脚本
 ├── docs/                      # 官方文档参考
-├── bak/                       # 参考实现
 └── README.md
 ```
 
@@ -94,8 +115,9 @@ azuro-marketplace/
 市场强制执行版本门禁。在任何提交之前，你必须递增 `.claude-plugin/marketplace.json` 中的版本：
 
 ```bash
-# 在 components/hooks/scripts/ 目录下执行
-bash components/hooks/scripts/bump.sh patch
+bash hooks/scripts/bump.sh patch   # patch: x.x.X
+bash hooks/scripts/bump.sh minor   # minor: x.X.0
+bash hooks/scripts/bump.sh major   # major: X.0.0
 ```
 
 ### 质量门禁

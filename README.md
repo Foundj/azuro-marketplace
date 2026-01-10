@@ -19,24 +19,44 @@ Azuro is a Claude Code plugin marketplace providing industrial-grade AI developm
 # Browse available plugins
 /plugin
 
-# Install the full suite
+# Install the full suite (recommended)
 /plugin install ai-dev@azuro-marketplace
+
+# Or install specific standalone plugins
+/plugin install context-bridge@azuro-marketplace
+/plugin install skills-audit-toolkit@azuro-marketplace
+```
+
+### 3. Marketplace Management
+
+```bash
+# Update marketplace (fetch latest versions)
+/plugin marketplace update azuro-marketplace
+
+# Remove marketplace
+/plugin marketplace remove azuro-marketplace
+
+# View installed plugins
+/plugin list
 ```
 
 ## Available Plugins
 
-The marketplace offers specialized toolkits that can be installed individually:
+**Plugin Relationship:**
+- **ai-dev** is the complete suite containing all skills, commands, agents, and hooks
+- Other plugins (context-bridge, skills-audit-toolkit, etc.) are standalone alternatives for specific features
+- Installing ai-dev includes all functionality; no need to install other plugins separately
 
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 4.1.11 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **skills-audit-toolkit** | 4.1.11 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
-| **self-learning** | 4.1.11 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **research-assistant** | 4.1.11 | AI-powered competitor research and best practices analysis tool |
-| **knowledge-manager** | 4.1.11 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
-| **thinking-toolbox** | 4.1.11 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 4.1.11 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 4.1.12 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **skills-audit-toolkit** | 4.1.12 | Professional quality gate system for Claude Code plugins - ensure your skills follow best practices |
+| **self-learning** | 4.1.12 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **research-assistant** | 4.1.12 | AI-powered competitor research and best practices analysis tool |
+| **knowledge-manager** | 4.1.12 | Personal knowledge graph for projects - discover related solutions and prevent duplication |
+| **thinking-toolbox** | 4.1.12 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 4.1.12 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features
@@ -71,19 +91,20 @@ The marketplace offers specialized toolkits that can be installed individually:
 
 ## Directory Structure
 
-This project follows a "Professional Suite" layout to support multiple isolated plugins in one repository:
+This project follows the official Claude Code plugin standard structure:
 
 ```
 azuro-marketplace/
-├── components/                # Core plugin components (shared)
-│   ├── agents/                # Agent definitions
-│   ├── commands/              # Slash command definitions
-│   ├── hooks/                 # Event hooks and scripts
-│   └── scripts/               # Internal utility scripts
-├── skills/                    # Agent skills (isolated)
 ├── .claude-plugin/            # Marketplace configuration
+│   └── marketplace.json
+├── agents/                    # Agent definitions (standard location)
+├── commands/                  # Slash command definitions (standard location)
+├── hooks/                     # Event hooks and scripts (standard location)
+│   ├── hooks.json
+│   └── scripts/
+├── skills/                    # Agent skills (isolated)
+├── components/scripts/        # Internal utility scripts
 ├── docs/                      # Official documentation reference
-├── bak/                       # Reference implementations
 └── README.md
 ```
 
@@ -94,8 +115,9 @@ azuro-marketplace/
 The marketplace enforces a version gate. You MUST increment the version in `.claude-plugin/marketplace.json` before any commit:
 
 ```bash
-# In components/hooks/scripts/
-bash components/hooks/scripts/bump.sh patch
+bash hooks/scripts/bump.sh patch   # patch: x.x.X
+bash hooks/scripts/bump.sh minor   # minor: x.X.0
+bash hooks/scripts/bump.sh major   # major: X.0.0
 ```
 
 ### Quality Gate
