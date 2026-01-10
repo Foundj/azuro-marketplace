@@ -3,7 +3,7 @@ name: claude-reflect
 description: |
   A self-learning system that captures user corrections and updates project rules.
   Automatically detects feedback patterns and prompts users to sync learnings to CLAUDE.md.
-version: 4.1.1
+version: 4.1.2
 ---
 
 # Claude Reflect - Self-Learning System
