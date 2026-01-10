@@ -5,7 +5,7 @@ description: |
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
   "knowledge", "experience", "历史方案", "经验复用". Manages cross-project knowledge relationships
   and enables experience reuse across projects.
-version: 4.1.6
+version: 4.1.10
 ---
 
 # Knowledge Graph
