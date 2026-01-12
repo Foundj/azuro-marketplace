@@ -1,9 +1,11 @@
 ---
-name: session:save
+name: ai:session-save
 description: 保存当前 session 进度，生成摘要和下一步任务文件
+argument-hint: ""
+allowed-tools: Read, Write, Bash, Grep, Glob
 ---
 
-# /session:save - 保存 Session 进度
+# /ai:session-save - 保存 Session 进度
 
 执行此命令保存当前工作状态。
 
@@ -98,13 +100,13 @@ fi
    Fix 4 failing tests in AuthService.test.ts
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-下次开始时输入 "/session:resume" 即可继续
+下次开始时输入 "/ai:session-resume" 即可继续
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ## 触发词
 
-- `/session:save`
+- `/ai:session-save`
 - `save session`
 - `save progress`
 - `保存进度`

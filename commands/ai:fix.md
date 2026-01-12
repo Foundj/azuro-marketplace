@@ -1,13 +1,35 @@
 ---
 name: ai:fix
-description: AI-powered fix with review-fix-verify cycle - auto-detect complexity and run verification loop
+description: AI-powered fix with review-fix-verify cycle - runs as subagent to preserve main context
 argument-hint: "<bug-description> [--deep] [--no-verify] [--max-retries N]"
 allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
+execution-mode: subagent
 ---
 
-Fix: $ARGUMENTS
+# AI Fix Command (Subagent Mode)
 
-**Goal**: Smart bug fix with automatic verification loop (review → fix → verify → repeat)
+**Goal**: Smart bug fix with automatic verification loop, executed as subagent to preserve main session context.
+
+## Execution Flow
+
+```
+/ai:fix "login button not working"
+    ↓
+Launch Task tool with subagent:
+  - subagent_type: "ai-dev:quick-fixer" or "ai-dev:debugger"
+  - Isolated context execution
+    ↓
+Subagent executes:
+  - Complexity detection → Quick/Standard/Deep strategy
+  - OODA mini-loop (max 3 iterations)
+  - Review-Fix-Verify cycle
+    ↓
+Returns Fix Report to main session
+```
+
+**Advantage**: Does not consume main session context tokens.
+
+---
 
 ## Step 1: Parse Options & Analyze Complexity
 

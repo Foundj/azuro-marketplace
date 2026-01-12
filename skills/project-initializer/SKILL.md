@@ -3,7 +3,7 @@ name: project-initializer
 description: |
   Initialize AI development mode for projects. Creates codebox/ directory,
   initializes knowledge base, and performs deep project structure scanning.
-version: 4.1.21
+version: 4.2.0
 ---
 
 # Project Initializer - 项目初始化系统

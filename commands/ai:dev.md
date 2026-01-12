@@ -1,9 +1,81 @@
 ---
 name: ai:dev
 description: AI-powered 7-phase development workflow for complete feature implementation
-argument-hint: "<feature-description> [--skip-research] [--quick]"
+argument-hint: "<feature-description> | auto [--dry-run] [--skip-research] [--quick]"
 allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
 ---
+
+# AI Development Command
+
+**Usage:**
+- `/ai:dev <feature>` - Start 7-phase development workflow
+- `/ai:dev auto` - Auto-complete all unchecked tasks in active change
+- `/ai:dev auto --dry-run` - Preview tasks without executing
+
+---
+
+## Mode Detection
+
+Parse $ARGUMENTS to determine mode:
+
+**If first argument is "auto":**
+→ Execute **Auto-Complete Mode** (see below)
+
+**Otherwise:**
+→ Execute **Feature Development Mode** (7-phase workflow)
+
+---
+
+## Auto-Complete Mode
+
+**Goal**: Automatically complete all remaining unchecked tasks in the active change.
+
+### Step 1: Parse Options
+
+- `--dry-run`: Preview tasks without executing
+- `--from-task N.N`: Start from specific task (e.g., `1.3`)
+
+### Step 2: Find Active Change
+
+```bash
+ACTIVE_CHANGE=$(find codebox/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
+TASKS_FILE="${ACTIVE_CHANGE}/tasks.md"
+```
+
+**If no active change exists:**
+```
+❌ No active change found.
+
+To start a new change, use:
+  /ai:dev <feature-description>
+```
+
+### Step 3: Analyze Task Status
+
+Read `tasks.md` and count completed vs remaining tasks.
+
+**If all tasks complete:**
+```
+✅ All tasks already complete!
+Nothing to do. Use /ai:status for details.
+```
+
+### Step 4: Execute (unless --dry-run)
+
+**If `--dry-run`:**
+- Show task preview and exit
+
+**Otherwise**, invoke OODA loop:
+1. Read next unchecked task
+2. Execute task
+3. Update checkbox
+4. Run tests
+5. Continue until all complete
+6. Output `<promise>DONE</promise>`
+
+---
+
+## Feature Development Mode
 
 Implement feature: $ARGUMENTS
 
