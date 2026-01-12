@@ -3,7 +3,7 @@
   "name": "azuro-marketplace",
   "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
   "metadata": {
-    "version": "4.1.20"
+    "version": "4.1.21"
   },
   "owner": {
     "name": "foundj"
@@ -14,7 +14,7 @@
       "source": "./",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "4.1.20",
+      "version": "4.1.21",
       "repository": "https://github.com/Foundj/azuro-marketplace",
       "keywords": [
         "ai-development",
@@ -36,7 +36,10 @@
         "./skills/knowledge-graph",
         "./skills/skill-auditor",
         "./skills/claude-reflect",
-        "./skills/context-bridge"
+        "./skills/context-bridge",
+        "./skills/session-manager",
+        "./skills/project-initializer",
+        "./skills/plugin-auditor"
       ],
       "commands": [
         "./commands/ai:archive.md",
@@ -70,7 +73,7 @@
       "source": "./skills/claude-reflect",
       "strict": false,
       "description": "Self-learning system that captures corrections during sessions and updates your project conventions",
-      "version": "4.1.20",
+      "version": "4.1.21",
       "keywords": [
         "learning",
         "reflection",
@@ -91,7 +94,7 @@
       "source": "./skills/thinking-engine",
       "strict": false,
       "description": "Advanced reasoning and chain-of-thought engine for complex problem solving",
-      "version": "4.1.20",
+      "version": "4.1.21",
       "keywords": [
         "thinking",
         "cot",
@@ -108,7 +111,7 @@
       "source": "./skills/context-bridge",
       "strict": false,
       "description": "Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow",
-      "version": "4.1.20",
+      "version": "4.1.21",
       "keywords": [
         "context",
         "session",

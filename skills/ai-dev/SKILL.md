@@ -4,7 +4,7 @@ description: |
   Industrial-grade AI development orchestration with 7-phase gated workflow.
   Features requirement interviewing, competitor research, OODA autonomous implementation,
   knowledge management, Worker Session context scaling, and attention management.
-version: 4.1.20
+version: 4.1.21
 ---
 
 # AI-Dev v4.2 (Evolution Edition)
@@ -512,13 +512,16 @@ ai-dev 工作流集成以下辅助 Skills：
 
 | Skill | Phase | 作用 |
 |-------|-------|------|
+| `brainstorm-mode` | -1 (Optional) | 苏格拉底式需求探索，从模糊想法发现清晰需求 |
 | `ai-dev-interview` | 1 (Interview) | 多轮需求访谈，并行上下文收集，风险检测，生成 proposal.md |
 | `ai-dev-ooda` | 4 (Implementation) | OODA 自主执行引擎，验证门禁，Reflexion 学习，注意力管理 |
 | `ai-dev-quality` | 5 (Review) | 多视角代码审查，confidence-scorer ≥80 过滤，4 维度质量评分 |
-| `code-simplifier` | 5.5 (Polish) | 代码简化和优化，保持功能不变，应用项目标准 |
+| `code-simplifier` | 5.5 (Polish) | 代码简化和优化，SOLID 原则检查，复杂度度量 |
 | `thinking-engine` | 0 (Pre-check) | think/ultrathink 模式的结构化思考支持，5-6 步分析流程 |
 | `knowledge-graph` | 0, 4, 6 | 跨项目知识图谱，查询历史方案，记录新知识 |
 | `competitor-research` | 0.5 (Research) | 多源竞品研究，最佳实践分析 |
+| `context-bridge` | Cross-session | 轻量级上下文恢复，Auto Checkpoint，Manus 3-file 模式 |
+| `session-manager` | Cross-session | 完整项目恢复，10 步验证流程，环境启动 |
 
 ### Quality Validation 集成 (ai-dev-quality)
 
