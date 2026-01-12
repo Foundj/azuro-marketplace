@@ -4,7 +4,7 @@ description: |
   Industrial-grade AI development orchestration with 7-phase gated workflow.
   Features requirement interviewing, competitor research, OODA autonomous implementation,
   knowledge management, Worker Session context scaling, and attention management.
-version: 4.1.18
+version: 4.1.19
 ---
 
 # AI-Dev v4.2 (Evolution Edition)
@@ -197,7 +197,8 @@ Maximum thinking budget for complex decisions:
 | 2 | Design Approval | User Approval | Present approaches, user selects, generate design.md |
 | 3 | Task Breakdown | Auto | Generate tasks.md with subtasks |
 | 4 | Implementation | OODA Loop | Autonomous execution until <promise>DONE</promise> |
-| 5 | Quality Validation | Auto | confidence-scorer ≥80 filter, verification-agent |
+| 5 | Quality Validation | Auto | Multi-perspective review, confidence-scorer ≥80 filter |
+| 5.5 | Code Simplification | Auto/Skip | Polish code (if autoSimplify enabled) |
 | 6 | Finalization | User Approval | Archive to knowledge, commit |
 
 ### Phase 0: Context & Knowledge Pre-Check
@@ -302,12 +303,26 @@ Maximum thinking budget for complex decisions:
 
 ### Phase 5: Quality Validation
 
+**Skill**: `ai-dev-quality`
+
 **Agents:**
-- `code-reviewer` → find issues
+- `code-reviewer` → find issues (3 perspectives: security, bugs, maintainability)
 - `confidence-scorer` → filter ≥80 confidence only
 - `verification-agent` → run tests, build, lint
 
 **Auto-gate**: Blocks if critical issues unresolved
+
+### Phase 5.5: Code Simplification (Optional)
+
+**Skill**: `code-simplifier`
+
+When quality gate passes and `autoSimplify: true` in config:
+1. Identify recently modified code
+2. Apply project standards from CLAUDE.md
+3. Reduce complexity while preserving functionality
+4. Verify behavior unchanged
+
+**Trigger**: Automatic after Phase 5 pass, or manual via `/ai:simplify`
 
 ### Phase 6: Finalization
 
@@ -497,18 +512,37 @@ ai-dev 工作流集成以下辅助 Skills：
 
 | Skill | Phase | 作用 |
 |-------|-------|------|
-| `quality-gate` | 5 (Review) | 4 维度质量评分（安全 40%，代码 30%，文档 20%，架构 10%），自动建议在 Phase 5 后执行 |
+| `ai-dev-interview` | 1 (Interview) | 多轮需求访谈，并行上下文收集，风险检测，生成 proposal.md |
+| `ai-dev-ooda` | 4 (Implementation) | OODA 自主执行引擎，验证门禁，Reflexion 学习，注意力管理 |
+| `ai-dev-quality` | 5 (Review) | 多视角代码审查，confidence-scorer ≥80 过滤，4 维度质量评分 |
+| `code-simplifier` | 5.5 (Polish) | 代码简化和优化，保持功能不变，应用项目标准 |
 | `thinking-engine` | 0 (Pre-check) | think/ultrathink 模式的结构化思考支持，5-6 步分析流程 |
-| `knowledge-graph` | 0, 4, 6 | 跨项目知识图谱，查询历史方案，记录新知识，最大 50 条，自动清理 30 天 |
+| `knowledge-graph` | 0, 4, 6 | 跨项目知识图谱，查询历史方案，记录新知识 |
+| `competitor-research` | 0.5 (Research) | 多源竞品研究，最佳实践分析 |
 
-### Quality Gate 集成
+### Quality Validation 集成 (ai-dev-quality)
 
-Phase 5 完成后自动建议：
+Phase 5 自动执行：
 ```
-[ai-dev] Phase 5 completed. Run quality gate? (recommended)
+[ai-dev] Phase 5: Quality Validation
+├── 3x code-reviewer (security, bugs, maintainability)
+├── confidence-scorer (filter ≥80)
+├── verification-agent (tests, build, lint)
+└── 4-dimension scoring (Security 40%, Code 30%, Docs 20%, Arch 10%)
 ```
 
-手动执行：参考 `/ai:quality-gate` 或提示 "执行质量门禁"
+### Code Simplification 集成 (code-simplifier)
+
+Phase 5 通过后，如果 `autoSimplify: true`：
+```
+[ai-dev] Phase 5.5: Code Simplification
+├── Identify recently modified code
+├── Apply CLAUDE.md standards
+├── Reduce complexity
+└── Verify behavior unchanged
+```
+
+手动执行：`/ai:simplify` 或提示 "简化代码"
 
 ### Thinking Engine 集成
 
@@ -534,13 +568,18 @@ think 模式触发时自动激活：
 
 ## Dependencies
 
-- `competitor-research` skill for Phase 0.5
-- `project-initializer` skill for codebox setup
-- `session-manager` skill for cross-session continuity
-- `claude-reflect` skill for learning capture and /reflect command
-- `quality-gate` skill for Phase 5 quality validation (v3.3.0+)
-- `thinking-engine` skill for structured thinking (v3.3.0+)
-- `knowledge-graph` skill for cross-project knowledge (v3.3.0+)
+### Core Skills (Modular Architecture v4.1+)
+- `ai-dev-interview` - Phase 1 requirement interview system
+- `ai-dev-ooda` - Phase 4 OODA autonomous execution engine
+- `ai-dev-quality` - Phase 5 quality validation (replaces legacy `quality-gate`)
+- `code-simplifier` - Phase 5.5 code refinement
+
+### Supporting Skills
+- `competitor-research` - Phase 0.5 multi-source research
+- `thinking-engine` - Structured thinking for complex decisions
+- `knowledge-graph` - Cross-project knowledge management
+- `context-bridge` - Cross-session context persistence
+- `claude-reflect` - Learning capture and /reflect command
 
 ---
 

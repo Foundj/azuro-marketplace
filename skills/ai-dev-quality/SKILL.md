@@ -5,7 +5,7 @@ description: |
   and automated verification. It includes code-reviewer, confidence-scorer, and verification-agent.
   Use this skill when the user mentions "code review", "quality check", "ai:review", "ai:quality",
   "代码审查", "质量检查", or during Phase 5 of the development workflow.
-version: 4.1.18
+version: 4.1.19
 triggers:
   - code review
   - quality check
@@ -103,6 +103,30 @@ Automated verification execution.
 | Architecture | 10% | Patterns, coupling, cohesion |
 
 **Pass Threshold**: Overall score ≥ 80
+
+### Detailed Checks
+
+**Security (40%)**:
+- No hardcoded secrets/passwords
+- SQL parameterized queries
+- XSS/CSRF protection
+- Auth/authz correctly implemented
+
+**Code Quality (30%)**:
+- Function length < 50 lines
+- Cyclomatic complexity < 10
+- No duplicate code blocks (> 10 lines)
+- Naming follows project conventions
+
+**Documentation (20%)**:
+- Public functions documented
+- README updated
+- API docs (if applicable)
+
+**Architecture (10%)**:
+- Single responsibility
+- Correct dependency direction
+- No circular dependencies
 
 ## Usage Modes
 
@@ -202,4 +226,27 @@ This skill is used in **Phase 5 (Quality Validation)** of the 7-phase workflow:
 2. **Phase 5 activates quality system**
 3. Issues ≥80 confidence must be resolved
 4. All verifications must pass
-5. Phase 6 begins finalization
+5. **code-simplifier runs** (if autoSimplify enabled)
+6. Phase 6 begins finalization
+
+## Quality Report Output
+
+```
+╔════════════════════════════════════════════════════════════╗
+║                    QUALITY GATE REPORT                     ║
+╠════════════════════════════════════════════════════════════╣
+║  Dimension        │ Score  │ Weight │ Weighted │ Status   ║
+╠═══════════════════╪════════╪════════╪══════════╪══════════╣
+║  🔒 Security      │  90/100│   40%  │   36.0   │ ✅ PASS  ║
+║  📝 Code Quality  │  75/100│   30%  │   22.5   │ ✅ PASS  ║
+║  📖 Documentation │  65/100│   20%  │   13.0   │ ✅ PASS  ║
+║  🏗️ Architecture  │  80/100│   10%  │    8.0   │ ✅ PASS  ║
+╠═══════════════════╧════════╧════════╧══════════╧══════════╣
+║  TOTAL SCORE: 79.5/100                                     ║
+║  STATUS: ✅ PASSED                                         ║
+╚════════════════════════════════════════════════════════════╝
+```
+
+## Note
+
+This skill replaces the legacy `quality-gate` skill with enhanced multi-perspective review.

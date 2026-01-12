@@ -5,7 +5,7 @@ description: |
   all functionality. It should be used when the user mentions "simplify code", "refine code", "clean up code",
   "polish code", "improve readability", "代码简化", "代码优化", "整理代码", or after code review passes.
   Focuses on recently modified code unless instructed otherwise. Applies project-specific standards from CLAUDE.md.
-version: 4.1.18
+version: 4.1.19
 triggers:
   - simplify code
   - refine code
