@@ -4,7 +4,7 @@ description: |
   Industrial-grade AI development orchestration with 7-phase gated workflow.
   Features requirement interviewing, competitor research, OODA autonomous implementation,
   knowledge management, Worker Session context scaling, and attention management.
-version: 4.1.19
+version: 4.1.20
 ---
 
 # AI-Dev v4.2 (Evolution Edition)
