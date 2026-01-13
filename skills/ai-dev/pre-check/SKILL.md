@@ -15,7 +15,7 @@ description: |
   - Context loading with priority
   
   **Key Principle**: "先搜索，再理解，后实现"
-version: 4.2.3
+version: 4.2.4
 ---
 
 # Pre-Implementation Check

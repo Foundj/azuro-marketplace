@@ -5,7 +5,7 @@ description: |
   Observe-Orient-Decide-Act cycle with verification gates, reflexion learning, and attention management.
   Use this skill when the user mentions "autonomous loop", "OODA", "自动执行", "循环执行", "ai:loop",
   "ai:auto", or when executing tasks autonomously until completion with <promise>DONE</promise> signal.
-version: 4.2.3
+version: 4.2.4
 triggers:
   - autonomous loop
   - OODA loop
@@ -152,6 +152,88 @@ Context reaches 80%
   }
 }
 ```
+
+## Ralph Loop Pattern (Self-Referential Iteration)
+
+> 灵感来自 Anthropic 官方 ralph-loop 实现
+
+### 核心机制
+
+Ralph Loop 是一种自引用循环模式，通过 Stop Hook 实现任务的持续执行直到完成：
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                  RALPH LOOP MECHANISM                    │
+├─────────────────────────────────────────────────────────┤
+│  1. Claude 开始执行任务                                  │
+│  2. Claude 尝试结束 (输出最终响应)                       │
+│  3. Stop Hook 拦截退出                                  │
+│  4. Hook 检查: 任务完成了吗?                            │
+│     ├─ 否 → 返回相同提示词，Claude 继续执行              │
+│     └─ 是 → 允许退出                                    │
+│  5. 重复 1-4 直到完成                                   │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 完成承诺 (Completion Promise)
+
+退出循环的唯一方式是输出完成承诺：
+
+```xml
+<promise>DONE</promise>
+```
+
+**规则**:
+- 只有当所有任务 ✅ 完成后才能输出
+- 验证门禁必须全部通过
+- Stop Hook 会验证承诺的有效性
+
+### Stop Hook 实现
+
+```bash
+#!/bin/bash
+# ooda-stop-hook.sh
+
+TASKS_FILE="codebox/changes/active/*/tasks.md"
+COMPLETION_PROMISE="DONE"
+
+# 检查是否有未完成的任务
+if grep -q "^- \[ \]" $TASKS_FILE 2>/dev/null; then
+    # 有未完成任务 → 阻止退出，返回相同提示
+    echo "Tasks remaining. Continue execution."
+    exit 1  # 阻止退出
+fi
+
+# 检查最后输出是否包含完成承诺
+if [[ "$LAST_OUTPUT" != *"<promise>$COMPLETION_PROMISE</promise>"* ]]; then
+    echo "Missing completion promise. Continue execution."
+    exit 1
+fi
+
+# 所有检查通过，允许退出
+exit 0
+```
+
+### 与传统循环的区别
+
+| 方面 | 传统循环 | Ralph Loop |
+|------|----------|------------|
+| 控制 | 外部计数器 | 内部承诺 |
+| 退出条件 | 达到次数限制 | 完成任务 + 输出承诺 |
+| 上下文 | 每次迭代可能丢失 | Stop Hook 保持连续性 |
+| 自主性 | 低 (被动执行) | 高 (主动承诺完成) |
+
+### OODA + Ralph Loop 融合
+
+我们的 OODA 实现结合了 Ralph Loop 的核心优势：
+
+1. **Stop Hook 驱动**: 使用 `ooda-stop-hook.sh` 拦截退出
+2. **任务驱动**: 基于 `tasks.md` 的 checkbox 状态判断完成
+3. **验证门禁**: `verify_with` 确保质量
+4. **注意力管理**: 周期性读取目标文件防止漂移
+5. **承诺退出**: 只有 `<promise>DONE</promise>` 能真正退出
+
+---
 
 ## Integration with ai-dev
 
