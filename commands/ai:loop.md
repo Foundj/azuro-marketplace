@@ -3,6 +3,7 @@ name: ai:loop
 description: Self-referential development loop that runs until task completion with <promise>DONE</promise>
 argument-hint: "<task-description> [--max-iterations N]"
 allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
+internal: true
 ---
 
 Start AI Loop: $ARGUMENTS

@@ -1,15 +1,52 @@
 ---
 name: ai:review
 description: AI-powered code review - comprehensive quality analysis with confidence scoring
-argument-hint: "[files...] [--staged] [--diff <branch>]"
+argument-hint: "[files...] [--staged] [--diff <branch>] [--background]"
 allowed-tools: Task, Read, Grep, Glob, Bash
+execution-mode: subagent
+internal: true
 ---
 
 Code review: $ARGUMENTS
 
 **Goal**: Comprehensive code review with actionable findings and confidence scores
 
-**Step 1: Determine Scope**
+---
+
+## Execution Mode
+
+This command runs as a **subagent** to preserve main session context.
+
+```
+/ai:review --staged
+    ↓
+Launch Task tool with subagent:
+  - subagent_type: "ai-dev:code-reviewer"
+  - run_in_background: true (if --background)
+  - Isolated context execution
+    ↓
+Subagent executes:
+  - Multi-perspective review (Quality/Logic/Security/Performance/Test)
+  - Confidence scoring
+  - Generate report
+    ↓
+Returns Review Report to main session
+```
+
+**Advantage**: Large file analysis does not consume main session tokens.
+
+---
+
+## Options
+
+- `--staged`: Review staged changes (git diff --cached)
+- `--diff <branch>`: Review changes vs branch
+- `--background`: Run in background, return immediately
+- `files...`: Review specific files
+
+---
+
+## Step 1: Determine Scope**
 
 Parse arguments:
 - No args: Review recent changes (git diff HEAD~1)

@@ -3,6 +3,7 @@ name: "ai:skills-audit:one"
 description: Audit a single skill by name or path - validate structure, quality, and best practices
 argument-hint: "<skill-name-or-path> [--fix] [--verbose]"
 allowed-tools: Read, Bash, Glob
+internal: true
 ---
 
 # /ai:skills-audit:one - 单个技能审计

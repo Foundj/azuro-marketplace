@@ -1,6 +1,7 @@
 ---
 name: ai:quality
 description: Execute quality gate checks - evaluate security, code quality, documentation and architecture
+internal: true
 ---
 
 # Quality Gate 快捷命令

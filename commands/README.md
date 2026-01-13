@@ -11,7 +11,26 @@
 | `/ai:status` | 状态查看 | `--list`, `<id>` (详情) |
 | `/ai:session-save` | 保存会话进度 | - |
 | `/ai:session-resume` | 恢复会话 | `[id]`, `--full`, `--show` |
-| `/ai:skills-audit` | 技能审计 | `[skill-name]` |
+| `/ai:skills-audit` | 技能审计 (subagent) | `[--summary]`, `--background` |
+
+---
+
+## Subagent 执行模式
+
+以下命令支持 **subagent 模式**，在隔离上下文中执行，不消耗主会话 token：
+
+| 命令 | 优势 | 后台执行 |
+|------|------|----------|
+| `/ai:fix` | bug 修复在独立上下文，完成后释放 token | 自动 |
+| `/ai:skills-audit` | 审计多个 skill 不阻塞主会话 | `--background` |
+| `ai:research` (内部) | 多后端调研不占用主上下文 | `--background` |
+| `ai:review` (内部) | 大文件审查不膨胀上下文 | `--background` |
+
+**使用示例：**
+```bash
+/ai:fix "login bug"              # 自动 subagent 执行
+/ai:skills-audit --background    # 后台运行，立即返回
+```
 
 ---
 
@@ -93,23 +112,25 @@
 
 ## 内部命令
 
-以下命令由工作流内部调用，文件保留但不注册到 marketplace.json：
+以下命令由工作流内部调用，文件保留但不注册到 marketplace.json。
 
-| 命令 | 调用者 | 说明 |
-|------|--------|------|
-| `ai:interview` | ai:dev Phase 1 | 需求访谈 |
-| `ai:design` | ai:dev Phase 3 | 设计评审 |
-| `ai:implement` | ai:dev Phase 4 | 实现 |
-| `ai:quality` | ai:dev Phase 5 | 质量验证 |
-| `ai:review` | ai:dev Phase 5 | 代码审查 |
-| `ai:loop` | ai:dev auto | OODA 循环引擎 |
-| `ai:check` | ai:dev Phase 0 | 预检查 |
-| `ai:archive` | ai:dev Phase 6 | 归档 |
-| `ai:research` | ai:dev Phase 0.5 | 竞品研究 |
-| `ai:knowledge` | 多阶段 | 知识查询 |
-| `ai:update-constraints` | 维护 | 约束更新 |
-| `ai:update-feature-index` | 维护 | 索引更新 |
-| `ai:skills-audit:one` | ai:skills-audit | 单技能审计 |
+命令文件中标记了 `internal: true` 表示内部命令。
+
+| 命令 | 调用者 | 说明 | Subagent |
+|------|--------|------|----------|
+| `ai:interview` | ai:dev Phase 1 | 需求访谈 | - |
+| `ai:design` | ai:dev Phase 3 | 设计评审 | - |
+| `ai:implement` | ai:dev Phase 4 | 实现 | - |
+| `ai:quality` | ai:dev Phase 5 | 质量验证 | - |
+| `ai:review` | ai:dev Phase 5 | 代码审查 | ✅ |
+| `ai:loop` | ai:dev auto | OODA 循环引擎 | - |
+| `ai:check` | ai:dev Phase 0 | 预检查 | - |
+| `ai:archive` | ai:dev Phase 6 | 归档 | - |
+| `ai:research` | ai:dev Phase 0.5 | 竞品研究 | ✅ |
+| `ai:knowledge` | 多阶段 | 知识查询 | - |
+| `ai:update-constraints` | 维护 | 约束更新 | - |
+| `ai:update-feature-index` | 维护 | 索引更新 | - |
+| `ai:skills-audit:one` | ai:skills-audit | 单技能审计 | - |
 
 ---
 
@@ -150,6 +171,6 @@
 
 ---
 
-**版本：2.0.0**
+**版本：2.1.0**
 **更新日期：2026-01-13**
-**重大变更：命令精简为 6 个用户命令，其他改为内部命令**
+**变更：添加 subagent 执行模式，内部命令标记 internal: true**

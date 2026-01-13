@@ -3,6 +3,7 @@ name: ai:update-constraints
 description: Update implementation constraints file based on the current codebase state
 argument-hint: "[--scope <path>] [--full] [--dry-run]"
 allowed-tools: Task, Read, Write, Bash, Grep, Glob
+internal: true
 ---
 
 # /ai:update-constraints - Update Implementation Constraints

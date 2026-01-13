@@ -3,6 +3,7 @@ name: ai:knowledge
 description: Query project knowledge graph to discover related knowledge and solutions
 argument-hint: "[query] [add] [stats]"
 allowed-tools: Bash, Read, Grep
+internal: true
 ---
 
 

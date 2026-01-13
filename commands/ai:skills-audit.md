@@ -1,17 +1,44 @@
 ---
 name: ai:skills-audit
 description: Audit all skills in project - validate structure, quality, and best practices compliance
-argument-hint: "[--summary] [--fix] [--report] [--json]"
-allowed-tools: Read, Bash, Glob, Grep
+argument-hint: "[--summary] [--fix] [--report] [--json] [--background]"
+allowed-tools: Read, Bash, Glob, Grep, Task
+execution-mode: subagent
 ---
 
 # /ai:skills-audit - 技能质量审计
 
 Audit all skills in the current project for quality and best practices compliance.
 
+---
+
+## Execution Mode
+
+This command can run as a **subagent** to preserve main session context.
+
+```
+/ai:skills-audit --background
+    ↓
+Launch Task tool with subagent:
+  - run_in_background: true
+  - Isolated context execution
+    ↓
+Subagent executes:
+  - Locate all SKILL.md files
+  - Run validation script for each
+  - Aggregate results
+    ↓
+Returns Audit Report to main session
+```
+
+**Advantage**: Auditing many skills does not block main session.
+
+---
+
 ## Usage
 ```bash
 /ai:skills-audit
+/ai:skills-audit --background  # Run in background
 ```
 
 ## Options
@@ -20,6 +47,7 @@ Audit all skills in the current project for quality and best practices complianc
 - `--fix`: Auto-fix simple issues (script permissions, missing version)
 - `--report`: Generate detailed Markdown report file
 - `--json`: Output results in JSON format
+- `--background`: Run in background, return immediately
 
 ---
 

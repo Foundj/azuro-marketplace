@@ -3,6 +3,7 @@ name: ai:implement
 description: AI-powered implementation - autonomous OODA loop execution
 argument-hint: "<feature-description> [--from-design] [--quick]"
 allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
+internal: true
 ---
 
 Implement: $ARGUMENTS

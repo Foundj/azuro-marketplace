@@ -1,15 +1,50 @@
 ---
 name: ai:research
 description: AI-powered competitor research - multi-source best practices analysis
-argument-hint: "<topic> [--deep] [--save]"
+argument-hint: "<topic> [--deep] [--save] [--background]"
 allowed-tools: Task, Bash, Read, Write
+execution-mode: subagent
+internal: true
 ---
 
 Research: $ARGUMENTS
 
 **Goal**: Multi-source research on best practices, patterns, and pitfalls
 
-**Step 1: Parse Options**
+---
+
+## Execution Mode
+
+This command runs as a **subagent** to preserve main session context.
+
+```
+/ai:research "JWT authentication"
+    ↓
+Launch Task tool with subagent:
+  - run_in_background: true (if --background)
+  - Isolated context execution
+    ↓
+Subagent executes:
+  - Parse options (--deep, --save)
+  - Multi-backend research
+  - Synthesize results
+    ↓
+Returns Research Report to main session
+```
+
+**Advantage**: Does not consume main session context tokens.
+
+---
+
+## Options
+
+- `--deep`: Use all 3 backends (Gemini + Codex + Claude)
+- `--save`: Save results to `codebox/research/`
+- `--background`: Run in background, return immediately
+
+---
+
+## Step 1: Parse Options
 
 - `--deep`: Use all 3 backends (Gemini + Codex + Claude)
 - `--save`: Save results to `codebox/research/`

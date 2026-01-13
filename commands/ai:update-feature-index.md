@@ -3,6 +3,7 @@ name: ai:update-feature-index
 description: Update the feature index that maps features to their implementation files
 argument-hint: "[--from-archive] [--from-codebase] [--rebuild]"
 allowed-tools: Task, Read, Write, Bash, Grep, Glob
+internal: true
 ---
 
 # /ai:update-feature-index - Update Feature Index

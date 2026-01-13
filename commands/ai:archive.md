@@ -3,6 +3,7 @@ name: ai:archive
 description: Smartly archive completed changes, update knowledge base and generate summaries
 argument-hint: "[change_id] [--current] [--all-completed]"
 allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
+internal: true
 ---
 
 # /ai:archive - Smart Change Archival Command
