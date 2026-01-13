@@ -6,7 +6,7 @@ description: |
   and refactoring pattern recommendations. Use when the user mentions "simplify code", "refine code",
   "clean up code", "refactor", "reduce complexity", "technical debt", "代码简化", "代码重构", "优化",
   "技术债务", or after code review passes.
-version: 4.2.7
+version: 4.2.8
 triggers:
   - simplify code
   - refine code
@@ -280,7 +280,7 @@ After: if (age >= LEGAL_ADULT_AGE)
 
 ## Integration with ai-dev Workflow
 
-Runs after Phase 5 (Quality Validation) when quality gate passes:
+Runs automatically after Phase 5 (Quality Validation) when quality gate passes and `autoSimplify: true` is set:
 
 ```
 Phase 5: Quality Validation
@@ -289,15 +289,18 @@ Phase 5: Quality Validation
     ├── No → Fix issues, re-run Phase 5
     └── Yes ↓
 
-code-simplifier (Optional)
-  - Refine approved code
-  - Apply final polish
+Phase 5.5: Code Simplification (auto when enabled)
+  - SOLID principles check
+  - Complexity metrics analysis
+  - Apply refactoring patterns
   - Ensure consistency
          ↓
 
 Phase 6: Finalization
   - Commit ready code
 ```
+
+**Manual Trigger**: Say "优化代码", "simplify", "refactor" at any time.
 
 ## Configuration
 

@@ -169,11 +169,34 @@ generate_report() {
 
 # 主函数
 main() {
+    local quick_mode=false
+
+    # 解析参数
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --quick|-q)
+                quick_mode=true
+                shift
+                ;;
+            *)
+                shift
+                ;;
+        esac
+    done
+
     local staged_files=$(get_staged_files)
 
     if [[ -z "$staged_files" ]]; then
-        echo -e "${GREEN}✅ No reviewable files staged${NC}"
+        if [[ "$quick_mode" == "false" ]]; then
+            echo -e "${GREEN}✅ No reviewable files staged${NC}"
+        fi
         return 0
+    fi
+
+    if [[ "$quick_mode" == "true" ]]; then
+        # Quick mode: 只检查危险模式，静默输出
+        check_dangerous_patterns "$staged_files" > /dev/null 2>&1
+        return $?
     fi
 
     echo -e "${YELLOW}🔍 Running code review gate...${NC}"

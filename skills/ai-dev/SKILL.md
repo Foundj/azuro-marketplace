@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 4.2.7
+version: 4.2.8
 triggers:
   - implement
   - develop
@@ -110,10 +110,11 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - confidence-scorer filters ≥80 only
 - verification-agent runs tests/build/lint
 
-**Phase 5.5: Code Simplification** (optional)
-- Identify recently modified code
-- Apply project standards from CLAUDE.md
+**Phase 5.5: Code Simplification** (auto when `autoSimplify: true`)
+- Triggered automatically after Phase 5 passes (if enabled in config)
+- Apply SOLID principles and complexity metrics
 - Reduce complexity while preserving functionality
+- Can also be triggered manually via "优化代码" / "simplify"
 
 **Phase 6: Finalization**
 - Update knowledge base with new patterns
