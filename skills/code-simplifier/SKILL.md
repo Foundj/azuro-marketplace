@@ -1,11 +1,12 @@
 ---
 name: code-simplifier
 description: |
-  This skill simplifies and refines code for clarity, consistency, and maintainability while preserving
-  all functionality. It includes SOLID principles checking, complexity metrics analysis, and refactoring
-  pattern recommendations. Use when the user mentions "simplify code", "refine code", "clean up code",
-  "refactor", "reduce complexity", "technical debt", "代码简化", "代码重构", "技术债务", or after code review passes.
-version: 4.2.6
+  This skill should be used when the user wants to simplify, refine, or refactor code for clarity,
+  consistency, and maintainability. It includes SOLID principles checking, complexity metrics analysis,
+  and refactoring pattern recommendations. Use when the user mentions "simplify code", "refine code",
+  "clean up code", "refactor", "reduce complexity", "technical debt", "代码简化", "代码重构", "优化",
+  "技术债务", or after code review passes.
+version: 4.2.7
 triggers:
   - simplify code
   - refine code
@@ -519,3 +520,21 @@ const authenticationService = new AuthService();
 3. 测试文件 - 了解预期行为
 
 生成的代码应该看起来像是「由项目现有开发者写的」，而不是「由 AI 生成的」。
+
+---
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `@code-reviewer` | 先审查代码，发现问题后触发 simplifier |
+| `@oracle` | 复杂重构决策时咨询架构建议 |
+| `@librarian` | 查询项目历史模式和最佳实践 |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add 优化/重构 triggers, third-person description |
+| 4.2.4 | 2026-01-13 | Add Anti-AI-Slop principles, SOLID checking |
+| 4.0.0 | 2026-01-07 | Initial release with basic simplification |

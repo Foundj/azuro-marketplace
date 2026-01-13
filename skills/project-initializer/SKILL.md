@@ -1,9 +1,20 @@
 ---
 name: project-initializer
 description: |
-  Initialize AI development mode for projects. Creates codebox/ directory,
-  initializes knowledge base, and performs deep project structure scanning.
-version: 4.2.6
+  This skill should be used when the user wants to initialize AI development mode for projects.
+  It creates the codebox/ directory, initializes knowledge base, and performs deep project
+  structure scanning. Use when the user mentions "init project", "setup ai-dev", "initialize",
+  "启用 AI 模式", "初始化项目", or wants to start a new AI-assisted development workflow.
+version: 4.2.7
+triggers:
+  - init project
+  - initialize
+  - setup ai-dev
+  - enable ai-dev
+  - 初始化项目
+  - 启用 AI 模式
+  - 项目初始化
+  - 新建项目
 ---
 
 # Project Initializer - 项目初始化系统
@@ -521,6 +532,25 @@ ALL business logic MUST reside in service classes
 - 检查是否可执行：`chmod +x codebox/init.sh`
 - 查看技术栈是否正确识别
 - 手动编辑 init.sh 适配项目
+
+---
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `@explore-fast` | Scan project structure during initialization |
+| `@librarian` | Set up initial knowledge base |
+| `session-manager` | Use initialized files for session recovery |
+| `ai-dev` | Consume codebox/ config for development workflow |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add third-person description, triggers, agent collaboration |
+| 4.2.0 | 2026-01-07 | Add v2.0-enhanced initialization with knowledge base |
+| 4.0.0 | 2026-01-01 | Initial release |
 
 ---
 

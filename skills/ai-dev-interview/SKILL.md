@@ -5,7 +5,7 @@ description: |
   interviews with parallel context collection, risk detection, and proposal generation. Use this skill
   when the user mentions "requirement interview", "需求访谈", "ai:interview", "clarify requirements",
   "gather requirements", or when gathering requirements for new features or clarifying ambiguous specifications.
-version: 4.2.6
+version: 4.2.7
 triggers:
   - requirement interview
   - ai:interview
@@ -156,3 +156,24 @@ Interview behavior can be configured in `codebox/config.json`:
   }
 }
 ```
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `ai-dev` | Triggers interview in Phase 1 |
+| `brainstorm-mode` | Pre-interview exploration (optional) |
+| `competitor-research` | Provides research context |
+| `@explore-fast` | Scans project during context collection |
+| `@librarian` | Queries knowledge base |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add agent collaboration, version history |
+| 4.0.0 | 2026-01-07 | Initial release with parallel context collection |
+
+## References
+
+See `references/interview-guide.md` for best practices.

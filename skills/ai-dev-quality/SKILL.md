@@ -5,7 +5,7 @@ description: |
   and automated verification. It includes code-reviewer, confidence-scorer, and verification-agent.
   Use this skill when the user mentions "code review", "quality check", "ai:review", "ai:quality",
   "代码审查", "质量检查", or during Phase 5 of the development workflow.
-version: 4.2.6
+version: 4.2.7
 triggers:
   - code review
   - quality check
@@ -250,3 +250,24 @@ This skill is used in **Phase 5 (Quality Validation)** of the 7-phase workflow:
 ## Note
 
 This skill replaces the legacy `quality-gate` skill with enhanced multi-perspective review.
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `ai-dev` | Triggers quality in Phase 5 |
+| `ai-dev-ooda` | Provides implementation to review |
+| `code-simplifier` | Runs after quality passes |
+| `@code-reviewer` | Multi-perspective code review |
+| `@verification-agent` | Runs tests, build, lint |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add agent collaboration, version history |
+| 4.0.0 | 2026-01-07 | Initial release replacing quality-gate |
+
+## References
+
+See `references/scoring-criteria.md` for confidence scoring rules.

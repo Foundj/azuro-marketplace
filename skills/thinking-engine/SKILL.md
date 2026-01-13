@@ -3,11 +3,22 @@ name: thinking-engine
 description: |
   This skill should be used when the user asks to "think deeply", "analyze task", "think step by step",
   "好好思考", "仔细想", "深度分析", or uses keywords like "think", "ultrathink", "思考".
-  Provides structured sequential thinking with 5-6 step analysis for task planning, 
+  Provides structured sequential thinking with 5-6 step analysis for task planning,
   problem solving, and architecture design decisions.
-  
+
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 4.2.6
+version: 4.2.7
+triggers:
+  - think deeply
+  - analyze task
+  - think step by step
+  - think
+  - ultrathink
+  - 好好思考
+  - 仔细想
+  - 深度分析
+  - 思考
+  - 考虑
 ---
 
 # Thinking Engine
@@ -189,6 +200,26 @@ ai implement user authentication   # → task-analysis (COMPLEX)
 dev fix login button bug           # → problem-solving (SIMPLE)
 ai think design payment system     # → architecture (COMPLEX)
 ```
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `ai-dev` | Triggers thinking-engine for complex tasks |
+| `@oracle` | Strategic reasoning consultation |
+| `feature-planner` | Receives task analysis output |
+| `backend-architect` | Uses architecture analysis |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add triggers, agent collaboration |
+| 4.0.0 | 2026-01-07 | Initial release with 3 thinking modes |
+
+## References
+
+See `references/analysis-frameworks.md` for detailed frameworks.
 
 ### Example Output
 

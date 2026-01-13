@@ -5,7 +5,7 @@ description: |
   Observe-Orient-Decide-Act cycle with verification gates, reflexion learning, and attention management.
   Use this skill when the user mentions "autonomous loop", "OODA", "自动执行", "循环执行", "ai:loop",
   "ai:auto", or when executing tasks autonomously until completion with <promise>DONE</promise> signal.
-version: 4.2.6
+version: 4.2.7
 triggers:
   - autonomous loop
   - OODA loop
@@ -252,3 +252,25 @@ See `references/ooda-loop.md` for complete specification including:
 - Error recovery
 - Iteration limits
 - Context compression strategies
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `ai-dev` | Activates OODA in Phase 4 |
+| `ai-dev-quality` | Runs after OODA completion |
+| `@verification-agent` | Executes verify_with commands |
+| `session-manager` | Saves OODA state for recovery |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add agent collaboration, version history |
+| 4.2.4 | 2026-01-10 | Add Ralph Loop pattern integration |
+| 4.1.0 | 2026-01-08 | Add Attention Management |
+| 4.0.0 | 2026-01-07 | Initial release with verification gates |
+
+## References
+
+See `references/state-machine.md` for state transition details.

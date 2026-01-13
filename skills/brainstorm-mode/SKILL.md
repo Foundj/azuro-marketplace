@@ -1,10 +1,11 @@
 ---
 name: brainstorm-mode
 description: |
-  Socratic exploration mode for discovering requirements from vague ideas. Uses open-ended questioning,
-  divergent thinking, and iterative refinement to transform fuzzy concepts into clear specifications.
-  Triggers on "brainstorm", "explore ideas", "not sure what I need", "头脑风暴", "探索想法", "我不确定".
-version: 4.2.6
+  This skill provides Socratic exploration mode for discovering requirements from vague ideas.
+  It uses open-ended questioning, divergent thinking, and iterative refinement to transform
+  fuzzy concepts into clear specifications. Use when the user mentions "brainstorm", "explore ideas",
+  "not sure what I need", "头脑风暴", "探索想法", "我不确定", "帮我想想", or has unclear requirements.
+version: 4.2.7
 triggers:
   - brainstorm
   - explore ideas
@@ -396,3 +397,24 @@ ai-dev Phase 1: Requirement Interview
 | `brainstorm-mode` (哲学模式) | 建立创作原则 | 创意方向 | philosophy.md |
 | `ai-dev-interview` | 细化需求 | 明确方向 | proposal.md |
 | `competitor-research` | 调研方案 | 明确主题 | research.json |
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `ai-dev` | Receives discovery-brief.md as input |
+| `ai-dev-interview` | Takes over after direction is clear |
+| `@oracle` | Consult for complex strategic decisions |
+| `competitor-research` | Research after initial direction |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add third-person description, agent collaboration |
+| 4.2.4 | 2026-01-10 | Add Philosophy-Driven Creation mode |
+| 4.0.0 | 2026-01-07 | Initial release with Socratic workflow |
+
+## References
+
+See `references/socratic-techniques.md` for questioning techniques.

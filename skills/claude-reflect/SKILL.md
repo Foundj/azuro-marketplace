@@ -1,9 +1,20 @@
 ---
 name: claude-reflect
 description: |
-  A self-learning system that captures user corrections and updates project rules.
-  Automatically detects feedback patterns and prompts users to sync learnings to CLAUDE.md.
-version: 4.2.6
+  This skill provides a self-learning system that captures user corrections and updates project rules.
+  It automatically detects feedback patterns and prompts users to sync learnings to CLAUDE.md files.
+  Use when the user mentions "reflect", "remember this", "learn from", "更新规则", "记住这个",
+  or after meaningful corrections are made that should be persisted.
+version: 4.2.7
+triggers:
+  - reflect
+  - remember this
+  - learn from this
+  - update rules
+  - sync learnings
+  - 更新规则
+  - 记住这个
+  - 反思
 ---
 
 # Claude Reflect - Self-Learning System
@@ -72,3 +83,23 @@ Claude: Found 1 learning queued. "Use gpt-5.1 for reasoning tasks"
 
 ## Workflow Integration
 This skill integrates with the `ai-dev` workflow by ensuring that patterns learned during development are persisted across sessions, improving agent performance in subsequent phases.
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `ai-dev` | Source of learnings during development |
+| `@librarian` | Query existing patterns before adding |
+| `session-manager` | Persist learnings across sessions |
+| `knowledge-graph` | Store patterns in knowledge base |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add third-person description, triggers, agent collaboration |
+| 4.0.0 | 2026-01-07 | Initial release with two-stage learning system |
+
+## References
+
+See `references/detection-patterns.md` for pattern matching rules.

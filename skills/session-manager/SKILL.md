@@ -1,25 +1,26 @@
 ---
 name: session-manager
 description: |
-  Manage development sessions and restore project context across multiple Claude sessions. Automatically recovers progress, validates state, and suggests next steps.
-
-  **TRIGGER WITH SHORT KEYWORDS**: continue, resume, restore, status, progress, where was I, what's next
-
-  Use when:
-  - Starting new session ("continue")
-  - Checking progress ("progress", "status")
-  - Recovering from interruption ("resume", "restore")
-  - Need next steps ("what's next")
-
-  **Simple Usage Examples**:
-  - "continue" → Auto-restores context & suggests next feature
-  - "resume" → Same as continue
-  - "status" → Shows project progress
-  - "what's next" → Recommends next task
-
+  This skill should be used when the user wants to manage development sessions and restore
+  project context across multiple Claude sessions. It automatically recovers progress,
+  validates state, and suggests next steps. Use when the user mentions "continue", "resume",
+  "status", "progress", "恢复会话", "继续", "进度", or when starting a new session.
   Critical for long-running project continuity.
+version: 4.2.7
 allowed-tools: Read, Bash, Grep, Glob
 model: sonnet
+triggers:
+  - continue
+  - resume
+  - restore
+  - status
+  - progress
+  - where was I
+  - what's next
+  - 恢复会话
+  - 继续
+  - 进度
+  - 上次做到哪了
 ---
 
 # Session Manager - 会话管理系统
@@ -639,6 +640,25 @@ session-manager 建议:
 - 查看特性的 dependencies 字段
 - 先完成依赖特性
 - 或选择其他可执行特性
+
+---
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `project-initializer` | Creates files session-manager reads |
+| `ai-dev` | Provides feature context for recovery |
+| `context-bridge` | Lightweight alternative for quick resume |
+| `@librarian` | Query knowledge during recovery |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add third-person description, triggers, agent collaboration |
+| 4.2.0 | 2026-01-07 | Add v2.0-enhanced support with 10-step recovery |
+| 4.0.0 | 2026-01-01 | Initial release with 7-step recovery |
 
 ---
 

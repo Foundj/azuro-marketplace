@@ -3,8 +3,17 @@ name: competitor-research
 description: |
   This skill provides multi-model research capabilities for gathering competitor insights and best practices.
   Use when implementing new features, researching libraries, or analyzing open-source patterns.
-  Triggers: "research competitors", "analyze best practices", "compare libraries", "研究竞品", "最佳实践".
-version: 4.2.6
+  Triggers on "research competitors", "analyze best practices", "compare libraries", "研究竞品", "最佳实践".
+version: 4.2.7
+triggers:
+  - research competitors
+  - analyze best practices
+  - compare libraries
+  - research
+  - 研究竞品
+  - 最佳实践
+  - 调研
+  - 对比分析
 ---
 
 # Competitor Research
@@ -260,3 +269,23 @@ When research reveals significant risks:
 - `~/.claude/common/lib/codeagent-wrapper.sh` - Multi-backend CLI wrapper
 - `gemini` CLI - Web search capability
 - `codex` CLI - Code analysis capability
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `ai-dev` | Triggers research in Phase 0.5 |
+| `ai-dev-interview` | Uses research as context |
+| `@librarian` | Stores research in knowledge base |
+| `@oracle` | Strategic research direction |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.2.6 | 2026-01-13 | Add triggers, agent collaboration, version history |
+| 4.0.0 | 2026-01-07 | Initial release with multi-model pipeline |
+
+## References
+
+See `references/research-workflow.md` for detailed workflow.
