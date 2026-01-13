@@ -50,10 +50,10 @@ Azuro 是一个 Claude Code 插件市场，提供工业级的 AI 开发工具和
 <!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 4.2.8 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **self-learning** | 4.2.8 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **thinking-toolbox** | 4.2.8 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 4.2.8 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 4.2.9 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **self-learning** | 4.2.9 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **thinking-toolbox** | 4.2.9 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 4.2.9 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能
