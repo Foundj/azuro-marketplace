@@ -131,7 +131,21 @@ main() {
         exit 1
     fi
     echo -e "${GREEN}✅ All skills passed quality audit (80+)${NC}"
-    
+
+    echo -e "${YELLOW}🔍 Running code review gate...${NC}"
+    if [[ -f "hooks/scripts/code-review-gate.sh" ]]; then
+        set +e
+        bash hooks/scripts/code-review-gate.sh
+        local review_exit=$?
+        set -e
+        if [[ $review_exit -ne 0 ]]; then
+            echo -e "${RED}❌ Code review gate failed${NC}"
+            exit 1
+        fi
+    else
+        echo -e "${YELLOW}⚠️  code-review-gate.sh not found, skipping...${NC}"
+    fi
+
     if [[ "$cached_version" == "0.0.0" ]]; then
         echo -e "${GREEN}✅ First commit - caching version${NC}"
         cache_version "$current_version"

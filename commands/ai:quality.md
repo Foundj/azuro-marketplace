@@ -1,6 +1,8 @@
 ---
 name: ai:quality
 description: Execute quality gate checks - evaluate security, code quality, documentation and architecture
+argument-hint: "[path] [--json]"
+allowed-tools: Task, Bash, Read, Grep, Glob
 internal: true
 ---
 

@@ -3,7 +3,7 @@
   "name": "azuro-marketplace",
   "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
   "metadata": {
-    "version": "4.2.1"
+    "version": "4.2.2"
   },
   "owner": {
     "name": "foundj"
@@ -14,7 +14,7 @@
       "source": "./",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "4.2.1",
+      "version": "4.2.2",
       "repository": "https://github.com/Foundj/azuro-marketplace",
       "keywords": [
         "ai-development",
@@ -39,7 +39,8 @@
         "./skills/context-bridge",
         "./skills/session-manager",
         "./skills/project-initializer",
-        "./skills/plugin-auditor"
+        "./skills/plugin-auditor",
+        "~/.claude/skills/agent-browser"
       ],
       "commands": [
         "./commands/ai:dev.md",
@@ -47,7 +48,8 @@
         "./commands/ai:status.md",
         "./commands/ai:session-save.md",
         "./commands/ai:session-resume.md",
-        "./commands/ai:skills-audit.md"
+        "./commands/ai:skills-audit.md",
+        "./commands/ai:test-web.md"
       ],
       "hooks": "./hooks/hooks.json"
     },
@@ -56,7 +58,7 @@
       "source": "./skills/claude-reflect",
       "strict": false,
       "description": "Self-learning system that captures corrections during sessions and updates your project conventions",
-      "version": "4.2.1",
+      "version": "4.2.2",
       "keywords": [
         "learning",
         "reflection",
@@ -77,7 +79,7 @@
       "source": "./skills/thinking-engine",
       "strict": false,
       "description": "Advanced reasoning and chain-of-thought engine for complex problem solving",
-      "version": "4.2.1",
+      "version": "4.2.2",
       "keywords": [
         "thinking",
         "cot",
@@ -94,7 +96,7 @@
       "source": "./skills/context-bridge",
       "strict": false,
       "description": "Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow",
-      "version": "4.2.1",
+      "version": "4.2.2",
       "keywords": [
         "context",
         "session",

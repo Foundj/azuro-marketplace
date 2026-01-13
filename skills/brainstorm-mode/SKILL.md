@@ -4,7 +4,7 @@ description: |
   Socratic exploration mode for discovering requirements from vague ideas. Uses open-ended questioning,
   divergent thinking, and iterative refinement to transform fuzzy concepts into clear specifications.
   Triggers on "brainstorm", "explore ideas", "not sure what I need", "头脑风暴", "探索想法", "我不确定".
-version: 4.2.1
+version: 4.2.2
 triggers:
   - brainstorm
   - explore ideas
