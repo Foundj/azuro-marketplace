@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 4.2.9
+version: 4.2.10
 triggers:
   - implement
   - develop
@@ -28,6 +28,7 @@ triggers:
 ai implement user authentication   # Full 7-phase workflow
 dev fix login button bug           # Quick mode (auto-detected)
 ai ulw 重构整个模块                 # Ultrawork mode with parallel agents
+ai --parallel implement API        # Parallel mode (explicit)
 ai quick update readme             # Quick mode (explicit)
 ai think design new architecture   # Extended thinking mode
 ai 好好思考 设计架构                # Ultra-think mode (中文)
@@ -52,9 +53,12 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 | **Standard** | (default) | Full 7-phase workflow with user approval gates |
 | **Quick** | `quick`, `fix`, `修复`, `赶紧` | Skip phases 0.5, 1, 2. Direct to implementation |
 | **Ultrawork** | `ulw`, `全力`, `并行` | Maximum parallelism with background agents |
+| **Parallel** | `--parallel`, `并行执行` | Wave → Checkpoint → Wave parallel execution |
 | **Think** | `think`, `深度`, `考虑`, `分析` | Extended reasoning with higher token budget |
 | **Ultra-Think** | `ultrathink`, `好好思考`, `好好想想`, `认真想` | Maximum thinking budget for complex decisions |
 | **Explore** | `explore`, `熟悉`, `好好熟悉`, `学习`, `了解` | Deep codebase exploration before implementation |
+
+**Parallel Execution**: See `references/parallel-execution.md` for Wave → Checkpoint → Wave pattern.
 
 ---
 

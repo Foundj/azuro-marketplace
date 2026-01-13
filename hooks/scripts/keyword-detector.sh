@@ -31,8 +31,25 @@ PROMPT_LOWER=$(echo "$USER_PROMPT" | tr '[:upper:]' '[:lower:]')
 MODE=""
 INJECTION=""
 
-# Priority 1: Ultrawork mode (highest priority)
-if echo "$PROMPT_LOWER" | grep -qE '(ulw|ultrawork|全力|全自动)'; then
+# Priority 0: Parallel mode (explicit flag, highest priority)
+if echo "$PROMPT_LOWER" | grep -qE '(--parallel|并行执行|parallel mode)'; then
+    MODE="parallel"
+    INJECTION="[Parallel Mode 已激活]
+
+并行执行策略:
+1. 识别可并行的任务（无数据依赖、不同文件）
+2. 在同一消息中发送多个 Task 工具调用
+3. 使用 Checkpoint 同步结果
+4. 合并输出继续下一阶段
+
+执行原则:
+- Wave → Checkpoint → Wave 模式
+- 优先并行读取操作
+- 谨慎并行写入操作
+- 参考 references/parallel-execution.md"
+
+# Priority 1: Ultrawork mode (highest priority, includes parallel)
+elif echo "$PROMPT_LOWER" | grep -qE '(ulw|ultrawork|全力|全自动)'; then
     MODE="ultrawork"
     INJECTION="[Ultrawork Mode 已激活]
 
