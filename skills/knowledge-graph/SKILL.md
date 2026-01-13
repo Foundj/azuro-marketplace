@@ -3,9 +3,20 @@ name: knowledge-graph
 description: |
   This skill should be used when the user asks to "query knowledge", "find related solutions",
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
-  "knowledge", "experience", "历史方案", "经验复用". Manages cross-project knowledge relationships
+  "knowledge", "experience", "历史方案", "经验复用", "参考". Manages cross-project knowledge relationships
   and enables experience reuse across projects.
-version: 4.2.5
+version: 4.2.6
+triggers:
+  - query knowledge
+  - find related solutions
+  - 查知识库
+  - 知识图谱
+  - related projects
+  - similar implementations
+  - 参考
+  - 经验
+  - 历史方案
+  - 以前怎么做
 ---
 
 # Knowledge Graph

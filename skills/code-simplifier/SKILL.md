@@ -5,7 +5,7 @@ description: |
   all functionality. It includes SOLID principles checking, complexity metrics analysis, and refactoring
   pattern recommendations. Use when the user mentions "simplify code", "refine code", "clean up code",
   "refactor", "reduce complexity", "technical debt", "代码简化", "代码重构", "技术债务", or after code review passes.
-version: 4.2.5
+version: 4.2.6
 triggers:
   - simplify code
   - refine code
@@ -17,9 +17,11 @@ triggers:
   - technical debt
   - 代码简化
   - 代码优化
+  - 优化
   - 整理代码
   - 代码重构
   - 技术债务
+  - 重构
 ---
 
 # Code Simplifier & Refactoring Expert

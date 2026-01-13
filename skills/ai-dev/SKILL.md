@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 4.2.5
+version: 4.2.6
 triggers:
   - implement
   - develop
@@ -13,7 +13,9 @@ triggers:
   - ai:dev
   - 开发功能
   - 实现功能
+  - 实现
   - 构建
+  - 开发
 ---
 
 # AI-Dev v4.2 (Evolution Edition)
@@ -48,10 +50,11 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 | Mode | Keywords | Behavior |
 |------|----------|----------|
 | **Standard** | (default) | Full 7-phase workflow with user approval gates |
-| **Quick** | `quick`, `fix`, `修复` | Skip phases 0.5, 1, 2. Direct to implementation |
-| **Ultrawork** | `ulw`, `全力` | Maximum parallelism with background agents |
-| **Think** | `think`, `深度` | Extended reasoning with higher token budget |
-| **Ultra-Think** | `ultrathink`, `好好思考` | Maximum thinking budget for complex decisions |
+| **Quick** | `quick`, `fix`, `修复`, `赶紧` | Skip phases 0.5, 1, 2. Direct to implementation |
+| **Ultrawork** | `ulw`, `全力`, `并行` | Maximum parallelism with background agents |
+| **Think** | `think`, `深度`, `考虑`, `分析` | Extended reasoning with higher token budget |
+| **Ultra-Think** | `ultrathink`, `好好思考`, `好好想想`, `认真想` | Maximum thinking budget for complex decisions |
+| **Explore** | `explore`, `熟悉`, `好好熟悉`, `学习`, `了解` | Deep codebase exploration before implementation |
 
 ---
 
