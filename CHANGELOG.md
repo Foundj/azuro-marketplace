@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.2] - 2026-01-14
+
+### Added
+- **CHANGELOG Gate** - Pre-commit validation ensures CHANGELOG.md documents current version
+- `bump.sh` now auto-generates CHANGELOG entry template
+
+### Changed
+- Moved `components/scripts/` → `scripts/` (17 scripts + templates)
+- Deleted empty `components/` directory
+- Updated all path references in hooks and scripts
+
+## [5.0.1] - 2026-01-14
+
+### Changed
+- Fixed `sync-docs.sh` relative paths after directory restructure
+- Updated `context-window-monitor.sh` SCRIPTS_DIR path
+- Updated `handover.md` template path reference
+
+## [5.0.0] - 2026-01-14
+
+### Added
+- **README Command Table Update** - Added 3 missing commands: session-save, session-resume, test-web
+- **context-bridge v5.0** - Simplified from 1022 to ~225 lines (78% reduction)
+- All 16 skills achieved **90+ quality scores** (A grade)
+
+### Changed
+- Removed 3 deprecated commands from docs: loop, auto, review
+- Detailed implementation moved to `skills/context-bridge/references/`
+- Version management with comprehensive pre-commit validation
+
+### Technical
+- Professional 7-phase gated workflow fully documented
+- OODA autonomous completion loop refined
+
+
 ## [4.2.9] - 2026-01-14
 
 ### Added
@@ -147,6 +182,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Key Features |
 |---------|------|--------------|
+| 5.0.2 | 2026-01-14 | CHANGELOG gate, directory restructure |
+| 5.0.0 | 2026-01-14 | context-bridge v5.0, all skills 90+ |
 | 4.2.9 | 2026-01-14 | Pre-commit hooks, automated code review |
 | 4.2.8 | 2026-01-14 | Skills 90+ quality, Chinese triggers |
 | 4.2.7 | 2026-01-13 | Skills integration guide, official patterns |

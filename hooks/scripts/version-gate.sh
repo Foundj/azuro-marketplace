@@ -146,6 +146,31 @@ main() {
         echo -e "${YELLOW}⚠️  code-review-gate.sh not found, skipping...${NC}"
     fi
 
+    # Changelog gate: 检查 CHANGELOG.md 是否包含当前版本
+    echo -e "${YELLOW}🔍 Checking CHANGELOG.md...${NC}"
+    local changelog_file="CHANGELOG.md"
+    if [[ -f "$changelog_file" ]]; then
+        if grep -q "\[${current_version}\]" "$changelog_file"; then
+            echo -e "${GREEN}✅ CHANGELOG.md contains version ${current_version}${NC}"
+        else
+            echo ""
+            echo -e "${RED}❌ CHANGELOG GATE FAILED${NC}"
+            echo ""
+            echo -e "${YELLOW}CHANGELOG.md must document version ${current_version}${NC}"
+            echo ""
+            echo "Please add an entry like:"
+            echo ""
+            echo "  ## [${current_version}] - $(date +%Y-%m-%d)"
+            echo ""
+            echo "  ### Added/Changed/Fixed"
+            echo "  - Your changes here"
+            echo ""
+            exit 1
+        fi
+    else
+        echo -e "${YELLOW}⚠️  CHANGELOG.md not found, skipping...${NC}"
+    fi
+
     if [[ "$cached_version" == "0.0.0" ]]; then
         echo -e "${GREEN}✅ First commit - caching version${NC}"
         cache_version "$current_version"
