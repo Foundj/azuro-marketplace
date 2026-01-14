@@ -40,6 +40,42 @@ Azuro 是一个 Claude Code 插件市场，提供工业级的 AI 开发工具和
 /plugin list
 ```
 
+## AI 代理使用指南
+
+### 直接对话
+
+最简单的方式 - 直接告诉 Claude 你想要什么：
+
+> "为我的应用实现用户认证"
+> "修复登录按钮的 bug"
+> "审查我的代码安全问题"
+
+Claude 会自动使用市场中合适的技能和代理。
+
+### 核心命令
+
+| 命令 | 功能 |
+|------|------|
+| `/ai:dev <功能>` | 完整 7 阶段开发工作流 |
+| `/ai:fix <bug>` | 带验证的快速 bug 修复 |
+| `/ai:status` | 查看项目进度 |
+
+### CLAUDE.md 集成
+
+为了获得更一致的结果，将以下内容添加到项目的 CLAUDE.md：
+
+```markdown
+## AI 开发
+
+使用 `/ai:dev` 进行功能开发。使用 `/ai:status` 查看进度。
+
+核心工作流：
+1. `/ai:dev "功能名称"` - 启动开发
+2. 回答访谈问题
+3. 审核设计方案
+4. 让 AI 实现和验证
+```
+
 ## 可用插件
 
 **插件关系：**
@@ -50,10 +86,10 @@ Azuro 是一个 Claude Code 插件市场，提供工业级的 AI 开发工具和
 <!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 4.2.11 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **self-learning** | 4.2.11 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **thinking-toolbox** | 4.2.11 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 4.2.11 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 4.2.12 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **self-learning** | 4.2.12 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **thinking-toolbox** | 4.2.12 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 4.2.12 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能
