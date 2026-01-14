@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.9] - 2026-01-14
+
+### Added
+- **LSP-First Navigation** - 代码导航优先使用 LSP 工具
+  - `LSP.goToDefinition`, `LSP.findReferences` 替代 Grep 进行符号导航
+  - 语义理解，跨文件精确导航，类型感知引用
+  - 在 CLAUDE.md、ai-dev、knowledge-graph 中添加指导
+- **Parallel Task Marking** - OODA 循环支持并行任务标记
+  - tasks.md 支持 `[parallel]` 标记
+  - 自动检测文件冲突，无冲突时并行执行
+  - LSP 辅助验证任务依赖
+
+### Changed
+- **knowledge-graph** - 增强工具优先级链
+  - LSP (代码导航) → MCP Context7 (文档) → 本地知识库 → Grep/Glob
+  - MCP 语义搜索集成
+- **ai-dev workflow** - 新增 LSP-First Navigation 关键特性
+
+
 ## [5.0.8] - 2026-01-14
 
 ### Added

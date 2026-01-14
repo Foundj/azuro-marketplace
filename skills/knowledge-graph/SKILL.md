@@ -4,8 +4,8 @@ description: |
   This skill should be used when the user asks to "query knowledge", "find related solutions",
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
   "knowledge", "experience", "历史方案", "经验复用", "参考". Manages cross-project knowledge relationships
-  and enables experience reuse across projects.
-version: 5.0.8
+  and enables experience reuse across projects. Now enhanced with MCP semantic search and LSP-first navigation.
+version: 5.0.9
 triggers:
   - query knowledge
   - find related solutions
@@ -32,17 +32,6 @@ triggers:
 - "similar implementations"
 
 ## Overview
-...
-(existing content)
-...
-
-## Agent Collaboration
-- **@librarian**: Uses knowledge graph to provide historical context during research.
-- **feature-planner**: Queries graph for similar project structures during Phase 1.
-
-## Version History
-- **1.0.0**: Initial release with local storage and ai-dev integration.
-
 
 Knowledge Graph builds a network of project relationships to:
 
@@ -50,6 +39,86 @@ Knowledge Graph builds a network of project relationships to:
 - Reuse historical experience
 - Avoid repeating mistakes
 - Accelerate technical decisions
+
+---
+
+## Tool Priority (v5.0.9)
+
+### 1. LSP-First Navigation
+
+**Always prefer LSP tools over grep/glob for code navigation:**
+
+| Task | Preferred (LSP) | Fallback |
+|------|-----------------|----------|
+| Find definition | `LSP.goToDefinition` | Grep pattern |
+| Find references | `LSP.findReferences` | Grep symbol |
+| Get type info | `LSP.hover` | Read file |
+| Find implementations | `LSP.goToImplementation` | Grep interface |
+| List symbols | `LSP.documentSymbol` | Glob patterns |
+| Search workspace | `LSP.workspaceSymbol` | Grep + Glob |
+| Call hierarchy | `LSP.incomingCalls/outgoingCalls` | Manual tracing |
+
+**Example Usage:**
+```typescript
+// ✅ GOOD: Use LSP for accurate navigation
+LSP({ operation: "goToDefinition", filePath: "src/auth/jwt.ts", line: 45, character: 12 })
+LSP({ operation: "findReferences", filePath: "src/auth/jwt.ts", line: 10, character: 20 })
+
+// ❌ AVOID: Grep for symbol navigation (less accurate)
+Grep({ pattern: "function verifyToken", path: "src/" })
+```
+
+**Benefits:**
+- Semantic understanding (not just text matching)
+- Accurate cross-file navigation
+- Type-aware references
+- Respects language semantics (imports, aliases, etc.)
+
+### 2. MCP Semantic Search
+
+**Use Context7 MCP for semantic knowledge queries:**
+
+```
+Step 1: Resolve library for context
+  mcp__context7__resolve-library-id
+    - libraryName: "react"
+    - query: "hooks state management patterns"
+
+Step 2: Query semantic documentation
+  mcp__context7__query-docs
+    - libraryId: "/facebook/react"
+    - query: "useEffect cleanup best practices"
+```
+
+**When to Use MCP vs Local:**
+
+| Scenario | Use MCP | Use Local |
+|----------|---------|-----------|
+| Official API docs | ✅ Context7 | ❌ |
+| Current best practices | ✅ Tavily | ❌ |
+| Project-specific patterns | ❌ | ✅ knowledge/ |
+| Historical solutions | ❌ | ✅ nodes.json |
+| Error resolutions | ❌ | ✅ errors/ |
+
+### 3. Fallback Chain
+
+```yaml
+Query Priority:
+  1. LSP (code navigation) → Most accurate for code
+  2. MCP Context7 (documentation) → Official docs
+  3. Local knowledge base → Project-specific
+  4. Grep/Glob (pattern matching) → Last resort
+```
+
+---
+
+## Agent Collaboration
+- **@librarian**: Uses knowledge graph to provide historical context during research.
+- **feature-planner**: Queries graph for similar project structures during Phase 1.
+
+## Version History
+- **5.0.9**: Add LSP-first navigation, MCP semantic search, tool priority chain
+- **1.0.0**: Initial release with local storage and ai-dev integration.
 
 ---
 

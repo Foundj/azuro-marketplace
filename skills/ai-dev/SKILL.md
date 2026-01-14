@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 5.0.8
+version: 5.0.9
 triggers:
   - implement
   - develop
@@ -169,6 +169,24 @@ Read Before Decide pattern prevents goal drift:
 When `/ai:dev` or `/ai:dev auto` runs without arguments:
 - Detects active changes in `codebox/changes/active/`
 - Offers to continue or start new
+
+### LSP-First Navigation (v5.0.9)
+
+**Always prefer LSP tools over grep/glob for code navigation:**
+
+| Task | Use LSP | Fallback |
+|------|---------|----------|
+| Find definition | `LSP.goToDefinition` | Grep |
+| Find references | `LSP.findReferences` | Grep |
+| Get type info | `LSP.hover` | Read |
+| Find implementations | `LSP.goToImplementation` | Grep |
+| Call hierarchy | `LSP.incomingCalls/outgoingCalls` | Manual |
+
+**Benefits:**
+- Semantic understanding (not text matching)
+- Accurate cross-file navigation
+- Type-aware references
+- Respects language semantics
 
 ---
 

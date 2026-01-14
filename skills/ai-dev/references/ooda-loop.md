@@ -310,6 +310,72 @@ Agent sees all tasks done, marks <promise>DONE</promise>
 - [ ] TypeScript: 0 errors
 ```
 
+### Parallel Task Marking (v5.0.9)
+
+Tasks can be marked for parallel execution using `[parallel]` tag:
+
+**tasks.md with Parallel Marking:**
+
+```markdown
+## 📋 Build Sequence
+
+### Phase 1: Core (Serial)
+- [ ] Task 1: Create database schema
+
+### Phase 2: Implementation [parallel]
+- [ ] Task 2: Implement UserRepository `files: src/repo/**`
+- [ ] Task 3: Implement AuthService `files: src/services/**`
+- [ ] Task 4: Create API endpoints `files: src/api/**`
+
+### Phase 3: Testing [parallel]
+- [ ] Task 5: Add unit tests `files: tests/unit/**`
+- [ ] Task 6: Add integration tests `files: tests/integration/**`
+```
+
+**Parallel Execution Rules:**
+
+| Rule | Description |
+|------|-------------|
+| No file overlap | Tasks in parallel group must operate on different files |
+| Same phase | Only tasks in same `[parallel]` section run together |
+| Independent | No data dependency between parallel tasks |
+
+**How OODA Handles Parallel Tasks:**
+
+```typescript
+// Detect parallel group
+const parallelGroup = tasks.filter(t =>
+  t.phase === currentPhase &&
+  isParallelPhase(currentPhase) &&
+  !t.completed &&
+  !hasFileConflict(t, otherTasks)
+);
+
+if (parallelGroup.length > 1) {
+  // Execute in parallel using multiple Task tool calls
+  await Promise.all(parallelGroup.map(task =>
+    Task({
+      subagent_type: 'quick-fixer',
+      prompt: `Implement: ${task.description}`,
+      run_in_background: true
+    })
+  ));
+} else {
+  // Execute serially
+  await implementTask(nextTask);
+}
+```
+
+**LSP-First for Parallel Task Planning:**
+
+Before marking tasks as parallel, use LSP to verify no file conflicts:
+
+```typescript
+// Use LSP to check call hierarchy and references
+LSP({ operation: "findReferences", filePath: "src/types.ts", line: 10, character: 5 })
+// If Task 2 and Task 3 both reference same type, they may conflict
+```
+
 #### Step 2: OODA Loop Reads tasks.md (Iteration 1)
 
 ```typescript

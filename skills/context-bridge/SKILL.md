@@ -1,6 +1,6 @@
 ---
 name: context-bridge
-version: 5.0.8
+version: 5.0.9
 description: |
   This skill should be used when managing cross-session context and in-session attention.
   Implements Manus "Read Before Decide" pattern. Auto Checkpoint at 90% context.
