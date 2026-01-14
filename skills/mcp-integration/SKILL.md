@@ -5,7 +5,7 @@ description: |
   It helps configure and use external MCP servers like Context7 (documentation), Tavily (web search),
   and Sequential-Thinking (reasoning). Use when the user mentions "MCP", "Context7", "Tavily",
   "官方文档查询", "MCP配置", "外部服务集成", or wants to enhance research with external tools.
-version: 5.0.9
+version: 5.0.10
 triggers:
   - MCP
   - Context7
@@ -162,10 +162,53 @@ claude mcp list
 claude mcp status context7
 ```
 
-**Graceful Degradation**: If MCP server unavailable, fall back to:
-1. WebFetch for documentation URLs
-2. WebSearch for research
-3. Codebase patterns for reference
+## Graceful Degradation (无 MCP 时的降级方案)
+
+**重要**: MCP 是可选增强，不配置 MCP 不会影响基本功能使用。
+
+### 降级策略表
+
+| MCP 工具 | 降级替代方案 | 功能差异 |
+|----------|--------------|----------|
+| Context7 (文档) | WebFetch + 官方 URL | 需手动提供 URL，无语义搜索 |
+| Context7 (文档) | WebSearch "library docs" | 结果可能不够精确 |
+| Tavily (研究) | WebSearch | 无 Multi-hop，深度有限 |
+| Tavily (研究) | codeagent-wrapper.sh | 使用 Gemini 后端 |
+| Sequential-Thinking | 直接推理 | 无 token 节省，同样有效 |
+
+### 降级检测逻辑
+
+```yaml
+# 在技能执行前自动检测
+check_mcp_availability:
+  - try: mcp__context7__resolve-library-id
+  - if_error: use WebFetch/WebSearch fallback
+  - log: "MCP unavailable, using fallback"
+
+# 无需用户配置，自动降级
+```
+
+### 无 MCP 时的替代流程
+
+**文档查询** (替代 Context7):
+```bash
+# 直接使用 WebFetch
+WebFetch({ url: "https://react.dev/reference/react/useEffect", prompt: "cleanup best practices" })
+
+# 或使用 WebSearch
+WebSearch({ query: "React useEffect cleanup official docs 2024" })
+```
+
+**竞品研究** (替代 Tavily):
+```bash
+# 使用 codeagent-wrapper.sh (如果已配置)
+~/.claude/common/lib/codeagent-wrapper.sh --backend gemini --yolo "search for auth best practices"
+
+# 或使用 WebSearch
+WebSearch({ query: "authentication best practices 2024" })
+```
+
+**结论**: 不配置 MCP 完全可以正常使用，只是失去一些高级功能（语义搜索、Multi-hop 推理）。
 
 ## Security Considerations
 
