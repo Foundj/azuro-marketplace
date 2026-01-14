@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.5] - 2026-01-14
+
+### Changed
+- Reverted URLs to use `refs/heads/main` format (industry standard)
+
+
 ## [5.0.4] - 2026-01-14
 
 ### Fixed

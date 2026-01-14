@@ -5,7 +5,7 @@ description: |
   It automatically detects feedback patterns and prompts users to sync learnings to CLAUDE.md files.
   Use when the user mentions "reflect", "remember this", "learn from", "更新规则", "记住这个",
   or after meaningful corrections are made that should be persisted.
-version: 5.0.4
+version: 5.0.5
 triggers:
   - reflect
   - remember this
