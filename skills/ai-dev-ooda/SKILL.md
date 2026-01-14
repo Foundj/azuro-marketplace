@@ -5,7 +5,7 @@ description: |
   Observe-Orient-Decide-Act cycle with verification gates, reflexion learning, and attention management.
   Use this skill when the user mentions "autonomous loop", "OODA", "自动执行", "循环执行", "ai:loop",
   "ai:auto", or when executing tasks autonomously until completion with <promise>DONE</promise> signal.
-version: 5.0.6
+version: 5.0.7
 triggers:
   - autonomous loop
   - OODA loop
@@ -45,6 +45,62 @@ OODA Loop enables autonomous task execution:
 └─────────────────────────────────────────────────────┘
 ```
 
+## TDD Enforcement (v5.0.7)
+
+> **Red-Green-Refactor** — Write failing tests BEFORE implementation code.
+
+### TDD Gate (Mandatory)
+
+Every implementation task MUST follow TDD cycle:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    TDD CYCLE (强制)                          │
+├─────────────────────────────────────────────────────────────┤
+│  1. RED   → Write failing test first                        │
+│  2. RUN   → Observe test failure (verify it fails)          │
+│  3. GREEN → Write minimum code to pass                      │
+│  4. RUN   → Verify test passes                              │
+│  5. COMMIT→ Commit working code                             │
+│  6. REFACTOR → Clean up (optional, with tests passing)      │
+│  7. Repeat for next task                                    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Task Format with TDD
+
+```markdown
+## tasks.md example (with TDD)
+- [ ] Implement login API
+  - tdd_required: true
+  - test_file: `tests/api/login.test.ts`
+  - verify_with: `npm test -- --grep "login"`
+  - success_criteria: All tests pass
+```
+
+### TDD Verification Hook
+
+Before marking any task complete, the OODA loop checks:
+
+1. **Test File Exists**: `test_file` must exist
+2. **Test Was Written First**: Git history shows test commit before implementation
+3. **Test Passes**: `verify_with` command succeeds
+
+**Blocking Rule**: Cannot proceed to next task or output `<promise>DONE</promise>` without passing TDD gate.
+
+### Escape Hatches
+
+| Scenario | Escape | Usage |
+|----------|--------|-------|
+| UI-only changes | `tdd_required: false` | Pure styling, no logic |
+| Config changes | `tdd_required: false` | Environment config |
+| Documentation | `tdd_required: false` | Markdown files |
+| Legacy code (no test infra) | `tdd_required: skip` | Must justify in PR |
+
+**Default**: `tdd_required: true` for all code changes.
+
+---
+
 ## Verification Gates (v4.0)
 
 Tasks can specify verification commands that MUST pass before completion:
@@ -52,6 +108,7 @@ Tasks can specify verification commands that MUST pass before completion:
 ```markdown
 ## tasks.md example
 - [ ] Implement login API
+  - tdd_required: true
   - verify_with: `npm test -- --grep "login"`
   - success_criteria: All tests pass
 ```
@@ -266,6 +323,7 @@ See `references/ooda-loop.md` for complete specification including:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 5.0.7 | 2026-01-14 | Add TDD Enforcement gate (mandatory Red-Green-Refactor) |
 | 4.2.6 | 2026-01-13 | Add agent collaboration, version history |
 | 4.2.4 | 2026-01-10 | Add Ralph Loop pattern integration |
 | 4.1.0 | 2026-01-08 | Add Attention Management |

@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 5.0.6
+version: 5.0.7
 triggers:
   - implement
   - develop
@@ -68,15 +68,16 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 
 | Phase | Name | Gate | Key Action |
 |-------|------|------|------------|
-| 0 | Context & Knowledge | Auto | Load project context, query knowledge, detect issues |
+| 0 | Context & Knowledge | Auto | Load project context, query knowledge, **confidence gate** |
 | 0.5 | Research | Auto/Skip | Competitor research (new features only) |
 | 1 | Requirement Interview | User | Multi-round interview, generate proposal.md |
 | 2 | Design Approval | User | Present approaches, user selects, generate design.md |
+| 2.5 | Worktree Setup | Auto | Create isolated worktree for feature development |
 | 3 | Task Breakdown | Auto | Generate tasks.md with 2-5min atomic subtasks |
-| 4 | Implementation | OODA | Autonomous execution until `<promise>DONE</promise>` |
+| 4 | Implementation | OODA | Autonomous execution with **TDD enforcement** |
 | 5 | Quality Validation | Auto | Spec compliance → Code review → Confidence ≥80 filter |
 | 5.5 | Code Simplification | Auto/Skip | Polish code (if autoSimplify enabled) |
-| 6 | Finalization | User | Archive to knowledge, commit |
+| 6 | Finalization | User | Archive to knowledge, commit, cleanup worktree |
 
 ### Phase Details
 
@@ -84,6 +85,10 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Load `codebox/project-snapshot.json` (incremental via git diff)
 - Query `codebox/knowledge/` for patterns and errors
 - Detect blocking issues (🔴), warnings (🟡), info (🟢)
+- **★ Run Confidence Gate** (v5.0.7)
+  - ≥90%: Proceed immediately
+  - 70-89%: Present alternatives, user chooses
+  - <70%: Must ask clarifying questions
 
 **Phase 0.5: Research** (new features only)
 - Multi-model research via `codeagent-wrapper.sh`
@@ -99,6 +104,12 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Reference global constraints (`codebox/design.md`)
 - Generate `design.md`
 
+**Phase 2.5: Worktree Setup** (v5.0.7)
+- Create isolated worktree: `.worktrees/{change-id}`
+- Install dependencies automatically
+- Verify test baseline passes
+- Parallel development without branch conflicts
+
 **Phase 3: Task Breakdown**
 - Auto-generate `tasks.md` with atomic subtasks (2-5 minutes each)
 - Each task includes: file path, verify command, acceptance criteria
@@ -106,6 +117,7 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 
 **Phase 4: OODA Implementation**
 - Autonomous loop via Stop hook
+- **★ TDD Enforcement** (v5.0.7): Red → Green → Refactor cycle
 - Execute tasks, update checkboxes
 - Output `<promise>DONE</promise>` to exit
 - Max iterations: 50 (configurable)
@@ -128,6 +140,7 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Update knowledge base with new patterns
 - Archive change to `codebox/changes/archived/`
 - Commit with structured message
+- **★ Cleanup worktree** (v5.0.7): Remove after merge
 
 ---
 
@@ -163,9 +176,11 @@ When `/ai:dev` or `/ai:dev auto` runs without arguments:
 
 | Skill | Phase | Purpose |
 |-------|-------|---------|
+| `confidence-gate` | 0 | Pre-execution confidence checking (≥90%/70-89%/<70%) |
 | `brainstorm-mode` | -1 | Socratic exploration for unclear requirements |
 | `ai-dev-interview` | 1 | Multi-round requirement interview |
-| `ai-dev-ooda` | 4 | OODA autonomous execution engine |
+| `git-worktree` | 2.5, 6 | Isolated development workspace management |
+| `ai-dev-ooda` | 4 | OODA autonomous execution engine with TDD |
 | `ai-dev-quality` | 5 | Multi-perspective code review |
 | `code-simplifier` | 5.5 | Code refinement and simplification |
 | `thinking-engine` | 0 | Structured thinking for complex decisions |

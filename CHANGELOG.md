@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.7] - 2026-01-14
+
+### Added
+- **git-worktree skill** - 隔离开发工作空间管理（借鉴 Superpowers）
+  - `create-worktree.sh` - 创建隔离 worktree 并自动安装依赖
+  - `cleanup-worktree.sh` - 安全清理 worktree 并可选删除分支
+  - 集成到 ai-dev Phase 2.5 和 Phase 6
+- **confidence-gate skill** - 前置置信度门控（借鉴 SuperClaude PM Agent）
+  - ≥90%: 直接执行
+  - 70-89%: 提供备选方案
+  - <70%: 必须问问题，不能猜测
+  - ROI: 25-250x token 节省
+- **TDD Enforcement** in ai-dev-ooda - 强制 Red-Green-Refactor 循环
+  - 每个任务必须先写失败测试
+  - 无测试不允许标记完成
+
+### Changed
+- **ai-dev workflow** - 新增 Phase 2.5 (Worktree Setup) 和 Phase 0 Confidence Gate
+- **ai-dev-ooda** - 新增 TDD 强制门控，任务格式增加 `tdd_required` 字段
+
+### Technical
+- 借鉴 Superpowers 的 git-worktree 隔离开发模式
+- 借鉴 SuperClaude PM Agent 的置信度门控（≥90%/70-89%/<70%）
+- 借鉴 Superpowers 的 TDD 铁律（红绿重构）
+
+
 ## [5.0.6] - 2026-01-14
 
 ### Added
