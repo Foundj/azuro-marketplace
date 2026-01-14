@@ -21,7 +21,7 @@ ${VERIFY_CMD}
 You are a specialized Worker Agent. Your goal is to complete the single task defined above.
 
 ### Step-by-Step Workflow:
-1. **Initialize**: Run `bash components/scripts/worker-main.sh --init` to sync state.
+1. **Initialize**: Run `bash scripts/worker-main.sh --init` to sync state.
 2. **Execute**: Implement the requested changes in the codebase.
 3. **Verify**: Run the verification command: `${VERIFY_CMD}`.
 4. **Complete**:
