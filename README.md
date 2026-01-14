@@ -86,10 +86,10 @@ Core workflow:
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 4.2.12 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **self-learning** | 4.2.12 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **thinking-toolbox** | 4.2.12 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 4.2.12 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 5.0.0 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **self-learning** | 5.0.0 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **thinking-toolbox** | 5.0.0 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 5.0.0 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features
@@ -99,12 +99,12 @@ Core workflow:
 | Command | Description |
 |---------|-------------|
 | `/ai:dev` | Start AI development workflow (Phases 0-6) |
-| `/ai:loop` | Autonomous OODA loop execution |
-| `/ai:auto` | Auto-complete remaining tasks in active change |
-| `/ai:status` | View project health and agent progress |
 | `/ai:fix` | Intelligent bug fix with verification loop |
-| `/ai:review` | Multi-perspective code review |
+| `/ai:status` | View project health and agent progress |
+| `/ai:session-save` | Save current session progress and context |
+| `/ai:session-resume` | Restore and continue previous session |
 | `/ai:skills-audit` | Professional skill quality validation |
+| `/ai:test-web` | Web automation and browser integration testing |
 
 ### Specialized Agents (24)
 

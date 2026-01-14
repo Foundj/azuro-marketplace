@@ -5,7 +5,7 @@ description: |
   interviews with parallel context collection, risk detection, and proposal generation. Use this skill
   when the user mentions "requirement interview", "需求访谈", "ai:interview", "clarify requirements",
   "gather requirements", or when gathering requirements for new features or clarifying ambiguous specifications.
-version: 4.2.12
+version: 5.0.0
 triggers:
   - requirement interview
   - ai:interview

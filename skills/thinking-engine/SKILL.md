@@ -7,7 +7,7 @@ description: |
   problem solving, and architecture design decisions.
 
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 4.2.12
+version: 5.0.0
 triggers:
   - think deeply
   - analyze task

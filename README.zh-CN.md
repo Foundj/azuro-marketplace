@@ -86,10 +86,10 @@ Claude 会自动使用市场中合适的技能和代理。
 <!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 4.2.12 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **self-learning** | 4.2.12 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **thinking-toolbox** | 4.2.12 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 4.2.12 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 5.0.0 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **self-learning** | 5.0.0 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **thinking-toolbox** | 5.0.0 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 5.0.0 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能
@@ -99,12 +99,12 @@ Claude 会自动使用市场中合适的技能和代理。
 | 命令 | 描述 |
 |------|------|
 | `/ai:dev` | 启动 AI 开发工作流 (Phase 0-6) |
-| `/ai:loop` | OODA 自主执行循环 |
-| `/ai:auto` | 自动完成当前变更中的剩余任务 |
-| `/ai:status` | 查看项目健康状况和代理进度 |
 | `/ai:fix` | 带验证循环的智能 Bug 修复 |
-| `/ai:review` | 多维度代码审查 |
+| `/ai:status` | 查看项目健康状况和代理进度 |
+| `/ai:session-save` | 保存当前会话进度和上下文 |
+| `/ai:session-resume` | 恢复并继续之前的会话 |
 | `/ai:skills-audit` | 专业技能质量验证 |
+| `/ai:test-web` | Web 自动化和浏览器集成测试 |
 
 ### 专业代理 (24个)
 
