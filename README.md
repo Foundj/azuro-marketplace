@@ -6,14 +6,32 @@ Azuro is a Claude Code plugin marketplace providing industrial-grade AI developm
 
 ## Quick Start
 
-### 1. Install Marketplace
+### Claude Code
 
 ```bash
 # From GitHub
 /plugin marketplace add Foundj/azuro-marketplace
 ```
 
-### 2. Browse & Install Plugins
+### Codex
+
+Tell Codex:
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/Foundj/azuro-marketplace/refs/heads/main/.codex/INSTALL.md
+```
+**Detailed docs:** [.codex/INSTALL.md](.codex/INSTALL.md)
+
+### OpenCode
+
+Tell OpenCode:
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/Foundj/azuro-marketplace/refs/heads/main/.opencode/INSTALL.md
+```
+**Detailed docs:** [.opencode/INSTALL.md](.opencode/INSTALL.md)
+
+---
+
+### Browse & Install Plugins (Claude Code)
 
 ```bash
 # Browse available plugins
@@ -27,7 +45,7 @@ Azuro is a Claude Code plugin marketplace providing industrial-grade AI developm
 /plugin install skills-audit-toolkit@azuro-marketplace
 ```
 
-### 3. Marketplace Management
+### Marketplace Management (Claude Code)
 
 ```bash
 # Update marketplace (fetch latest versions)
@@ -86,10 +104,10 @@ Core workflow:
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 5.0.2 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **self-learning** | 5.0.2 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **thinking-toolbox** | 5.0.2 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 5.0.2 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 5.0.3 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **self-learning** | 5.0.3 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **thinking-toolbox** | 5.0.3 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 5.0.3 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features

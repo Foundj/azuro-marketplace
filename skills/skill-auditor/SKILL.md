@@ -3,7 +3,7 @@ name: skill-auditor
 description: |
   Audit Claude Code skills against best practices.
   Provides quality scoring, issue detection, and optimization guidance.
-version: 5.0.2
+version: 5.0.3
 ---
 
 # Skill Auditor

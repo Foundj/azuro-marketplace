@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.3] - 2026-01-14
+
+### Added
+- **Multi-platform Installation** - Support for Codex and OpenCode platforms
+- `.codex/INSTALL.md` - Installation guide for Codex users
+- `.opencode/INSTALL.md` - Installation guide for OpenCode users
+
+### Changed
+- Updated README.md and README.zh-CN.md with multi-platform quick start section
+
+
 ## [5.0.2] - 2026-01-14
 
 ### Added
