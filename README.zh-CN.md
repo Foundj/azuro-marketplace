@@ -17,7 +17,7 @@ Azuro 是一个 Claude Code 插件市场，提供工业级的 AI 开发工具和
 
 告诉 Codex：
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/Foundj/azuro-marketplace/refs/heads/main/.codex/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/Foundj/azuro-marketplace/main/.codex/INSTALL.md
 ```
 **详细文档:** [.codex/INSTALL.md](.codex/INSTALL.md)
 
@@ -25,7 +25,7 @@ Fetch and follow instructions from https://raw.githubusercontent.com/Foundj/azur
 
 告诉 OpenCode：
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/Foundj/azuro-marketplace/refs/heads/main/.opencode/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/Foundj/azuro-marketplace/main/.opencode/INSTALL.md
 ```
 **详细文档:** [.opencode/INSTALL.md](.opencode/INSTALL.md)
 
@@ -104,10 +104,10 @@ Claude 会自动使用市场中合适的技能和代理。
 <!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 5.0.3 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **self-learning** | 5.0.3 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **thinking-toolbox** | 5.0.3 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 5.0.3 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 5.0.4 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **self-learning** | 5.0.4 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **thinking-toolbox** | 5.0.4 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 5.0.4 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能
