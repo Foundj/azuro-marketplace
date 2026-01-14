@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.8] - 2026-01-14
+
+### Added
+- **mcp-integration skill** - MCP 服务器集成指南
+  - Context7: 官方文档查询，防止 AI 幻觉
+  - Tavily: 深度网络搜索，增强研究能力
+  - Sequential-Thinking: 多步推理，减少 token
+  - 配置示例和最佳实践
+
+### Changed
+- **competitor-research** - 新增 MCP 增强研究功能
+  - Tavily MCP 优先于 Gemini 进行网络搜索
+  - Context7 MCP 用于官方文档查询
+  - 实现 MCP → 传统方法的降级链
+- **ai-dev workflow** - 集成 mcp-integration 到 Phase 0, 0.5
+
+### Technical
+- 遵循官方插件参考文档的 MCP 配置规范
+- 支持 `.mcp.json` 和 `plugin.json` 两种配置方式
+
+
 ## [5.0.7] - 2026-01-14
 
 ### Added

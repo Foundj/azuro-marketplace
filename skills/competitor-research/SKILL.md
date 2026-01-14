@@ -4,7 +4,7 @@ description: |
   This skill provides multi-model research capabilities for gathering competitor insights and best practices.
   Use when implementing new features, researching libraries, or analyzing open-source patterns.
   Triggers on "research competitors", "analyze best practices", "compare libraries", "研究竞品", "最佳实践".
-version: 5.0.7
+version: 5.0.8
 triggers:
   - research competitors
   - analyze best practices
@@ -24,9 +24,57 @@ triggers:
 
 Competitor Research gathers insights from multiple sources to improve requirement quality:
 
+- **MCP Integration (Preferred)**: Tavily for deep web search, Context7 for official docs
 - **Web Search** (Gemini): Best practices, library comparisons, security guidelines
 - **Code Analysis** (Codex): Open-source patterns, implementation examples
 - **Code Review** (Claude): Security review, quality assessment
+
+---
+
+## MCP-Enhanced Research (v5.0.8)
+
+When MCP servers are available, use them for higher quality results:
+
+### Tavily MCP (Deep Web Research)
+
+```
+mcp__tavily__search
+  - query: "[FEATURE] best practices [TECH_STACK] 2024"
+  - search_depth: "advanced"
+  - include_domains: ["github.com", "stackoverflow.com"]
+```
+
+**Advantages over Gemini**:
+- Multi-hop reasoning (up to 5 hops)
+- Source quality scoring
+- Real-time results
+
+### Context7 MCP (Official Documentation)
+
+```
+Step 1: Resolve library
+  mcp__context7__resolve-library-id
+    - libraryName: "[LIBRARY]"
+    - query: "[FEATURE] implementation"
+
+Step 2: Query docs
+  mcp__context7__query-docs
+    - libraryId: "[RESOLVED_ID]"
+    - query: "[SPECIFIC_QUESTION]"
+```
+
+**Advantages**:
+- Prevents hallucination with verified docs
+- Up-to-date API references
+- Code examples from official sources
+
+### Fallback Chain
+
+```
+1. Check MCP availability: mcp__tavily, mcp__context7
+2. If available → Use MCP tools
+3. If unavailable → Fall back to codeagent-wrapper.sh
+```
 
 ---
 
@@ -276,6 +324,7 @@ When research reveals significant risks:
 |-------|------|
 | `ai-dev` | Triggers research in Phase 0.5 |
 | `ai-dev-interview` | Uses research as context |
+| `mcp-integration` | Provides MCP tool guidance |
 | `@librarian` | Stores research in knowledge base |
 | `@oracle` | Strategic research direction |
 
@@ -283,6 +332,7 @@ When research reveals significant risks:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 5.0.8 | 2026-01-14 | Add MCP integration (Tavily, Context7), fallback chain |
 | 4.2.6 | 2026-01-13 | Add triggers, agent collaboration, version history |
 | 4.0.0 | 2026-01-07 | Initial release with multi-model pipeline |
 

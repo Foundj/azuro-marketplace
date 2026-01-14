@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 5.0.7
+version: 5.0.8
 triggers:
   - implement
   - develop
@@ -177,7 +177,9 @@ When `/ai:dev` or `/ai:dev auto` runs without arguments:
 | Skill | Phase | Purpose |
 |-------|-------|---------|
 | `confidence-gate` | 0 | Pre-execution confidence checking (≥90%/70-89%/<70%) |
+| `mcp-integration` | 0, 0.5 | External tool integration (Context7, Tavily) |
 | `brainstorm-mode` | -1 | Socratic exploration for unclear requirements |
+| `competitor-research` | 0.5 | MCP-enhanced research with Tavily/Context7 |
 | `ai-dev-interview` | 1 | Multi-round requirement interview |
 | `git-worktree` | 2.5, 6 | Isolated development workspace management |
 | `ai-dev-ooda` | 4 | OODA autonomous execution engine with TDD |
