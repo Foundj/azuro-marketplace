@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 5.0.5
+version: 5.0.6
 triggers:
   - implement
   - develop
@@ -72,9 +72,9 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 | 0.5 | Research | Auto/Skip | Competitor research (new features only) |
 | 1 | Requirement Interview | User | Multi-round interview, generate proposal.md |
 | 2 | Design Approval | User | Present approaches, user selects, generate design.md |
-| 3 | Task Breakdown | Auto | Generate tasks.md with subtasks |
+| 3 | Task Breakdown | Auto | Generate tasks.md with 2-5min atomic subtasks |
 | 4 | Implementation | OODA | Autonomous execution until `<promise>DONE</promise>` |
-| 5 | Quality Validation | Auto | Multi-perspective review, confidence-scorer ≥80 filter |
+| 5 | Quality Validation | Auto | Spec compliance → Code review → Confidence ≥80 filter |
 | 5.5 | Code Simplification | Auto/Skip | Polish code (if autoSimplify enabled) |
 | 6 | Finalization | User | Archive to knowledge, commit |
 
@@ -100,7 +100,8 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Generate `design.md`
 
 **Phase 3: Task Breakdown**
-- Auto-generate `tasks.md` with subtasks
+- Auto-generate `tasks.md` with atomic subtasks (2-5 minutes each)
+- Each task includes: file path, verify command, acceptance criteria
 - Include success criteria and test requirements
 
 **Phase 4: OODA Implementation**
@@ -110,9 +111,12 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Max iterations: 50 (configurable)
 
 **Phase 5: Quality Validation**
-- 3x code-reviewer (security, bugs, maintainability)
-- confidence-scorer filters ≥80 only
-- verification-agent runs tests/build/lint
+- **Step 1**: spec-compliance-reviewer (规格符合性审查)
+  - 验证实现是否**不多不少**符合原始需求
+  - Missing/Extra/Misunderstood 检查
+- **Step 2**: 3x code-reviewer (security, bugs, maintainability)
+- **Step 3**: confidence-scorer filters ≥80 only
+- **Step 4**: verification-agent runs tests/build/lint
 
 **Phase 5.5: Code Simplification** (auto when `autoSimplify: true`)
 - Triggered automatically after Phase 5 passes (if enabled in config)

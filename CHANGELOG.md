@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.6] - 2026-01-14
+
+### Added
+- **spec-compliance-reviewer agent** - 规格符合性审查，验证实现是否不多不少符合需求
+  - Missing/Extra/Misunderstood 三维检查
+  - Phase 5 Quality Validation 的第一道门禁
+- **TDD 意识检查** - code-reviewer 新增测试先行原则验证
+
+### Changed
+- **task-decomposer 原子化要求** - 任务粒度从 2-8 小时改为 2-5 分钟
+  - 每个任务必须包含精确文件路径
+  - 每个任务必须包含验证命令
+- **ai-dev Phase 5 流程优化** - Spec Compliance → Code Review → Confidence Scoring
+- **ai-dev Phase 3 强化** - 生成 2-5 分钟原子化子任务
+
+### Technical
+- 借鉴 Superpowers 的三角色子代理模型（Implementer + Spec Reviewer + Quality Reviewer）
+- 借鉴 Superpowers 的 TDD 铁律和防御性措辞
+
+
 ## [5.0.5] - 2026-01-14
 
 ### Changed

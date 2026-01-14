@@ -36,6 +36,65 @@ category: quality
 - 注释完善
 - 小的重构建议
 
+## 🧪 TDD 意识检查
+
+### 测试先行原则
+
+对于新功能和 Bug 修复，检查是否遵循了 TDD 流程：
+
+```typescript
+interface TDDCheck {
+  hasMatchingTest: boolean      // 是否有对应的测试文件
+  testCreatedFirst: boolean     // 测试是否在实现之前创建 (通过 git log 检查)
+  testCoversNewCode: boolean    // 测试是否覆盖新代码
+  testsAreMinimal: boolean      // 测试是否简洁聚焦
+}
+```
+
+### TDD 检查清单
+
+- [ ] **测试存在** - 新增功能有对应的测试文件
+- [ ] **测试有效** - 测试真正验证了业务逻辑，而非只测试 mock
+- [ ] **测试命名** - 测试名称清晰描述了被测行为
+- [ ] **边界覆盖** - 边界情况和错误场景被测试
+
+### 如何验证
+
+```bash
+# 检查是否有对应测试
+git diff --name-only | grep -E '\.(test|spec)\.(ts|js|tsx|jsx)$'
+
+# 检查测试是否在实现之前提交 (理想情况)
+git log --oneline --all | head -10
+```
+
+### 报告格式
+
+```json
+{
+  "issue_id": "TDD-001",
+  "category": "testing",
+  "severity": "medium",
+  "title": "新功能缺少测试",
+  "description": "新增的 UserService.createUser() 方法没有对应的测试",
+  "file": "src/services/UserService.ts",
+  "line": 45,
+  "suggested_fix": "添加测试文件 src/services/UserService.test.ts，覆盖正常流程和错误情况"
+}
+```
+
+### 铁律提醒
+
+```
+<IMPORTANT>
+生产代码必须有测试支撑。
+没有测试的代码 = 不可信的代码。
+TDD 不是负担，是质量的保障。
+</IMPORTANT>
+```
+
+---
+
 ## 🦴 代码坏味道检测系统
 
 ### 设计层面坏味道
@@ -161,6 +220,7 @@ interface PerformanceSmells {
 - [ ] **安全检查** - 无暴露的密钥或敏感信息
 - [ ] **输入验证** - 所有用户输入都被验证
 - [ ] **测试覆盖** - 良好的测试覆盖率
+- [ ] **TDD 验证** - 新功能有对应的测试文件
 - [ ] **性能考虑** - 无明显性能问题
 
 ### 深度质量检查
