@@ -5,7 +5,7 @@ description: |
   mentions "ultrawork", "ulw", "自动完成", "全自动", or wants autonomous end-to-end task completion.
   It orchestrates the entire development process: requirement clarification, worktree isolation,
   TDD implementation, two-stage review, and continuous execution until <promise>DONE</promise>.
-version: 5.0.13
+version: 5.0.14
 triggers:
   - ultrawork
   - ulw

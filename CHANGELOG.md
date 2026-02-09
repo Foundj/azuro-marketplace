@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.14] - 2026-02-09
+
+### Added
+- **todo-continuation-enforcer hook**: Sisyphus mode - blocks exit until all tasks complete with <promise>DONE</promise>
+- **subagent-driven-development skill**: One subagent per task with structured handoff and two-stage review
+
+### Changed
+- **git-worktree skill**: Enhanced with auto-trigger for COMPLEX tasks (≥5 files)
+- **hooks.json**: Added todo-continuation-enforcer to Stop hooks
+
+
 ## [5.0.13] - 2026-02-09
 
 ### Added

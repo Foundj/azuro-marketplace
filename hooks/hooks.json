@@ -8,6 +8,11 @@
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/ooda-stop-hook.sh",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/todo-continuation-enforcer.sh",
+            "timeout": 5
           }
         ]
       }

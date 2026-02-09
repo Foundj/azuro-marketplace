@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 5.0.13
+version: 5.0.14
 triggers:
   - implement
   - develop

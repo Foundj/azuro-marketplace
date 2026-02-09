@@ -1,10 +1,11 @@
 ---
 name: git-worktree
 description: |
-  This skill provides Git worktree management for isolated development. Use when starting feature work
-  that needs isolation, before executing implementation plans, or when running parallel Claude sessions.
-  Triggers on "worktree", "isolated branch", "parallel development", "隔离开发", "并行分支", "worktree创建".
-version: 5.0.13
+  This skill should be used when starting feature work that needs isolation, before executing
+  implementation plans, or when running parallel Claude sessions. It provides Git worktree management
+  for isolated development. Triggers on "worktree", "isolated branch", "parallel development",
+  "隔离开发", "并行分支", "worktree创建". Auto-triggers when ultrawork detects COMPLEX tasks (≥5 files).
+version: 5.0.14
 triggers:
   - worktree
   - isolated branch
@@ -13,11 +14,49 @@ triggers:
   - 隔离开发
   - 并行分支
   - worktree创建
+  - complex task isolation
 ---
 
 # Git Worktree Management
 
 > Create isolated workspaces for parallel development without branch switching conflicts.
+
+## Auto-Trigger Rules (v5.1)
+
+```
+╔═══════════════════════════════════════════════════════════════╗
+║                    AUTO-TRIGGER CONDITIONS                     ║
+╠═══════════════════════════════════════════════════════════════╣
+║                                                               ║
+║   ultrawork detects COMPLEX task (≥5 files affected)          ║
+║           ↓                                                   ║
+║   Auto-create worktree: .worktrees/<change-id>                ║
+║           ↓                                                   ║
+║   Install dependencies + verify baseline                      ║
+║           ↓                                                   ║
+║   Continue with isolated development                          ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+### Complexity Detection
+
+```yaml
+SIMPLE (no worktree):
+  - 1-2 files affected
+  - Bug fix with clear location
+  - Config change
+
+MEDIUM (worktree optional):
+  - 3-4 files affected
+  - New function/component
+
+COMPLEX (worktree required):  # ← AUTO-TRIGGER
+  - ≥5 files affected
+  - New feature/module
+  - Architecture changes
+  - Multi-component work
+```
 
 ## Quick Start
 
@@ -192,12 +231,28 @@ Finalization 完成后:
 
 | Agent | Role |
 |-------|------|
+| `ultrawork` | 检测 COMPLEX 任务时自动触发创建 |
 | `ai-dev` | Phase 2 后触发创建，Phase 6 触发清理 |
 | `session-manager` | 跨会话恢复 worktree 状态 |
 | `context-bridge` | 保存 worktree 路径到上下文 |
+
+## Integration with ultrawork
+
+```yaml
+ultrawork Phase 3 (ISOLATE):
+  condition: complexity >= COMPLEX (≥5 files)
+  action: |
+    1. Check existing: ls -d .worktrees 2>/dev/null
+    2. Verify gitignore: git check-ignore -q .worktrees
+    3. Create worktree: git worktree add .worktrees/<feature-name> -b feature/<feature-name>
+    4. Setup environment: npm install / pip install / cargo build
+    5. Verify baseline: npm test / pytest / cargo test
+    6. Continue to Phase 4 (PLAN)
+```
 
 ## Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 5.0.13 | 2026-02-09 | Enhanced with auto-trigger for COMPLEX tasks |
 | 5.0.7 | 2026-01-14 | Initial release, ported from Superpowers |
