@@ -6,7 +6,7 @@ description: |
   Triggers on: "browser", "test website", "screenshot", "fill form", "浏览器", "网页测试".
   Uses a ref-based element selection system (@e1, @e2) optimized for LLM interaction.
   Supports session isolation for parallel testing and semantic locators for accessibility.
-version: 5.0.12
+version: 5.0.13
 triggers:
   - browser
   - web test

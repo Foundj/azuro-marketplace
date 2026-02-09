@@ -4,7 +4,7 @@ description: |
   This skill provides Git worktree management for isolated development. Use when starting feature work
   that needs isolation, before executing implementation plans, or when running parallel Claude sessions.
   Triggers on "worktree", "isolated branch", "parallel development", "隔离开发", "并行分支", "worktree创建".
-version: 5.0.12
+version: 5.0.13
 triggers:
   - worktree
   - isolated branch

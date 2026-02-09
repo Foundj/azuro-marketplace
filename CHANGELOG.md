@@ -7,16 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [5.0.12] - 2026-02-09
+## [5.0.13] - 2026-02-09
+
+### Added
+- **ultrawork skill**: One-word trigger for complete autonomous workflow (TDD, subagent-driven, two-stage review)
+- **tdd-enforcement skill**: Strict TDD discipline with Iron Law enforcement
+- **spec-compliance-review skill**: Stage 1 review - verify implementation matches spec exactly
 
 ### Changed
-- TODO: Describe your changes here
-
-
-## [5.0.11] - 2026-02-09
-
-### Changed
-- TODO: Describe your changes here
+- **code-reviewer**: Enhanced with two-stage review mechanism (Stage 2: code quality)
+- Borrowed key patterns from Superpowers: TDD Iron Law, Subagent-driven development, Two-stage review
 
 
 ## [5.0.10] - 2026-01-14
