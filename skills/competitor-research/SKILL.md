@@ -4,7 +4,7 @@ description: |
   This skill provides multi-model research capabilities for gathering competitor insights and best practices.
   Use when implementing new features, researching libraries, or analyzing open-source patterns.
   Triggers on "research competitors", "analyze best practices", "compare libraries", "研究竞品", "最佳实践".
-version: 5.0.10
+version: 5.0.11
 triggers:
   - research competitors
   - analyze best practices
@@ -73,7 +73,7 @@ Step 2: Query docs
 ```
 1. Check MCP availability: mcp__tavily, mcp__context7
 2. If available → Use MCP tools
-3. If unavailable → Fall back to codeagent-wrapper.sh
+3. If unavailable → Fall back to WebSearch (always available)
 ```
 
 ---
@@ -123,43 +123,35 @@ Output: Full JSON report saved to `codebox/research/`
 
 ## Research Process
 
-### Step 1: Web Search (Gemini)
+### Step 1: Web Search (Best Practices)
 
 Search for best practices, popular libraries, and common pitfalls.
 
-```bash
-~/.claude/common/lib/codeagent-wrapper.sh --backend gemini --yolo <<'EOF'
-Search for best practices for implementing [FEATURE] in [TECH_STACK].
+```
+WebSearch: "[FEATURE] best practices [TECH_STACK] 2024"
 
 Focus on:
 1. Popular libraries and trade-offs
 2. Security best practices
 3. Common implementation pitfalls
 4. Production-ready patterns
-
-Output as concise bullet points.
-EOF
 ```
 
-### Step 2: Code Analysis (Codex)
+### Step 2: Code Examples Search
 
-Analyze how the feature is implemented in popular open-source projects.
+Search for implementation examples in popular projects.
 
-```bash
-~/.claude/common/lib/codeagent-wrapper.sh --backend codex --yolo <<'EOF'
-Analyze how [FEATURE] is implemented in popular open-source projects.
+```
+WebSearch: "[FEATURE] implementation examples GitHub [TECH_STACK]"
 
 Look for:
 1. Common patterns and abstractions
 2. Error handling approaches
 3. Testing strategies
 4. Performance considerations
-
-Reference specific repos when possible.
-EOF
 ```
 
-### Step 3: Code Review (Claude)
+### Step 3: Security Review
 
 Review security and quality aspects of the feature implementation.
 
@@ -314,9 +306,9 @@ When research reveals significant risks:
 
 ## Dependencies
 
-- `~/.claude/common/lib/codeagent-wrapper.sh` - Multi-backend CLI wrapper
-- `gemini` CLI - Web search capability
-- `codex` CLI - Code analysis capability
+- `WebSearch` - Built-in web search tool (always available)
+- `MCP Tavily` - Optional deep research capability
+- `MCP Context7` - Optional documentation lookup
 
 ## Agent Collaboration
 

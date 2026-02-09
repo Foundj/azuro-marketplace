@@ -5,7 +5,7 @@ description: |
   It helps configure and use external MCP servers like Context7 (documentation), Tavily (web search),
   and Sequential-Thinking (reasoning). Use when the user mentions "MCP", "Context7", "Tavily",
   "官方文档查询", "MCP配置", "外部服务集成", or wants to enhance research with external tools.
-version: 5.0.10
+version: 5.0.11
 triggers:
   - MCP
   - Context7
@@ -173,7 +173,6 @@ claude mcp status context7
 | Context7 (文档) | WebFetch + 官方 URL | 需手动提供 URL，无语义搜索 |
 | Context7 (文档) | WebSearch "library docs" | 结果可能不够精确 |
 | Tavily (研究) | WebSearch | 无 Multi-hop，深度有限 |
-| Tavily (研究) | codeagent-wrapper.sh | 使用 Gemini 后端 |
 | Sequential-Thinking | 直接推理 | 无 token 节省，同样有效 |
 
 ### 降级检测逻辑
@@ -201,11 +200,11 @@ WebSearch({ query: "React useEffect cleanup official docs 2024" })
 
 **竞品研究** (替代 Tavily):
 ```bash
-# 使用 codeagent-wrapper.sh (如果已配置)
-~/.claude/common/lib/codeagent-wrapper.sh --backend gemini --yolo "search for auth best practices"
-
-# 或使用 WebSearch
+# 使用 WebSearch
 WebSearch({ query: "authentication best practices 2024" })
+
+# 多次搜索获取更全面信息
+WebSearch({ query: "JWT vs session authentication comparison" })
 ```
 
 **结论**: 不配置 MCP 完全可以正常使用，只是失去一些高级功能（语义搜索、Multi-hop 推理）。

@@ -1,8 +1,8 @@
 ---
 name: ai:research
 description: AI-powered competitor research - multi-source best practices analysis
-argument-hint: "<topic> [--deep] [--save] [--background]"
-allowed-tools: Task, Bash, Read, Write
+argument-hint: "<topic> [--deep] [--save]"
+allowed-tools: Task, Read, Write, WebSearch, WebFetch
 execution-mode: subagent
 internal: true
 ---
@@ -21,12 +21,11 @@ This command runs as a **subagent** to preserve main session context.
 /ai:research "JWT authentication"
     ↓
 Launch Task tool with subagent:
-  - run_in_background: true (if --background)
   - Isolated context execution
     ↓
 Subagent executes:
   - Parse options (--deep, --save)
-  - Multi-backend research
+  - Multi-source research
   - Synthesize results
     ↓
 Returns Research Report to main session
@@ -38,72 +37,59 @@ Returns Research Report to main session
 
 ## Options
 
-- `--deep`: Use all 3 backends (Gemini + Codex + Claude)
+- `--deep`: Comprehensive research with multiple searches
 - `--save`: Save results to `codebox/research/`
-- `--background`: Run in background, return immediately
+- Default: Quick research with key findings
 
 ---
 
 ## Step 1: Parse Options
 
-- `--deep`: Use all 3 backends (Gemini + Codex + Claude)
-- `--save`: Save results to `codebox/research/`
-- Default: Auto-select best backend
+Extract topic from $ARGUMENTS (remove flags like --deep, --save)
 
-**Step 2: Execute Research**
+## Step 2: Execute Research
 
-### Standard Mode (single backend)
+### Tool Priority
 
-```bash
-~/.claude/common/lib/codeagent-wrapper.sh --backend auto --yolo "
-Research best practices for: $ARGUMENTS
+1. **MCP Tavily** (if available): Deep multi-hop research
+2. **MCP Context7** (if available): Library documentation
+3. **WebSearch** (always available): Web search fallback
 
-Focus on:
-1. Popular libraries and their trade-offs
-2. Security considerations
-3. Common implementation pitfalls
-4. Production-ready patterns
-5. Real-world examples
+### Standard Mode (default)
 
-Output as structured bullet points with references.
-"
+Execute 2-3 WebSearch queries:
+
+```
+Query 1: "[topic] best practices 2024"
+Query 2: "[topic] implementation patterns"
+Query 3: "[topic] common pitfalls"
 ```
 
 ### Deep Mode (--deep)
 
-Launch 3 parallel research agents:
+Execute comprehensive research:
 
-**Agent 1: Gemini (Web Search)**
-```bash
-~/.claude/common/lib/codeagent-wrapper.sh --backend gemini --yolo "
-Web search for: $ARGUMENTS
-- Latest trends and updates
-- Popular solutions
-- Community discussions
-"
+**Search 1: Best Practices**
+```
+WebSearch: "[topic] best practices production 2024"
 ```
 
-**Agent 2: Codex (Code Analysis)**
-```bash
-~/.claude/common/lib/codeagent-wrapper.sh --backend codex --yolo "
-Analyze open-source implementations of: $ARGUMENTS
-- GitHub repos with high stars
-- Implementation patterns
-- Code examples
-"
+**Search 2: Libraries & Tools**
+```
+WebSearch: "[topic] recommended libraries comparison"
 ```
 
-**Agent 3: Claude (Security Review)**
-```bash
-~/.claude/common/lib/codeagent-wrapper.sh --backend claude --yolo "
-Security and architecture review for: $ARGUMENTS
-- Security best practices
-- Common vulnerabilities
-- Recommended architecture
-"
+**Search 3: Security**
+```
+WebSearch: "[topic] security vulnerabilities common mistakes"
 ```
 
-**Step 3: Synthesize Results**
+**Search 4: Examples**
+```
+WebSearch: "[topic] implementation examples GitHub"
+```
+
+## Step 3: Synthesize Results
 
 Compile findings:
 
@@ -132,21 +118,9 @@ Compile findings:
 - [Link 2](url)
 ```
 
-**Step 4: Save Results (if --save)**
+## Step 4: Save Results (if --save)
 
-Save to: `codebox/research/[topic]-research.json`
-
-```json
-{
-  "topic": "[topic]",
-  "timestamp": "ISO date",
-  "sources": ["gemini", "codex", "claude"],
-  "recommendations": [...],
-  "libraries": [...],
-  "pitfalls": [...],
-  "references": [...]
-}
-```
+Save to: `codebox/research/[topic]-research.md`
 
 **Next Step**:
 > 调研完成。可继续 `/ai:interview` 进行需求沟通，或 `/ai:design` 设计评审。

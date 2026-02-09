@@ -5,7 +5,7 @@ description: |
   It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
   "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 5.0.10
+version: 5.0.11
 triggers:
   - implement
   - develop
@@ -91,8 +91,8 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
   - <70%: Must ask clarifying questions
 
 **Phase 0.5: Research** (new features only)
-- Multi-model research via `codeagent-wrapper.sh`
-- Save to `codebox/research/[feature]-research.json`
+- Multi-source research via WebSearch/MCP Tavily
+- Save to `codebox/research/[feature]-research.md`
 
 **Phase 1: Requirement Interview**
 - Multi-round interview (2-6 questions based on complexity)

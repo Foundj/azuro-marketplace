@@ -108,7 +108,8 @@ ai-dev/
 | project-initializer | Yes | Codebox setup |
 | session-manager | Yes | Cross-session continuity |
 | claude-reflect | No | Learning capture |
-| codeagent-wrapper.sh | No | Multi-backend (gemini/codex) |
+| MCP Context7 | No | Documentation lookup |
+| MCP Tavily | No | Deep web research |
 
 ## Commands
 

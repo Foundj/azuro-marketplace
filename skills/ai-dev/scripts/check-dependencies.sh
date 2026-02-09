@@ -86,13 +86,12 @@ echo ""
 echo "🔧 命令可用性"
 echo "-------------------------------------------"
 
-# codeagent-wrapper (推荐)
-print_check "codeagent-wrapper 脚本"
-if [ -x "${HOME}/.claude/common/lib/codeagent-wrapper.sh" ]; then
-    print_pass
-else
-    print_warn "未找到 (Phase 0.5 竞品调研将不可用)"
-fi
+# MCP 检查 (可选增强)
+print_check "MCP Context7"
+echo -e "    ${YELLOW}可选${NC} (增强文档查询)"
+
+print_check "MCP Tavily"
+echo -e "    ${YELLOW}可选${NC} (增强深度研究)"
 
 # jq (推荐)
 print_check "jq 命令"

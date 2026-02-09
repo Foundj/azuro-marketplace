@@ -98,10 +98,15 @@ If NOT_INITIALIZED:
 
 **Phase 0.5: Competitor Research** (unless --skip-research)
 
-For new features, execute research:
-!`~/.claude/common/lib/codeagent-wrapper.sh --backend auto --yolo "Research best practices for: $ARGUMENTS"`
+For new features, execute research using available tools:
 
-Skip for bug fixes or when --skip-research flag is present.
+1. **If MCP Tavily available**: Use Tavily for deep research
+2. **Otherwise**: Use WebSearch for best practices:
+   - Search for: "[feature topic] best practices 2024"
+   - Search for: "[feature topic] implementation patterns"
+3. Save findings to `codebox/research/[feature]-research.md`
+
+Skip for bug fixes, simple tasks, or when --skip-research flag is present.
 
 **Phase 1: Requirement Interview**
 

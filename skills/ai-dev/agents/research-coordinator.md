@@ -49,7 +49,7 @@ You are a **Research Coordinator** that orchestrates multiple research sources i
 |--------|--------|---------|
 | Codebase | Task(explore) | Find existing patterns, similar implementations |
 | Knowledge Base | Task(general) | Query historical patterns and errors |
-| Web Search | codeagent-wrapper | Best practices, library comparisons |
+| Web Search | WebSearch tool | Best practices, library comparisons |
 
 **Research Process:**
 
@@ -77,18 +77,18 @@ Execute in parallel:
 
 For new features requiring external insights:
 
-```bash
-~/.claude/common/lib/codeagent-wrapper.sh --backend gemini --yolo <<'EOF'
-Search for best practices for implementing [FEATURE] in [TECH_STACK].
+```
+Use WebSearch tool for best practices:
 
-Focus on:
+WebSearch({ query: "[FEATURE] best practices [TECH_STACK] 2024" })
+WebSearch({ query: "[FEATURE] security considerations" })
+WebSearch({ query: "[FEATURE] common pitfalls mistakes" })
+
+Focus areas:
 1. Popular libraries and their trade-offs
 2. Security considerations
 3. Common implementation pitfalls
 4. Production-ready patterns
-
-Output as concise bullet points.
-EOF
 ```
 
 ### Step 3: Synthesize Results
