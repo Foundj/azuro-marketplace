@@ -79,12 +79,18 @@ Nothing to do. Use /ai:status for details.
 
 Implement feature: $ARGUMENTS
 
-**Pre-check: Verify project initialization**
+**Pre-check: Auto-initialize if needed**
 
 Check if codebox/ exists: !`test -d codebox && echo "OK" || echo "NOT_INITIALIZED"`
 
 If NOT_INITIALIZED:
-- Stop and inform user: "Please run /init first to initialize the project"
+- **Auto-initialize** codebox structure:
+  ```
+  mkdir -p codebox/{changes/{active,archived},knowledge,research,scripts}
+  echo '[]' > codebox/feature_list.json
+  echo '# Design Constraints' > codebox/design.md
+  ```
+- Log: "Auto-initialized codebox/ for ai-dev workflow"
 
 **Parse options:**
 - `--skip-research`: Skip Phase 0.5 competitor research
