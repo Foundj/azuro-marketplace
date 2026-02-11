@@ -2,12 +2,12 @@
 
 # Comment Checker Hook for ai-dev
 # Type: PostToolUse
-# Checks AI-generated code for excessive/redundant comments
-# Warns but does not block
+# Based on Superpowers pattern - Detects and warns about AI slop
+# AI slop = unnecessary comments, over-engineering markers, meaningless TODOs
 
 set -euo pipefail
 
-LOG_PREFIX="💬 Comment"
+LOG_PREFIX="🧹 AI-Slop"
 
 # Read hook input from stdin
 HOOK_INPUT=$(cat)
@@ -35,40 +35,70 @@ if [[ -z "$CONTENT" ]]; then
     exit 0
 fi
 
-# Patterns to ALLOW (don't count these as suspicious)
-# - TODO/FIXME/NOTE/HACK
-# - @ts-ignore, @eslint-disable, prettier-ignore
-# - JSDoc (/**)
-# - Python docstrings (''' or """)
-# - License headers
+# ============================================================================
+# AI Slop Detection Patterns (Enhanced from Superpowers)
+# ============================================================================
 
-# Patterns that indicate REDUNDANT comments
-# These describe WHAT code does, not WHY
 SUSPICIOUS_COUNT=0
 SUSPICIOUS_LINES=""
 
 while IFS= read -r line; do
     # Skip empty lines
     [[ -z "$line" ]] && continue
-    
-    # Skip allowed patterns
-    echo "$line" | grep -qiE '(TODO|FIXME|NOTE|HACK|@ts-|@eslint|prettier-ignore|istanbul|^\s*\*|^\s*"""|\x27\x27\x27)' && continue
-    
-    # Check for suspicious patterns (comments that explain WHAT not WHY)
+
+    # Skip allowed patterns (TODO/FIXME/NOTE, JSDoc, docstrings, pragmas)
+    if echo "$line" | grep -qiE '(TODO:|FIXME:|NOTE:|HACK:|@ts-|@eslint|prettier-ignore|istanbul)'; then
+        continue
+    fi
+    if echo "$line" | grep -qE '^\s*\*|^\s*"""|^\s*'"'"'{3}'; then
+        continue
+    fi
+
+    # Pattern 1: Comments that explain WHAT not WHY
     if echo "$line" | grep -qiE '(//|#)\s*(This|The|We|Here|Set|Get|Create|Initialize|Check|Return|Loop|If|Else|Add|Remove|Update|Delete|Call|Import|Export|Define|Declare)\s'; then
         SUSPICIOUS_COUNT=$((SUSPICIOUS_COUNT + 1))
-        SUSPICIOUS_LINES="${SUSPICIOUS_LINES}\n  ${line}"
+        SUSPICIOUS_LINES="${SUSPICIOUS_LINES}\n  [WHAT not WHY] ${line}"
+        continue
     fi
+
+    # Pattern 2: Redundant type annotations in comments
+    if echo "$line" | grep -qiE '(//|#)\s*(string|number|boolean|array|object|integer|float)\s*$'; then
+        SUSPICIOUS_COUNT=$((SUSPICIOUS_COUNT + 1))
+        SUSPICIOUS_LINES="${SUSPICIOUS_LINES}\n  [Redundant type] ${line}"
+        continue
+    fi
+
+    # Pattern 3: AI confidence markers
+    if echo "$line" | grep -qiE '(//|#)\s*(Note:|Important:|Remember:|Tip:|Warning:)\s'; then
+        SUSPICIOUS_COUNT=$((SUSPICIOUS_COUNT + 1))
+        SUSPICIOUS_LINES="${SUSPICIOUS_LINES}\n  [AI marker] ${line}"
+        continue
+    fi
+
+    # Pattern 4: Step-by-step narration
+    if echo "$line" | grep -qiE '(//|#)\s*(First,|Second,|Third,|Next,|Then,|Finally,|Step\s*[0-9])'; then
+        SUSPICIOUS_COUNT=$((SUSPICIOUS_COUNT + 1))
+        SUSPICIOUS_LINES="${SUSPICIOUS_LINES}\n  [Step narration] ${line}"
+        continue
+    fi
+
+    # Pattern 5: Obvious code description
+    if echo "$line" | grep -qiE '(//|#)\s*(returns?|calls?|creates?|updates?|deletes?|fetches?|saves?)\s+(the|a|an)\s'; then
+        SUSPICIOUS_COUNT=$((SUSPICIOUS_COUNT + 1))
+        SUSPICIOUS_LINES="${SUSPICIOUS_LINES}\n  [Obvious] ${line}"
+        continue
+    fi
+
 done <<< "$CONTENT"
 
-# Only warn if more than 3 suspicious comments
-if [[ "$SUSPICIOUS_COUNT" -gt 3 ]]; then
+# Only warn if more than 2 suspicious comments (lowered threshold)
+if [[ "$SUSPICIOUS_COUNT" -gt 2 ]]; then
     jq -n \
       --arg count "$SUSPICIOUS_COUNT" \
       --arg lines "$SUSPICIOUS_LINES" \
       '{
         "warning": true,
-        "message": "💬 Comment Checker: 检测到 \($count) 个可能冗余的注释\n\($lines)\n\n建议: 注释应说明 WHY 而不是 WHAT。考虑移除描述代码行为的注释。",
+        "message": "🧹 AI Slop Detected: \($count) redundant comments\n\($lines)\n\nPrinciple: Comments should explain WHY, not WHAT.\nLet the code speak for itself.",
         "continue": true
       }'
 else

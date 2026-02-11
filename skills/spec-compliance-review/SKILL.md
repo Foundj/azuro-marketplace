@@ -4,7 +4,7 @@ description: |
   Stage 1 of the two-stage review process. Verifies that implementation matches specification
   EXACTLY - nothing more, nothing less. This skill should be used BEFORE code-reviewer.
   The principle is: "First ensure we're doing the right thing, then ensure we're doing it right."
-version: 5.0.14
+version: 5.0.15
 triggers:
   - spec review
   - specification check

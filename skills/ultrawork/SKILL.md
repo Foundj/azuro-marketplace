@@ -5,7 +5,7 @@ description: |
   mentions "ultrawork", "ulw", "自动完成", "全自动", or wants autonomous end-to-end task completion.
   It orchestrates the entire development process: requirement clarification, worktree isolation,
   TDD implementation, two-stage review, and continuous execution until <promise>DONE</promise>.
-version: 5.0.14
+version: 5.0.15
 triggers:
   - ultrawork
   - ulw
@@ -119,7 +119,7 @@ If requirements are clear → Skip directly to Phase 3.
 
 ### Phase 3: Worktree Isolation
 
-**For MEDIUM/COMPLEX tasks:**
+**For MEDIUM/COMPLEX tasks (using `git-worktree` skill):**
 
 ```bash
 # Check existing directory
@@ -146,7 +146,7 @@ npm test / pytest / cargo test
 
 ### Phase 4: Plan Generation
 
-**Task granularity: 2-5 minutes per task**
+**Use `task-templates` skill to generate atomic tasks (2-5 minutes each).**
 
 ```markdown
 ### Task 1: Write failing test for [feature]
@@ -191,11 +191,11 @@ Expected: PASS
 git add tests/ src/
 git commit -m "feat: add feature"
 ```
-```
 
 ### Phase 5: Subagent Execution
 
-**Dispatch implementer subagent per task:**
+**Dispatch subagents using `subagent-driven-development` skill.**
+One subagent per task with structured handoff.
 
 ```yaml
 Task Tool:
@@ -225,11 +225,12 @@ Task Tool:
 
 ### Phase 6: Two-Stage Review
 
-**Stage 1: Spec Compliance (不多不少)**
+**Stage 1: Spec Compliance (using `spec-compliance-review` skill)**
 
 ```yaml
 Task Tool:
   subagent_type: "ai-dev:spec-compliance-reviewer"
+  description: "Review spec compliance for Task N"
   prompt: |
     ## What Was Requested
     [Task requirements]
@@ -248,11 +249,12 @@ Task Tool:
     Report: ✅ Spec compliant OR ❌ Issues: [list with file:line]
 ```
 
-**Stage 2: Code Quality** (only after Stage 1 passes)
+**Stage 2: Code Quality (using `code-reviewer` agent)**
 
 ```yaml
 Task Tool:
   subagent_type: "ai-dev:code-reviewer"
+  description: "Review code quality for Task N"
   prompt: |
     Review code quality for Task N.
 
@@ -260,12 +262,14 @@ Task Tool:
     - Code cleanliness
     - Test quality
     - Following patterns
-    - No AI slop
+    - No AI slop (checked by `comment-checker` hook)
 
     Report: Strengths, Issues (Critical/Important/Minor), Assessment
 ```
 
 ### Phase 7: Continuation Enforcement
+
+**Enforced by `todo-continuation-enforcer` hook.**
 
 ```yaml
 After each task completion:
@@ -290,8 +294,6 @@ Implementation complete. What would you like to do?
 
 Which option?
 ```
-
-Execute chosen option, cleanup worktree if applicable.
 
 ### Phase 9: Completion
 
@@ -319,6 +321,8 @@ Summary:
 - `spec-compliance-review` - Stage 1 review
 - `code-reviewer` - Stage 2 review
 - `git-worktree` - Isolation for complex tasks
+- `task-templates` - Fine-grained planning
+- `subagent-driven-development` - Atomic task execution
 
 **Hooks:**
 - `todo-continuation-enforcer` - Forces completion

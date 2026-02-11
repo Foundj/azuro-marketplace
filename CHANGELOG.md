@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.15] - 2026-02-11
+
+### Added
+- **comment-checker hook**: Enhanced AI slop detection (redundant comments, step narration, AI markers)
+- **task-templates skill**: Atomic task templates for fine-grained 2-5 minute implementation steps
+
+### Changed
+- **ultrawork skill**: Full integration of all Superpowers components (TDD, Worktree, Subagents, Two-stage Review, Sisyphus Mode)
+- **hooks.json**: Minor configuration refinements
+
+
 ## [5.0.14] - 2026-02-09
 
 ### Added
