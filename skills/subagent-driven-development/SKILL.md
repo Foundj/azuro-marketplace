@@ -5,7 +5,7 @@ description: |
   It defines how to dispatch subagents for each task with self-review before handoff, two-stage
   review after completion, and structured reporting. Triggers on "subagent", "dispatch task",
   "子代理", "任务分发", "parallel implementation". Borrowed from Superpowers by obra.
-version: 5.0.15
+version: 5.0.16
 triggers:
   - subagent
   - dispatch task
@@ -14,6 +14,8 @@ triggers:
   - parallel implementation
   - task dispatch
   - agent per task
+  - 子代理驱动
+  - 任务派发
 ---
 
 # Subagent-Driven Development

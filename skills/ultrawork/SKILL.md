@@ -1,11 +1,11 @@
 ---
 name: ultrawork
 description: |
-  One-word trigger for complete autonomous development workflow. This skill activates when the user
-  mentions "ultrawork", "ulw", "自动完成", "全自动", or wants autonomous end-to-end task completion.
-  It orchestrates the entire development process: requirement clarification, worktree isolation,
-  TDD implementation, two-stage review, and continuous execution until <promise>DONE</promise>.
-version: 5.0.15
+  This skill should be used when the user wants autonomous end-to-end task completion.
+  It provides a one-word trigger for a complete development workflow, orchestrating
+  requirement clarification, worktree isolation, TDD implementation, two-stage review,
+  and continuous execution until <promise>DONE</promise>.
+version: 5.0.16
 triggers:
   - ultrawork
   - ulw
@@ -14,6 +14,9 @@ triggers:
   - autonomous
   - just do it
   - 帮我搞定
+  - 一键开发
+  - 自动实现
+  - 任务闭环
 ---
 
 # Ultrawork: Autonomous Development Mode
@@ -43,6 +46,9 @@ Activate ultrawork when user prompt contains:
 ┌─────────────────────────────────────────────────────────────┐
 │                    ULTRAWORK MODE                            │
 ├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  0. CHECK           Confidence Gate (≥90% proceed)           │
+│       ↓             <90% → Clarify / Research first          │
 │                                                              │
 │  1. ANALYZE         Detect task complexity                   │
 │       ↓             Simple (<3 files) → Direct execution     │
@@ -78,6 +84,22 @@ Activate ultrawork when user prompt contains:
 ```
 
 ## Phase Details
+
+### Phase 0: Confidence Gate (using `confidence-gate` skill)
+
+**Mandatory pre-execution check. Prevents wrong-direction work.**
+
+```yaml
+Assessment:
+  ≥90%: Proceed to ANALYZE
+  70-89%: Present 2-3 alternatives, let user choose
+  <70%: STOP. Ask targeted questions. Do NOT guess.
+
+How to boost confidence:
+  - Use Context7 MCP to query official documentation
+  - Search codebase for existing patterns (LSP/Grep)
+  - Ask user for missing context
+```
 
 ### Phase 1: Task Analysis
 
@@ -317,12 +339,14 @@ Summary:
 ## Integration
 
 **Required skills:**
+- `confidence-gate` - Phase 0 pre-execution confidence check
 - `tdd-enforcement` - TDD discipline for all implementation
 - `spec-compliance-review` - Stage 1 review
 - `code-reviewer` - Stage 2 review
 - `git-worktree` - Isolation for complex tasks
 - `task-templates` - Fine-grained planning
 - `subagent-driven-development` - Atomic task execution
+- `mcp-integration` - Context7/Tavily for documentation & research
 
 **Hooks:**
 - `todo-continuation-enforcer` - Forces completion

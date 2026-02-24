@@ -1,16 +1,19 @@
 ---
 name: spec-compliance-review
 description: |
-  Stage 1 of the two-stage review process. Verifies that implementation matches specification
-  EXACTLY - nothing more, nothing less. This skill should be used BEFORE code-reviewer.
-  The principle is: "First ensure we're doing the right thing, then ensure we're doing it right."
-version: 5.0.15
+  This skill should be used during Phase 5 (Quality Validation) as Stage 1 of the two-stage review process.
+  It verifies that implementation matches specification EXACTLY - nothing more, nothing less.
+  Triggers on "spec review", "specification check", "规格审查", "compliance check", "符合性检查".
+  Must pass before proceeding to Stage 2 code quality review.
+version: 5.0.16
 triggers:
   - spec review
   - specification check
   - 规格审查
   - compliance check
   - 符合性检查
+  - 需求符合性
+  - spec-compliance
 ---
 
 # Spec Compliance Review (Stage 1)
@@ -28,6 +31,22 @@ triggers:
 ║   Spec Compliance Review (this) → Code Quality Review (next)  ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
+```
+
+## Workflow Integration
+
+This skill is integrated into the **Phase 5: Quality Validation** of the `ai-dev` workflow and `ultrawork` mode.
+
+```
+[Implementation Complete]
+       ↓
+[Stage 1: Spec Compliance Review] ← (YOU ARE HERE)
+       ↓
+   (Issues found?) ── YES ──> [Fix Issues] ──> (Re-run Review)
+       ↓
+      NO
+       ↓
+[Stage 2: Code Quality Review]
 ```
 
 ## Purpose

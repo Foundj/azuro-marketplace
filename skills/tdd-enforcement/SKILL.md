@@ -7,7 +7,7 @@ description: |
   deleted and rewritten. Triggers on "TDD", "test first", "红绿重构", "implementing feature",
   "writing code", "bug fix", "refactoring", "behavior change". No exceptions without
   explicit user permission.
-version: 5.0.15
+version: 5.0.16
 triggers:
   - implementing feature
   - writing code
@@ -18,6 +18,8 @@ triggers:
   - test first
   - 红绿重构
   - 测试优先
+  - TDD强制
+  - 先写测试
 ---
 
 # Test-Driven Development (TDD) Enforcement

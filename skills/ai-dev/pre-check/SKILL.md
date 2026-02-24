@@ -1,21 +1,19 @@
 ---
 name: pre-implementation-check
 description: |
-  Pre-implementation analysis to prevent code errors, duplication, and ensure technical standards compliance.
-  
-  **Purpose**: Search → Understand → Follow Standards → Implement
-  
-  **TRIGGERS**: Automatically called before each task in /ai:loop and /ai-implement
-  
-  **Features**:
-  - Keyword extraction and code search
-  - Duplicate detection (exact/partial/semantic)
-  - Technical standards enforcement
-  - Impact analysis
-  - Context loading with priority
-  
-  **Key Principle**: "先搜索，再理解，后实现"
-version: 5.0.15
+  This skill should be used before starting any implementation task to prevent errors,
+  duplication, and ensure technical standards compliance. It performs pre-implementation
+  analysis through code search, duplicate detection, and impact analysis.
+  Triggers on "pre-check", "analysis before coding", "实现前检查", "预检", "代码查重".
+version: 5.0.16
+triggers:
+  - pre-check
+  - analysis before coding
+  - 实现前检查
+  - 预检
+  - 代码查重
+  - 影响分析
+  - search-before-code
 ---
 
 # Pre-Implementation Check

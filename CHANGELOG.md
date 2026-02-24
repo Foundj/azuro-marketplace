@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.16] - 2026-02-24
+
+### Added
+- **mcp-setup.sh**: One-click MCP server configuration script (Context7, Sequential-Thinking, Tavily)
+- **Confidence Gate Phase 0**: Integrated into ultrawork flow for pre-execution confidence checking
+
+### Changed
+- **All 25 skills reach 90+ score**: Quality audit optimization complete
+- **ultrawork**: Added Phase 0 Confidence Gate and mcp-integration dependency
+- **tdd-enforcement**: Improved description, added examples directory
+- **subagent-driven-development**: Added references directory, enhanced triggers
+- **spec-compliance-review**: Added workflow integration docs, examples directory
+- **pre-check**: Fixed third-person description, added Chinese triggers
+- **comment-checker hook**: Enhanced AI slop detection with 5 pattern categories
+
+
 ## [5.0.15] - 2026-02-11
 
 ### Added
