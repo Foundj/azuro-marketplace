@@ -2,15 +2,15 @@
 name: ai-dev
 description: |
   This skill provides industrial-grade AI development orchestration with 7-phase gated workflow.
-  It should be used when the user mentions "implement feature", "develop", "build", "ai:dev",
-  "开发功能", "实现", "构建", or wants full development workflow with requirement interview,
+  It should be used when the user mentions "implement feature", "develop", "build", "开发功能",
+  "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
-version: 5.1.0
+  Note: Use /ai:dev command as the primary entry point. This skill is the backend implementation.
+version: 5.1.1
 triggers:
   - implement
   - develop
   - build feature
-  - ai:dev
   - 开发功能
   - 实现功能
   - 实现
