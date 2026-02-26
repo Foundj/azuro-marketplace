@@ -6,7 +6,7 @@ description: |
   lean. Use when context window is filling up, during long ultrawork sessions,
   or when the user mentions "compress context", "summarize", "archive results",
   "上下文压缩", "结果归档".
-version: 5.0.20
+version: 5.1.0
 triggers:
   - compress context
   - summarize results
@@ -21,6 +21,10 @@ triggers:
 # Context Compressor
 
 > Keep the main context lean while preserving essential information.
+
+## 触发词
+
+此技能触发于: "compress context", "summarize results", "上下文压缩", "结果归档".
 
 ## Problem
 

@@ -5,7 +5,7 @@ description: |
   It helps configure and use external MCP servers like Context7 (documentation), Tavily (web search),
   and Sequential-Thinking (reasoning). Use when the user mentions "MCP", "Context7", "Tavily",
   "官方文档查询", "MCP配置", "外部服务集成", or wants to enhance research with external tools.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - MCP
   - Context7
@@ -19,6 +19,10 @@ triggers:
 # MCP Integration Guide
 
 > Connect Claude Code to external tools and services via Model Context Protocol.
+
+## 触发词
+
+此技能触发于: "MCP", "Context7", "Tavily", "官方文档查询", "MCP配置", "外部服务集成".
 
 ## Quick Start
 

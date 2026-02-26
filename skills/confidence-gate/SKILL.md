@@ -5,7 +5,7 @@ description: |
   It implements SuperClaude PM Agent's confidence gate pattern: ≥90% proceed, 70-89% present
   alternatives, <70% must ask questions. Use when starting tasks, before implementation,
   or when the user mentions "confidence check", "置信度", "确认方向", "ai:check".
-version: 5.0.20
+version: 5.1.0
 triggers:
   - confidence check
   - pre-check
@@ -18,6 +18,10 @@ triggers:
 # Confidence Gate
 
 > Pre-execution confidence checking to prevent wrong-direction work. ROI: 25-250x token savings.
+
+## 触发词
+
+此技能触发于: "confidence check", "pre-check", "置信度检查", "确认方向", "ai:check".
 
 ## Quick Start
 

@@ -1,12 +1,11 @@
 ---
 name: task-dependency-analyzer
 description: |
-  This skill analyzes task dependencies and determines optimal execution order.
-  It builds a dependency graph from plan.md, identifies parallelizable tasks,
-  and outputs execution recommendations. Use when planning multi-task implementation,
-  optimizing parallel execution, or the user mentions "dependencies", "parallel",
-  "execution order", "任务依赖", "并行执行".
-version: 5.0.20
+  This skill should be used when analyzing task dependencies and determining optimal execution order.
+  It builds a dependency graph from plan.md, identifies parallelizable tasks, and outputs execution
+  recommendations. Use when the user mentions "dependencies", "parallel", "execution order", "任务依赖",
+  "并行执行", or when planning multi-task implementation.
+version: 5.1.0
 triggers:
   - task dependencies
   - dependency analysis
@@ -21,6 +20,10 @@ triggers:
 # Task Dependency Analyzer
 
 > Analyze task dependencies to maximize parallel execution efficiency.
+
+## 触发词
+
+此技能触发于: "task dependencies", "dependency analysis", "任务依赖", "并行执行", "execution order".
 
 ## Core Concept
 
@@ -308,4 +311,13 @@ Result: 1 wave, all parallel
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 5.0.20 | 2026-02-27 | Added Chinese triggers and dependencies |
 | 5.0.18 | 2026-02-26 | Initial release with DAG analysis and wave optimization |
+
+---
+
+## Dependencies
+
+- Requires `plan.md` with task definitions
+- Works with `ultrawork` for parallel dispatch
+- Integrates with `subagent-driven-development`

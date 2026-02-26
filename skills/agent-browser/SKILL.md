@@ -6,7 +6,7 @@ description: |
   Triggers on: "browser", "test website", "screenshot", "fill form", "浏览器", "网页测试".
   Uses a ref-based element selection system (@e1, @e2) optimized for LLM interaction.
   Supports session isolation for parallel testing and semantic locators for accessibility.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - browser
   - web test
@@ -24,6 +24,10 @@ triggers:
 # Agent Browser
 
 > Headless browser automation CLI optimized for AI agents.
+
+## Trigger Detection / 触发词
+
+This skill triggers on: "browser", "test website", "screenshot", "fill form", "浏览器", "网页测试".
 
 ## Quick Start
 
@@ -255,6 +259,22 @@ e2e-testing:
 | 点击无效 | 尝试 `wait --load networkidle` 后再操作 |
 | 登录状态丢失 | 使用 `state save/load` 保存会话 |
 | 调试问题 | 添加 `--headed` 查看浏览器界面 |
+
+---
+
+## Dependencies
+
+- **Node.js** 18+ (for agent-browser CLI)
+- **Playwright** (installed automatically with agent-browser)
+
+---
+
+## Version History
+
+| Version | Changes |
+|---------|---------|
+| 5.0.20 | Added Chinese trigger phrases and references |
+| 5.0.0 | Initial release with ref-based selection |
 
 ---
 

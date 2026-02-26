@@ -5,7 +5,7 @@ description: |
   and automated verification. It includes code-reviewer, confidence-scorer, and verification-agent.
   Use this skill when the user mentions "code review", "quality check", "ai:review", "ai:quality",
   "代码审查", "质量检查", or during Phase 5 of the development workflow.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - code review
   - quality check
@@ -19,6 +19,10 @@ triggers:
 # Quality Validation System
 
 > Multi-perspective code review with confidence-based filtering and automated verification.
+
+## 触发词
+
+此技能触发于: "code review", "quality check", "代码审查", "质量检查", "ai:review", "ai:quality".
 
 ## Quick Start
 

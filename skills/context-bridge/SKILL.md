@@ -1,6 +1,6 @@
 ---
 name: context-bridge
-version: 5.0.20
+version: 5.1.0
 description: |
   This skill should be used when managing cross-session context and in-session attention.
   Implements Manus "Read Before Decide" pattern. Auto Checkpoint at 90% context.
@@ -32,6 +32,10 @@ model: sonnet
 # Context Bridge - 注意力管理器
 
 > **保存当前进度 → 刷新目标焦点 → 新 Session 无缝继续。**
+
+## 触发词
+
+此技能触发于: "save", "resume", "focus", "checkpoint", "保存", "恢复", "继续", "存档", "进度".
 
 ---
 

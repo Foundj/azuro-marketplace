@@ -7,7 +7,7 @@ description: |
   problem solving, and architecture design decisions.
 
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - think deeply
   - analyze task
@@ -24,6 +24,10 @@ triggers:
 # Thinking Engine
 
 > Structured deep thinking engine for systematic AI analysis
+
+## 触发词
+
+此技能触发于: "think deeply", "analyze task", "好好思考", "深度分析", "ultrathink".
 
 ## Overview
 

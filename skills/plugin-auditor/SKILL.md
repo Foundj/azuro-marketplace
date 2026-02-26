@@ -7,7 +7,7 @@ description: |
   "检查插件质量", "插件评分".
   
   Provides multi-dimensional quality assessment with scoring, issue detection, and optimization recommendations for Claude Code Plugins.
-version: 5.0.20
+version: 5.1.0
 ---
 
 # Plugin Auditor
@@ -130,3 +130,21 @@ Recursively audit `skills/` directory using `skill-auditor` logic.
 - `bash` - Script execution
 - `grep` - Text search
 - `jq` - JSON processing (optional, falls back to text parsing)
+
+---
+
+## Workflow Integration
+
+Used in:
+- Pre-commit hooks to validate plugins
+- CI/CD pipelines for quality gates
+- Plugin development workflow
+
+---
+
+## Version History
+
+| Version | Changes |
+|---------|---------|
+| 5.0.20 | Added Chinese triggers and workflow integration |
+| 5.0.0 | Initial release with scoring system |

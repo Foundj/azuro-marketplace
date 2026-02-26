@@ -7,7 +7,7 @@ description: |
   deleted and rewritten. Triggers on "TDD", "test first", "红绿重构", "implementing feature",
   "writing code", "bug fix", "refactoring", "behavior change". No exceptions without
   explicit user permission.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - implementing feature
   - writing code
@@ -25,6 +25,10 @@ triggers:
 # Test-Driven Development (TDD) Enforcement
 
 > **Adapted from Superpowers by obra** - The gold standard for TDD discipline.
+
+## 触发词
+
+此技能触发于: "TDD", "test first", "红绿重构", "测试优先", "implementing feature", "writing code".
 
 ## The Iron Law
 
@@ -341,3 +345,19 @@ Otherwise → not TDD
 **Pairs with:**
 - `spec-compliance-review` - Verifies implementation matches spec
 - `code-reviewer` - Reviews code quality after TDD
+
+---
+
+## Dependencies
+
+- Requires test framework (Jest, pytest, etc.)
+- Works with `ultrawork` and `subagent-driven-development`
+
+---
+
+## Version History
+
+| Version | Changes |
+|---------|---------|
+| 5.0.20 | Added Chinese triggers and dependencies |
+| 5.0.0 | Initial release with Iron Law pattern |

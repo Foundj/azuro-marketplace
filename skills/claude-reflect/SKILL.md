@@ -5,7 +5,7 @@ description: |
   It automatically detects feedback patterns and prompts users to sync learnings to CLAUDE.md files.
   Use when the user mentions "reflect", "remember this", "learn from", "更新规则", "记住这个",
   or after meaningful corrections are made that should be persisted.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - reflect
   - remember this
@@ -20,6 +20,10 @@ triggers:
 # Claude Reflect - Self-Learning System
 
 This skill enables a two-stage system that helps Claude Code learn from user corrections.
+
+## 触发词
+
+此技能触发于: "reflect", "remember this", "更新规则", "记住这个", "反思学习".
 
 ## How It Works
 

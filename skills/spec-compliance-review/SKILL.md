@@ -5,7 +5,7 @@ description: |
   It verifies that implementation matches specification EXACTLY - nothing more, nothing less.
   Triggers on "spec review", "specification check", "规格审查", "compliance check", "符合性检查".
   Must pass before proceeding to Stage 2 code quality review.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - spec review
   - specification check
@@ -19,6 +19,10 @@ triggers:
 # Spec Compliance Review (Stage 1)
 
 > **Adapted from Superpowers by obra** - Two-stage review for quality assurance.
+
+## 触发词
+
+此技能触发于: "spec review", "specification check", "规格审查", "符合性检查", "需求符合性".
 
 ## Core Principle
 
@@ -281,3 +285,19 @@ Task Tool:
 
 **Pairs with:**
 - `tdd-enforcement` - Ensures tests cover requirements
+
+---
+
+## Dependencies
+
+- Requires `ultrawork` or `subagent-driven-development` as caller
+- Works with `code-reviewer` for Stage 2 review
+
+---
+
+## Version History
+
+| Version | Changes |
+|---------|---------|
+| 5.0.20 | Added Chinese triggers and dependencies |
+| 5.0.0 | Initial release with two-stage review pattern |

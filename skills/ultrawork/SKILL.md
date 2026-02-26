@@ -5,7 +5,7 @@ description: |
   It provides a one-word trigger for a complete development workflow, orchestrating
   requirement clarification, worktree isolation, TDD implementation, two-stage review,
   and continuous execution until <promise>DONE</promise>.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - ultrawork
   - ulw
@@ -22,6 +22,10 @@ triggers:
 # Ultrawork: Autonomous Development Mode
 
 > **Philosophy**: Human intervention during agentic work is a failure signal. The system should complete work without requiring babysitting.
+
+## 触发词
+
+此技能触发于: "ultrawork", "ulw", "自动完成", "全自动", "autonomous", "一键开发".
 
 ## Core Principle
 
@@ -494,3 +498,24 @@ Summary:
 **Hooks:**
 - `todo-continuation-enforcer` - Forces completion
 - `comment-checker` - Prevents AI slop
+
+---
+
+## Dependencies
+
+- `confidence-gate` - Phase 0 confidence check
+- `tdd-enforcement` - TDD discipline
+- `spec-compliance-review` - Stage 1 review
+- `code-reviewer` - Stage 2 review
+- `git-worktree` - Task isolation
+- `task-templates` - Fine-grained planning
+- `subagent-driven-development` - Atomic task execution
+
+---
+
+## Version History
+
+| Version | Changes |
+|---------|---------|
+| 5.0.20 | Added Chinese triggers and dependencies |
+| 5.0.0 | Initial release with 9-phase workflow |

@@ -5,7 +5,7 @@ description: |
   It defines how to dispatch subagents for each task with self-review before handoff, two-stage
   review after completion, and structured reporting. Triggers on "subagent", "dispatch task",
   "子代理", "任务分发", "parallel implementation". Borrowed from Superpowers by obra.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - subagent
   - dispatch task
@@ -21,6 +21,10 @@ triggers:
 # Subagent-Driven Development
 
 > **Adapted from Superpowers by obra** - One subagent per task with structured handoff.
+
+## 触发词
+
+此技能触发于: "subagent", "dispatch task", "子代理", "任务分发", "parallel implementation".
 
 ## Core Principle
 
@@ -370,3 +374,20 @@ Task 1: Calculator Core ✅
 3. **Archive details**: Move completed work to archive
 4. **Use TaskUpdate**: Track progress without repeating details
 5. **Minimize file reads**: Subagent has full context in prompt
+
+---
+
+## Dependencies
+
+- Requires `tdd-enforcement` for TDD discipline
+- Requires `spec-compliance-review` for Stage 1 review
+- Requires `code-reviewer` for Stage 2 review
+
+---
+
+## Version History
+
+| Version | Changes |
+|---------|---------|
+| 5.0.20 | Added Chinese triggers and parallel execution optimization |
+| 5.0.0 | Initial release with one-task-one-subagent pattern |

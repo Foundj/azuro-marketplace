@@ -5,7 +5,7 @@ description: |
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
   "knowledge", "experience", "历史方案", "经验复用", "参考". Manages cross-project knowledge relationships
   and enables experience reuse across projects. Now enhanced with MCP semantic search and LSP-first navigation.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - query knowledge
   - find related solutions
@@ -23,7 +23,9 @@ triggers:
 
 > Cross-project knowledge management for experience reuse
 
-## Trigger Phrases
+## 触发词 / Trigger Phrases
+
+此技能触发于: "query knowledge", "find related solutions", "查知识库", "知识图谱", "经验复用".
 - "query knowledge"
 - "find related solutions"
 - "查知识库"

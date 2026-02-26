@@ -5,7 +5,7 @@ description: |
   fine-grained task templates ensuring each task is 2-5 minutes of focused work. Triggers on
   "task breakdown", "create tasks", "任务分解", "task template", "granular tasks".
   Borrowed from Superpowers pattern of atomic TDD steps.
-version: 5.0.20
+version: 5.1.0
 triggers:
   - task breakdown
   - create tasks
@@ -19,6 +19,10 @@ triggers:
 # Task Templates: Fine-Grained Implementation
 
 > **Adapted from Superpowers by obra** - Each task should be 2-5 minutes of focused work.
+
+## 触发词
+
+此技能触发于: "task breakdown", "create tasks", "任务分解", "task template", "granular tasks".
 
 ## Core Principle
 
