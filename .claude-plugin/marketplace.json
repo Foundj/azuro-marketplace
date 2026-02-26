@@ -3,7 +3,7 @@
   "name": "azuro-marketplace",
   "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
   "metadata": {
-    "version": "5.0.18"
+    "version": "5.0.19"
   },
   "owner": {
     "name": "foundj"
@@ -14,7 +14,7 @@
       "source": "./",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "5.0.18",
+      "version": "5.0.19",
       "repository": "https://github.com/Foundj/azuro-marketplace",
       "keywords": [
         "ai-development",
@@ -58,7 +58,7 @@
       "source": "./skills/claude-reflect",
       "strict": false,
       "description": "Self-learning system that captures corrections during sessions and updates your project conventions",
-      "version": "5.0.18",
+      "version": "5.0.19",
       "keywords": [
         "learning",
         "reflection",
@@ -79,7 +79,7 @@
       "source": "./skills/thinking-engine",
       "strict": false,
       "description": "Advanced reasoning and chain-of-thought engine for complex problem solving",
-      "version": "5.0.18",
+      "version": "5.0.19",
       "keywords": [
         "thinking",
         "cot",
@@ -96,7 +96,7 @@
       "source": "./skills/context-bridge",
       "strict": false,
       "description": "Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow",
-      "version": "5.0.18",
+      "version": "5.0.19",
       "keywords": [
         "context",
         "session",

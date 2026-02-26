@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.19] - 2026-02-26
+
+### Added
+- **context-compressor skill**: Intelligent context compression for long-running workflows
+- **task-dependency-analyzer skill**: DAG-based dependency analysis for parallel execution optimization
+- **templates/nodejs**: Quick start template for Node.js projects with ultrawork compatibility
+- **templates/python**: Quick start template for Python projects with ultrawork compatibility
+- **execution-tracker.sh hook**: Session execution timing and performance reporting
+
+### Changed
+- **hooks.json**: Added execution-tracker to Stop hooks for session reports
+- **subagent-driven-development**: Enhanced with context compression patterns
+
+
 ## [5.0.18] - 2026-02-26
 
 ### Added

@@ -1,0 +1,13 @@
+{
+  "name": "project-name",
+  "version": "1.0.0",
+  "description": "Node.js project with ultrawork compatibility",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node tests/index.test.js",
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
