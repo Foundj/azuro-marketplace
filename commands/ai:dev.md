@@ -1,8 +1,8 @@
 ---
 name: ai:dev
 description: AI-powered 7-phase development workflow for complete feature implementation
-argument-hint: "<feature-description> | auto [--dry-run] [--skip-research] [--quick]"
-allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
+argument-hint: "<feature-description> | auto [--dry-run] [--skip-research] [--quick] [--team]"
+allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash, TeamCreate, TeamDelete, TaskCreate, TaskUpdate, TaskList, TaskGet, SendMessage
 ---
 
 # AI Development Command
@@ -11,6 +11,7 @@ allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
 - `/ai:dev <feature>` - Start 7-phase development workflow
 - `/ai:dev auto` - Auto-complete all unchecked tasks in active change
 - `/ai:dev auto --dry-run` - Preview tasks without executing
+- `/ai:dev <feature> --team` - Use Agent Teams collaborative mode
 
 ---
 
@@ -18,11 +19,69 @@ allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
 
 Parse $ARGUMENTS to determine mode:
 
+**Check for --team flag first:**
+- If `--team` present → Execute **Agent Teams Mode** (see below)
+
 **If first argument is "auto":**
 → Execute **Auto-Complete Mode** (see below)
 
 **Otherwise:**
 → Execute **Feature Development Mode** (7-phase workflow)
+
+---
+
+## Agent Teams Mode
+
+**Triggered by `--team` flag**
+
+When user specifies `--team`, delegate to the team-orchestrator for collaborative development:
+
+```typescript
+// Check if Agent Teams is enabled
+const teamsEnabled = process.env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS === "1"
+
+if (!teamsEnabled) {
+  console.log(`
+⚠️  Agent Teams requires experimental feature enabled
+
+Add to ~/.claude/settings.json:
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+  `)
+  // Fall back to traditional mode
+}
+
+// Assess task complexity for team configuration
+const complexity = assessComplexity(featureDescription)
+const needsTeam = complexity === "medium" || complexity === "complex"
+
+if (needsTeam) {
+  // Create team with appropriate teammates
+  TeamCreate({
+    team_name: generateTeamName(featureDescription),
+    description: featureDescription,
+    agent_type: "team-orchestrator"
+  })
+
+  // Generate teammates based on task type
+  // ... (see team-orchestrator agent for details)
+}
+```
+
+**Team Mode Selection Logic:**
+| Complexity | Recommendation | Team Size |
+|------------|----------------|-----------|
+| simple | Single agent | 1 |
+| medium | Small team | 2-3 |
+| complex | Full team | 3-5 |
+
+**After team execution:**
+1. All teammates receive shutdown_request
+2. TeamDelete cleans up resources
+3. Return to normal workflow
 
 ---
 

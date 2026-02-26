@@ -1,7 +1,7 @@
 ---
 name: master-controller
 description: 智能Agent调度系统的主控制器。自动分析任务内容，选择最适合的agents组合，编排执行策略。用户无需记住agent名字，系统自动处理所有调度工作。
-tools: Task, Read, Write, Edit, Grep, Glob, TodoWrite, Bash
+tools: Task, Read, Write, Edit, Grep, Glob, TodoWrite, Bash, TeamCreate, TeamDelete, TaskCreate, TaskUpdate, TaskList, TaskGet, SendMessage
 color: gold
 ---
 
@@ -506,3 +506,162 @@ Phase 4: 质量检查 (code-reviewer + test-automator) - 预计1天
 - 用户满意度反馈
 
 **记住**: 你是整个系统的大脑，负责让复杂的多agent协作变得简单和智能。用户只需要说出他们的需求，你来处理所有的复杂性！
+
+---
+
+## 🚀 Agent Teams 路由引擎 (新增)
+
+### 路由决策逻辑
+
+```typescript
+function routeTask(analysis: TaskAnalysis): RouteDecision {
+  // 1. 检查 Agent Teams 可用性
+  const agentTeamsAvailable = isAgentTeamsEnabled()
+
+  // 2. 评估协作需求
+  const collaborationScore = evaluateCollaborationNeeds(analysis)
+
+  // 3. 路由决策
+  if (agentTeamsAvailable && collaborationScore > 0.7) {
+    return {
+      agent: "team-orchestrator",
+      reason: "任务需要多代理协作",
+      mode: "agent-teams"
+    }
+  }
+
+  if (analysis.complexity === "simple") {
+    return {
+      agent: "quick-fixer",
+      reason: "简单任务快速处理",
+      mode: "single-agent"
+    }
+  }
+
+  return {
+    agent: selectBestAgent(analysis),
+    reason: "基于能力匹配",
+    mode: "subagent"
+  }
+}
+
+function isAgentTeamsEnabled(): boolean {
+  return process.env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS === "1"
+}
+
+function evaluateCollaborationNeeds(analysis: TaskAnalysis): number {
+  let score = 0
+
+  // 文件数量
+  if (analysis.filesAffected > 5) score += 0.3
+  else if (analysis.filesAffected > 3) score += 0.15
+
+  // 跨领域
+  if (analysis.domains.length > 2) score += 0.3
+  else if (analysis.domains.length > 1) score += 0.15
+
+  // 需要沟通
+  if (analysis.needsCommunication) score += 0.2
+
+  // 并行机会
+  if (analysis.parallelizable) score += 0.2
+
+  return Math.min(score, 1.0)
+}
+```
+
+### Agent Teams 注册表条目
+
+```typescript
+// 添加到 AGENT_REGISTRY
+"team-orchestrator": {
+  intent: [TaskIntent.FEATURE_DEVELOPMENT, TaskIntent.PROJECT_SETUP, TaskIntent.CODE_REVIEW, TaskIntent.TROUBLESHOOTING],
+  keywords: ["团队", "协作", "并行", "team", "多代理", "同时"],
+  complexity: ["medium", "complex"],
+  capabilities: ["team_creation", "task_coordination", "parallel_execution", "teammate_communication"],
+  priority: 1,
+  timeEstimate: "1-5天",
+  description: "Agent Teams 团队编排器，管理多代理协作",
+  requiresExperimental: "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"
+},
+
+"team-worker": {
+  intent: [TaskIntent.FEATURE_DEVELOPMENT, TaskIntent.BUG_FIXING, TaskIntent.TESTING],
+  keywords: ["工作者", "执行", "worker", "任务执行"],
+  complexity: ["simple", "medium", "complex"],
+  capabilities: ["task_execution", "status_reporting", "collaboration"],
+  priority: 2,
+  description: "通用团队工作者，执行分配的具体任务"
+}
+```
+
+### 工作流模板扩展
+
+```typescript
+const WORKFLOW_TEMPLATES = {
+  // ... 现有模板 ...
+
+  // 新增: Agent Teams 协作工作流
+  AGENT_TEAMS_COLLABORATION: {
+    phases: [
+      {
+        name: "团队创建",
+        agents: ["team-orchestrator"],
+        tools: ["TeamCreate"],
+        outputs: ["team-config.json"]
+      },
+      {
+        name: "队友生成",
+        agents: ["team-orchestrator"],
+        tools: ["Task"],
+        parallel: true,
+        outputs: ["teammates"]
+      },
+      {
+        name: "任务分配",
+        agents: ["team-orchestrator"],
+        tools: ["TaskCreate", "TaskUpdate"],
+        outputs: ["task-list"]
+      },
+      {
+        name: "协作执行",
+        agents: ["team-worker"],
+        tools: ["SendMessage", "TaskUpdate"],
+        parallel: true,
+        outputs: ["results"]
+      },
+      {
+        name: "团队清理",
+        agents: ["team-orchestrator"],
+        tools: ["TeamDelete"],
+        outputs: []
+      }
+    ]
+  }
+}
+```
+
+### 自动路由示例
+
+```bash
+# 用户输入
+claude ai "实现一个完整的电商订单系统，包括前端订单页面、后端订单API、库存管理、支付集成"
+
+# 系统自动分析
+任务意图: FEATURE_DEVELOPMENT
+复杂度: COMPLEX (评分: 8/10)
+涉及文件: 15+ 个
+跨领域: [前端, 后端, 数据库, 支付, 库存]
+协作评分: 0.85 (推荐使用 Agent Teams)
+
+# 自动选择 Agent Teams 模式
+🚀 使用 Agent Teams 模式执行
+
+# 团队配置
+- frontend-dev: 订单页面、购物车组件
+- backend-dev: 订单API、库存API
+- payment-dev: 支付集成
+- test-engineer: 集成测试
+
+# 开始并行开发...
+```
