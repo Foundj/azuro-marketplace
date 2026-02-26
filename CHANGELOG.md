@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.18] - 2026-02-26
+
+### Added
+- **tests/e2e-ultrawork-test.sh**: E2E automated test suite for ultrawork workflow validation (6 test cases)
+
+### Changed
+- **mcp-integration skill**: Added Context7 semantic search patterns for code pattern discovery, LSP integration priority
+- **subagent-driven-development skill**: Added parallel execution optimization, dependency detection, context window management tips
+
+
 ## [5.0.17] - 2026-02-26
 
 ### Added

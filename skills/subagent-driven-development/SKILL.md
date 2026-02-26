@@ -5,7 +5,7 @@ description: |
   It defines how to dispatch subagents for each task with self-review before handoff, two-stage
   review after completion, and structured reporting. Triggers on "subagent", "dispatch task",
   "子代理", "任务分发", "parallel implementation". Borrowed from Superpowers by obra.
-version: 5.0.17
+version: 5.0.18
 triggers:
   - subagent
   - dispatch task
@@ -294,3 +294,79 @@ Task Tool:
 
 **Triggers:**
 - `todo-continuation-enforcer` - Forces completion
+
+## Parallel Execution Optimization
+
+### Independent Tasks → Parallel Dispatch
+
+When tasks have no dependencies, dispatch in parallel:
+
+```yaml
+# Dispatch multiple tasks in ONE message (parallel execution)
+Task({ description: "Task 1: Setup", prompt: "...", subagent_type: "general-purpose" })
+Task({ description: "Task 2: Utils", prompt: "...", subagent_type: "general-purpose" })
+Task({ description: "Task 3: Config", prompt: "...", subagent_type: "general-purpose" })
+
+# Wait for all to complete before Phase 6 (Review)
+```
+
+### Dependency Detection
+
+```yaml
+Task Dependency Analysis:
+  Independent: Task A and B have no file overlap → Parallel
+  Dependent: Task B needs Task A's output → Sequential
+
+Example:
+  Task 1: Create types.ts (no deps) → Can parallel with Task 2
+  Task 2: Create utils.ts (no deps) → Can parallel with Task 1
+  Task 3: Create api.ts (needs types.ts, utils.ts) → Must wait for 1 & 2
+```
+
+### Context Window Management
+
+```yaml
+Problem:
+  - Each subagent gets fresh context (good for isolation)
+  - But main agent context grows with each result (bad for long sessions)
+
+Solution:
+  1. Summarize subagent results (don't include full code)
+  2. Archive completed task details to codebox/archive/
+  3. Only keep summary in main context:
+     - Task N: ✅ Complete (files: X, Y, Z)
+     - Task N+1: 🔄 In progress
+
+Pattern:
+  After each task completion:
+    1. Extract: What was implemented (1-2 sentences)
+    2. Extract: Files changed (list only)
+    3. Extract: Any concerns (if any)
+    4. Archive: Full report to codebox/archive/task-N.md
+    5. Keep: Only summary in active context
+```
+
+### Subagent Result Summarization
+
+```markdown
+# Good: Concise summary
+Task 1: Calculator Core ✅
+- Implemented: add, subtract, multiply, divide methods
+- Files: src/calculator.js (117 lines)
+- Tests: 4 passing
+- Concerns: None
+
+# Bad: Full context dump
+Task 1: Calculator Core ✅
+[300 lines of code]
+[100 lines of test output]
+[50 lines of implementation details]
+```
+
+## Performance Tips
+
+1. **Batch independent tasks**: Dispatch 2-4 subagents in single message
+2. **Summarize results**: Keep main context clean
+3. **Archive details**: Move completed work to archive
+4. **Use TaskUpdate**: Track progress without repeating details
+5. **Minimize file reads**: Subagent has full context in prompt

@@ -5,7 +5,7 @@ description: |
   It helps configure and use external MCP servers like Context7 (documentation), Tavily (web search),
   and Sequential-Thinking (reasoning). Use when the user mentions "MCP", "Context7", "Tavily",
   "官方文档查询", "MCP配置", "外部服务集成", or wants to enhance research with external tools.
-version: 5.0.17
+version: 5.0.18
 triggers:
   - MCP
   - Context7
@@ -98,6 +98,36 @@ Step 2: Query documentation
 ```
 
 **Best Practice**: Always verify with official docs before implementation to prevent hallucination.
+
+### Context7: Code Pattern Search (Semantic)
+
+**When to use**: Finding similar code patterns in documentation
+
+```
+# Example 1: Find authentication patterns
+mcp__context7__query-docs
+  - libraryId: "/vercel/next.js"
+  - query: "authentication middleware pattern with JWT"
+
+# Example 2: Find error handling patterns
+mcp__context7__query-docs
+  - libraryId: "/expressjs/express"
+  - query: "async error handling wrapper try catch"
+
+# Example 3: Find testing patterns
+mcp__context7__query-docs
+  - libraryId: "/jestjs/jest"
+  - query: "mock function implementation examples"
+```
+
+**Integration with ultrawork Phase 0**:
+```yaml
+Confidence Gate Enhancement:
+  1. Before implementation, query Context7 for patterns
+  2. Compare with existing codebase patterns (LSP/Grep)
+  3. If both match → confidence boost +15%
+  4. If mismatch → present alternatives to user
+```
 
 ### Tavily: Web Research
 
@@ -240,4 +270,38 @@ WebSearch({ query: "JWT vs session authentication comparison" })
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 5.0.18 | 2026-02-26 | Added Context7 semantic search patterns for code patterns |
 | 5.0.7 | 2026-01-14 | Initial release with Context7, Tavily, Sequential-Thinking |
+
+## Code Pattern Search Examples
+
+### Finding Similar Implementations
+
+```yaml
+# Use Case: Implementing authentication
+Query: "authentication middleware pattern with session validation"
+Result: Official patterns from framework docs
+
+# Use Case: Implementing error handling
+Query: "error boundary pattern with fallback UI"
+Result: React error boundary examples
+
+# Use Case: Implementing caching
+Query: "caching strategy with stale-while-revalidate"
+Result: Next.js ISR patterns
+```
+
+### Integration with LSP-First Navigation
+
+```yaml
+Priority Order for Code Discovery:
+  1. LSP tools (goToDefinition, findReferences) - project code
+  2. Context7 query-docs - official patterns
+  3. Grep/Glob - fallback search
+  4. WebSearch - last resort
+
+Example Flow:
+  LSP.goToDefinition → Found in project? → Use it
+                      → Not found? → Context7 query-docs → Found pattern? → Apply
+                                  → Not found? → WebSearch
+```
