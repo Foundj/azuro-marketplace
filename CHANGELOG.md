@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.17] - 2026-02-26
+
+### Added
+- **codebox-setup.sh**: Automated codebox directory creation script (spec.md, plan.md, active.md, completed.md)
+- **ultrawork/references/workflow-details.md**: Comprehensive workflow reference documentation
+
+### Changed
+- **ultrawork Phase 3**: Enhanced with standardized codebox setup (spec.md, plan.md, active.md templates)
+- **ultrawork Phase 5**: Added Task Tool parallel dispatch pattern and progress tracking template
+- **ultrawork Phase 6**: Enhanced two-stage review with actual subagent call templates and review loop logic
+- **ultrawork Phase 7**: Added TaskUpdate integration and active.md update template
+
+
 ## [5.0.16] - 2026-02-24
 
 ### Added

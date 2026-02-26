@@ -5,7 +5,7 @@ description: |
   It provides a one-word trigger for a complete development workflow, orchestrating
   requirement clarification, worktree isolation, TDD implementation, two-stage review,
   and continuous execution until <promise>DONE</promise>.
-version: 5.0.16
+version: 5.0.17
 triggers:
   - ultrawork
   - ulw
@@ -139,10 +139,11 @@ C) Other (please specify)
 
 If requirements are clear → Skip directly to Phase 3.
 
-### Phase 3: Worktree Isolation
+### Phase 3: Worktree Isolation & Codebox Setup
 
 **For MEDIUM/COMPLEX tasks (using `git-worktree` skill):**
 
+#### Step 1: Worktree Creation
 ```bash
 # Check existing directory
 ls -d .worktrees 2>/dev/null || ls -d worktrees 2>/dev/null
@@ -156,14 +157,70 @@ git check-ignore -q .worktrees 2>/dev/null || {
 # Create worktree
 git worktree add .worktrees/<feature-name> -b feature/<feature-name>
 cd .worktrees/<feature-name>
+```
 
-# Project setup
+#### Step 2: Codebox Setup (STANDARD)
+```bash
+# Create codebox directory structure
+mkdir -p codebox/changes
+mkdir -p codebox/archive
+
+# Create spec.md (requirements)
+cat > codebox/spec.md << 'EOF'
+# [Feature Name] Specification
+
+## Requirements
+- [List requirements from user request]
+
+## Success Criteria
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+
+## Files Affected
+- [List files to be created/modified]
+EOF
+
+# Create plan.md (implementation plan)
+cat > codebox/plan.md << 'EOF'
+# Implementation Plan
+
+## Tasks
+### Task 1: [Name]
+- Time: 2-5 min
+- Files: [list]
+- TDD: test → fail → implement → pass
+
+### Task 2: [Name]
+...
+EOF
+
+# Create active.md (progress tracking)
+cat > codebox/changes/active.md << 'EOF'
+# Active Tasks
+
+## In Progress
+- [ ] Task 1
+- [ ] Task 2
+
+## Completed
+- (none yet)
+
+---
+Status: IN_PROGRESS
+Started: [date]
+EOF
+```
+
+#### Step 3: Project Setup
+```bash
+# Install dependencies (auto-detect)
 [ -f package.json ] && npm install
 [ -f requirements.txt ] && pip install -r requirements.txt
 [ -f Cargo.toml ] && cargo build
+[ -f go.mod ] && go mod download
 
-# Verify baseline
-npm test / pytest / cargo test
+# Verify baseline (if tests exist)
+npm test 2>/dev/null || pytest 2>/dev/null || cargo test 2>/dev/null || echo "No tests found"
 ```
 
 ### Phase 4: Plan Generation
@@ -219,6 +276,17 @@ git commit -m "feat: add feature"
 **Dispatch subagents using `subagent-driven-development` skill.**
 One subagent per task with structured handoff.
 
+**CRITICAL: Use Task Tool for parallel execution**
+```
+Task Tool (parallel dispatch):
+┌─────────────────────────────────────────────────────────────┐
+│  Task 1 → subagent A ──────────────────┐                  │
+│  Task 2 → subagent B ──────────────────┼─→ Wait for all   │
+│  Task 3 → subagent C ──────────────────┘                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Subagent Prompt Template:**
 ```yaml
 Task Tool:
   subagent_type: "general-purpose"
@@ -226,8 +294,14 @@ Task Tool:
   prompt: |
     You are implementing Task N: [name]
 
+    ## Working Directory
+    [worktree path, e.g., .worktrees/<feature-name>]
+
     ## Task Description
     [FULL task text - don't make subagent read file]
+
+    ## Dependencies (if any)
+    - Task M must complete first: [status]
 
     ## Before You Begin
     If you have questions about requirements, approach, or assumptions - ASK NOW.
@@ -240,69 +314,138 @@ Task Tool:
 
     ## Report Format
     - What you implemented
-    - Test results
-    - Files changed
-    - Any concerns
+    - Test results (run commands and show output)
+    - Files changed (list with paths)
+    - Any concerns or blockers
+```
+
+**Progress Tracking:**
+```markdown
+# Update codebox/changes/active.md after each task
+- [x] Task 1: [name] ✅
+- [ ] Task 2: [name] (in progress)
+- [ ] Task 3: [name]
 ```
 
 ### Phase 6: Two-Stage Review
 
-**Stage 1: Spec Compliance (using `spec-compliance-review` skill)**
+**CRITICAL: Use actual subagent calls for review, not manual checklists.**
+
+#### Stage 1: Spec Compliance Review (using `ai-dev:spec-compliance-reviewer`)
 
 ```yaml
 Task Tool:
   subagent_type: "ai-dev:spec-compliance-reviewer"
-  description: "Review spec compliance for Task N"
+  description: "Review spec compliance for [feature]"
   prompt: |
     ## What Was Requested
-    [Task requirements]
+    Read codebox/spec.md for the full requirements.
 
     ## What Was Built
-    [Implementer's report]
+    Read the implementation in:
+    - [list of created/modified files]
 
     ## CRITICAL: Do Not Trust the Report
-    Read the actual code. Verify independently.
+    Read the actual code yourself. Verify independently.
 
-    Check:
-    - Missing requirements?
-    - Extra/unneeded work?
-    - Misunderstandings?
+    ## Review Checklist
+    - Missing requirements? (spec has X, code doesn't implement)
+    - Extra/unneeded work? (code does Y, spec doesn't require)
+    - Misunderstandings? (spec means A, code does B)
 
-    Report: ✅ Spec compliant OR ❌ Issues: [list with file:line]
+    ## Output Format
+    ✅ Spec compliant: All requirements implemented correctly
+    OR
+    ❌ Issues found:
+    - [file:line] Missing: [requirement]
+    - [file:line] Extra: [unneeded work]
 ```
 
-**Stage 2: Code Quality (using `code-reviewer` agent)**
+#### Stage 2: Code Quality Review (using `ai-dev:code-reviewer`)
 
 ```yaml
 Task Tool:
   subagent_type: "ai-dev:code-reviewer"
-  description: "Review code quality for Task N"
+  description: "Review code quality for [feature]"
   prompt: |
-    Review code quality for Task N.
+    Review code quality for the implementation.
 
-    Check:
-    - Code cleanliness
-    - Test quality
-    - Following patterns
-    - No AI slop (checked by `comment-checker` hook)
+    ## Files to Review
+    - [list of created/modified files]
 
-    Report: Strengths, Issues (Critical/Important/Minor), Assessment
+    ## Review Criteria
+    - Code cleanliness (no dead code, clear naming)
+    - Test quality (meaningful assertions, coverage)
+    - Pattern consistency (follows project conventions)
+    - No AI slop (checked by comment-checker hook)
+
+    ## Output Format
+    **Strengths:**
+    - [positive aspects]
+
+    **Issues:**
+    - CRITICAL: [blocking issues]
+    - IMPORTANT: [should fix]
+    - MINOR: [nice to have]
+
+    **Assessment:** ✅ Ready for merge / ⚠️ Needs revision
+```
+
+#### Review Loop
+
+```yaml
+if Stage 1 fails:
+  - Fix spec compliance issues
+  - Re-run Stage 1
+
+if Stage 2 has CRITICAL issues:
+  - Fix critical issues
+  - Re-run Stage 2
+
+if Stage 2 has IMPORTANT issues:
+  - Offer to fix or proceed with warnings
+
+if both pass:
+  - Proceed to Phase 7
 ```
 
 ### Phase 7: Continuation Enforcement
 
-**Enforced by `todo-continuation-enforcer` hook.**
+**Enforced by `todo-continuation-enforcer` hook + Task tool tracking.**
 
 ```yaml
 After each task completion:
-  1. Check TodoList for remaining tasks
-  2. If incomplete AND no <promise>DONE</promise>:
+  1. Update TaskUpdate(status: "completed")
+  2. Update codebox/changes/active.md
+  3. Check TaskList for remaining tasks
+  4. If incomplete AND no <promise>DONE</promise>:
      → Auto-continue to next task
-  3. If all complete:
+  5. If all complete:
      → Proceed to Phase 8
 
-This is what keeps Sisyphus rolling the boulder.
+Task Tracking Pattern:
+  TaskCreate(subject: "Task N: Name", description: "...")
+  # ... do work ...
+  TaskUpdate(taskId: "N", status: "completed")
 ```
+
+**active.md Update Template:**
+```markdown
+# Active Tasks
+
+## In Progress
+- [ ] Task 3: [name] ← current
+
+## Completed
+- [x] Task 1: [name] ✅
+- [x] Task 2: [name] ✅
+
+---
+Status: IN_PROGRESS
+Last Updated: [timestamp]
+```
+
+This is what keeps Sisyphus rolling the boulder.
 
 ### Phase 8: Finishing
 

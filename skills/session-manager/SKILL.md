@@ -6,7 +6,7 @@ description: |
   validates state, and suggests next steps. Use when the user mentions "continue", "resume",
   "status", "progress", "恢复会话", "继续", "进度", or when starting a new session.
   Critical for long-running project continuity.
-version: 5.0.16
+version: 5.0.17
 allowed-tools: Read, Bash, Grep, Glob
 model: sonnet
 triggers:
