@@ -6,7 +6,7 @@ description: |
   and outputs execution recommendations. Use when planning multi-task implementation,
   optimizing parallel execution, or the user mentions "dependencies", "parallel",
   "execution order", "任务依赖", "并行执行".
-version: 5.0.19
+version: 5.0.20
 triggers:
   - task dependencies
   - dependency analysis

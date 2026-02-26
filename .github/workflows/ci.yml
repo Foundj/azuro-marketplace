@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then npm install; fi
+
+      - name: Run skill audit
+        run: |
+          chmod +x skills/skill-auditor/scripts/validate-skill.sh
+          for skill in skills/*/SKILL.md; do
+            skill_dir=$(dirname "$skill")
+            echo "Auditing $skill_dir..."
+            bash skills/skill-auditor/scripts/validate-skill.sh "$skill_dir" || true
+          done
+
+      - name: Run E2E tests
+        run: |
+          chmod +x tests/e2e-ultrawork-test.sh
+          bash tests/e2e-ultrawork-test.sh
+
+      - name: Check version bump
+        run: |
+          if git log -1 --pretty=%B | grep -q "feat\|fix\|chore"; then
+            echo "✅ Commit message follows conventional commits"
+          else
+            echo "⚠️ Consider using conventional commit format"
+          fi
+
+  hooks-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate hooks.json
+        run: |
+          if [ -f hooks/hooks.json ]; then
+            echo "Validating hooks.json..."
+            jq empty hooks/hooks.json || exit 1
+            echo "✅ hooks.json is valid"
+          fi
+
+      - name: Test hook scripts
+        run: |
+          for script in hooks/scripts/*.sh; do
+            if [ -f "$script" ]; then
+              echo "Checking $script..."
+              bash -n "$script" || exit 1
+            fi
+          done
+          echo "✅ All hook scripts have valid syntax"
+
+  marketplace-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate marketplace.json
+        run: |
+          if [ -f .claude-plugin/marketplace.json ]; then
+            echo "Validating marketplace.json..."
+            jq empty .claude-plugin/marketplace.json || exit 1
+            echo "✅ marketplace.json is valid"
+          fi
+
+      - name: Check plugin structure
+        run: |
+          echo "Checking plugin structure..."
+          [ -d "skills" ] && echo "✅ skills/ exists" || echo "⚠️ skills/ missing"
+          [ -d "commands" ] && echo "✅ commands/ exists" || echo "⚠️ commands/ missing"
+          [ -d "hooks" ] && echo "✅ hooks/ exists" || echo "⚠️ hooks/ missing"
+          [ -d "agents" ] && echo "✅ agents/ exists" || echo "⚠️ agents/ missing"

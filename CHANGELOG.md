@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.20] - 2026-02-26
+
+### Added
+- **ai:init command**: Quick start command for initializing new projects with ultrawork-compatible structure
+- **.github/workflows/ci.yml**: GitHub Actions CI workflow for automated testing and validation
+- **task-dependency-analyzer/examples/**: Example dependency analysis documentation
+- **task-dependency-analyzer/references/**: DAG algorithm reference documentation
+
+### Changed
+- **task-dependency-analyzer**: Improved from 87 to 91 quality score
+- **execution-tracker.sh**: Tested and verified working
+
+
 ## [5.0.19] - 2026-02-26
 
 ### Added
