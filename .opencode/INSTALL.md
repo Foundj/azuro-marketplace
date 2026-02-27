@@ -14,7 +14,16 @@ mkdir -p ~/.config/opencode/azuro-marketplace
 git clone https://github.com/Foundj/azuro-marketplace.git ~/.config/opencode/azuro-marketplace
 ```
 
-### 2. Link Skills Directory
+### 2. Register the Plugin
+
+Create a symlink so OpenCode discovers the plugin:
+
+```bash
+mkdir -p ~/.config/opencode/plugins
+ln -sf ~/.config/opencode/azuro-marketplace/.opencode/plugins/azuro-marketplace.js ~/.config/opencode/plugins/azuro-marketplace.js
+```
+
+### 3. Link Skills Directory
 
 Create a symlink so OpenCode discovers the skills:
 
@@ -23,9 +32,9 @@ mkdir -p ~/.config/opencode/skills
 ln -sf ~/.config/opencode/azuro-marketplace/skills/* ~/.config/opencode/skills/
 ```
 
-### 3. Restart OpenCode
+### 4. Restart OpenCode
 
-Restart OpenCode. The skills will be automatically discovered.
+Restart OpenCode. The plugin will inject context and skills will be automatically discovered.
 
 ## Core Commands
 
