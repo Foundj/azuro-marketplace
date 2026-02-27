@@ -104,22 +104,23 @@ Claude 会自动使用市场中合适的技能和代理。
 <!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 5.1.23 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **ai-dev** | 5.2.0 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
 <!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能
 
-### 核心命令
+### 核心命令 (用户可见)
 
 | 命令 | 描述 |
 |------|------|
 | `/ai:dev` | 启动 AI 开发工作流 (Phase 0-6) |
 | `/ai:fix` | 带验证循环的智能 Bug 修复 |
 | `/ai:status` | 查看项目健康状况和代理进度 |
+| `/ai:team` | 多代理团队协作开发 |
 | `/ai:session-save` | 保存当前会话进度和上下文 |
 | `/ai:session-resume` | 恢复并继续之前的会话 |
-| `/ai:skills-audit` | 专业技能质量验证 |
-| `/ai:test-web` | Web 自动化和浏览器集成测试 |
+
+> **说明**: 其他命令（如 `/ai:skills-audit`、`/ai:test-web`）是内部工具，由工作流自动触发调用。它们功能完整，但不暴露给用户以避免混淆。详见 [docs/INDEX.md](docs/INDEX.md) 设计原则。
 
 ### 专业代理 (24个)
 

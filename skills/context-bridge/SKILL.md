@@ -1,6 +1,6 @@
 ---
 name: context-bridge
-version: 5.1.23
+version: 5.2.0
 status: ga
 description: |
   This skill should be used when managing cross-session context and in-session attention.

@@ -128,22 +128,23 @@ Core workflow:
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 5.1.23 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **ai-dev** | 5.2.0 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features
 
-### Commands (Core)
+### Commands (User-Facing)
 
 | Command | Description |
 |---------|-------------|
 | `/ai:dev` | Start AI development workflow (Phases 0-6) |
 | `/ai:fix` | Intelligent bug fix with verification loop |
 | `/ai:status` | View project health and agent progress |
+| `/ai:team` | Multi-agent team collaboration development |
 | `/ai:session-save` | Save current session progress and context |
 | `/ai:session-resume` | Restore and continue previous session |
-| `/ai:skills-audit` | Professional skill quality validation |
-| `/ai:test-web` | Web automation and browser integration testing |
+
+> **Note**: Additional commands (like `/ai:skills-audit`, `/ai:test-web`) are internal tools triggered automatically by workflows. They are fully functional but not exposed to avoid user confusion. See [docs/INDEX.md](docs/INDEX.md) for design principles.
 
 ### Specialized Agents (24)
 

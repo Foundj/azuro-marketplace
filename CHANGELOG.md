@@ -7,16 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [5.1.23] - 2026-02-27
+## [5.2.0] - 2026-02-27
+
+### Added
+- **Acceptance Testing System**: Frontend browser-based validation with `/ai:acceptance`
+  - Dual-format reports (Markdown + standalone HTML with embedded screenshots)
+  - Evidence storage in `codebox/acceptance/` with task/plan associations
+  - Integrated into ai-dev Phase 5 Step 5
+- **Quality Dashboard**: Pre-commit display of skill health metrics (GA/Experimental counts)
+- **Skill Classification**: `status: ga` (17) vs `status: experimental` (13) for all 30 skills
 
 ### Changed
-- TODO: Describe your changes here
+- **marketplace.json**: Simplified to minimal user-facing entries
+  - 2 skills: ai-dev (orchestration), agent-browser (automation)
+  - 6 commands: ai:dev, ai:fix, ai:status, ai:team, ai:session-save, ai:session-resume
+  - Internal skills/commands are fully functional, auto-triggered by workflows
+- **Design Philosophy**: Internal tools hidden not because immature, but to reduce user cognitive load
+- **Documentation**: Updated README.md, README.zh-CN.md with corrected command tables
+- **hooks/code-review-gate.sh**: Synced user command list with marketplace.json
+
+### Fixed
+- **Command markers**: Corrected `internal: true` for ai:discuss, ai:skills-audit, ai:test-web
+- **ai:team**: Removed internal marker (now user-facing)
+
+
+## [5.1.23] - 2026-02-27
+
+### Fixed
+- **hooks/code-review-gate.sh**: Updated user command list to match marketplace.json
 
 
 ## [5.1.22] - 2026-02-27
 
-### Changed
-- TODO: Describe your changes here
+### Fixed
+- **Commands**: Corrected internal markers for user-facing consistency
+  - ai:team.md: removed internal: true (registered in marketplace)
+  - ai:discuss.md, ai:skills-audit.md, ai:test-web.md: added internal: true
 
 
 ## [5.1.21] - 2026-02-27
@@ -29,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.1.20] - 2026-02-27
 
 ### Changed
-- TODO: Describe your changes here
+- **Documentation**: Updated README.md, README.zh-CN.md command tables
 
 
 ## [5.1.18] - 2026-02-27
