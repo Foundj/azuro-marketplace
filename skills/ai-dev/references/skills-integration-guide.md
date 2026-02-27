@@ -353,7 +353,7 @@ git commit
   - session_summary.md
   - next_steps.md
     ↓
-新 session: /session:resume
+新 session: /ai:session-resume
 ```
 
 ### session-manager
