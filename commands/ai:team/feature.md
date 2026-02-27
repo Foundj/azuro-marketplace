@@ -415,6 +415,69 @@ ${apiContract}
 
 ---
 
+## 完成后自动验收
+
+**功能开发完成后，自动触发前端验收测试:**
+
+```typescript
+// Step 7: 自动验收
+// 当所有开发任务完成后，自动启动前端验收
+
+// 检查是否有前端页面需要验收
+if (hasFrontendPages) {
+  // 自动启动验收
+  SendMessage({
+    type: "message",
+    recipient: "team-lead",
+    content: `
+## 🎉 功能开发完成
+
+启动前端验收测试...
+
+\`\`\`bash
+/ai:acceptance ${baseUrl} --pages "${pagesToTest}" --change ${changeId} --report
+\`\`\`
+    `,
+    summary: "启动自动验收"
+  })
+
+  // 自动执行验收
+  // - 自动检测前端页面
+  // - 自动选择最佳执行模式
+  // - 生成验收报告
+}
+```
+
+### 自动验收触发条件
+
+| 条件 | 自动验收 |
+|------|----------|
+| 有前端组件变更 | ✅ 自动验收 |
+| 仅后端 API 变更 | ❌ 跳过 (API 测试即可) |
+| 全栈变更 | ✅ 自动验收前端 |
+| 测试/文档变更 | ❌ 跳过 |
+
+### 自动验收输出
+
+```markdown
+## ✅ 验收测试完成
+
+- **验收 ID**: ACC-20260227-001
+- **关联变更**: CHG-xxx
+- **验收页面**: 3
+- **通过率**: 100%
+- **报告**: codebox/acceptance/2026-02-27/CHG-xxx/report.md
+
+### 验收详情
+| 页面 | 状态 | 截图 |
+|------|------|------|
+| /login | ✅ PASS | screenshots/login-xxx.png |
+| /register | ✅ PASS | screenshots/register-xxx.png |
+| /profile | ✅ PASS | screenshots/profile-xxx.png |
+```
+
+---
+
 ## 使用示例
 
 ```bash

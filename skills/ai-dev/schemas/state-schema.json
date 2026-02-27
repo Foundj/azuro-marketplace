@@ -326,6 +326,88 @@
           "description": "Number of resume attempts"
         }
       }
+    },
+    "acceptance": {
+      "type": "object",
+      "description": "Acceptance testing state and history",
+      "properties": {
+        "latestId": {
+          "type": "string",
+          "pattern": "^ACC-[0-9]{8}-[0-9]{3}$",
+          "description": "Latest acceptance ID (e.g., ACC-20260227-001)"
+        },
+        "latestStatus": {
+          "type": "string",
+          "enum": ["passed", "failed", "pending"],
+          "description": "Latest acceptance status"
+        },
+        "latestRunAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Latest acceptance run timestamp"
+        },
+        "reportPath": {
+          "type": "string",
+          "description": "Path to latest acceptance report"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["quick", "full", "regression", "smoke"],
+          "description": "Acceptance test mode"
+        },
+        "linkedPlanId": {
+          "type": "string",
+          "description": "Linked plan ID"
+        },
+        "linkedTaskIds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Linked task IDs"
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "url", "status"],
+            "properties": {
+              "name": { "type": "string" },
+              "url": { "type": "string" },
+              "status": { "type": "string", "enum": ["passed", "failed", "skipped"] },
+              "screenshot": { "type": "string" },
+              "validations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "check": { "type": "string" },
+                    "result": { "type": "string", "enum": ["PASS", "FAIL", "SKIP"] }
+                  }
+                }
+              }
+            }
+          },
+          "description": "Pages validated in latest acceptance"
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "date", "status"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^ACC-[0-9]{8}-[0-9]{3}$"
+              },
+              "date": { "type": "string", "format": "date" },
+              "status": { "type": "string", "enum": ["passed", "failed", "pending"] },
+              "mode": { "type": "string" },
+              "pagesCount": { "type": "integer", "minimum": 0 },
+              "passRate": { "type": "number", "minimum": 0, "maximum": 100 }
+            }
+          },
+          "description": "Acceptance history records"
+        }
+      }
     }
   },
   "additionalProperties": false

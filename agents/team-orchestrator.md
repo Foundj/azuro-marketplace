@@ -272,6 +272,44 @@ TeamDelete()
 | `typescript-pro` | TypeScript 专家 | `Task({ subagent_type: "ai-dev:typescript-pro", ... })` |
 | `code-explorer` | 代码探索 | `Task({ subagent_type: "ai-dev:code-explorer", ... })` |
 | `quality-guardian` | 质量保障 | `Task({ subagent_type: "ai-dev:quality-guardian", ... })` |
+| `acceptance-tester` | 验收测试 | `Task({ subagent_type: "acceptance-tester", ... })` |
+
+---
+
+## 预定义团队模板
+
+系统提供以下团队模板:
+
+| 模板 | 触发词 | 用途 |
+|------|--------|------|
+| FEATURE_DEVELOPMENT | "功能", "开发", "实现" | 前后端分离并行开发 |
+| CODE_REVIEW | "审查", "review", "检查代码" | 多角度并行审查 |
+| INVESTIGATION | "调查", "debug", "问题" | 竞争假设并行调查 |
+| ARCHITECTURE | "架构", "设计", "architecture" | 多视角架构评审 |
+| ACCEPTANCE_TEAM | "验收", "acceptance", "前端测试" | 并行验收多个页面 |
+
+### 验收团队示例
+
+```typescript
+// 使用验收团队模板
+const pages = ["home", "login", "dashboard"]
+
+TeamCreate({
+  team_name: "acceptance-CHG-xxx",
+  description: "并行验收: home, login, dashboard"
+})
+
+// 为每个页面创建验收队友
+for (const page of pages) {
+  Task({
+    subagent_type: "acceptance-tester",
+    description: `验收 ${page} 页面`,
+    team_name: "acceptance-CHG-xxx",
+    name: `tester-${page}`,
+    prompt: `验收 ${page} 页面...`
+  })
+}
+```
 
 ---
 

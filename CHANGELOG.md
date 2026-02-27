@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.10] - 2026-02-27
+
+### Added
+- **Acceptance Testing Enhancement**: Implemented comprehensive acceptance testing system
+  - New `/ai:acceptance` parameters: `--mode`, `--parallel`, `--team`, `--compare`
+  - New `/ai:team:acceptance` command for Agent Teams parallel acceptance testing
+  - New `acceptance-tester` Agent for browser-based page validation
+  - New `acceptance-team` Skill for multi-page parallel acceptance
+  - Updated `state-schema.json` with acceptance tracking fields
+  - Created `codebox/acceptance/` directory structure with templates
+  - Updated `team-orchestrator` with ACCEPTANCE_TEAM template
+  - Updated `team-collaboration/templates.ts` with acceptance team template
+
+### Changed
+- **Smart Mode Selection**: `/ai:acceptance` now automatically selects the best execution mode:
+  - Single page → Direct execution
+  - 2-3 pages → Parallel execution
+  - 4+ pages → Agent Teams parallel
+- **Auto Acceptance**: `/ai:team feature` now automatically triggers frontend acceptance after development completes
+
+
+## [5.1.9] - 2026-02-27
+
+### Changed
+- TODO: Describe your changes here
+
+
 ## [5.1.8] - 2026-02-27
 
 ### Changed

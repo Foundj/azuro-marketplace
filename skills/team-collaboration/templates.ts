@@ -312,6 +312,44 @@ export const ARCHITECTURE: TeamTemplate = {
   }
 }
 
+/**
+ * 验收测试团队模板
+ *
+ * 并行验收多个前端页面，适用于前端验收测试。
+ *
+ * 触发词: "验收", "acceptance", "前端测试", "页面测试", "e2e"
+ *
+ * @example
+ * // 使用示例
+ * /ai:team:acceptance http://localhost:3000 --pages "home,login,dashboard" --change CHG-xxx
+ */
+export const ACCEPTANCE_TEAM: TeamTemplate = {
+  name: "验收测试团队",
+  description: "并行验收多个前端页面",
+  trigger: ["验收", "acceptance", "前端测试", "页面测试", "e2e", "browser test"],
+
+  teammates: [
+    // 每个页面一个验收队友 (动态生成)
+    // 根据实际页面列表动态创建
+  ],
+
+  workflow: {
+    type: "parallel-independent",
+    phases: [
+      {
+        name: "页面验收",
+        teammates: ["tester-*"], // 动态匹配所有 tester
+        parallel: true
+      }
+    ]
+  },
+
+  communication: {
+    syncPoints: ["验收完成"],
+    reportFormat: "consolidated"
+  }
+}
+
 // ============================================================================
 // Template Registry
 // ============================================================================
@@ -323,7 +361,8 @@ export const TEAM_TEMPLATES: Record<string, TeamTemplate> = {
   FEATURE_DEVELOPMENT,
   CODE_REVIEW,
   INVESTIGATION,
-  ARCHITECTURE
+  ARCHITECTURE,
+  ACCEPTANCE_TEAM
 }
 
 // ============================================================================
@@ -454,6 +493,7 @@ export default {
   CODE_REVIEW,
   INVESTIGATION,
   ARCHITECTURE,
+  ACCEPTANCE_TEAM,
   selectTeamTemplate,
   generateTeamName,
   assessComplexity,

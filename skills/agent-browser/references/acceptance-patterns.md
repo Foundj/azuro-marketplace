@@ -349,6 +349,22 @@ acceptance_archive:
   action: move_to_archived
 ```
 
+### With Agent Teams
+
+```yaml
+# 自动并行验收 (4+ 页面自动触发)
+/ai:acceptance http://localhost:3000 --pages "home,login,dashboard,settings,profile"
+# 系统自动:
+# 1. 检测页面数量 >= 4
+# 2. 创建验收团队
+# 3. 为每个页面分配 acceptance-tester 队友
+# 4. 并行验收并汇总结果
+
+# 功能开发后自动验收
+/ai:team feature 实现用户登录功能
+# 完成后自动触发前端验收
+```
+
 ### With CI/CD
 
 ```yaml
@@ -420,4 +436,7 @@ MAX_HISTORY=5
 - [workflows.md](workflows.md) - 工作流模板
 - [commands.md](commands.md) - 命令参考
 - [ai:acceptance](../../commands/ai:acceptance.md) - 验收命令
+- [ai:team:acceptance](../../commands/ai:team/acceptance.md) - 团队验收命令
+- [acceptance-tester](../../agents/acceptance-tester.md) - 验收测试 Agent
 - [acceptance-reporter](../acceptance-reporter/SKILL.md) - 报告生成
+- [acceptance-team](../acceptance-team/SKILL.md) - 验收团队技能

@@ -4,6 +4,8 @@ description: Frontend acceptance testing - browser validation, screenshot eviden
 argument-hint: "<url> [--change <id>] [--plan <id>] [--task <id>] [--pages <list>] [--mode <mode>] [--report] [--history] [--parallel] [--team] [--compare <id>]"
 allowed-tools: Bash, Read, Write, Grep, Glob
 execution-mode: subagent
+internal: true
+status: ga
 ---
 
 # /ai:acceptance - 前端验收测试
@@ -34,20 +36,21 @@ Returns Acceptance Report + Screenshots
 ## Usage
 
 ```bash
-/ai:acceptance <url>                              # 验收指定 URL
-/ai:acceptance <url> --change <changeId>          # 关联特定变更
-/ai:acceptance <url> --plan <planId>              # 关联特定计划
-/ai:acceptance <url> --task <taskId>              # 关联特定任务
-/ai:acceptance <url> --pages "home,login,dashboard"  # 指定验收页面
-/ai:acceptance <url> --report                     # 生成完整报告
-/ai:acceptance <url> --history                    # 查看验收历史
-/ai:acceptance <url> --quick                      # 快速验收模式
-/ai:acceptance <url> --headed                     # 显示浏览器窗口
-/ai:acceptance <url> --mode <mode>                # 测试模式: quick|full|regression|smoke
-/ai:acceptance <url> --parallel                   # 并行执行多页面验收
-/ai:acceptance <url> --team                       # 使用 Agent Teams 并行测试
-/ai:acceptance <url> --compare <acceptanceId>     # 与上次验收对比
+# 基础用法 - 自动判断最佳模式
+/ai:acceptance <url>                              # 验收首页
+/ai:acceptance <url> --change <changeId>          # 关联变更并验收
+
+# 多页面验收 - 自动并行
+/ai:acceptance <url> --pages "home,login,dashboard"  # 自动并行验收
+
+# 完整报告
+/ai:acceptance <url> --change CHG-xxx --report    # 生成完整报告
 ```
+
+> **智能模式**: 系统自动选择最佳执行方式：
+> - 单页面 → 直接验收
+> - 2-3 个页面 → 并行执行
+> - 4+ 个页面 → Agent Teams 并行
 
 ---
 
@@ -81,14 +84,14 @@ Returns Acceptance Report + Screenshots
 
 ---
 
-## Step 1: Parse Arguments
+## Step 1: Parse Arguments & Auto Mode Selection
 
 解析 `$ARGUMENTS`:
 - 提取 URL (第一个参数)
 - 提取关联 ID: --change, --plan, --task
 - 提取页面列表: --pages
 - 提取测试模式: --mode
-- 检测 flags: --report, --history, --quick, --headed, --parallel, --team
+- 检测 flags: --report, --history, --quick, --headed
 - 提取对比 ID: --compare
 
 ```bash
@@ -103,8 +106,6 @@ FLAG_REPORT=false
 FLAG_HISTORY=false
 FLAG_QUICK=false
 FLAG_HEADED=false
-FLAG_PARALLEL=false
-FLAG_TEAM=false
 
 # 解析参数
 for arg in $ARGUMENTS; do
@@ -126,8 +127,6 @@ for arg in $ARGUMENTS; do
     --history) FLAG_HISTORY=true ;;
     --quick) FLAG_QUICK=true ;;
     --headed) FLAG_HEADED=true ;;
-    --parallel) FLAG_PARALLEL=true ;;
-    --team) FLAG_TEAM=true ;;
   esac
 done
 
@@ -139,6 +138,22 @@ if [ -z "$MODE" ]; then
     MODE="full"
   fi
 fi
+
+# 自动选择执行模式
+PAGE_COUNT=$(echo "$PAGES" | tr ',' '\n' | wc -l | tr -d ' ')
+
+if [ "$PAGE_COUNT" -ge 4 ]; then
+  # 4+ 页面: 使用 Agent Teams 并行
+  EXEC_MODE="team"
+elif [ "$PAGE_COUNT" -ge 2 ]; then
+  # 2-3 页面: 并行执行
+  EXEC_MODE="parallel"
+else
+  # 单页面: 直接验收
+  EXEC_MODE="direct"
+fi
+
+echo "📊 验收模式: $EXEC_MODE (${PAGE_COUNT} 页面)"
 ```
 
 ---
