@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.8] - 2026-02-27
+
+### Changed
+- TODO: Describe your changes here
+
+
+## [5.1.7] - 2026-02-27
+
+### Added
+- **claude-reflect**: Added modular rules support (`.claude/rules/*.md`) with `paths` frontmatter
+- **claude-reflect**: Added line limit checking (≤200 lines for main files) as 7th quality dimension
+- **claude-reflect**: Added smart distribution algorithm for learning content
+- **claude-reflect**: Created `references/modular-rules-guide.md` with complete documentation
+- **claude-reflect**: Added modular rule templates to `references/templates.md`
+- **claude-reflect**: Added research-based warnings about LLM-generated context files
+
+### Changed
+- **claude-reflect**: Updated scoring from 100 to 115 points (added Line Limits dimension)
+- **claude-reflect**: Enhanced `audit-claude-md` command to discover and audit modular rules
+- **claude-reflect**: Updated target file selection to include path-specific rules
+- **claude-reflect**: Added pre-assessment check to determine if context files are needed
+- **claude-reflect**: Emphasized "write for gaps, not overviews" principle based on research
+
+
+## [5.1.6] - 2026-02-27
+
+### Changed
+- TODO: Describe your changes here
+
+
 ## [5.1.5] - 2026-02-27
 
 ### Changed

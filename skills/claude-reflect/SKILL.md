@@ -6,7 +6,7 @@ description: |
   "reflect", "audit CLAUDE.md", "improve context", "remember this", "更新规则", "审计文档",
   "质量检查", or when reviewing/updating project context files.
   Combines automatic learning capture with quality-based context optimization.
-version: 5.1.6
+version: 5.1.8
 triggers:
   - reflect
   - remember this
@@ -59,7 +59,7 @@ Comprehensive CLAUDE.md and AGENTS.md management with quality auditing and self-
 
 Audit CLAUDE.md and AGENTS.md files against quality criteria.
 
-### Scoring Rubric (100 points)
+### Scoring Rubric (115 points)
 
 | Criterion | Weight | Focus |
 |-----------|--------|-------|
@@ -69,20 +69,23 @@ Audit CLAUDE.md and AGENTS.md files against quality criteria.
 | Conciseness | 15 | No verbose explanations or obvious info? |
 | Currency | 15 | Does it reflect current codebase state? |
 | Actionability | 15 | Are instructions executable, not vague? |
+| Line limits | 15 | Main files ≤200 lines, well-structured? |
 
 ### Quality Grades
 
 | Grade | Score | Description |
 |-------|-------|-------------|
-| A | 90-100 | Comprehensive, current, actionable |
-| B | 70-89 | Good coverage, minor gaps |
-| C | 50-69 | Basic info, missing key sections |
-| D | 30-49 | Sparse or outdated |
-| F | 0-29 | Missing or severely outdated |
+| A | 100-115 | Comprehensive, current, actionable, well-structured |
+| B | 80-99 | Good coverage, minor gaps |
+| C | 60-79 | Basic info, missing key sections |
+| D | 40-59 | Sparse or outdated |
+| F | 0-39 | Missing or severely outdated |
 
 See [references/quality-criteria.md](references/quality-criteria.md) for detailed rubrics.
 
 ## Stage 2: Self-Learning (Automatic Capture)
+
+> **Research Note**: Studies show LLM-generated context files can decrease performance (-0.5% to -2%), while human-written files improve success rates (+4%). The `/reflect` command requires human review to ensure quality. Write for gaps, not overviews.
 
 ### Detection Patterns
 
@@ -99,21 +102,49 @@ High-confidence corrections:
 | Correction Type | Target File |
 |----------------|-------------|
 | Build/test commands | CLAUDE.md |
-| Code style preferences | CLAUDE.md |
+| Code style preferences | CLAUDE.md or `.claude/rules/linting.md` |
 | Project-specific patterns | CLAUDE.md |
 | Agent behavior rules | AGENTS.md |
 | Tool usage patterns | AGENTS.md |
 | Workflow preferences | AGENTS.md |
+| Path-specific rules | Matching `.claude/rules/*.md` |
 | General corrections | ~/.claude/CLAUDE.md |
 
 ## File Types & Locations
 
 | Type | Location | Purpose |
 |------|----------|---------|
-| CLAUDE.md | Project root | Team-shared project context (git tracked) |
-| AGENTS.md | Project root | Agent behavior instructions (git tracked) |
+| CLAUDE.md | Project root | Team-shared project context (≤200 lines) |
+| AGENTS.md | Project root | Agent behavior instructions (≤200 lines) |
 | .claude.local.md | Project root | Personal/local settings (gitignored) |
+| .claude/rules/*.md | Modular rules | Topic-specific rules with `paths` frontmatter |
 | ~/.claude/CLAUDE.md | Home | User-wide defaults |
+
+### Modular Rules (`.claude/rules/`)
+
+Claude Code supports modular rule files for better organization:
+
+```markdown
+---
+name: python-linting
+paths:
+  - "*.py"
+  - "src/**/*.py"
+description: Python-specific linting rules
+---
+
+# Python Linting Rules
+
+- Use ruff for linting (faster than flake8)
+- Run `ruff check .` before commits
+```
+
+**Benefits:**
+- Main files stay concise
+- Rules auto-apply to matching paths
+- Easy to maintain and update
+
+See [references/modular-rules-guide.md](references/modular-rules-guide.md) for details.
 
 ## Available Commands
 
@@ -217,6 +248,7 @@ Claude: ## Context Files Quality Report
 
 | Version | Changes |
 |---------|---------|
+| 5.3.0 | Added modular rules support, line limit checks, smart distribution |
 | 5.2.0 | Added AGENTS.md support, quality audit, templates |
 | 5.1.1 | Added Chinese triggers |
 | 5.0.0 | Merged claude-md-management best practices |
@@ -224,6 +256,7 @@ Claude: ## Context Files Quality Report
 
 ## References
 
-- [quality-criteria.md](references/quality-criteria.md) - 6-dimension scoring rubric
+- [quality-criteria.md](references/quality-criteria.md) - 7-dimension scoring rubric (115 points)
 - [templates.md](references/templates.md) - Project templates for CLAUDE.md/AGENTS.md
 - [update-guidelines.md](references/update-guidelines.md) - DO/DON'T for updates
+- [modular-rules-guide.md](references/modular-rules-guide.md) - `.claude/rules/` organization guide
