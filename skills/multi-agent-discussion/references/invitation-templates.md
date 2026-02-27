@@ -2,6 +2,12 @@
 
 为不同 AI 工具生成自包含的邀请提示词。每个模板包含角色定义、规则和操作步骤。
 
+**重要：邀请提示词必须写入文件**（`invite-<role>-<tool>.md`），存放在讨论目录下，而非打印到终端。
+
+**自驱动机制：** 每个邀请和续接提示词的末尾必须包含"完成后提示"段落，告知用户下一步该将哪个文件复制到哪个工具。这样用户每完成一步就知道下一步做什么，形成链式引导。
+
+**数据注入原则：** 生成邀请时，必须将 `context.md` 中的具体项目数据和 Round 0 @Coordinator 的关键发现注入到"项目背景"段落中。**禁止使用通用占位符描述**——如果知道项目有 29 个技能模块，就写"29 个技能模块"，而非"多个技能模块"。
+
 ## 模板变量
 
 生成邀请时替换以下占位符：
@@ -11,11 +17,13 @@
 | `{ROLE_NAME}` | 角色代号 | `@Architect` |
 | `{ROLE_DESC}` | 角色描述（从 role-catalog.md 获取） | 系统架构师... |
 | `{TOPIC}` | 讨论主题 | 用户认证系统 |
-| `{PROJECT_CONTEXT}` | 项目背景摘要 | Next.js + PostgreSQL... |
+| `{PROJECT_CONTEXT}` | 项目背景（**来自 context.md + Round 0 数据，必须包含具体数字**） | 29 个技能模块，marketplace.json 仅注册 16 个... |
+| `{SEED_FINDINGS}` | Round 0 @Coordinator 的关键发现摘要 | 可发现性缺口：55% 技能未注册... |
 | `{DISCUSSION_PATH}` | discussion.md 路径 | `docs/discussions/auth-system/discussion.md` |
 | `{README_PATH}` | README.md 路径 | `docs/discussions/auth-system/README.md` |
 | `{ROUND}` | 当前轮次 | 1 |
 | `{OTHER_ROLES}` | 其他参与角色列表 | @PM, @Security |
+| `{NEXT_STEP}` | 完成后的下一步操作 | 将 `continue/round-1-architect-cursor.md` 复制到 Cursor |
 
 ## Claude Code 邀请模板
 

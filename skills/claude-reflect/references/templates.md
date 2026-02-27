@@ -6,6 +6,7 @@
 - **Actionable**: Commands should be copy-paste ready
 - **Project-specific**: Document patterns unique to this project, not generic advice
 - **Current**: All info should reflect actual codebase state
+- **Modular**: Extract detailed rules to `.claude/rules/` when files exceed 200 lines
 
 ---
 
@@ -275,6 +276,188 @@ Use this agent when:
 
 ---
 
+## Modular Rule Templates
+
+### Template: Language-Specific Rule
+
+```markdown
+---
+name: <language>-conventions
+description: <Language> specific coding conventions
+paths:
+  - "*.<ext>"
+  - "src/**/*. <ext>"
+---
+
+# <Language> Conventions
+
+## Tools
+
+- <linter>: <usage>
+- <formatter>: <usage>
+
+## Style
+
+- <convention>
+- <convention>
+
+## Commands
+
+\`\`\`bash
+<lint command>
+<format command>
+\`\`\`
+
+## Gotchas
+
+- <project-specific quirk>
+```
+
+### Template: Framework Rule
+
+```markdown
+---
+name: <framework>-rules
+description: <Framework> development patterns and conventions
+paths:
+  - "src/**/*.<ext>"
+  - "app/**/*.<ext>"
+---
+
+# <Framework> Rules
+
+## Project Structure
+
+\`\`\`
+<framework-specific structure>
+\`\`\`
+
+## Patterns
+
+- <pattern>: <when to use>
+- <anti-pattern>: <avoid because...>
+
+## Testing
+
+\`\`\`bash
+<test command>
+\`\`\`
+
+## Common Tasks
+
+| Task | Command |
+|------|---------|
+| <task> | `<command>` |
+```
+
+### Template: Testing Rule
+
+```markdown
+---
+name: testing-conventions
+description: Testing conventions and patterns
+paths:
+  - "tests/**/*"
+  - "**/*.test.<ext>"
+  - "**/*.spec.<ext>"
+---
+
+# Testing Conventions
+
+## Framework
+
+Use <test-framework> for all tests.
+
+## Structure
+
+\`\`\`
+tests/
+  unit/         # Unit tests
+  integration/  # Integration tests
+  e2e/          # End-to-end tests
+\`\`\`
+
+## Patterns
+
+- <testing pattern>
+- <mocking approach>
+
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| `<cmd>` | Run all tests |
+| `<cmd>` | Run specific test |
+
+## Coverage
+
+- Minimum: X%
+- Critical paths: Y%
+```
+
+---
+
+## Modular Rules Integration
+
+### When to Extract to Modular Rules
+
+| Main File Lines | Action |
+|-----------------|--------|
+| ≤150 | Keep content in main file |
+| 150-200 | Consider extraction for clarity |
+| 200-300 | Extract detailed sections to rules |
+| >300 | Critical: extract immediately |
+
+### Extraction Process
+
+1. **Identify** sections that are topic-specific
+2. **Create** new rule file in `.claude/rules/`
+3. **Move** content with proper frontmatter
+4. **Reference** from main file
+5. **Verify** no content lost
+
+### Example: Before Extraction
+
+```markdown
+# CLAUDE.md (280 lines)
+
+## Commands
+...
+
+## Architecture
+...
+
+## Python Rules
+(50 lines of Python-specific rules)
+
+## TypeScript Rules
+(40 lines of TypeScript-specific rules)
+
+## Testing
+(30 lines of testing conventions)
+```
+
+### Example: After Extraction
+
+```markdown
+# CLAUDE.md (160 lines)
+
+## Commands
+...
+
+## Architecture
+...
+
+## Modular Rules
+
+Detailed rules are in `.claude/rules/`:
+- [Python Rules](.claude/rules/python.md) - Python conventions
+- [TypeScript Rules](.claude/rules/typescript.md) - TS conventions
+- [Testing](.claude/rules/testing.md) - Test patterns
+```
+
+---
+
 ## Update Principles
 
 When updating any CLAUDE.md or AGENTS.md:
@@ -283,3 +466,4 @@ When updating any CLAUDE.md or AGENTS.md:
 2. **Be current**: Verify info against the actual codebase
 3. **Be brief**: One line per concept when possible
 4. **Be useful**: Would this help a new Claude session understand the project?
+5. **Be modular**: Extract to rules when main files exceed 200 lines

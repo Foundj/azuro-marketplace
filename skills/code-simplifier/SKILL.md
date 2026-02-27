@@ -6,7 +6,7 @@ description: |
   and refactoring pattern recommendations. Use when the user mentions "simplify code", "refine code",
   "clean up code", "refactor", "reduce complexity", "technical debt", "代码简化", "代码重构", "优化",
   "技术债务", or after code review passes.
-version: 5.1.17
+version: 5.1.18
 status: ga
 triggers:
   - simplify code

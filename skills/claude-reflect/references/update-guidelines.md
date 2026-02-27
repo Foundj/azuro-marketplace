@@ -4,6 +4,12 @@
 
 Only add information that will genuinely help future Claude sessions. The context window is precious - every line must earn its place.
 
+> **Research Warning**: LLM-generated context files can decrease performance (-0.5% to -2%) while human-written files improve success rates (+4%). Always have humans review and approve updates. Context files add ~20% inference cost regardless of quality.
+
+## Key Insight
+
+**Write for gaps, not overviews.** The best context files contain what the code itself cannot explain.
+
 ---
 
 ## What TO Add
@@ -208,13 +214,73 @@ When capturing corrections from sessions:
 | Correction Type | Target File |
 |----------------|-------------|
 | Build/test commands | CLAUDE.md |
-| Code style preferences | CLAUDE.md |
+| Code style preferences | CLAUDE.md or `.claude/rules/linting.md` |
 | Project-specific patterns | CLAUDE.md |
 | Agent behavior rules | AGENTS.md |
 | Tool usage patterns | AGENTS.md |
 | Workflow preferences | AGENTS.md |
+| Path-specific rules | Matching `.claude/rules/*.md` |
 | General corrections | Global ~/.claude/CLAUDE.md |
 | Project-specific corrections | ./CLAUDE.md |
+
+---
+
+## Smart Distribution Algorithm
+
+When capturing learnings, determine the best target file:
+
+```
+用户更正内容
+    │
+    ├── 命令/构建相关 → 主 CLAUDE.md
+    │   Examples: "use npm run build:prod", "run tests with --coverage"
+    │
+    ├── 代码风格/语言特定
+    │   │
+    │   ├── Python 相关 → .claude/rules/python.md
+    │   ├── TypeScript 相关 → .claude/rules/typescript.md
+    │   └── 通用风格 → 主 CLAUDE.md
+    │
+    ├── Agent 行为规则 → 主 AGENTS.md
+    │   Examples: "always use TDD", "never skip tests"
+    │
+    ├── 文件/路径特定 → 匹配的 paths 规则文件
+    │   Examples: "for .py files, use ruff"
+    │
+    └── 全局通用 → ~/.claude/CLAUDE.md
+        Examples: "prefer gpt-5.1 for reasoning"
+```
+
+### Distribution Decision Tree
+
+1. **Is this project-specific?**
+   - No → `~/.claude/CLAUDE.md` (global)
+   - Yes → Continue
+
+2. **Is this about agent behavior?**
+   - Yes → `AGENTS.md`
+   - No → Continue
+
+3. **Does it apply to specific file types?**
+   - Yes → Check `.claude/rules/` for matching paths
+   - No → Continue
+
+4. **Is there an existing modular rule for this topic?**
+   - Yes → Add to that rule file
+   - No → Continue
+
+5. **Add to `CLAUDE.md` or create new rule?**
+   - If rule would be >20 lines → Create new modular rule
+   - Otherwise → Add to `CLAUDE.md`
+
+### Path Matching Examples
+
+| Learning | Suggested File | Reason |
+|----------|----------------|--------|
+| "For Python files, use ruff" | `.claude/rules/python.md` | Path-specific |
+| "Always run tests before commit" | `AGENTS.md` | Behavior rule |
+| "The build uses webpack" | `CLAUDE.md` | Project context |
+| "Use React Query for data fetching" | `.claude/rules/react.md` | Framework-specific |
 
 ---
 

@@ -1,5 +1,14 @@
 # CLAUDE.md / AGENTS.md Quality Criteria
 
+> **Research Note**: Studies show that **LLM-generated context files can decrease performance** (-0.5% to -2%), while **human-written files improve success rates** (+4%). Context files add ~20% inference cost regardless of quality. **Write for gaps, not overviews.**
+
+## Core Principle
+
+**Context files should contain what the code itself cannot explain.**
+
+- ✅ Write about gaps: tool choices that differ from conventions, non-obvious test configs, project-specific quirks
+- ❌ Don't repeat: README content, obvious code info, generic best practices
+
 ## Scoring Rubric
 
 ### 1. Commands/Workflows (20 points)
@@ -86,6 +95,28 @@
 
 **0 points**: Vague or theoretical
 
+### 7. Line Limits (15 points)
+
+**15 points**: Main files ≤200 lines, structure optimal
+- CLAUDE.md concise and focused
+- AGENTS.md well-organized
+- Excessive content moved to `.claude/rules/*.md`
+
+**10 points**: Main files 201-300 lines, acceptable but could improve
+- Some redundancy present
+- Could benefit from modularization
+
+**5 points**: Main files 301-400 lines, needs refactoring
+- Clear bloat or redundancy
+- Should extract to modular rules
+
+**0 points**: Main files >400 lines, severely bloated
+- Difficult to maintain
+- Immediate refactoring needed
+
+**Note**: Modular rule files (`.claude/rules/*.md`) are **exempt** from line limits.
+These files should focus on single topics and be as long as needed.
+
 ## File Type Differences
 
 ### CLAUDE.md (Project Context)
@@ -106,25 +137,40 @@ Focus on:
 
 ## Assessment Process
 
+### Pre-Assessment Check
+
+Before auditing, determine if context files are needed:
+
+| Scenario | Recommendation |
+|----------|----------------|
+| Well-documented repo (README, docs/) | May not need CLAUDE.md |
+| Standard framework (Next.js, Rails) | Minimal context needed |
+| Custom/proprietary architecture | CLAUDE.md valuable |
+| Unique tooling/build process | CLAUDE.md valuable |
+| Team-specific conventions | AGENTS.md valuable |
+
+### Assessment Steps
+
 1. Read the file completely
 2. Cross-reference with actual codebase:
    - Run documented commands (mentally or actually)
    - Check if referenced files exist
    - Verify architecture descriptions
-3. Score each criterion
-4. Calculate total and assign grade
-5. List specific issues found
-6. Propose concrete improvements
+3. Check for redundancy with existing docs (README, docs/)
+4. Score each criterion
+5. Calculate total and assign grade
+6. List specific issues found
+7. Propose concrete improvements
 
 ## Quality Grades
 
 | Grade | Score | Description |
 |-------|-------|-------------|
-| A | 90-100 | Comprehensive, current, actionable |
-| B | 70-89 | Good coverage, minor gaps |
-| C | 50-69 | Basic info, missing key sections |
-| D | 30-49 | Sparse or outdated |
-| F | 0-29 | Missing or severely outdated |
+| A | 100-115 | Comprehensive, current, actionable, well-structured |
+| B | 80-99 | Good coverage, minor gaps |
+| C | 60-79 | Basic info, missing key sections |
+| D | 40-59 | Sparse or outdated |
+| F | 0-39 | Missing or severely outdated |
 
 ## Red Flags
 
@@ -135,6 +181,7 @@ Focus on:
 - Generic advice not specific to the project
 - "TODO" items never completed
 - Duplicate info across multiple files
+- Main files exceeding 400 lines (needs modularization)
 
 ## Agent-Specific Red Flags
 
@@ -142,3 +189,17 @@ Focus on:
 - Tool restrictions that don't match allowed-tools
 - Behavior rules that conflict with project context
 - Missing trigger conditions or use cases
+
+## Modular Rules Integration
+
+When main files exceed recommended line limits, consider extracting content to modular rule files:
+
+| Content Type | Recommended Location |
+|--------------|---------------------|
+| Python-specific rules | `.claude/rules/python.md` |
+| TypeScript-specific rules | `.claude/rules/typescript.md` |
+| Testing conventions | `.claude/rules/testing.md` |
+| API design patterns | `.claude/rules/api.md` |
+| Security guidelines | `.claude/rules/security.md` |
+
+See [modular-rules-guide.md](modular-rules-guide.md) for detailed guidance.
