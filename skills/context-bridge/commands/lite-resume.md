@@ -1,6 +1,7 @@
 ---
 name: lite-resume
 description: Restore session from 3-file minimal checkpoint (tasks.md, notes.md, session_summary.md)
+internal: true
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 

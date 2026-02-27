@@ -1,6 +1,7 @@
 ---
 name: lite-save
 description: Save session progress to 3 minimal files (tasks.md, notes.md, session_summary.md)
+internal: true
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 

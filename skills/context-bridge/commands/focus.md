@@ -1,6 +1,7 @@
 ---
 name: focus
 description: Refresh current goals into attention window to combat Lost in the Middle problem
+internal: true
 allowed-tools: Read, Grep, Glob
 ---
 
