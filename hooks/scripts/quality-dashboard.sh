@@ -2,6 +2,8 @@
 # quality-dashboard.sh - 技能质量仪表盘
 # 在 git commit 门禁中显示项目健康状态摘要
 
+set -e
+
 # 颜色定义
 RED='\033[0;31m'
 GREEN='\033[0;32m'
