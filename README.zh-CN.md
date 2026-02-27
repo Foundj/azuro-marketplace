@@ -104,10 +104,10 @@ Claude 会自动使用市场中合适的技能和代理。
 <!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 5.1.12 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **self-learning** | 5.1.12 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **thinking-toolbox** | 5.1.12 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 5.1.12 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 5.1.13 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **self-learning** | 5.1.13 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **thinking-toolbox** | 5.1.13 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 5.1.13 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能

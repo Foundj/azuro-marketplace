@@ -167,6 +167,14 @@ generate_report() {
     echo "╚════════════════════════════════════════════════════════════╝"
 }
 
+# 显示质量仪表盘
+show_quality_dashboard() {
+    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [[ -f "$script_dir/quality-dashboard.sh" ]]; then
+        bash "$script_dir/quality-dashboard.sh"
+    fi
+}
+
 # 主函数
 main() {
     local quick_mode=false
@@ -219,6 +227,10 @@ main() {
     fi
 
     echo -e "${GREEN}✅ Code review passed${NC}"
+
+    # 显示质量仪表盘
+    show_quality_dashboard
+
     return 0
 }
 

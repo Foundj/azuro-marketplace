@@ -1,21 +1,20 @@
 ---
 name: context-bridge
-version: 5.1.12
+version: 5.1.13
 status: ga
 description: |
   This skill should be used when managing cross-session context and in-session attention.
   Implements Manus "Read Before Decide" pattern. Auto Checkpoint at 90% context.
 
-  **TRIGGERS**: save, resume, focus, progress, lite-save, checkpoint, 保存, 恢复, 继续, 存档, 进度, 上下文, 会话管理, 断点续传
+  **TRIGGERS**: save, resume, focus, progress, lite-save, 保存, 恢复, 继续, 存档, 进度, 上下文, 会话管理, 断点续传
 
-  **Usage**: /focus (refresh goals), /session:save (checkpoint), /session:resume (continue),
+  **Usage**: /focus (refresh goals), /ai:session-save (save progress), /ai:session-resume (continue),
   /lite-save (3-file save), /lite-resume (3-file restore), /progress (show status)
 triggers:
   - save
   - resume
   - focus
   - progress
-  - checkpoint
   - lite-save
   - lite-resume
   - 保存
@@ -36,7 +35,7 @@ model: sonnet
 
 ## 触发词
 
-此技能触发于: "save", "resume", "focus", "checkpoint", "保存", "恢复", "继续", "存档", "进度".
+此技能触发于: "save", "resume", "focus", "保存", "恢复", "继续", "存档", "进度".
 
 ---
 
@@ -61,7 +60,7 @@ model: sonnet
 | 阈值 | 动作 | 说明 |
 |------|------|------|
 | **70%** | 💡 建议 `/focus` | 刷新目标 |
-| **85%** | ⚠️ 警告保存 | 提示 `/session:save` |
+| **85%** | ⚠️ 警告保存 | 提示 `/ai:session-save` |
 | **90%** | 🔴 自动保存 | Auto Checkpoint + 提示 /clear |
 
 ---
@@ -87,7 +86,7 @@ model: sonnet
 
 显示 Progress Check 详细报告。
 
-### `/session:save` - 保存进度
+### `/ai:session-save` - 保存进度
 
 执行步骤：
 1. 扫描 active changes 状态
@@ -96,7 +95,7 @@ model: sonnet
 4. 更新 `codebox/context/next_steps.md`
 5. 归档历史 session
 
-### `/session:resume` - 恢复并继续
+### `/ai:session-resume` - 恢复并继续
 
 执行步骤：
 1. 读取 `next_steps.md` 和 `session_summary.md`
@@ -168,8 +167,8 @@ codebox/context/
 |------|------|------|
 | `/focus` | 刷新目标到注意力窗口 | 随时可用 |
 | `/progress` | 显示详细进度 | 检查状态 |
-| `/session:save` | 保存 session 进度 | Session 结束时 |
-| `/session:resume` | 恢复并自动继续 | 新 Session 开始时 |
+| `/ai:session-save` | 保存 session 进度 | Session 结束时 |
+| `/ai:session-resume` | 恢复并自动继续 | 新 Session 开始时 |
 | `/lite-save` | 3 文件极简保存 | 简单任务 |
 | `/lite-resume` | 从 3 文件恢复 | 简单任务 |
 
@@ -178,8 +177,8 @@ codebox/context/
 ## 💡 最佳实践
 
 ✅ **推荐**：
-- 每个 session 结束前运行 `/session:save`
-- 新 session 开始时直接 `/session:resume`
+- 每个 session 结束前运行 `/ai:session-save`
+- 新 session 开始时直接 `/ai:session-resume`
 - 遇到复杂问题时保存思路
 
 ❌ **避免**：

@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.13] - 2026-02-27
+
+### Added
+- **acceptance-reporter**: Enhanced HTML report generation with:
+  - markdown-it integration for Markdown rendering (optional)
+  - pixelmatch integration for screenshot comparison (optional)
+  - Dark mode support via `prefers-color-scheme`
+  - Table of contents navigation
+  - Screenshot zoom functionality
+  - Print-friendly styles
+  - Diff indicator badges for comparison results
+
+### Changed
+- **acceptance-reporter**: Improved HTML template with better accessibility and responsive design
+
+
 ## [5.1.12] - 2026-02-27
 
 ### Changed

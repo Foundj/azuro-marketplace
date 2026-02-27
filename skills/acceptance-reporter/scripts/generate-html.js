@@ -5,16 +5,37 @@
  *
  * Usage:
  *   node generate-html.js --state <state.json> --output <report.html>
+ *   node generate-html.js --state <state.json> --output <report.html> --compare <baseline.json>
  *
  * Features:
  *   - Convert Markdown to HTML using markdown-it
  *   - Embed screenshots as base64
- *   - Apply custom styles
+ *   - Apply custom styles with dark mode support
  *   - Generate self-contained HTML file
+ *   - Screenshot comparison with pixelmatch (optional)
+ *   - Print-friendly output
  */
 
 const fs = require('fs');
 const path = require('path');
+
+// Try to load optional dependencies
+let markdownit = null;
+let pixelmatch = null;
+let PNG = null;
+
+try {
+  markdownit = require('markdown-it');
+} catch (e) {
+  // markdown-it not installed, will use built-in renderer
+}
+
+try {
+  pixelmatch = require('pixelmatch');
+  PNG = require('pngjs').PNG;
+} catch (e) {
+  // pixelmatch not installed, comparison feature disabled
+}
 
 // Parse command line arguments
 function parseArgs() {
@@ -22,7 +43,9 @@ function parseArgs() {
   const result = {
     state: null,
     output: null,
-    template: null
+    template: null,
+    compare: null,
+    threshold: 0.1
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -36,18 +59,27 @@ function parseArgs() {
       case '--template':
         result.template = args[++i];
         break;
+      case '--compare':
+        result.compare = args[++i];
+        break;
+      case '--threshold':
+        result.threshold = parseFloat(args[++i]) || 0.1;
+        break;
       case '--help':
         console.log(`
 Usage: node generate-html.js [options]
 
 Options:
-  --state <file>     Path to state.json file (required)
-  --output <file>    Path to output HTML file (required)
-  --template <file>  Path to custom HTML template (optional)
-  --help             Show this help message
+  --state <file>      Path to state.json file (required)
+  --output <file>     Path to output HTML file (required)
+  --template <file>   Path to custom HTML template (optional)
+  --compare <file>    Path to baseline state.json for comparison (optional)
+  --threshold <num>   Pixel difference threshold (default: 0.1)
+  --help              Show this help message
 
 Example:
   node generate-html.js --state state.json --output report.html
+  node generate-html.js --state state.json --output report.html --compare baseline.json
         `);
         process.exit(0);
     }
@@ -95,6 +127,49 @@ function screenshotToBase64(screenshotPath, stateDir) {
   return `data:image/png;base64,${buffer.toString('base64')}`;
 }
 
+// Compare two screenshots using pixelmatch
+async function compareScreenshots(currentPath, baselinePath, diffPath, threshold = 0.1) {
+  if (!pixelmatch || !PNG) {
+    console.warn('pixelmatch not installed, skipping screenshot comparison');
+    return { diff: 0, diffPercent: 0 };
+  }
+
+  const stateDir = path.dirname(currentPath);
+  const currentFullPath = path.resolve(stateDir, currentPath);
+  const baselineFullPath = path.resolve(stateDir, baselinePath);
+  const diffFullPath = path.resolve(stateDir, diffPath);
+
+  if (!fs.existsSync(currentFullPath) || !fs.existsSync(baselineFullPath)) {
+    return { diff: 0, diffPercent: 0 };
+  }
+
+  try {
+    const currentImg = PNG.sync.read(fs.readFileSync(currentFullPath));
+    const baselineImg = PNG.sync.read(fs.readFileSync(baselineFullPath));
+
+    const { width, height } = currentImg;
+    const diff = new PNG({ width, height });
+
+    const numDiffPixels = pixelmatch(
+      currentImg.data,
+      baselineImg.data,
+      diff.data,
+      width,
+      height,
+      { threshold }
+    );
+
+    // Save diff image
+    fs.writeFileSync(diffFullPath, PNG.sync.write(diff));
+
+    const diffPercent = (numDiffPixels / (width * height)) * 100;
+    return { diff: numDiffPixels, diffPercent, diffPath };
+  } catch (error) {
+    console.warn(`Screenshot comparison failed: ${error.message}`);
+    return { diff: 0, diffPercent: 0 };
+  }
+}
+
 // Generate Markdown report
 function generateMarkdown(state) {
   const lines = [];
@@ -108,6 +183,7 @@ function generateMarkdown(state) {
   if (state.taskId) lines.push(`**关联任务**: ${state.taskId}`);
   lines.push(`**验收日期**: ${state.createdAt ? state.createdAt.split('T')[0] : new Date().toISOString().split('T')[0]}`);
   lines.push(`**状态**: ${state.status === 'passed' ? '✅ PASSED' : '❌ FAILED'}`);
+  if (state.mode) lines.push(`**测试模式**: ${state.mode}`);
   lines.push('');
 
   // Summary
@@ -125,6 +201,10 @@ function generateMarkdown(state) {
     sum + (p.validations?.filter(v => v.result === 'PASS').length || 0), 0);
   const passRate = totalValidations > 0 ? Math.round((passedValidations / totalValidations) * 100) : 100;
   lines.push(`| 通过率 | ${passRate}% |`);
+
+  if (state.duration) {
+    lines.push(`| 执行时间 | ${state.duration}s |`);
+  }
   lines.push('');
 
   // Environment
@@ -152,6 +232,11 @@ function generateMarkdown(state) {
       lines.push('');
     }
 
+    if (page.loadTime) {
+      lines.push(`**加载时间**: ${page.loadTime}s`);
+      lines.push('');
+    }
+
     if (page.validations && page.validations.length > 0) {
       lines.push('| 验证项 | 结果 |');
       lines.push('|--------|------|');
@@ -165,6 +250,12 @@ function generateMarkdown(state) {
     if (page.errors && page.errors.length > 0) {
       lines.push('**错误**:');
       page.errors.forEach(err => lines.push(`- ${err}`));
+      lines.push('');
+    }
+
+    // Screenshot comparison result
+    if (page.diffPercent !== undefined) {
+      lines.push(`**截图对比**: ${page.diffPercent < 1 ? '✅ 无变化' : `⚠️ 差异 ${page.diffPercent.toFixed(2)}%`}`);
       lines.push('');
     }
   });
@@ -188,11 +279,11 @@ function generateMarkdown(state) {
   if (state.history && state.history.length > 0) {
     lines.push('## 验收历史');
     lines.push('');
-    lines.push('| 验收编号 | 日期 | 状态 |');
-    lines.push('|----------|------|------|');
+    lines.push('| 验收编号 | 日期 | 状态 | 模式 |');
+    lines.push('|----------|------|------|------|');
     state.history.forEach(h => {
       const icon = h.status === 'passed' ? '✅' : '❌';
-      lines.push(`| ${h.id} | ${h.date} | ${icon} ${h.status} |`);
+      lines.push(`| ${h.id} | ${h.date} | ${icon} ${h.status} | ${h.mode || '-'} |`);
     });
     lines.push('');
   }
@@ -201,6 +292,7 @@ function generateMarkdown(state) {
   lines.push('## 签名');
   lines.push('');
   lines.push('- **验收人**: Claude Code');
+  lines.push('- **验收工具**: agent-browser + acceptance-reporter');
   lines.push(`- **验收时间**: ${state.createdAt || new Date().toISOString()}`);
   lines.push('');
   lines.push('*此报告由 acceptance-reporter 自动生成*');
@@ -208,8 +300,37 @@ function generateMarkdown(state) {
   return lines.join('\n');
 }
 
+// Convert Markdown to HTML using markdown-it or fallback
+function markdownToHTML(markdown) {
+  if (markdownit) {
+    const md = markdownit({
+      html: true,
+      linkify: true,
+      typographer: true
+    });
+    return md.render(markdown);
+  }
+
+  // Fallback: simple conversion
+  return markdown
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="screenshot">')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^- (.*$)/gim, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+    .replace(/\|(.*)\|/g, (match) => {
+      const cells = match.split('|').filter(c => c.trim());
+      return `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
+    });
+}
+
 // Generate HTML report with embedded screenshots
-function generateHTML(state, stateDir) {
+function generateHTML(state, stateDir, args) {
   // Calculate stats
   const totalPages = state.pages.length;
   const screenshotCount = state.pages.filter(p => p.screenshot).length;
@@ -221,15 +342,27 @@ function generateHTML(state, stateDir) {
   const statusClass = state.status === 'passed' ? 'pass' : 'fail';
   const statusIcon = state.status === 'passed' ? '✅' : '❌';
 
+  // Build TOC
+  const tocItems = state.pages.map((page, index) =>
+    `<a href="#page-${index + 1}" class="toc-item">${page.name}</a>`
+  ).join('');
+
   // Generate page sections
-  const pageSections = state.pages.map((page) => {
+  const pageSections = state.pages.map((page, index) => {
     const pageStatusClass = page.status === 'passed' ? 'pass' : 'fail';
     const pageStatusIcon = page.status === 'passed' ? '✅' : '❌';
 
     // Convert screenshot to base64
     let screenshotBase64 = '';
+    let diffIndicator = '';
+
     if (page.screenshot) {
       screenshotBase64 = screenshotToBase64(page.screenshot, stateDir) || '';
+    }
+
+    // Diff indicator
+    if (page.diffPercent !== undefined && page.diffPercent > 0) {
+      diffIndicator = `<span class="diff-badge ${page.diffPercent > 5 ? 'high' : 'low'}">Δ ${page.diffPercent.toFixed(1)}%</span>`;
     }
 
     // Generate validation rows
@@ -243,14 +376,31 @@ function generateHTML(state, stateDir) {
               </tr>`;
     }).join('');
 
+    // Error section
+    const errorSection = (page.errors && page.errors.length > 0) ? `
+      <div class="errors">
+        <h4>错误</h4>
+        <ul>
+          ${page.errors.map(e => `<li>${e}</li>`).join('')}
+        </ul>
+      </div>` : '';
+
     return `
-      <div class="page-section">
+      <div class="page-section" id="page-${index + 1}">
         <div class="page-header">
           <h3>${page.name} (${page.url})</h3>
-          <span class="status-badge status-${pageStatusClass}">${pageStatusIcon} ${page.status}</span>
+          <div class="page-badges">
+            <span class="status-badge status-${pageStatusClass}">${pageStatusIcon} ${page.status}</span>
+            ${diffIndicator}
+            ${page.loadTime ? `<span class="load-time">${page.loadTime}s</span>` : ''}
+          </div>
         </div>
         <div class="page-body">
-          ${screenshotBase64 ? `<img class="screenshot" src="${screenshotBase64}" alt="${page.name} screenshot">` : ''}
+          ${screenshotBase64 ? `
+            <div class="screenshot-container">
+              <img class="screenshot" src="${screenshotBase64}" alt="${page.name} screenshot" onclick="this.classList.toggle('zoomed')">
+              ${page.diffPath ? `<a href="${page.diffPath}" class="diff-link">查看差异</a>` : ''}
+            </div>` : ''}
           <table>
             <thead>
               <tr>
@@ -259,12 +409,40 @@ function generateHTML(state, stateDir) {
               </tr>
             </thead>
             <tbody>
-              ${validationRows}
+              ${validationRows || '<tr><td colspan="2">无验证项</td></tr>'}
             </tbody>
           </table>
+          ${errorSection}
         </div>
       </div>`;
   }).join('');
+
+  // History section
+  const historySection = (state.history && state.history.length > 0) ? `
+    <div class="history-section">
+      <h2>验收历史</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>验收编号</th>
+            <th>日期</th>
+            <th>状态</th>
+            <th>模式</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${state.history.map(h => {
+            const icon = h.status === 'passed' ? '✅' : '❌';
+            return `<tr>
+              <td><a href="../${h.id}/report.html">${h.id}</a></td>
+              <td>${h.date}</td>
+              <td class="${h.status}">${icon} ${h.status}</td>
+              <td>${h.mode || '-'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>` : '';
 
   // Full HTML template
   return `<!DOCTYPE html>
@@ -277,104 +455,254 @@ function generateHTML(state, stateDir) {
     :root {
       --color-pass: #22863a;
       --color-fail: #cb2431;
+      --color-warn: #f0883e;
       --color-border: #e1e4e8;
       --color-bg: #f6f8fa;
       --color-text: #24292e;
+      --color-primary: #667eea;
+      --color-primary-dark: #5a67d8;
     }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #0d1117;
+        --color-text: #c9d1d9;
+        --color-border: #30363d;
+        --color-primary: #8b9ff7;
+      }
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
       line-height: 1.6;
       color: var(--color-text);
       background: var(--color-bg);
       padding: 20px;
     }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
       background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       overflow: hidden;
     }
+
+    @media (prefers-color-scheme: dark) {
+      .container { background: #161b22; }
+    }
+
     .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, var(--color-primary) 0%, #764ba2 100%);
       color: white;
-      padding: 30px;
+      padding: 40px;
+      position: relative;
     }
-    .header h1 { font-size: 24px; margin-bottom: 10px; }
-    .header .meta { font-size: 14px; opacity: 0.9; }
+
+    .header h1 { font-size: 28px; margin-bottom: 15px; }
+    .header .meta { font-size: 14px; opacity: 0.95; display: flex; flex-wrap: wrap; gap: 15px; }
+    .header .meta span { display: inline-flex; align-items: center; gap: 5px; }
+
     .status-badge {
-      display: inline-block;
-      padding: 4px 12px;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
+      gap: 6px;
     }
+
     .status-pass { background: var(--color-pass); color: white; }
     .status-fail { background: var(--color-fail); color: white; }
+
+    .diff-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .diff-badge.low { background: #fff3cd; color: #856404; }
+    .diff-badge.high { background: #f8d7da; color: #721c24; }
+
+    .toc {
+      background: var(--color-bg);
+      padding: 15px 30px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .toc-item {
+      padding: 6px 12px;
+      background: white;
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--color-primary);
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .toc-item:hover { background: var(--color-primary); color: white; }
+
     .content { padding: 30px; }
+
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 20px;
       margin-bottom: 30px;
     }
+
     .summary-card {
       text-align: center;
-      padding: 20px;
+      padding: 25px 15px;
       background: var(--color-bg);
-      border-radius: 8px;
+      border-radius: 10px;
+      transition: transform 0.2s;
     }
-    .summary-card .value { font-size: 32px; font-weight: 700; color: #667eea; }
-    .summary-card .label { font-size: 14px; color: #586069; }
+
+    .summary-card:hover { transform: translateY(-2px); }
+
+    .summary-card .value {
+      font-size: 36px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--color-primary), #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .summary-card .label { font-size: 13px; color: #586069; margin-top: 5px; }
+
     .page-section {
       border: 1px solid var(--color-border);
-      border-radius: 8px;
+      border-radius: 10px;
       margin-bottom: 20px;
       overflow: hidden;
+      transition: box-shadow 0.2s;
     }
+
+    .page-section:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
     .page-header {
       background: var(--color-bg);
-      padding: 15px 20px;
+      padding: 18px 24px;
       border-bottom: 1px solid var(--color-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-    .page-header h3 { font-size: 16px; }
-    .page-body { padding: 20px; }
+
+    .page-header h3 { font-size: 16px; color: var(--color-text); }
+    .page-badges { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .load-time { font-size: 12px; color: #586069; background: white; padding: 4px 8px; border-radius: 4px; }
+
+    .page-body { padding: 24px; }
+
+    .screenshot-container {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
     .screenshot {
       max-width: 100%;
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      cursor: zoom-in;
+      transition: transform 0.2s;
     }
+
+    .screenshot.zoomed {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1.5);
+      z-index: 1000;
+      cursor: zoom-out;
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    .diff-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--color-primary);
+    }
+
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--color-border); }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--color-border); }
     th { background: var(--color-bg); font-weight: 600; }
+
     .pass { color: var(--color-pass); }
     .fail { color: var(--color-fail); }
+
+    .errors {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff5f5;
+      border-radius: 8px;
+      border-left: 4px solid var(--color-fail);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .errors { background: #2d1f1f; }
+    }
+
+    .errors h4 { color: var(--color-fail); margin-bottom: 10px; }
+    .errors ul { margin-left: 20px; }
+
+    .history-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--color-border); }
+    .history-section h2 { margin-bottom: 20px; }
+    .history-section a { color: var(--color-primary); text-decoration: none; }
+    .history-section a:hover { text-decoration: underline; }
+
     .footer {
       text-align: center;
-      padding: 20px;
+      padding: 25px;
       color: #586069;
-      font-size: 12px;
+      font-size: 13px;
       border-top: 1px solid var(--color-border);
     }
-    @media print { body { background: white; padding: 0; } .container { box-shadow: none; } }
+
+    .footer p { margin: 5px 0; }
+
+    /* Print styles */
+    @media print {
+      body { background: white; padding: 0; }
+      .container { box-shadow: none; }
+      .screenshot { page-break-inside: avoid; }
+      .page-section { page-break-inside: avoid; margin-bottom: 15px; }
+      .toc { display: none; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>验收报告</h1>
+      <h1>📋 验收报告</h1>
       <div class="meta">
-        <strong>编号</strong>: ${state.acceptanceId} |
-        <strong>日期</strong>: ${state.createdAt ? state.createdAt.split('T')[0] : new Date().toISOString().split('T')[0]} |
+        <span><strong>编号</strong>: ${state.acceptanceId}</span>
+        <span><strong>日期</strong>: ${state.createdAt ? state.createdAt.split('T')[0] : new Date().toISOString().split('T')[0]}</span>
+        ${state.changeId ? `<span><strong>变更</strong>: ${state.changeId}</span>` : ''}
+        ${state.mode ? `<span><strong>模式</strong>: ${state.mode}</span>` : ''}
         <span class="status-badge status-${statusClass}">${statusIcon} ${state.status.toUpperCase()}</span>
       </div>
     </div>
+
+    <nav class="toc">
+      <span style="color: #586069; font-size: 13px;">快速导航:</span>
+      ${tocItems}
+    </nav>
+
     <div class="content">
       <div class="summary-grid">
         <div class="summary-card">
@@ -394,23 +722,70 @@ function generateHTML(state, stateDir) {
           <div class="label">通过率</div>
         </div>
       </div>
+
       <h2>页面验收详情</h2>
       ${pageSections}
+
+      ${historySection}
     </div>
+
     <div class="footer">
-      <p>验收人: Claude Code | 验收时间: ${state.createdAt || new Date().toISOString()}</p>
-      <p>此报告由 acceptance-reporter 自动生成</p>
+      <p>👤 验收人: Claude Code | 🕐 验收时间: ${state.createdAt || new Date().toISOString()}</p>
+      <p>🔧 工具: agent-browser + acceptance-reporter | 📦 版本: 5.1.10</p>
     </div>
   </div>
+
+  <script>
+    // Screenshot zoom functionality
+    document.querySelectorAll('.screenshot').forEach(img => {
+      img.addEventListener('click', function() {
+        if (this.classList.contains('zoomed')) {
+          this.classList.remove('zoomed');
+        } else {
+          document.querySelectorAll('.screenshot.zoomed').forEach(z => z.classList.remove('zoomed'));
+          this.classList.add('zoomed');
+        }
+      });
+    });
+
+    // Close zoomed image on click outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.classList.contains('screenshot')) {
+        document.querySelectorAll('.screenshot.zoomed').forEach(z => z.classList.remove('zoomed'));
+      }
+    });
+  </script>
 </body>
 </html>`;
 }
 
 // Main
-function main() {
+async function main() {
   const args = parseArgs();
   const stateDir = path.dirname(args.state);
   const state = readState(args.state);
+
+  // Screenshot comparison if baseline provided
+  if (args.compare && pixelmatch) {
+    const baseline = readState(args.compare);
+    console.log('📊 Comparing with baseline...');
+
+    for (const page of state.pages) {
+      const baselinePage = baseline.pages.find(p => p.name === page.name);
+      if (baselinePage && page.screenshot && baselinePage.screenshot) {
+        const diffPath = `diff-${page.name}-${Date.now()}.png`;
+        const result = await compareScreenshots(
+          page.screenshot,
+          baselinePage.screenshot,
+          `screenshots/${diffPath}`,
+          args.threshold
+        );
+        page.diffPercent = result.diffPercent;
+        page.diffPath = result.diffPath ? `screenshots/${diffPath}` : null;
+        console.log(`  ${page.name}: ${result.diffPercent.toFixed(2)}% diff`);
+      }
+    }
+  }
 
   // Generate Markdown report
   const mdReport = generateMarkdown(state);
@@ -419,9 +794,12 @@ function main() {
   console.log(`✅ Markdown report: ${mdPath}`);
 
   // Generate HTML report
-  const htmlReport = generateHTML(state, stateDir);
+  const htmlReport = generateHTML(state, stateDir, args);
   fs.writeFileSync(args.output, htmlReport, 'utf-8');
   console.log(`✅ HTML report: ${args.output}`);
 }
 
-main();
+main().catch(err => {
+  console.error('Error:', err);
+  process.exit(1);
+});
