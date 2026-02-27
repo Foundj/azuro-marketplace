@@ -6,7 +6,7 @@ description: |
   "reflect", "audit CLAUDE.md", "improve context", "remember this", "更新规则", "审计文档",
   "质量检查", or when reviewing/updating project context files.
   Combines automatic learning capture with quality-based context optimization.
-version: 5.1.19
+version: 5.1.20
 status: ga
 triggers:
   - reflect

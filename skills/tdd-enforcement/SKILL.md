@@ -7,7 +7,7 @@ description: |
   deleted and rewritten. Triggers on "TDD", "test first", "红绿重构", "implementing feature",
   "writing code", "bug fix", "refactoring", "behavior change". No exceptions without
   explicit user permission.
-version: 5.1.19
+version: 5.1.20
 status: experimental
 triggers:
   - implementing feature
