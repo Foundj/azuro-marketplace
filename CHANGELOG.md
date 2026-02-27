@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.4] - 2026-02-27
+
+### Changed
+- **code-reviewer**: Added single file line limit (≤700 lines) to deep quality checklist
+- **code-reviewer**: Enhanced with 5-dimensional parallel review workflow from official plugin
+
+
+## [5.1.3] - 2026-02-27
+
+### Changed
+- **code-reviewer**: Added single file line limit (≤700 lines) to deep quality checklist
+- **code-reviewer**: Reduced from 548 to 237 lines while enhancing with 5-dimensional parallel review
+
+
 ## [5.1.2] - 2026-02-27
 
 ### Changed
