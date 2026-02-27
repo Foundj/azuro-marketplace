@@ -4,6 +4,7 @@ description: Web automation testing - browser interactions, form testing, screen
 argument-hint: "<url> [--login] [--screenshot] [--validate <selector>]"
 allowed-tools: Bash, Read, Write
 execution-mode: subagent
+internal: true
 ---
 
 # /ai:test-web - Web 自动化测试

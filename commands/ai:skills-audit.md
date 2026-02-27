@@ -4,6 +4,7 @@ description: Audit all skills in project - validate structure, quality, and best
 argument-hint: "[--summary] [--fix] [--report] [--json] [--background]"
 allowed-tools: Read, Bash, Glob, Grep, Task
 execution-mode: subagent
+internal: true
 ---
 
 # /ai:skills-audit - 技能质量审计

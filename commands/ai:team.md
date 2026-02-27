@@ -3,7 +3,6 @@ name: ai:team
 description: Agent Teams 团队协作开发 - 使用 Claude Code 原生能力创建和管理多代理团队
 argument-hint: "[mode] <feature-description> | [--dry-run] [--parallel] [--quick]"
 allowed-tools: TeamCreate, TeamDelete, TaskCreate, TaskUpdate, TaskList, TaskGet, SendMessage, Task, Read, Write, Edit, Grep, Glob, Bash
-internal: true
 ---
 
 # AI Team Command

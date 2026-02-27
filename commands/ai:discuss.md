@@ -3,6 +3,7 @@ name: ai:discuss
 description: Multi-agent discussion coordinator — init, invite, check progress, or summarize
 argument-hint: "<init|invite|status|next|draft|summarize> [topic] [--tools cursor,codex] [--roles PM,Architect,Security] [--rounds 3] [--project-root .]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Task
+internal: true
 ---
 
 # Multi-Agent Discussion Command
