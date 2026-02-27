@@ -45,7 +45,8 @@ function parseArgs() {
     output: null,
     template: null,
     compare: null,
-    threshold: 0.1
+    threshold: 0.1,
+    open: false  // 新增：是否自动打开浏览器
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -65,6 +66,9 @@ function parseArgs() {
       case '--threshold':
         result.threshold = parseFloat(args[++i]) || 0.1;
         break;
+      case '--open':
+        result.open = true;
+        break;
       case '--help':
         console.log(`
 Usage: node generate-html.js [options]
@@ -75,10 +79,12 @@ Options:
   --template <file>   Path to custom HTML template (optional)
   --compare <file>    Path to baseline state.json for comparison (optional)
   --threshold <num>   Pixel difference threshold (default: 0.1)
+  --open              Open HTML report in browser after generation
   --help              Show this help message
 
 Example:
   node generate-html.js --state state.json --output report.html
+  node generate-html.js --state state.json --output report.html --open
   node generate-html.js --state state.json --output report.html --compare baseline.json
         `);
         process.exit(0);
@@ -327,6 +333,46 @@ function markdownToHTML(markdown) {
       const cells = match.split('|').filter(c => c.trim());
       return `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
     });
+}
+
+// Open report in browser
+function openReportInBrowser(reportPath) {
+  const { execSync } = require('child_process');
+  const absolutePath = path.resolve(reportPath);
+  const fileUrl = `file://${absolutePath}`;
+
+  console.log(`🌐 Opening report in browser: ${fileUrl}`);
+
+  // Try agent-browser first (for headed browser)
+  try {
+    const agentBrowserPath = execSync('which agent-browser', { encoding: 'utf-8' }).trim();
+    if (agentBrowserPath) {
+      execSync(`agent-browser open "${fileUrl}" --headed`, { stdio: 'inherit' });
+      return;
+    }
+  } catch (e) {
+    // agent-browser not available, fall back to system browser
+  }
+
+  // Fall back to system default browser
+  const platform = process.platform;
+  let command;
+
+  if (platform === 'darwin') {
+    command = `open "${fileUrl}"`;
+  } else if (platform === 'win32') {
+    command = `start "" "${fileUrl}"`;
+  } else {
+    command = `xdg-open "${fileUrl}"`;
+  }
+
+  try {
+    execSync(command, { stdio: 'inherit' });
+    console.log(`✅ Report opened in default browser`);
+  } catch (e) {
+    console.warn(`⚠️ Could not open browser: ${e.message}`);
+    console.log(`Please open manually: ${fileUrl}`);
+  }
 }
 
 // Generate HTML report with embedded screenshots
@@ -797,6 +843,11 @@ async function main() {
   const htmlReport = generateHTML(state, stateDir, args);
   fs.writeFileSync(args.output, htmlReport, 'utf-8');
   console.log(`✅ HTML report: ${args.output}`);
+
+  // Open report in browser if --open flag is set
+  if (args.open) {
+    openReportInBrowser(args.output);
+  }
 }
 
 main().catch(err => {

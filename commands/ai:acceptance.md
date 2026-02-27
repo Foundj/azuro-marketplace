@@ -43,14 +43,16 @@ Returns Acceptance Report + Screenshots
 # 多页面验收 - 自动并行
 /ai:acceptance <url> --pages "home,login,dashboard"  # 自动并行验收
 
-# 完整报告
-/ai:acceptance <url> --change CHG-xxx --report    # 生成完整报告
+# 完整报告 - 自动打开浏览器
+/ai:acceptance <url> --change CHG-xxx --report    # 生成报告并打开
 ```
 
 > **智能模式**: 系统自动选择最佳执行方式：
 > - 单页面 → 直接验收
 > - 2-3 个页面 → 并行执行
 > - 4+ 个页面 → Agent Teams 并行
+>
+> **报告展示**: 使用 `--report` 时自动打开有头浏览器展示 HTML 报告
 
 ---
 
@@ -62,10 +64,11 @@ Returns Acceptance Report + Screenshots
 | `--plan <id>` | 关联计划 ID |
 | `--task <id>` | 关联任务 ID |
 | `--pages <list>` | 逗号分隔的页面列表 (如 "home,login,dashboard") |
-| `--report` | 生成完整验收报告 |
+| `--report` | 生成完整验收报告并自动打开浏览器展示 |
 | `--history` | 查看历史验收记录 |
 | `--quick` | 快速验收 (仅关键页面) |
 | `--headed` | 显示浏览器窗口 |
+| `--open` | 生成报告后自动打开有头浏览器展示 (默认启用) |
 | `--mode <mode>` | 测试模式: quick (快速)、full (完整)、regression (回归)、smoke (冒烟) |
 | `--parallel` | 并行执行多页面验收 (需配合 --pages 使用) |
 | `--team` | 使用 Agent Teams 并行测试 (自动为每个页面创建验收队友) |

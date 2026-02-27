@@ -7,10 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.2] - 2026-02-28
+
+### Added
+- **`--open` parameter** for `generate-html.js`: Auto-open HTML report in browser after generation
+  - Supports macOS, Windows, and Linux system browsers
+  - Falls back to system default if agent-browser unavailable
+
+### Changed
+- **commands/ai:acceptance.md**: Document `--open` flag (enabled by default with `--report`)
+
+
 ## [5.2.1] - 2026-02-28
 
 ### Changed
-- TODO: Describe your changes here
+- **Acceptance Testing**: Enhanced report generation with auto-browser-open feature
 
 
 ## [5.2.0] - 2026-02-27
