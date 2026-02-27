@@ -7,157 +7,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.19] - 2026-02-27
+
+### Changed
+- TODO: Describe your changes here
+
+
 ## [5.1.18] - 2026-02-27
 
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.17] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.16] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.15] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.14] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.13] - 2026-02-27
-
 ### Added
-- **acceptance-reporter**: Enhanced HTML report generation with:
-  - markdown-it integration for Markdown rendering (optional)
-  - pixelmatch integration for screenshot comparison (optional)
-  - Dark mode support via `prefers-color-scheme`
-  - Table of contents navigation
-  - Screenshot zoom functionality
-  - Print-friendly styles
-  - Diff indicator badges for comparison results
+- **OpenCode plugin**: `.opencode/plugins/azuro-marketplace.js` for system prompt injection and tool mapping
+- **context-bridge**: Added `internal: true` and missing frontmatter to `focus`, `lite-save`, `lite-resume` commands
+- **claude-reflect**: Modular rules audit (`.claude/rules/*.md`), line limit scoring, modular-rules-guide reference doc
+- **multi-agent-discussion**: Cross-platform sed in init script, @Coordinator role, data injection principles in templates
+- **pre-commit**: Quality dashboard with GA/Experimental skill counts
 
 ### Changed
-- **acceptance-reporter**: Improved HTML template with better accessibility and responsive design
+- **Commands**: Unified `ai:` prefix across all 25 root commands (`discuss` → `ai:discuss`)
+- **context-bridge**: Replaced all `/session:save` → `/ai:session-save` and `/session:resume` → `/ai:session-resume` across all files
+- **acceptance-reporter**: Enhanced HTML report with markdown-it, pixelmatch, dark mode, TOC navigation, zoom
 
+### Removed
+- **context-bridge**: Deleted duplicate `checkpoint.md` and `resume.md` commands (covered by root `ai:session-save`/`ai:session-resume`)
 
-## [5.1.12] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.11] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
+### Fixed
+- **ai-dev**: Updated stale `/session:resume` reference in skills-integration-guide
 
 
 ## [5.1.10] - 2026-02-27
 
 ### Added
-- **Acceptance Testing Enhancement**: Implemented comprehensive acceptance testing system
-  - New `/ai:acceptance` parameters: `--mode`, `--parallel`, `--team`, `--compare`
-  - New `/ai:team:acceptance` command for Agent Teams parallel acceptance testing
-  - New `acceptance-tester` Agent for browser-based page validation
-  - New `acceptance-team` Skill for multi-page parallel acceptance
-  - Updated `state-schema.json` with acceptance tracking fields
-  - Created `codebox/acceptance/` directory structure with templates
-  - Updated `team-orchestrator` with ACCEPTANCE_TEAM template
-  - Updated `team-collaboration/templates.ts` with acceptance team template
-
-### Changed
-- **Smart Mode Selection**: `/ai:acceptance` now automatically selects the best execution mode:
-  - Single page → Direct execution
-  - 2-3 pages → Parallel execution
-  - 4+ pages → Agent Teams parallel
-- **Auto Acceptance**: `/ai:team feature` now automatically triggers frontend acceptance after development completes
-
-
-## [5.1.9] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.8] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
+- **Acceptance Testing System**: Comprehensive frontend acceptance testing
+  - New `/ai:acceptance` with `--mode`, `--parallel`, `--team`, `--compare` parameters
+  - New `/ai:team:acceptance` command for Agent Teams parallel testing
+  - New `acceptance-tester` Agent and `acceptance-team` Skill
+  - Smart mode selection: single page → direct, 2-3 → parallel, 4+ → Agent Teams
+- **Skills**: Added `status` field for GA/Experimental classification across all skills
+- **Agent Teams**: Added team commands to README.md
 
 
 ## [5.1.7] - 2026-02-27
 
 ### Added
-- **claude-reflect**: Added modular rules support (`.claude/rules/*.md`) with `paths` frontmatter
-- **claude-reflect**: Added line limit checking (≤200 lines for main files) as 7th quality dimension
-- **claude-reflect**: Added smart distribution algorithm for learning content
-- **claude-reflect**: Created `references/modular-rules-guide.md` with complete documentation
-- **claude-reflect**: Added modular rule templates to `references/templates.md`
-- **claude-reflect**: Added research-based warnings about LLM-generated context files
+- **claude-reflect**: Modular rules support (`.claude/rules/*.md`) with `paths` frontmatter
+- **claude-reflect**: Line limit checking (≤200 lines for main files) as 7th quality dimension
+- **claude-reflect**: Smart distribution algorithm, modular-rules-guide, research-based warnings
 
 ### Changed
 - **claude-reflect**: Updated scoring from 100 to 115 points (added Line Limits dimension)
-- **claude-reflect**: Enhanced `audit-claude-md` command to discover and audit modular rules
-- **claude-reflect**: Updated target file selection to include path-specific rules
-- **claude-reflect**: Added pre-assessment check to determine if context files are needed
-- **claude-reflect**: Emphasized "write for gaps, not overviews" principle based on research
-
-
-## [5.1.6] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.5] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
+- **claude-reflect**: Enhanced `audit-claude-md` to discover and audit modular rules
 
 
 ## [5.1.4] - 2026-02-27
 
-### Changed
-- **code-reviewer**: Added single file line limit (≤700 lines) to deep quality checklist
-- **code-reviewer**: Enhanced with 5-dimensional parallel review workflow from official plugin
-
-
-## [5.1.3] - 2026-02-27
+### Added
+- **claude-reflect**: CLAUDE.md/AGENTS.md quality audit and templates system
+- **multi-agent-discussion**: Cross-tool collaboration skill
 
 ### Changed
-- **code-reviewer**: Added single file line limit (≤700 lines) to deep quality checklist
-- **code-reviewer**: Reduced from 548 to 237 lines while enhancing with 5-dimensional parallel review
-
-
-## [5.1.2] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.1] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
-
-
-## [5.1.0] - 2026-02-27
-
-### Changed
-- TODO: Describe your changes here
+- **code-reviewer**: Added single file line limit (≤700 lines), 5-dimensional parallel review workflow
+- **Skills**: Removed duplicate `ai:` command triggers from skill frontmatters
 
 
 ## [5.0.20] - 2026-02-26
@@ -263,7 +172,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.0.10] - 2026-01-14
 
 ### Changed
-- TODO: Describe your changes here
+- **Skills**: Wave 9 - All skills upgraded to 95+ quality score
 
 
 ## [5.0.9] - 2026-01-14
@@ -550,14 +459,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Key Features |
 |---------|------|--------------|
-| 5.0.2 | 2026-01-14 | CHANGELOG gate, directory restructure |
+| 5.1.18 | 2026-02-27 | Command audit, OpenCode plugin, context-bridge cleanup |
+| 5.1.10 | 2026-02-27 | Acceptance testing system, GA/Experimental classification |
+| 5.1.7 | 2026-02-27 | claude-reflect modular rules, line limits |
+| 5.1.4 | 2026-02-27 | code-reviewer 5D review, multi-agent-discussion |
+| 5.0.20 | 2026-02-26 | ai:init command, CI workflow |
+| 5.0.16 | 2026-02-24 | All 25 skills 90+, MCP setup, Confidence Gate |
+| 5.0.13 | 2026-02-09 | ultrawork, TDD enforcement, spec-compliance |
+| 5.0.3 | 2026-01-14 | Multi-platform (Codex/OpenCode) support |
 | 5.0.0 | 2026-01-14 | context-bridge v5.0, all skills 90+ |
-| 4.2.9 | 2026-01-14 | Pre-commit hooks, automated code review |
-| 4.2.8 | 2026-01-14 | Skills 90+ quality, Chinese triggers |
-| 4.2.7 | 2026-01-13 | Skills integration guide, official patterns |
 | 4.2.6 | 2026-01-13 | Command consolidation (22→6) |
-| 4.2.5 | 2026-01-12 | brainstorm-mode, root-cause-analyst, FLAGS |
-| 4.2.4 | 2026-01-11 | code-simplifier SOLID, ai-dev modularization |
 | 4.0.0 | 2026-01-07 | AI-Dev v4.0 Evolution Edition |
 | 3.5.1 | 2026-01-05 | Professional suite structure |
 | 3.3.0 | 2026-01-03 | skill-auditor, quality gates |
