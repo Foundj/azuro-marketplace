@@ -5,7 +5,7 @@ description: |
   It provides a one-word trigger for a complete development workflow, orchestrating
   requirement clarification, worktree isolation, TDD implementation, two-stage review,
   and continuous execution until <promise>DONE</promise>.
-version: 5.1.2
+version: 5.1.3
 triggers:
   - ultrawork
   - ulw
@@ -17,6 +17,8 @@ triggers:
   - 一键开发
   - 自动实现
   - 任务闭环
+  - team mode
+  - 团队模式
 ---
 
 # Ultrawork: Autonomous Development Mode
@@ -280,6 +282,130 @@ git commit -m "feat: add feature"
 **Dispatch subagents using `subagent-driven-development` skill.**
 One subagent per task with structured handoff.
 
+#### Phase 5.0: Mode Selection (新增)
+
+**检测 Agent Teams 是否启用并评估协作需求:**
+
+```typescript
+// 检测 Agent Teams 是否启用
+const agentTeamsEnabled = process.env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS === "1"
+
+// 评估任务复杂度和协作需求
+const complexity = assessComplexity(task)
+const needsCollaboration = task.files.length > 3 || task.requiresTeam
+
+// 评估协作分数
+function evaluateCollaborationNeeds(task): number {
+  let score = 0
+
+  // 文件数量
+  if (task.files.length > 5) score += 0.3
+  else if (task.files.length > 3) score += 0.15
+
+  // 跨领域
+  if (task.domains.length > 2) score += 0.3
+  else if (task.domains.length > 1) score += 0.15
+
+  // 需要沟通
+  if (task.needsCommunication) score += 0.2
+
+  // 并行机会
+  if (task.parallelizable) score += 0.2
+
+  return Math.min(score, 1.0)
+}
+
+// 路由决策
+if (agentTeamsEnabled && needsCollaboration && collaborationScore > 0.7) {
+  // 使用 Agent Teams 模式
+  log("🚀 使用 Agent Teams 模式执行")
+  return executeWithAgentTeams(task)
+} else {
+  // 使用传统子代理模式
+  log("📦 使用传统子代理模式执行")
+  return executeWithSubagents(task)
+}
+```
+
+#### Phase 5.1: Agent Teams 执行模式 (新增)
+
+**当协作分数 > 0.7 且 Agent Teams 启用时使用:**
+
+```typescript
+async function executeWithAgentTeams(task: Task) {
+  // 1. 创建团队
+  const team = await TeamCreate({
+    team_name: `ultrawork-${task.id}`,
+    description: task.description,
+    agent_type: "team-orchestrator"
+  })
+
+  // 2. 选择团队模板
+  const template = selectTeamTemplate(task.description)
+
+  // 3. 生成队友
+  for (const mate of template.teammates) {
+    await Task({
+      subagent_type: mate.type,
+      team_name: team.name,
+      name: mate.role,
+      prompt: generateTeammatePrompt(mate, task),
+      isolation: "worktree"  // 自动隔离
+    })
+  }
+
+  // 4. 创建共享任务
+  for (const t of plannedTasks) {
+    await TaskCreate({
+      subject: t.subject,
+      description: t.description,
+      activeForm: t.activeForm
+    })
+  }
+
+  // 5. 设置依赖和分配
+  for (const t of plannedTasks) {
+    if (t.blockedBy) {
+      await TaskUpdate({ taskId: t.id, addBlockedBy: t.blockedBy })
+    }
+    if (t.owner) {
+      await TaskUpdate({ taskId: t.id, owner: t.owner })
+    }
+  }
+
+  // 6. 监控执行
+  return await monitorAndCleanup(team)
+}
+
+async function monitorAndCleanup(team: Team) {
+  // 监控任务进度
+  while (true) {
+    const status = await TaskList()
+    const allComplete = status.every(t => t.status === "completed")
+
+    if (allComplete) {
+      // 发送关闭请求
+      for (const member of team.members) {
+        await SendMessage({
+          type: "shutdown_request",
+          recipient: member.name,
+          content: "任务完成，感谢贡献！"
+        })
+      }
+
+      // 清理团队资源
+      await TeamDelete()
+      break
+    }
+
+    // 等待后继续检查
+    await sleep(5000)
+  }
+}
+```
+
+#### Phase 5.2: 传统子代理执行模式
+
 **CRITICAL: Use Task Tool for parallel execution**
 ```
 Task Tool (parallel dispatch):
@@ -494,6 +620,7 @@ Summary:
 - `task-templates` - Fine-grained planning
 - `subagent-driven-development` - Atomic task execution
 - `mcp-integration` - Context7/Tavily for documentation & research
+- `team-collaboration` - Agent Teams 协作模式 (新增)
 
 **Hooks:**
 - `todo-continuation-enforcer` - Forces completion
@@ -510,6 +637,7 @@ Summary:
 - `git-worktree` - Task isolation
 - `task-templates` - Fine-grained planning
 - `subagent-driven-development` - Atomic task execution
+- `team-collaboration` - Agent Teams 协作 (可选，需启用实验功能)
 
 ---
 
@@ -517,5 +645,7 @@ Summary:
 
 | Version | Changes |
 |---------|---------|
+| 5.2.0 | Added Agent Teams integration with auto-routing |
+| 5.1.2 | Added team mode triggers |
 | 5.0.20 | Added Chinese triggers and dependencies |
 | 5.0.0 | Initial release with 9-phase workflow |
