@@ -7,7 +7,7 @@ description: |
   or wants to coordinate multiple AI tools (Codex, Cursor, Claude Code) for collaborative
   requirement analysis and decision making. It provides a structured multi-agent discussion
   framework with shared markdown workspace, invitation prompts, and automated summarization.
-version: 5.1.8
+version: 5.1.9
 triggers:
   - start a discussion
   - multi-agent discuss
@@ -30,7 +30,14 @@ Coordinate requirement discussions across AI coding tools (Claude Code, Cursor, 
 
 ## Overview
 
-Create a discussion space in a target project's `docs/discussions/` directory. Each AI tool plays a specialized expert role, contributing structured opinions in a shared `discussion.md`. Claude Code acts as the coordinator — initializing, monitoring progress, and producing final `plan.md` + `task.md` deliverables.
+Create a discussion space in a target project's `docs/discussions/` directory. Each AI tool plays a specialized expert role, contributing structured opinions in a shared `discussion.md`. **Claude Code acts as both coordinator AND active participant** — it seeds the discussion with project analysis, monitors progress, generates continuation prompts, and produces final `plan.md` + `task.md`.
+
+## Core Principles
+
+1. **Claude Code 主动参与**：不仅调度，还以 @Coordinator 身份提供项目数据种子（代码统计、架构分析），降低其他 agent 的信息搜索成本
+2. **邀请即文件**：所有邀请和续接提示词写入文件（`invite-*.md`, `continue/*.md`），不打印到终端
+3. **续接带上下文**：每个续接文件包含上一轮的待回应 @ 提及摘要和下一步指引
+4. **收敛优先**：达成共识后可跳过 Draft 直接 Summarize
 
 ## Four-Phase Workflow
 
@@ -38,21 +45,28 @@ Create a discussion space in a target project's `docs/discussions/` directory. E
 
 Parse `$ARGUMENTS` for topic and options. Then:
 
-1. Ask user for: topic name, participating tools, role assignments, project context
+1. Ask user for: topic name, participating tools, role assignments
 2. Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/init-discussion.sh <project-root> <topic>` to scaffold the directory
-3. Read `references/role-catalog.md` to select roles matching user's needs
-4. Read `references/invitation-templates.md` and generate tool-specific invitation prompts
-5. Print each invitation prompt to terminal with clear copy instructions
-6. Generate `continue/` directory with pre-built continuation prompts for Rounds 2-3
+3. **Auto-populate `context.md`**：使用 Glob/Grep/Read 分析目标项目，自动填充技术栈、架构概览、关键数据指标（文件数、组件数、依赖关系等）
+4. Read `references/role-catalog.md` to select roles matching user's needs
+5. Update generated `README.md` with role table, update STATUS panel with role list
+6. **Seed Round 0**：以 @Coordinator 身份在 `discussion.md` 中追加项目分析种子发言——包含具体数据（不是通用描述），为后续 agent 的讨论提供事实基础
+7. Read `references/invitation-templates.md` and write `invite-<role>-<tool>.md` files, **注入 context.md 中的具体数据和 Round 0 的关键发现**
+8. Write role-specific `continue/round-1-<role>-<tool>.md` files（Round 1 的续接，因为 Round 0 由 Claude Code 完成）
+9. Print usage guide: file paths + copy-to-which-tool instructions
 
 **Directory created:**
 ```
 docs/discussions/<topic>/
-├── README.md          # Rules, roles, syntax reference
-├── discussion.md      # Main discussion file with STATUS panel
-├── context.md         # Project background (user fills)
-├── refs/              # Attachments (code, designs)
-└── continue/          # Pre-generated continuation prompts
+├── README.md                    # Rules, roles, syntax reference
+├── discussion.md                # Main file (STATUS panel + Round 0 seed + discussion)
+├── context.md                   # Auto-populated project background
+├── invite-<role>-<tool>.md      # Self-contained invitation per role+tool
+├── refs/                        # Attachments (code, designs)
+└── continue/                    # Continuation prompts
+    ├── round-N-<role>-<tool>.md # Role-specific, includes pending @ mentions
+    ├── draft.md
+    └── review.md
 ```
 
 ### Phase 2: Discuss
@@ -68,29 +82,44 @@ Each invited agent reads `README.md`, then appends to `discussion.md` following 
 
 **Convergence rules:**
 - Default: 3 discussion rounds + 1 draft round + 1 review round
-- Early exit: when all agents select the same option with `#consensus` tag
+- **Fast path**: when all agents select the same option with `#consensus` tag, can skip Draft and go directly to Summarize
 - Timeout: Claude Code intervenes after exceeding max rounds
 
 **Progress check** — when user says "检查讨论进度" or "check progress":
-1. Read the `<!-- STATUS -->` panel from `discussion.md`
-2. Report: current round, pending agents, unresolved `@` mentions
-3. Generate next continuation prompts if needed
+1. **Deep scan** `discussion.md`：不仅读 STATUS 面板，还扫描实际文本中的 `@` 提及和 `#consensus`/`#pending` 标签
+2. If STATUS panel and actual content are inconsistent, **repair** the STATUS panel
+3. Report: current round, pending agents, unresolved `@` mentions, consensus status
+4. Generate next continuation prompts if needed
 
-### Phase 3: Draft
+**Advancing rounds** — when user says "next" or "推进下一轮":
+1. Verify current round is complete (deep scan, not just STATUS)
+2. Update STATUS panel: increment round, reset pending
+3. **Dynamically generate** role-specific continuation files with:
+   - Unresolved `@` mentions targeting that role (with quoted context)
+   - Summary of current consensus/disagreement points
+   - "Next step" footer pointing to the next role's file
+4. Print instructions
 
-Any agent proposes a draft using `[Draft vN]` format. Others review with `[Draft vN Review]` entries. Iterate until `#consensus` status is reached on the final draft.
+### Phase 3: Draft (Optional)
+
+When discussion has converged but details need refinement. Skip if `#consensus` is already clear and comprehensive.
+
+Any agent proposes a draft using `[Draft vN]` format. Others review with `[Draft vN Review]` entries.
 
 ### Phase 4: Summarize
 
-When user triggers summarization:
+When user triggers summarization (or when fast-path convergence allows skipping Draft):
 
 1. Read entire `discussion.md`
-2. Extract all `#consensus` decisions and `> [!decision]` callouts
+2. **Deep extract**: scan all `#consensus`, `#pending`, `#rejected` tags AND all `> [!decision]`, `> [!proposal]` callouts
 3. Read `references/output-format.md` for template structure
 4. Generate `plan.md` — Fabula v5.x format with:
    - Frontmatter, context, success criteria, phased approach, architecture decisions, confidence analysis
+   - **Unresolved items**: all `#pending` and `#needs-input` items listed explicitly
 5. Generate `task.md` — Fabula v5.x format with:
    - Status header, phase-grouped checkbox tasks, review gates, change log
+   - **Rollback point references**: each Phase links to corresponding RP in plan.md
+6. Update STATUS panel: set `phase: done`
 
 ## STATUS Panel Format
 
@@ -108,19 +137,26 @@ max_rounds: 3
 -->
 ```
 
+**Validation rule**: when checking progress, compare STATUS panel against actual discussion content. If an agent has posted a `[Round N]` entry but STATUS still lists them as pending, auto-repair the panel.
+
 ## Best Practices
 
 **DO:**
-- Generate self-contained invitation prompts (each includes all rules needed)
-- Pre-generate continuation prompts in `continue/` to minimize user friction
-- Use STATUS panel for machine-readable progress tracking
-- Respect convergence limits
+- Auto-populate context.md with project-specific data (not generic placeholders)
+- Seed Round 0 with concrete project analysis as @Coordinator
+- Inject specific data into invitation prompts (not just generic role descriptions)
+- Generate continuation files dynamically with pending @ mention context
+- Deep-scan discussion content when checking progress (don't trust STATUS alone)
+- Support fast-path: discuss → summarize when consensus is clear
+- Preserve neutral stance in summarization — report disagreements as-is
 
 **DON'T:**
+- Print invitation prompts to terminal (always write to files)
+- Generate generic continuation files without role-specific context
+- Leave context.md empty for user to fill manually
+- Force Draft phase when consensus is already comprehensive
 - Delete or modify other agents' entries
-- Skip reading prior discussion entries
 - Exceed configured max rounds without user approval
-- Generate plan/task without `#consensus` on at least one draft
 
 ## Additional Resources
 

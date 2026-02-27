@@ -275,3 +275,197 @@ agent-browser fill @email "test@example.com" --session login-test
 agent-browser fill @email "new@example.com" --session signup-test
 agent-browser fill @email "forgot@example.com" --session forgot-test
 ```
+
+---
+
+## 11. Acceptance Testing Workflow
+
+> 用于 `/ai:acceptance` 命令的标准化验收工作流
+
+### Step 1: Initialize Session
+
+```bash
+# 生成验收 ID
+ACCEPTANCE_ID="ACC-$(date +%Y%m%d)-001"
+SESSION_NAME="acceptance-$ACCEPTANCE_ID"
+
+# 创建验收目录
+mkdir -p "codebox/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots"
+
+# 打开浏览器
+agent-browser open "$BASE_URL" --session "$SESSION_NAME"
+```
+
+### Step 2: Page Tour
+
+对于每个要验收的页面:
+
+```bash
+# 定义页面列表
+PAGES=("home" "login" "dashboard" "settings")
+
+for PAGE in "${PAGES[@]}"; do
+  # 导航到页面
+  case $PAGE in
+    home) URL="/" ;;
+    login) URL="/login" ;;
+    dashboard) URL="/dashboard" ;;
+    settings) URL="/settings" ;;
+    *) URL="/$PAGE" ;;
+  esac
+
+  agent-browser open "$BASE_URL$URL" --session "$SESSION_NAME"
+
+  # 等待页面加载完成
+  agent-browser wait --load networkidle
+
+  # 获取页面信息
+  PAGE_TITLE=$(agent-browser get title --session "$SESSION_NAME")
+  PAGE_URL=$(agent-browser get url --session "$SESSION_NAME")
+
+  # 截图 (带时间戳命名)
+  TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+  SCREENSHOT_NAME="${PAGE}-${TIMESTAMP}.png"
+  agent-browser screenshot "codebox/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots/$SCREENSHOT_NAME" --session "$SESSION_NAME"
+
+  # 验证关键元素
+  agent-browser snapshot -i --session "$SESSION_NAME"
+
+  # 记录验证结果
+  echo "✅ Page: $PAGE | Title: $PAGE_TITLE | Screenshot: $SCREENSHOT_NAME"
+done
+```
+
+### Step 3: Evidence Collection
+
+```bash
+# 收集验收证据
+ACCEPTANCE_DIR="codebox/acceptance/$(date +%Y-%m-%d)/{changeId}"
+
+# 创建状态文件
+cat > "$ACCEPTANCE_DIR/state.json" <<EOF
+{
+  "acceptanceId": "$ACCEPTANCE_ID",
+  "changeId": "{changeId}",
+  "createdAt": "$(date -Iseconds)",
+  "status": "passed",
+  "pages": [],
+  "screenshots": $(ls -1 "$ACCEPTANCE_DIR/screenshots/" | jq -R -s -c 'split("\n")[:-1]')
+}
+EOF
+
+# 计算截图数量
+SCREENSHOT_COUNT=$(ls -1 "$ACCEPTANCE_DIR/screenshots/"*.png 2>/dev/null | wc -l)
+echo "📸 Screenshots captured: $SCREENSHOT_COUNT"
+```
+
+### Step 4: Generate Report
+
+```bash
+# 使用 acceptance-reporter 生成报告
+# 参考: skills/acceptance-reporter/SKILL.md
+
+REPORT_PATH="$ACCEPTANCE_DIR/report.md"
+
+# 生成 Markdown 报告
+cat > "$REPORT_PATH" <<EOF
+# 验收报告
+
+**验收编号**: $ACCEPTANCE_ID
+**验收日期**: $(date +%Y-%m-%d)
+**状态**: ✅ PASSED
+
+## 概览
+
+| 指标 | 值 |
+|------|-----|
+| 验收页面 | ${#PAGES[@]} |
+| 截图数量 | $SCREENSHOT_COUNT |
+| 验收模式 | Full |
+
+## 截图证据
+
+$(for f in "$ACCEPTANCE_DIR/screenshots/"*.png; do
+  name=$(basename "$f")
+  echo "### ${name%.png}"
+  echo ""
+  echo "![${name%.png}](screenshots/$name)"
+  echo ""
+done)
+
+## 签名
+
+- **验收人**: Claude Code
+- **验收时间**: $(date)
+EOF
+
+echo "📋 Report generated: $REPORT_PATH"
+```
+
+### Step 5: Cleanup
+
+```bash
+# 关闭浏览器会话
+agent-browser close --session "$SESSION_NAME"
+
+# 清理旧验收记录 (保留最近 5 次)
+MAX_HISTORY=5
+HISTORY_COUNT=$(ls -1d "codebox/acceptance"/*/* 2>/dev/null | wc -l)
+
+if [ "$HISTORY_COUNT" -gt "$MAX_HISTORY" ]; then
+  OLDEST=$(ls -1dt "codebox/acceptance"/*/* | tail -1)
+  rm -rf "$OLDEST"
+  echo "🗑️ Removed old acceptance: $OLDEST"
+fi
+
+echo "✅ Acceptance completed: $ACCEPTANCE_ID"
+```
+
+---
+
+### Quick Acceptance Mode
+
+快速验收模式，仅验证关键检查:
+
+```bash
+# 快速验收流程
+ACCEPTANCE_ID="ACC-$(date +%Y%m%d)-quick"
+SESSION_NAME="acceptance-$ACCEPTANCE_ID"
+
+# 1. 打开页面
+agent-browser open "$BASE_URL" --session "$SESSION_NAME"
+agent-browser wait --load networkidle
+
+# 2. 快速验证
+agent-browser snapshot -i --session "$SESSION_NAME"
+agent-browser screenshot "codebox/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots/quick-$(date +%Y%m%d-%H%M%S).png" --session "$SESSION_NAME"
+
+# 3. 关闭
+agent-browser close --session "$SESSION_NAME"
+
+echo "✅ Quick acceptance completed"
+```
+
+---
+
+### Acceptance with Login
+
+需要登录状态的验收:
+
+```bash
+# 加载认证状态
+agent-browser state load auth-state.json --session "$SESSION_NAME"
+
+# 或执行登录流程
+agent-browser open "$BASE_URL/login" --session "$SESSION_NAME"
+agent-browser snapshot -i --session "$SESSION_NAME"
+agent-browser fill @e1 "user@example.com" --session "$SESSION_NAME"
+agent-browser fill @e2 "password" --session "$SESSION_NAME"
+agent-browser click @e3 --session "$SESSION_NAME"
+agent-browser wait --text "Dashboard" --session "$SESSION_NAME"
+
+# 保存登录状态供后续使用
+agent-browser state save "codebox/acceptance/auth-state.json" --session "$SESSION_NAME"
+
+# 继续验收流程...
+```

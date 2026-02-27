@@ -128,10 +128,10 @@ Core workflow:
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 5.1.8 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
-| **self-learning** | 5.1.8 | Self-learning system that captures corrections during sessions and updates your project conventions |
-| **thinking-toolbox** | 5.1.8 | Advanced reasoning and chain-of-thought engine for complex problem solving |
-| **context-bridge** | 5.1.8 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
+| **ai-dev** | 5.1.9 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **self-learning** | 5.1.9 | Self-learning system that captures corrections during sessions and updates your project conventions |
+| **thinking-toolbox** | 5.1.9 | Advanced reasoning and chain-of-thought engine for complex problem solving |
+| **context-bridge** | 5.1.9 | Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features

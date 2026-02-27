@@ -123,8 +123,36 @@ Phase 5 (Quality Validation)
   ├─ Check: Quality gate decision recorded
   ├─ Check: Tests still passing (if fixes made)
   ├─ Check: state.json updated (qualityValidationComplete = true)
-  ├─ If PASS → Proceed to Phase 6
+  ├─ If PASS → Proceed to Step 5 (Frontend Acceptance)
   └─ If FAIL → Block, return to Phase 5
+  ↓
+  🔍 Verification Point #8.5: Frontend Acceptance Testing (Step 5)
+  ├─ Check: Application has frontend components
+  ├─ Check: Base URL accessible (localhost:3000 or deployed)
+  ├─ If frontend exists:
+  │   ├─ Run: /ai:acceptance <url> --change <changeId> --report
+  │   ├─ Validate: All pages load correctly
+  │   ├─ Capture: Screenshots for evidence
+  │   ├─ Generate: Markdown + HTML reports
+  │   └─ Store: codebox/acceptance/{date}/{changeId}/
+  ├─ If no frontend:
+  │   └─ Skip this verification point
+  └─ Result: Acceptance evidence collected
+  ↓
+  ✅ Gate #5.5: Frontend Acceptance Gate (Conditional)
+  ├─ Check: acceptance state.json exists (if frontend)
+  ├─ Check: All pages passed (if frontend)
+  ├─ Check: Screenshots captured (if frontend)
+  ├─ If PASS → Proceed to Phase 5.5 (Code Simplification)
+  ├─ If FAIL → Report issues, allow user decision
+  └─ If NO_FRONTEND → Skip to Phase 5.5
+  ↓
+Phase 5.5 (Code Simplification)
+  ↓
+  🔍 Verification Point #8.6: Code Simplification (Optional)
+  ├─ Check: autoSimplify enabled in config
+  ├─ If enabled: Apply code simplification
+  └─ If disabled: Skip to Phase 6
   ↓
 Phase 6 (Finalization)
   ↓
@@ -148,10 +176,12 @@ Phase 6 (Finalization)
 | 3 | Quality Gate | 4 | OODA标记DONE | auto (pass/fail) | Yes |
 | 4 | User Approval | 5 | issues发现 | fix-all/critical/accept | Yes |
 | 5 | Quality Gate | 5 | 修复完成 | auto (pass/fail) | Yes |
+| 5.5 | Acceptance Gate | 5 | 前端验收 (Step 5) | auto (pass/fail/skip) | Conditional |
 
-**Total Gates**: 5个
+**Total Gates**: 6个
 **User Approval Gates**: 3个 (Phase 1, 3, 5)
 **Quality Gates**: 2个 (Phase 4, 5)
+**Acceptance Gates**: 1个 (Phase 5 Step 5, conditional on frontend)
 
 ---
 
@@ -381,6 +411,74 @@ async function ralphWiggumOODALoop(config) {
 
 ---
 
+### Point #8.5: Frontend Acceptance Testing (Phase 5.5)
+
+**What**: Validate frontend functionality in real browser
+
+**When to Run**:
+- Project has frontend components (React, Vue, Angular, etc.)
+- Changes affect UI/UX
+- End-to-end testing required
+- Visual regression testing needed
+
+**Process**:
+
+```yaml
+frontend_acceptance:
+  # Step 1: Check prerequisites
+  prerequisites:
+    - agent-browser installed
+    - Application running (localhost:3000 or deployed URL)
+    - Change ID available
+
+  # Step 2: Determine acceptance mode
+  mode_selection:
+    full: "Version release, major changes"
+    quick: "CI/CD, quick verification"
+    regression: "Bug fixes, targeted changes"
+    smoke: "Deployment health check"
+
+  # Step 3: Execute acceptance
+  execution:
+    command: /ai:acceptance <url> --change <changeId> --report
+    options:
+      - "--pages <list>" for specific pages
+      - "--quick" for quick mode
+      - "--headed" for debugging
+
+  # Step 4: Collect evidence
+  evidence:
+    screenshots: codebox/acceptance/{date}/{changeId}/screenshots/
+    state: codebox/acceptance/{date}/{changeId}/state.json
+    report_md: codebox/acceptance/{date}/{changeId}/report.md
+    report_html: codebox/acceptance/{date}/{changeId}/report.html
+
+  # Step 5: Update change state
+  update:
+    file: codebox/changes/active/{changeId}/state.json
+    field: acceptance
+    value:
+      latestId: ACC-xxx
+      status: passed/failed
+      reportPath: codebox/acceptance/...
+```
+
+**Output Files**:
+
+| File | Format | Purpose |
+|------|--------|---------|
+| `state.json` | JSON | Machine-readable acceptance state |
+| `report.md` | Markdown | Version control, documentation |
+| `report.html` | HTML | Sharing, offline viewing |
+| `screenshots/*.png` | PNG | Visual evidence |
+
+**Skip Conditions**:
+- Backend-only projects (APIs, CLIs, libraries)
+- No UI changes in the commit
+- User explicitly skips
+
+---
+
 ### Point #9: Commit Readiness (Phase 6)
 
 **What**: Final check before commit
@@ -447,6 +545,10 @@ for (let iteration = 1; iteration <= 10; iteration++) {
 - **Verification Agent**: `${CLAUDE_PLUGIN_ROOT}/skills/ai-dev/agents/verification-agent.md`
 - **Ralph-Wiggum OODA**: `${CLAUDE_PLUGIN_ROOT}/skills/ai-dev/references/ooda-loop.md` (Ralph-Wiggum Self-Completion section)
 - **7-Phase Workflow**: `${CLAUDE_PLUGIN_ROOT}/skills/ai-dev/references/7-phase-workflow.md`
+- **Frontend Acceptance**: `${CLAUDE_PLUGIN_ROOT}/commands/ai:acceptance.md`
+- **Acceptance Reporter**: `${CLAUDE_PLUGIN_ROOT}/skills/acceptance-reporter/SKILL.md`
+- **Agent Browser**: `${CLAUDE_PLUGIN_ROOT}/skills/agent-browser/SKILL.md`
+- **Acceptance Patterns**: `${CLAUDE_PLUGIN_ROOT}/skills/agent-browser/references/acceptance-patterns.md`
 
 ---
 

@@ -6,7 +6,7 @@ description: |
   "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
   Note: Use /ai:dev command as the primary entry point. This skill is the backend implementation.
-version: 5.1.8
+version: 5.1.9
 triggers:
   - implement
   - develop
@@ -129,6 +129,11 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - **Step 2**: 3x code-reviewer (security, bugs, maintainability)
 - **Step 3**: confidence-scorer filters ≥80 only
 - **Step 4**: verification-agent runs tests/build/lint
+- **Step 5**: Frontend Acceptance (条件性执行)
+  - 检测项目是否有前端组件
+  - 自动运行 `/ai:acceptance` 验收测试
+  - 收集截图证据，生成报告
+  - 后端项目自动跳过
 
 **Phase 5.5: Code Simplification** (auto when `autoSimplify: true`)
 - Triggered automatically after Phase 5 passes (if enabled in config)
@@ -202,6 +207,8 @@ When `/ai:dev` or `/ai:dev auto` runs without arguments:
 | `git-worktree` | 2.5, 6 | Isolated development workspace management |
 | `ai-dev-ooda` | 4 | OODA autonomous execution engine with TDD |
 | `ai-dev-quality` | 5 | Multi-perspective code review |
+| `agent-browser` | 5 | Frontend acceptance testing (E2E) |
+| `acceptance-reporter` | 5 | Acceptance report generation (MD + HTML) |
 | `code-simplifier` | 5.5 | Code refinement and simplification |
 | `thinking-engine` | 0 | Structured thinking for complex decisions |
 | `knowledge-graph` | 0,4,6 | Cross-project knowledge management |

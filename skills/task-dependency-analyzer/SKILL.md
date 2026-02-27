@@ -5,7 +5,7 @@ description: |
   It builds a dependency graph from plan.md, identifies parallelizable tasks, and outputs execution
   recommendations. Use when the user mentions "dependencies", "parallel", "execution order", "任务依赖",
   "并行执行", or when planning multi-task implementation.
-version: 5.1.8
+version: 5.1.9
 triggers:
   - task dependencies
   - dependency analysis
