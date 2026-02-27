@@ -6,7 +6,8 @@ description: |
   "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
   Note: Use /ai:dev command as the primary entry point. This skill is the backend implementation.
-version: 5.1.10
+version: 5.1.11
+status: ga
 triggers:
   - implement
   - develop
