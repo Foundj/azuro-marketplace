@@ -1,3 +1,9 @@
+---
+name: lite-resume
+description: Restore session from 3-file minimal checkpoint (tasks.md, notes.md, session_summary.md)
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # /lite-resume — 从 3 文件恢复 (v4.2.0 统一命名)
 
 ## 命令格式
@@ -171,7 +177,7 @@ Looked for in codebox/context/:
 
 Suggestions:
 1. Run /lite-save first to create the files
-2. Or run /session:resume for Full Mode
+2. Or run /ai:session-resume for Full Mode
 3. Or describe your task to start fresh
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -185,11 +191,11 @@ Suggestions:
 > 这将目标刷新到上下文末端，获得最高注意力权重。
 > 然后再开始执行，确保不会偏离目标。
 
-## 与 /session:resume 的关系 (v4.2.0)
+## 与 /ai:session-resume 的关系 (v4.2.0)
 
 由于文件位置统一，两个命令现在可以互换使用：
 
-| 特性 | /lite-resume | /session:resume |
+| 特性 | /lite-resume | /ai:session-resume |
 |------|-------------|-----------------|
 | 读取位置 | codebox/context/ | codebox/context/ |
 | 核心文件 | tasks.md, notes.md, session_summary.md | 同 + next_steps.md |
@@ -198,8 +204,8 @@ Suggestions:
 | ai-dev 集成 | 检测并建议升级 | 完整集成 |
 
 **兼容性**：
-- `/session:resume` 如果没有检测到 ai-dev 状态，会回退到 Lite Mode 行为
-- `/lite-resume` 如果检测到 ai-dev 状态，会建议使用 `/session:resume`
+- `/ai:session-resume` 如果没有检测到 ai-dev 状态，会回退到 Lite Mode 行为
+- `/lite-resume` 如果检测到 ai-dev 状态，会建议使用 `/ai:session-resume`
 
 ## 示例
 
@@ -270,7 +276,7 @@ Found:
   - codebox/changes/active/001/state.json (Full Mode)
 
 Recommendation:
-  Use /session:resume for Full Mode features
+  Use /ai:session-resume for Full Mode features
   Or continue with /lite-resume for simple mode
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

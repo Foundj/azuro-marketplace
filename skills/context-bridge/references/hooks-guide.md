@@ -15,7 +15,7 @@
     "context-warning": {
       "trigger": "context_usage > 70%",
       "action": "suggest",
-      "message": "💡 Context 70%+ used. Consider running /session:save to checkpoint progress."
+      "message": "💡 Context 70%+ used. Consider running /ai:session-save to checkpoint progress."
     }
   }
 }
@@ -33,7 +33,7 @@ Session 结束前提醒保存：
     "pre-exit": {
       "trigger": "session_end",
       "action": "prompt",
-      "message": "📋 Session ending. Run /session:save to preserve progress?"
+      "message": "📋 Session ending. Run /ai:session-save to preserve progress?"
     }
   }
 }
@@ -52,7 +52,7 @@ Session 结束前提醒保存：
       "trigger": "session_start",
       "condition": "file_exists('codebox/context/next_steps.md')",
       "action": "suggest",
-      "message": "🔄 Previous session found. Resume with /session:resume?"
+      "message": "🔄 Previous session found. Resume with /ai:session-resume?"
     }
   }
 }
@@ -75,18 +75,18 @@ Session 结束前提醒保存：
     "save-warning-85": {
       "trigger": "context_usage > 85%",
       "action": "warn",
-      "message": "⚠️ Context 85%. Run /session:save soon."
+      "message": "⚠️ Context 85%. Run /ai:session-save soon."
     },
     "auto-checkpoint-90": {
       "trigger": "context_usage > 90%",
       "action": "auto_execute",
-      "command": "/session:save",
+      "command": "/ai:session-save",
       "message": "🔴 Context 90%. Auto-saving progress..."
     },
     "task-completion": {
       "trigger": "all_tasks_completed",
       "action": "suggest",
-      "message": "✅ All tasks completed! Run /session:save or /feature-archive"
+      "message": "✅ All tasks completed! Run /ai:session-save or /feature-archive"
     }
   }
 }
@@ -127,7 +127,7 @@ archive:
     "hourly-checkpoint": {
       "trigger": "time_elapsed > 60min",
       "action": "suggest",
-      "message": "⏰ 1 hour elapsed. Consider /session:save to checkpoint."
+      "message": "⏰ 1 hour elapsed. Consider /ai:session-save to checkpoint."
     }
   }
 }
@@ -141,7 +141,7 @@ archive:
     "milestone-checkpoint": {
       "trigger": "tasks_completed >= 5",
       "action": "suggest",
-      "message": "🎯 5 tasks completed. Good time for /session:save?"
+      "message": "🎯 5 tasks completed. Good time for /ai:session-save?"
     }
   }
 }

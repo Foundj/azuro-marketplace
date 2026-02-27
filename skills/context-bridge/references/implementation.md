@@ -30,7 +30,7 @@ mkdir -p "$CONTEXT_DIR/sessions"
 
 ---
 
-## /session:save 实现流程
+## /ai:session-save 实现流程
 
 ### Step 0: 检测运行模式
 
@@ -107,7 +107,7 @@ mv codebox/context/session_summary.md \
 
 ---
 
-## /session:resume 实现流程
+## /ai:session-resume 实现流程
 
 ### Step 1: 读取上下文文件
 
@@ -146,7 +146,7 @@ Completed: 2 tasks | In progress: Task 6
 当检测到 context 达到 90% 时：
 
 ```
-1. 自动运行 /session:save
+1. 自动运行 /ai:session-save
 2. 输出 Auto Checkpoint 报告：
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -201,14 +201,14 @@ session-manager (完整恢复)     context-bridge (轻量恢复)
 ### 与 ai-dev workflow 协作
 
 ```
-/session:save → 保存 Phase/OODA 状态
-/session:resume → 恢复并继续 Phase/OODA
+/ai:session-save → 保存 Phase/OODA 状态
+/ai:session-resume → 恢复并继续 Phase/OODA
 ```
 
 ### 与 knowledge-graph 协作
 
 ```
-/session:save 时:
+/ai:session-save 时:
 - 提取本次 session 的 learnings
 - 更新 knowledge/learnings.md
 ```

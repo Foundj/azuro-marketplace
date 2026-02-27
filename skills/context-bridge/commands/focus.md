@@ -1,3 +1,9 @@
+---
+name: focus
+description: Refresh current goals into attention window to combat Lost in the Middle problem
+allowed-tools: Read, Grep, Glob
+---
+
 # /focus — 目标焦点刷新命令
 
 ## 命令格式
@@ -124,7 +130,7 @@ Next Action: {从 Status 部分提取}
 ⚠️ No Focus File Found
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 建议:
-1. 运行 /session:save 生成 next_steps.md
+1. 运行 /ai:session-save 生成 next_steps.md
 2. 或运行 /lite-save 生成 task_plan.md
 3. 或描述当前目标，我来创建焦点文件
 ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -155,7 +161,7 @@ Next Action: {从 Status 部分提取}
 |------|------|------|
 | `/focus` | 刷新目标（轻量） | 随时，频繁使用 |
 | `/progress` | 详细进度报告 | 检查点，偶尔使用 |
-| `/session:save` | 完整保存 | Session 结束时 |
+| `/ai:session-save` | 完整保存 | Session 结束时 |
 
 ## 实现示例
 

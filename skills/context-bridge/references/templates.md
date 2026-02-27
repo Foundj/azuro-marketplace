@@ -131,7 +131,7 @@ This document contains the output templates used by context-bridge for generatin
 
 > **Generated**: {timestamp}
 > **Last Session**: #{session_number}
-> **Resume Command**: `resume` or `/session:resume`
+> **Resume Command**: `resume` or `/ai:session-resume`
 
 ---
 
@@ -422,7 +422,7 @@ Blockers:
 
 ---
 
-Resume with: `/lite-resume` or `/session:resume`
+Resume with: `/lite-resume` or `/ai:session-resume`
 ```
 
 ---
@@ -459,7 +459,7 @@ When no focus file exists:
 ⚠️ No Focus File Found
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 Suggestions:
-1. Run /session:save to generate next_steps.md
+1. Run /ai:session-save to generate next_steps.md
 2. Or run /lite-save to generate task_plan.md
 3. Or describe your current goal
 

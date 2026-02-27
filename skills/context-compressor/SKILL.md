@@ -6,7 +6,7 @@ description: |
   lean. Use when context window is filling up, during long ultrawork sessions,
   or when the user mentions "compress context", "summarize", "archive results",
   "上下文压缩", "结果归档".
-version: 5.1.13
+version: 5.1.14
 status: experimental
 triggers:
   - compress context

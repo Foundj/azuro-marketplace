@@ -1,3 +1,9 @@
+---
+name: lite-save
+description: Save session progress to 3 minimal files (tasks.md, notes.md, session_summary.md)
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # /lite-save — 3 文件极简保存 (v4.2.0 统一命名)
 
 ## 命令格式
@@ -27,7 +33,7 @@ codebox/context/              # 统一位置 (与 Full Mode 相同)
 ```
 
 **统一优势**：
-- `/session:resume` 同时支持 Lite Mode 和 Full Mode
+- `/ai:session-resume` 同时支持 Lite Mode 和 Full Mode
 - 从 Lite Mode 升级到 Full Mode 无需迁移文件
 - 学习成本为零：Lite Mode 就是 Full Mode 的简化版
 
@@ -155,7 +161,7 @@ mkdir -p codebox/context
 
 ---
 
-Resume with: `/lite-resume` or `/session:resume`
+Resume with: `/lite-resume` or `/ai:session-resume`
 ```
 
 ### Step 5: 输出保存报告
@@ -178,7 +184,7 @@ Progress:
   Next: Continue research
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Resume with: /lite-resume or /session:resume
+Resume with: /lite-resume or /ai:session-resume
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -233,7 +239,7 @@ Files:
 Progress: Phase 2 (Research) | 1/4 phases done
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Resume with: /lite-resume or /session:resume
+Resume with: /lite-resume or /ai:session-resume
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
