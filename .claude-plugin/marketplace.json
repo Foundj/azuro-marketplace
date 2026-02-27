@@ -3,7 +3,7 @@
   "name": "azuro-marketplace",
   "description": "Azuro Plugin Marketplace - AI development tools and workflow automation",
   "metadata": {
-    "version": "5.1.20"
+    "version": "5.1.21"
   },
   "owner": {
     "name": "foundj"
@@ -14,7 +14,7 @@
       "source": "./",
       "strict": false,
       "description": "Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness",
-      "version": "5.1.20",
+      "version": "5.1.21",
       "repository": "https://github.com/Foundj/azuro-marketplace",
       "keywords": [
         "ai-development",
@@ -26,22 +26,7 @@
       ],
       "skills": [
         "./skills/ai-dev",
-        "./skills/ai-dev-ooda",
-        "./skills/ai-dev-interview",
-        "./skills/ai-dev-quality",
-        "./skills/code-simplifier",
-        "./skills/brainstorm-mode",
-        "./skills/thinking-engine",
-        "./skills/competitor-research",
-        "./skills/knowledge-graph",
-        "./skills/skill-auditor",
-        "./skills/claude-reflect",
-        "./skills/context-bridge",
-        "./skills/session-manager",
-        "./skills/project-initializer",
-        "./skills/plugin-auditor",
-        "./skills/agent-browser",
-        "./skills/acceptance-reporter"
+        "./skills/agent-browser"
       ],
       "commands": [
         "./commands/ai:dev.md",
@@ -49,72 +34,9 @@
         "./commands/ai:status.md",
         "./commands/ai:session-save.md",
         "./commands/ai:session-resume.md",
-        "./commands/ai:skills-audit.md"
+        "./commands/ai:team.md"
       ],
       "hooks": "./hooks/hooks.json"
-    },
-    {
-      "name": "self-learning",
-      "source": "./skills/claude-reflect",
-      "strict": false,
-      "description": "Self-learning system that captures corrections during sessions and updates your project conventions",
-      "version": "5.1.20",
-      "keywords": [
-        "learning",
-        "reflection",
-        "conventions",
-        "automation"
-      ],
-      "skills": [
-        "./SKILL.md"
-      ],
-      "commands": [
-        "./commands/reflect.md",
-        "./commands/skip-reflect.md",
-        "./commands/view-queue.md"
-      ]
-    },
-    {
-      "name": "thinking-toolbox",
-      "source": "./skills/thinking-engine",
-      "strict": false,
-      "description": "Advanced reasoning and chain-of-thought engine for complex problem solving",
-      "version": "5.1.20",
-      "keywords": [
-        "thinking",
-        "cot",
-        "reasoning",
-        "logic"
-      ],
-      "skills": [
-        "./SKILL.md"
-      ],
-      "commands": []
-    },
-    {
-      "name": "context-bridge",
-      "source": "./skills/context-bridge",
-      "strict": false,
-      "description": "Cross-session context management - save progress, restore and auto-continue tasks. Bridges Manus 3-file pattern with Azuro 7-phase workflow",
-      "version": "5.1.20",
-      "keywords": [
-        "context",
-        "session",
-        "checkpoint",
-        "resume",
-        "persistence",
-        "manus"
-      ],
-      "skills": [
-        "./SKILL.md"
-      ],
-      "commands": [
-        "./commands/checkpoint.md",
-        "./commands/resume.md",
-        "./commands/focus.md",
-        "./commands/lite-save.md",
-        "./commands/lite-resume.md"
-      ]
     }
   ]
 }

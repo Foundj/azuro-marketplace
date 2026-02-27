@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.21] - 2026-02-27
+
+### Changed
+- **marketplace.json**: Simplified to minimal user-facing entries (2 skills, 6 commands)
+- **docs/INDEX.md**: Added design principles section for user entry points vs internal skills
+
+
 ## [5.1.20] - 2026-02-27
 
 ### Changed
