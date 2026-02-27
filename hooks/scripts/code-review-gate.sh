@@ -136,14 +136,13 @@ check_command_files() {
 
             # 检查内部命令是否有 internal: true
             local filename=$(basename "$file")
-            # 已知的用户命令
+            # 已知的用户命令 (与 marketplace.json 一致)
             if [[ "$filename" != "ai:dev.md" ]] && \
                [[ "$filename" != "ai:fix.md" ]] && \
                [[ "$filename" != "ai:status.md" ]] && \
                [[ "$filename" != "ai:session-save.md" ]] && \
                [[ "$filename" != "ai:session-resume.md" ]] && \
-               [[ "$filename" != "ai:skills-audit.md" ]] && \
-               [[ "$filename" != "ai:test-web.md" ]]; then
+               [[ "$filename" != "ai:team.md" ]]; then
                 if ! grep -q '^internal: true' "$file"; then
                     echo -e "${YELLOW}   ⚠️  Internal command missing 'internal: true': $file${NC}"
                 fi

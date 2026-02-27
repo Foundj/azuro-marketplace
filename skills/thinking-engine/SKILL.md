@@ -7,7 +7,7 @@ description: |
   problem solving, and architecture design decisions.
 
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 5.1.22
+version: 5.1.23
 status: ga
 triggers:
   - think deeply
