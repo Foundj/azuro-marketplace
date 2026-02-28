@@ -7,7 +7,7 @@ description: |
   or wants to coordinate multiple AI tools (Codex, Cursor, Claude Code) for collaborative
   requirement analysis and decision making. It provides a structured multi-agent discussion
   framework with shared markdown workspace, invitation prompts, and automated summarization.
-version: 5.2.3
+version: 5.2.4
 status: experimental
 triggers:
   - start a discussion

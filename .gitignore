@@ -12,6 +12,5 @@ tests/
 
 # Auto-installed skill dependencies
 **/node_modules/
-**/package.json
-**/package-lock.json
-!skills/*/package.json
+skills/*/package.json
+skills/*/package-lock.json
