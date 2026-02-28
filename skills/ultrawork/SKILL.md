@@ -5,7 +5,7 @@ description: |
   It provides a one-word trigger for a complete development workflow, orchestrating
   requirement clarification, worktree isolation, TDD implementation, two-stage review,
   and continuous execution until <promise>DONE</promise>.
-version: 5.2.8
+version: 5.2.9
 status: experimental
 triggers:
   - ultrawork

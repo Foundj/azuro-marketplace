@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.9] - 2026-02-28
+
+### Changed
+- feat(skills): implement interaction-protocol behavior in brainstorm-mode and multi-agent-discussion
+- fix(skill-auditor): add defensive `|| echo 0` to find pipeline in validate-skill.sh
+
+
+## [5.2.8] - 2026-02-28
+
+### Changed
+- feat(skills): add Common Pitfalls to ai-dev, ultrawork, brainstorm-mode
+- feat(context-bridge): add Context Engineering principles reference
+
+
+## [5.2.7] - 2026-02-28
+
+### Changed
+- TODO: Describe your changes here
+
+
 ## [5.2.6] - 2026-02-28
 
 ### Changed

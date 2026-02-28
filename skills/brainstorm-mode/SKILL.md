@@ -5,7 +5,7 @@ description: |
   It uses open-ended questioning, divergent thinking, and iterative refinement to transform
   fuzzy concepts into clear specifications. Use when the user mentions "brainstorm", "explore ideas",
   "not sure what I need", "头脑风暴", "探索想法", "我不确定", "帮我想想", or has unclear requirements.
-version: 5.2.8
+version: 5.2.9
 status: ga
 triggers:
   - brainstorm
@@ -48,33 +48,57 @@ brainstorm how to handle authentication
 
 ## 工作流程
 
+### Entry Modes
+
+At session start, offer three entry modes per interaction-protocol:
+
+```
+How would you like to explore this?
+1. Guided — I'll ask open-ended questions step by step (Socratic mode)
+2. Context dump — Paste your existing ideas/constraints, I'll dig deeper
+3. Quick mode — I'll suggest 3 directions, you pick and we go from there
+```
+
+If the user ignores this and starts describing their idea, default to **Guided**.
+
+### Flow
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │              BRAINSTORM FLOW                             │
 ├─────────────────────────────────────────────────────────┤
-│  1. SEED                                                │
+│  1. SEED           [Seed Q1/1]                          │
 │     - 接收模糊想法                                       │
 │     - 不急于下结论                                       │
 │                    ↓                                    │
-│  2. DIVERGE (发散)                                      │
-│     - 苏格拉底式提问                                     │
+│  2. DIVERGE (发散)  [Diverge Q1-N/N]                    │
+│     - 苏格拉底式提问，每轮一个核心问题                    │
 │     - 探索多个方向                                       │
 │     - "还有什么可能？"                                   │
 │                    ↓                                    │
-│  3. EXPLORE (深入)                                      │
+│  3. EXPLORE (深入)  [Explore Q1-N/N]                    │
 │     - 追问 "为什么这个重要？"                            │
 │     - 挖掘隐藏需求                                       │
 │     - 发现约束和偏好                                     │
 │                    ↓                                    │
-│  4. CONVERGE (收敛)                                     │
+│  4. CONVERGE (收敛) [Converge Q1-N/N]                   │
 │     - 识别模式和主题                                     │
-│     - 聚焦核心需求                                       │
+│     - Decision-point: 编号选项选择核心方向                │
 │                    ↓                                    │
 │  5. CRYSTALLIZE (结晶)                                  │
 │     - 生成 discovery-brief.md                           │
 │     - 可选：转入 ai-dev 正式流程                         │
 └─────────────────────────────────────────────────────────┘
 ```
+
+### Per-Phase Behavior (follows interaction-protocol)
+
+- **One question per turn** — show progress label `[Diverge Q2/4]`
+- **No numbered options** in Diverge/Explore — use open-ended Socratic questions
+- **Decision points** only in Converge — present 3-5 directions with trade-offs
+- **Flexible parsing** — accept numbers, free text, or `skip`
+- **Interruption** — answer the tangent directly, then offer: `Ready to continue? We were on [Explore Q3/5].`
+- **Fast path** — if user says "just summarize", skip remaining phases, generate discovery-brief with `[assumed]` markers
 
 ## 苏格拉底提问技巧
 

@@ -7,7 +7,7 @@ description: |
   or wants to coordinate multiple AI tools (Codex, Cursor, Claude Code) for collaborative
   requirement analysis and decision making. It provides a structured multi-agent discussion
   framework with shared markdown workspace, invitation prompts, and automated summarization.
-version: 5.2.8
+version: 5.2.9
 status: experimental
 triggers:
   - start a discussion
@@ -44,9 +44,36 @@ Create a discussion space in a target project's `docs/discussions/` directory. E
 
 ### Phase 1: Init
 
-Parse `$ARGUMENTS` for topic and options. Then:
+#### Entry Modes
 
-1. Ask user for: topic name, participating tools, role assignments
+At session start, offer three entry modes per interaction-protocol:
+
+```
+How would you like to set up this discussion?
+1. Guided — I'll ask about topic, tools, and roles step by step
+2. Context dump — Paste your topic and role preferences, I'll scaffold
+3. Quick mode — I'll auto-select roles based on the topic
+```
+
+If the user ignores this and names a topic directly, default to **Guided**.
+
+#### Setup Steps
+
+Parse `$ARGUMENTS` for topic and options. Show progress labels:
+
+```
+[Init Q1/3] What topic should the discussion focus on?
+[Init Q2/3] Which AI tools will participate? (e.g., Claude Code, Cursor, Codex)
+[Init Q3/3] Role assignment — here are recommended roles:
+  1. @Architect — system design focus
+  2. @Security — threat modeling
+  3. @PM — user impact analysis
+  Which roles? (numbers, or describe custom roles)
+```
+
+Then:
+
+1. ~~Ask user for: topic name, participating tools, role assignments~~ (handled by Entry Modes above)
 2. Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/init-discussion.sh <project-root> <topic>` to scaffold the directory
 3. **Auto-populate `context.md`**：使用 Glob/Grep/Read 分析目标项目，自动填充技术栈、架构概览、关键数据指标（文件数、组件数、依赖关系等）
 4. Read `references/role-catalog.md` to select roles matching user's needs
@@ -87,6 +114,8 @@ Each invited agent reads `README.md`, then appends to `discussion.md` following 
 - Timeout: Claude Code intervenes after exceeding max rounds
 
 **Progress check** — when user says "检查讨论进度" or "check progress":
+
+Show progress label `[Round N/Max]`, then:
 1. **Deep scan** `discussion.md`：不仅读 STATUS 面板，还扫描实际文本中的 `@` 提及和 `#consensus`/`#pending` 标签
 2. If STATUS panel and actual content are inconsistent, **repair** the STATUS panel
 3. Report: current round, pending agents, unresolved `@` mentions, consensus status

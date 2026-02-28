@@ -443,9 +443,9 @@ else
     MAINTAINABILITY_SCORE=$((MAINTAINABILITY_SCORE + 2))
 fi
 
-# Check script permissions
+# Check script permissions (|| echo 0 prevents pipefail crash if find fails)
 if [[ -d "$SKILL_PATH/scripts" ]]; then
-    NON_EXEC=$(find "$SKILL_PATH/scripts" -type f ! -perm -111 2>/dev/null | wc -l | tr -d ' ')
+    NON_EXEC=$(find "$SKILL_PATH/scripts" -type f ! -perm -111 2>/dev/null | wc -l | tr -d ' ' || echo 0)
     if [[ $NON_EXEC -eq 0 ]]; then
         log_pass "All scripts are executable (+3)"
         MAINTAINABILITY_SCORE=$((MAINTAINABILITY_SCORE + 3))
