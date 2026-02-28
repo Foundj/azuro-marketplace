@@ -1,17 +1,24 @@
 ---
 name: interaction-protocol
 description: |
-  Standardized multi-turn interaction protocol for all guided skills.
-  Provides entry modes, progress tracking, decision-point recommendations,
-  and interruption handling. Referenced by brainstorm-mode, ai-dev-interview,
+  This skill provides standardized multi-turn interaction protocol for all guided skills.
+  It defines entry modes (Guided / Context dump / Quick), progress tracking with phase labels,
+  decision-point recommendations, quick-select options, flexible input parsing, interruption
+  handling, and fast-path output. Use when building or referencing an interactive skill that
+  conducts multi-round conversations, or when the user mentions "interaction protocol",
+  "交互协议", "对话协议", "引导模式". Referenced by brainstorm-mode, ai-dev-interview,
   multi-agent-discussion as their Facilitation Source of Truth.
-  This skill is not invoked directly by users — it is referenced by other
-  interactive skills to ensure consistent multi-turn conversation behavior.
 version: 5.2.6
 status: ga
 triggers:
   - interaction protocol
+  - guided interaction
+  - conversation protocol
+  - facilitation protocol
   - 交互协议
+  - 对话协议
+  - 引导模式
+  - 多轮对话
 ---
 
 # Interaction Protocol
@@ -160,8 +167,25 @@ It defines entry modes, progress labels, decision-point recommendations, and int
 This file defines the domain-specific content. If conflict, follow this file's domain logic.
 ```
 
+## Dependencies
+
+This skill has no external dependencies. It is a pure behavioral specification referenced by other skills.
+
+**Referenced by:**
+- `brainstorm-mode` — Socratic exploration sessions
+- `ai-dev-interview` — Requirement interview rounds
+- `multi-agent-discussion` — Multi-agent coordination discussions
+
+## Agent Collaboration
+
+| Agent | Role |
+|-------|------|
+| `brainstorm-mode` | References this protocol for diverge/converge sessions |
+| `ai-dev-interview` | References this protocol for requirement interview rounds |
+| `multi-agent-discussion` | References this protocol for discussion coordination |
+
 ## Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 5.2.4 | 2026-02-28 | Initial release, extracted from PM Skills workshop-facilitation pattern |
+| 5.2.6 | 2026-02-28 | Initial release, extracted from PM Skills workshop-facilitation pattern |

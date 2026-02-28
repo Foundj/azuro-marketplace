@@ -38,9 +38,10 @@ Human Intent → Agent Execution → Verified Result
 ## Trigger Detection
 
 Activate when user prompt contains:
-- `ultrawork` or `ulw`
-- `自动完成` or `全自动`
-- `autonomous` or `just do it`
+- "ultrawork" or "ulw"
+- "自动完成" or "全自动"
+- "autonomous" or "just do it"
+- "帮我搞定" or "一键开发"
 
 ## The Ultrawork Flow
 
