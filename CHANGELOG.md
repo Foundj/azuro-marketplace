@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.0] - 2026-02-28
+
+### Added
+- feat(skill-auditor): Quality Checklist advisory section (Agent-ready, Self-contained, Practical, Opinionated, Skimmable, Zero fluff)
+- docs: complete PM Skills comparison plan archive with full implementation timeline
+
+### Changed
+- Completes all planned improvements from PM Skills comparison analysis (v5.2.5 - v5.3.0)
+
+
 ## [5.2.10] - 2026-02-28
 
 ### Changed

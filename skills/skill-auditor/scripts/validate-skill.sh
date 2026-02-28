@@ -521,6 +521,81 @@ if [[ "$JSON_OUTPUT" == "false" ]]; then
     echo ""
 fi
 
+# ============================================================
+# QUALITY CHECKLIST (Advisory — does not affect score)
+# Inspired by PM Skills quality criteria
+# ============================================================
+
+CHECKLIST_PASS=0
+CHECKLIST_TOTAL=6
+
+if [[ "$JSON_OUTPUT" == "false" ]]; then
+    echo "📋 Quality Checklist (Advisory)"
+    echo "──────────────────────────────────────────────────"
+fi
+
+# 1. Agent-ready: Clear imperative instructions
+if grep -qiE '(^- |^[0-9]+\.|must |should |always |never |do not )' "$SKILL_MD"; then
+    log_pass "Agent-ready: clear imperative instructions"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    log_info "Agent-ready: consider adding clear imperative instructions"
+fi
+
+# 2. Self-contained: Referenced files exist
+MISSING_REFS=0
+for ref in $(grep -oE '(references|scripts|examples)/[a-zA-Z0-9_-]+\.(md|sh|json)' "$SKILL_MD" 2>/dev/null || true); do
+    if [[ ! -f "$SKILL_PATH/$ref" ]]; then
+        MISSING_REFS=$((MISSING_REFS + 1))
+    fi
+done
+if [[ $MISSING_REFS -eq 0 ]]; then
+    log_pass "Self-contained: all referenced files exist"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    log_warning "Self-contained: $MISSING_REFS referenced file(s) missing"
+fi
+
+# 3. Practical: Has concrete examples or code blocks
+if [[ $CODE_BLOCKS -ge 1 ]]; then
+    log_pass "Practical: has concrete examples"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    log_info "Practical: consider adding concrete examples"
+fi
+
+# 4. Opinionated: Takes clear stance (DO/DON'T, Pitfalls, Best Practices)
+if grep -qiE "(common pitfall|pitfall [0-9]|do not|don't|avoid|best practice|anti.?pattern)" "$SKILL_MD"; then
+    log_pass "Opinionated: has clear guidance (pitfalls/best practices)"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    log_info "Opinionated: consider adding Common Pitfalls or Best Practices"
+fi
+
+# 5. Skimmable: Multiple heading levels
+H2_COUNT=$(grep -c '^## ' "$SKILL_MD" || echo 0)
+H3_COUNT=$(grep -c '^### ' "$SKILL_MD" || echo 0)
+if [[ $H2_COUNT -ge 3 && $H3_COUNT -ge 2 ]]; then
+    log_pass "Skimmable: well-structured headings (${H2_COUNT} H2, ${H3_COUNT} H3)"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    log_info "Skimmable: consider more heading structure for scannability"
+fi
+
+# 6. Zero fluff: Lean content (already checked word count, reuse)
+if [[ $WORD_COUNT -le 2000 ]]; then
+    log_pass "Zero fluff: concise content ($WORD_COUNT words)"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    log_info "Zero fluff: content may be lengthy ($WORD_COUNT words), consider splitting to references/"
+fi
+
+if [[ "$JSON_OUTPUT" == "false" ]]; then
+    echo ""
+    echo "  Checklist: $CHECKLIST_PASS/$CHECKLIST_TOTAL passed"
+    echo ""
+fi
+
 # ============================================================ 
 # Final Summary
 # ============================================================ 
