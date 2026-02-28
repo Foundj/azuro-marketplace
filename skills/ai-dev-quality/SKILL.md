@@ -5,7 +5,7 @@ description: |
   and automated verification. It includes code-reviewer, confidence-scorer, and verification-agent.
   Use this skill when the user mentions "code review", "quality check", "ai:review", "ai:quality",
   "代码审查", "质量检查", or during Phase 5 of the development workflow.
-version: 5.3.1
+version: 5.3.2
 status: ga
 triggers:
   - code review
@@ -249,6 +249,26 @@ This skill is used in **Phase 5 (Quality Validation)** of the 7-phase workflow:
 ║  STATUS: ✅ PASSED                                         ║
 ╚════════════════════════════════════════════════════════════╝
 ```
+
+## Common Pitfalls
+
+### Pitfall 1: 降低 confidence 阈值追求 "发现更多问题"
+
+**症状**: 将阈值从 80 降到 50 想找出所有潜在问题
+**后果**: 大量误报淹没真正的关键问题，审查疲劳导致忽略重要发现
+**修正**: 保持 ≥80 阈值。低 confidence 问题说明证据不足，强行报告无意义
+
+### Pitfall 2: 只运行单一视角审查
+
+**症状**: 只关注安全或只关注代码风格
+**后果**: 遗漏其他维度的关键问题（如只审安全，漏掉逻辑 bug）
+**修正**: 始终使用三视角并行审查（security + bugs + maintainability）
+
+### Pitfall 3: 审查通过后跳过自动化验证
+
+**症状**: 代码审查没发现问题就直接合并，不运行测试
+**后果**: 编译错误、测试回归上线
+**修正**: 审查 + 自动化验证缺一不可。`verification-agent` 必须在最终门禁中运行
 
 ## Note
 

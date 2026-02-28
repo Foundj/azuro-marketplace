@@ -6,7 +6,7 @@ description: |
   Triggers on: "browser", "test website", "screenshot", "fill form", "浏览器", "网页测试".
   Uses a ref-based element selection system (@e1, @e2) optimized for LLM interaction.
   Supports session isolation for parallel testing and semantic locators for accessibility.
-version: 5.3.1
+version: 5.3.2
 status: ga
 triggers:
   - browser
@@ -249,6 +249,28 @@ e2e-testing:
     - interaction: "核心用户流程"
     - screenshot: "evidence.png"
 ```
+
+---
+
+## Common Pitfalls
+
+### Pitfall 1: 不刷新 Snapshot 就操作
+
+**症状**: 页面已变化但仍用旧的 @e1 ref 交互
+**后果**: 操作错误元素或报错 "element not found"
+**修正**: 每次页面状态变化后（点击导航、表单提交、弹窗）重新执行 `snapshot -i`
+
+### Pitfall 2: 跳过 wait 直接断言
+
+**症状**: 点击按钮后立即检查结果文本
+**后果**: 异步操作未完成，断言失败（假阳性）
+**修正**: 使用 `wait --text "Expected"` 或 `wait --load networkidle` 等待状态稳定
+
+### Pitfall 3: 硬编码 CSS 选择器代替 Ref
+
+**症状**: 使用 `click #login-btn` 而非 `click @e1`
+**后果**: UI 改版后选择器失效，测试全面崩溃
+**修正**: 始终使用 snapshot ref（@e1），它们自动适应 DOM 变化
 
 ---
 

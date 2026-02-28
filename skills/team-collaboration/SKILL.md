@@ -1,11 +1,12 @@
 ---
 name: team-collaboration
 description: |
-  Agent Teams 团队协作技能。提供场景模板库、团队配置指南、协作最佳实践。
-  使用 Claude Code 原生 Agent Teams 能力实现多代理并行协作。
-  触发词: "团队协作", "team collaboration", "多代理", "并行开发", "agent teams"
-version: 5.3.1
-status: experimental
+  This skill should be used when the user wants to set up multi-agent team collaboration.
+  It provides scenario templates, team configuration guides, and collaboration best practices
+  using Claude Code native Agent Teams capabilities. Use when the user mentions "团队协作",
+  "team collaboration", "多代理", "并行开发", "agent teams", or wants parallel development.
+version: 5.3.2
+status: ga
 triggers:
   - team collaboration
   - 团队协作
@@ -56,6 +57,32 @@ Step 5: TeamDelete - 完成闭环
 | 文件隔离 | 每个队友有独立 fileScope |
 | 通信策略 | 单播优先，广播慎用 |
 | 任务粒度 | 每个任务 2-5 分钟 |
+
+## Common Pitfalls
+
+### Pitfall 1: 团队过大
+
+**症状**: 创建 5+ 个队友处理简单任务
+**后果**: 通信开销超过并行收益，任务协调混乱，idle 通知频繁干扰主流程
+**修正**: 保持 2-3 人团队。只有明确独立的工作单元才增加队友
+
+### Pitfall 2: 文件作用域重叠
+
+**症状**: 多个队友修改同一文件（如都修改 `src/index.ts`）
+**后果**: 合并冲突、覆盖彼此的更改，最终结果不可预测
+**修正**: 每个队友分配独立的 `fileScope`，确保无重叠。共享文件由单一队友负责
+
+### Pitfall 3: 缺少任务依赖定义
+
+**症状**: 所有任务同时启动，不考虑先后顺序
+**后果**: 依赖前置任务的队友因缺少上下文而产出错误结果（如测试先于实现启动）
+**修正**: 使用 `blockedBy` 定义依赖关系，按波次（Wave）调度任务
+
+### Pitfall 4: 用广播代替单播
+
+**症状**: 每条消息都用 `broadcast` 发送给全部队友
+**后果**: 每个队友都被唤醒处理不相关消息，浪费 API 资源和上下文窗口
+**修正**: 默认使用 `message`（单播），仅在阻塞性问题需要全员注意时才广播
 
 ## 相关命令
 

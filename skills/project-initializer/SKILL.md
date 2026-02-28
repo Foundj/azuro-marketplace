@@ -5,7 +5,7 @@ description: |
   It creates the codebox/ directory, initializes knowledge base, and performs deep project
   structure scanning. Use when the user mentions "init project", "setup ai-dev", "initialize",
   "启用 AI 模式", "初始化项目", or wants to start a new AI-assisted development workflow.
-version: 5.3.1
+version: 5.3.2
 status: ga
 triggers:
   - init project
@@ -76,6 +76,26 @@ codebox/                          # AI 配置目录
 5. 生成特性列表 (feature_list.json)
 6. Git 初始化 (commit codebox/)
 ```
+
+## Common Pitfalls
+
+### Pitfall 1: 需求描述过于模糊
+
+**症状**: "初始化一个应用" 没有任何具体说明
+**后果**: 生成的 feature_list.json 和 requirements.md 缺乏针对性，后续返工
+**修正**: 提供具体需求（技术栈、核心功能、目标用户），至少一句话描述目标
+
+### Pitfall 2: 跳过生成文件的审查
+
+**症状**: 初始化完成后直接进入开发
+**后果**: feature_list.json 中有不合理的特性拆分，设计方向偏差
+**修正**: 初始化后检查 requirements.md 和 feature_list.json，确认后再继续
+
+### Pitfall 3: 在已有 codebox/ 的项目上重复初始化
+
+**症状**: 项目已有 codebox/ 目录，再次运行初始化
+**后果**: 覆盖已有配置和知识库，丢失积累的模式和错误记录
+**修正**: 检测到现有 codebox/ 时提示用户确认，默认跳过已存在的文件
 
 ## 💡 使用技巧
 

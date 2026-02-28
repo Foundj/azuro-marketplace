@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.2] - 2026-02-28
+
+### Changed
+- feat(skills): graduate last 3 experimental skills to GA (team-collaboration, acceptance-team, context-compressor) — now 31/31 GA
+- feat(skills): add Common Pitfalls sections to 10 skills (acceptance-reporter, agent-browser, ai-dev-quality, context-bridge, project-initializer, session-manager, thinking-engine, team-collaboration, acceptance-team, context-compressor)
+- fix(skills): update team-collaboration and acceptance-team descriptions to third-person format
+
+
 ## [5.3.1] - 2026-02-28
 
 ### Changed

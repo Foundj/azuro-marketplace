@@ -6,7 +6,7 @@ description: |
   validates state, and suggests next steps. Use when the user mentions "continue", "resume",
   "status", "progress", "恢复会话", "继续", "进度", or when starting a new session.
   Critical for long-running project continuity.
-version: 5.3.1
+version: 5.3.2
 status: ga
 allowed-tools: Read, Bash, Grep, Glob
 model: sonnet
@@ -98,6 +98,26 @@ Staged: 5
 - Reason: Priority HIGH, no blockers
 - Estimated: 4 hours
 ```
+
+## Common Pitfalls
+
+### Pitfall 1: 不在项目目录就运行恢复
+
+**症状**: 在错误目录运行 `continue`，找不到 codebox/ 文件
+**后果**: 恢复失败或生成错误的上下文，进入错误的项目状态
+**修正**: 恢复前确认 `pwd` 在正确的项目根目录
+
+### Pitfall 2: 长时间不更新进度
+
+**症状**: 连续完成多个特性但不更新 progress.txt 和 feature_list.json
+**后果**: 下次恢复时显示过时的进度，推荐已完成的任务
+**修正**: 每个特性完成后立即更新状态（或使用 ai-dev 自动追踪）
+
+### Pitfall 3: 进度文件无限增长
+
+**症状**: progress.txt 超过 2000 行、feature_list.json 超过 500 条
+**后果**: 恢复加载缓慢，上下文窗口被历史信息占满
+**修正**: 定期归档旧记录（保留最近 1000 行），或触发自动归档机制
 
 ## 💡 使用技巧
 

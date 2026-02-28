@@ -1,11 +1,12 @@
 ---
 name: acceptance-team
 description: |
-  Agent Teams 并行验收技能。使用 Claude Code 原生 Agent Teams 能力
-  实现多页面并行验收测试，每个页面由独立的 acceptance-tester 处理。
-  触发词: "并行验收", "团队验收", "acceptance team", "多页面测试"
-version: 5.3.1
-status: experimental
+  This skill should be used when the user wants to run parallel acceptance testing across
+  multiple pages using Agent Teams. Each page is tested by an independent acceptance-tester
+  agent for maximum efficiency. Use when the user mentions "并行验收", "团队验收",
+  "acceptance team", "多页面测试", or wants to test multiple frontend pages simultaneously.
+version: 5.3.2
+status: ga
 triggers:
   - 并行验收
   - 团队验收
@@ -269,6 +270,28 @@ codebox/acceptance/
 | 10 页面 | ~300s | ~60s | 80% |
 
 *基于平均每页面 30s 验收时间计算*
+
+---
+
+## Common Pitfalls
+
+### Pitfall 1: 验收检查项过于宽泛
+
+**症状**: 检查项只有 "页面加载成功"，没有具体验证标准
+**后果**: 测试通过但实际功能缺失或异常，验收形同虚设
+**修正**: 为每个页面定义具体的验证项（元素存在、文本内容、交互响应）
+
+### Pitfall 2: 忽略并行资源限制
+
+**症状**: 一次启动 10+ 个验收队友
+**后果**: 系统资源耗尽，浏览器崩溃，结果不稳定
+**修正**: 设置 `ACCEPTANCE_TEAM_MAX_SIZE=5`，大批量页面分组验收
+
+### Pitfall 3: 未等待页面完全加载就截图
+
+**症状**: 截图中出现空白区域或加载指示器
+**后果**: 验收证据无效，需要重新执行
+**修正**: 使用 `wait --load networkidle` 确保页面完全渲染后再截图
 
 ---
 

@@ -4,7 +4,7 @@ description: |
   Generate structured acceptance reports with screenshots, validations,
   and task associations. Use after web testing to create evidence reports.
   Triggers on: "acceptance report", "验收报告", "generate report", "报告生成".
-version: 5.3.1
+version: 5.3.2
 status: ga
 triggers:
   - acceptance report
@@ -314,6 +314,28 @@ frontend_acceptance:
   }
 }
 ```
+
+---
+
+## Common Pitfalls
+
+### Pitfall 1: state.json schema 不完整
+
+**症状**: 报告生成时字段缺失，模板渲染异常
+**后果**: 报告中出现 `undefined` 或空白区域
+**修正**: 生成前用 `jq . state.json` 验证格式，确保所有必需字段（acceptanceId, status, pages, summary）存在
+
+### Pitfall 2: 截图路径为绝对路径
+
+**症状**: HTML 报告在其他机器上打开时图片显示 broken
+**后果**: 报告无法分享，失去验收证据
+**修正**: 使用相对路径引用截图，或使用 HTML 报告的 base64 嵌入模式（默认行为）
+
+### Pitfall 3: 多次验收覆盖历史记录
+
+**症状**: 重新验收时直接覆盖上次报告
+**后果**: 丢失验收历史对比，无法追踪问题修复过程
+**修正**: 按日期/验收 ID 归档，保留 history 数组中的历史记录链
 
 ---
 

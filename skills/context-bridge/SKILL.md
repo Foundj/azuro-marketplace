@@ -1,6 +1,6 @@
 ---
 name: context-bridge
-version: 5.3.1
+version: 5.3.2
 status: ga
 description: |
   This skill should be used when managing cross-session context and in-session attention.
@@ -171,6 +171,28 @@ codebox/context/
 | `/ai:session-resume` | 恢复并自动继续 | 新 Session 开始时 |
 | `/lite-save` | 3 文件极简保存 | 简单任务 |
 | `/lite-resume` | 从 3 文件恢复 | 简单任务 |
+
+---
+
+## Common Pitfalls
+
+### Pitfall 1: 频繁保存导致上下文文件膨胀
+
+**症状**: 每完成一个小任务就 `/ai:session-save`
+**后果**: session_summary.md 累积大量冗余信息，恢复时加载缓慢
+**修正**: 在逻辑断点保存（完成一个 Phase、解决一个阻塞问题），而非每个小任务
+
+### Pitfall 2: 恢复时不验证环境状态
+
+**症状**: `/ai:session-resume` 后直接开始编码
+**后果**: 依赖缺失、分支不对、测试基线已变化
+**修正**: 恢复流程中包含环境验证：git status + npm test + 分支确认
+
+### Pitfall 3: 手动编辑 context 文件
+
+**症状**: 直接修改 next_steps.md 调整优先级
+**后果**: 格式损坏导致自动恢复失败
+**修正**: 通过命令（/focus, /progress）管理上下文，不直接编辑生成的文件
 
 ---
 

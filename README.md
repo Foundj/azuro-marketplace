@@ -128,7 +128,7 @@ Core workflow:
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 5.3.1 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **ai-dev** | 5.3.2 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features

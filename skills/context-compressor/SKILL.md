@@ -6,8 +6,8 @@ description: |
   lean. Use when context window is filling up, during long ultrawork sessions,
   or when the user mentions "compress context", "summarize", "archive results",
   "上下文压缩", "结果归档".
-version: 5.3.1
-status: experimental
+version: 5.3.2
+status: ga
 triggers:
   - compress context
   - summarize results
@@ -201,6 +201,26 @@ Action:
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
 ```
+
+## Common Pitfalls
+
+### Pitfall 1: 过早压缩未完成的任务
+
+**症状**: 将进行中的任务结果也压缩归档
+**后果**: 丢失调试所需的详细上下文，需要重新执行 subagent
+**修正**: 只压缩状态为 ✅ Complete 的任务，保留 in-progress 任务的完整上下文
+
+### Pitfall 2: 归档后忘记保留文件路径
+
+**症状**: 压缩摘要中只有 "已修改 5 个文件" 而没有具体路径
+**后果**: 后续任务需要查看这些文件时无法快速定位
+**修正**: 摘要中始终保留完整的文件路径列表（这是最常被回溯查看的信息）
+
+### Pitfall 3: 不区分压缩级别
+
+**症状**: 对所有内容使用相同的压缩策略
+**后果**: 关键决策理由被过度压缩，导致后续重复踩坑
+**修正**: 按优先级保留：未解决的 blocker > 文件路径 > 测试结果 > 代码细节
 
 ## Best Practices
 

@@ -7,7 +7,7 @@ description: |
   problem solving, and architecture design decisions.
 
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 5.3.1
+version: 5.3.2
 status: ga
 triggers:
   - think deeply
@@ -205,6 +205,26 @@ ai implement user authentication   # → task-analysis (COMPLEX)
 dev fix login button bug           # → problem-solving (SIMPLE)
 ai think design payment system     # → architecture (COMPLEX)
 ```
+
+## Common Pitfalls
+
+### Pitfall 1: 所有任务都用 ultrathink 模式
+
+**症状**: 修复一个 typo 也启动 6 步架构分析
+**后果**: 简单任务被过度分析，浪费时间和上下文窗口
+**修正**: 让复杂度评分决定模式：SIMPLE(1-3) 用 quick，MEDIUM(4-6) 用 standard，COMPLEX(7+) 用 think
+
+### Pitfall 2: 分析完毕不输出行动建议
+
+**症状**: 详细列出了 5 步分析结果，但没有 "下一步做什么"
+**后果**: 用户看完分析后仍不知道如何行动
+**修正**: 每次分析必须以 actionable 的推荐结束：推荐 agent、执行步骤、预期产出
+
+### Pitfall 3: 忽略上下文直接匹配关键词
+
+**症状**: 用户说 "想想午餐吃什么" 触发了深度任务分析
+**后果**: 非开发任务被错误分析，用户体验差
+**修正**: 结合对话上下文判断意图，仅在开发相关场景激活分析模式
 
 ## Agent Collaboration
 
