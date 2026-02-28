@@ -5,7 +5,7 @@ description: |
   implementation plans, or when running parallel Claude sessions. It provides Git worktree management
   for isolated development. Triggers on "worktree", "isolated branch", "parallel development",
   "隔离开发", "并行分支", "worktree创建". Auto-triggers when ultrawork detects COMPLEX tasks (≥5 files).
-version: 5.3.2
+version: 5.3.3
 status: ga
 triggers:
   - worktree

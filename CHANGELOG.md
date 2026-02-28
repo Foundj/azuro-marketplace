@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.3] - 2026-03-01
+
+### Added
+- feat(hooks): incremental skill audit with content-hash caching in pre-commit
+- feat(commands): add `/ai:find-skill` slash command for skill search
+- feat(skill-auditor): add `skill-graph.sh` cross-reference graph tool (list/dot/stats modes)
+
+
 ## [5.3.2] - 2026-02-28
 
 ### Changed

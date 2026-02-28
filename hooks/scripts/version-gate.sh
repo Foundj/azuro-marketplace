@@ -102,26 +102,69 @@ main() {
         exit 1
     fi
 
-    echo -e "${YELLOW}🔍 Auditing all skills...${NC}"
+    echo -e "${YELLOW}🔍 Auditing skills (incremental)...${NC}"
     local skill_fail=0
+    local audit_cache_dir=".cache/skill-audit"
+    mkdir -p "$audit_cache_dir"
+
+    local audited=0
+    local cached_count=0
+    local total=0
+
+    # Portable hash function (works on macOS + Linux)
+    content_hash() {
+        grep -v "^version:" "$1" | md5 -q 2>/dev/null || grep -v "^version:" "$1" | md5sum 2>/dev/null | cut -d' ' -f1
+    }
+
     for skill_dir in skills/*/; do
-        if [[ -d "$skill_dir" ]]; then
-            set +e
-            bash skills/skill-auditor/scripts/validate-skill.sh "$skill_dir" > /tmp/audit_log 2>&1
-            local exit_code=$?
-            set -e
-            
-            if [[ $exit_code -eq 1 ]] || [[ $exit_code -eq 2 ]]; then
-                skill_fail=1
-                echo -e "${RED}❌ Critical audit failure for $(basename "$skill_dir")${NC}"
-                cat /tmp/audit_log
+        if [[ -d "$skill_dir" ]] && [[ -f "$skill_dir/SKILL.md" ]]; then
+            total=$((total + 1))
+            local skill_name=$(basename "$skill_dir")
+            local cache_file="$audit_cache_dir/${skill_name}.cache"
+            local current_hash
+            current_hash=$(content_hash "$skill_dir/SKILL.md")
+
+            # Check cache: line 1 = hash, line 2 = score
+            local hit=false
+            if [[ -f "$cache_file" ]]; then
+                local cached_hash
+                cached_hash=$(head -1 "$cache_file")
+                local cached_score
+                cached_score=$(tail -1 "$cache_file")
+                if [[ "$current_hash" == "$cached_hash" ]] && [[ -n "$cached_score" ]]; then
+                    hit=true
+                    cached_count=$((cached_count + 1))
+                    if [[ "$cached_score" -lt 80 ]]; then
+                        skill_fail=1
+                        echo -e "${RED}❌ Skill $skill_name quality too low: $cached_score/100 (cached)${NC}"
+                    fi
+                fi
             fi
-            
-            local score=$(grep "TOTAL:" /tmp/audit_log | sed 's/.*TOTAL:[[:space:]]*\([0-9]*\).*/\1/')
-            if [[ -n "$score" ]] && [[ "$score" -lt 80 ]]; then
-                skill_fail=1
-                echo -e "${RED}❌ Skill $(basename "$skill_dir") quality too low: $score/100 (Required: 80+)${NC}"
-                grep "TOTAL:" /tmp/audit_log
+
+            if ! $hit; then
+                audited=$((audited + 1))
+                set +e
+                bash skills/skill-auditor/scripts/validate-skill.sh "$skill_dir" > /tmp/audit_log 2>&1
+                local exit_code=$?
+                set -e
+
+                if [[ $exit_code -eq 1 ]] || [[ $exit_code -eq 2 ]]; then
+                    skill_fail=1
+                    echo -e "${RED}❌ Critical audit failure for $skill_name${NC}"
+                    cat /tmp/audit_log
+                fi
+
+                local score
+                score=$(grep "TOTAL:" /tmp/audit_log | sed 's/.*TOTAL:[[:space:]]*\([0-9]*\).*/\1/')
+                if [[ -n "$score" ]]; then
+                    # Update cache
+                    printf '%s\n%s\n' "$current_hash" "$score" > "$cache_file"
+                    if [[ "$score" -lt 80 ]]; then
+                        skill_fail=1
+                        echo -e "${RED}❌ Skill $skill_name quality too low: $score/100${NC}"
+                        grep "TOTAL:" /tmp/audit_log
+                    fi
+                fi
             fi
         fi
     done
@@ -130,7 +173,7 @@ main() {
         echo -e "${RED}❌ SKILL AUDIT FAILED. Please fix skills before committing.${NC}"
         exit 1
     fi
-    echo -e "${GREEN}✅ All skills passed quality audit (80+)${NC}"
+    echo -e "${GREEN}✅ All skills passed quality audit (80+) [${audited} audited, ${cached_count} cached]${NC}"
 
     echo -e "${YELLOW}🔍 Running code review gate...${NC}"
     if [[ -f "hooks/scripts/code-review-gate.sh" ]]; then

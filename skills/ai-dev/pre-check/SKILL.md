@@ -5,7 +5,7 @@ description: |
   duplication, and ensure technical standards compliance. It performs pre-implementation
   analysis through code search, duplicate detection, and impact analysis.
   Triggers on "pre-check", "analysis before coding", "实现前检查", "预检", "代码查重".
-version: 5.3.2
+version: 5.3.3
 triggers:
   - pre-check
   - analysis before coding

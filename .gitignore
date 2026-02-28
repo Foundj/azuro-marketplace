@@ -8,6 +8,7 @@ CLAUDE.md
 codebox/
 components/
 tests/
+.cache/
 .gitignore
 
 # Auto-installed skill dependencies
