@@ -5,7 +5,7 @@ description: |
   It uses open-ended questioning, divergent thinking, and iterative refinement to transform
   fuzzy concepts into clear specifications. Use when the user mentions "brainstorm", "explore ideas",
   "not sure what I need", "头脑风暴", "探索想法", "我不确定", "帮我想想", or has unclear requirements.
-version: 5.2.4
+version: 5.2.6
 status: ga
 triggers:
   - brainstorm
@@ -389,6 +389,11 @@ ai-dev Phase 1: Requirement Interview
 ```
 
 ---
+
+### Interaction Protocol
+Use [`interaction-protocol`](../interaction-protocol/SKILL.md) as the default interaction behavior.
+It defines entry modes, progress labels, decision-point recommendations, and interruption handling.
+This file defines the domain-specific content. If conflict, follow this file's domain logic.
 
 ## 与其他 Skill 的区别
 

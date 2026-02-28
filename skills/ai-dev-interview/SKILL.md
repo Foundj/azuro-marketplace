@@ -5,7 +5,7 @@ description: |
   interviews with parallel context collection, risk detection, and proposal generation. Use this skill
   when the user mentions "requirement interview", "需求访谈", "ai:interview", "clarify requirements",
   "gather requirements", or when gathering requirements for new features or clarifying ambiguous specifications.
-version: 5.2.4
+version: 5.2.6
 status: ga
 triggers:
   - requirement interview
@@ -160,6 +160,11 @@ Interview behavior can be configured in `codebox/config.json`:
   }
 }
 ```
+
+### Interaction Protocol
+Use [`interaction-protocol`](../interaction-protocol/SKILL.md) as the default interaction behavior.
+It defines entry modes, progress labels, decision-point recommendations, and interruption handling.
+This file defines the domain-specific content. If conflict, follow this file's domain logic.
 
 ## Agent Collaboration
 

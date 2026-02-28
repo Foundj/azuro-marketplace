@@ -5,7 +5,7 @@ description: |
   Observe-Orient-Decide-Act cycle with verification gates, reflexion learning, and attention management.
   Use this skill when the user mentions "autonomous loop", "OODA", "自动执行", "循环执行", "ai:loop",
   "ai:auto", or when executing tasks autonomously until completion with <promise>DONE</promise> signal.
-version: 5.2.4
+version: 5.2.6
 status: ga
 triggers:
   - autonomous loop

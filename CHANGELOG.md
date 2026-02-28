@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.6] - 2026-02-28
+
+### Changed
+- **CLAUDE.md**: Added workflow preferences section (discussion first, code review guidelines)
+- **Skill docs**: Split large SKILL.md files to references/ for maintainability
+  - session-manager: 666 → 160 lines
+  - ultrawork: 652 → 106 lines
+  - code-simplifier: 544 → 129 lines
+  - project-initializer: 558 → 119 lines
+  - team-collaboration: 509 → 74 lines
+
+
+## [5.2.5] - 2026-02-28
+
+### Changed
+- **CLAUDE.md**: Added marketplace design principles section
+- **docs/INDEX.md**: Added clarification that internal skills hidden by design, not immaturity
+
+
 ## [5.2.4] - 2026-02-28
 
 ### Fixed

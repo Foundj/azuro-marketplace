@@ -7,7 +7,7 @@ description: |
   or wants to coordinate multiple AI tools (Codex, Cursor, Claude Code) for collaborative
   requirement analysis and decision making. It provides a structured multi-agent discussion
   framework with shared markdown workspace, invitation prompts, and automated summarization.
-version: 5.2.4
+version: 5.2.6
 status: experimental
 triggers:
   - start a discussion
@@ -139,6 +139,11 @@ max_rounds: 3
 ```
 
 **Validation rule**: when checking progress, compare STATUS panel against actual discussion content. If an agent has posted a `[Round N]` entry but STATUS still lists them as pending, auto-repair the panel.
+
+### Interaction Protocol
+Use [`interaction-protocol`](../interaction-protocol/SKILL.md) as the default interaction behavior.
+It defines entry modes, progress labels, decision-point recommendations, and interruption handling.
+This file defines the domain-specific content. If conflict, follow this file's domain logic.
 
 ## Best Practices
 
