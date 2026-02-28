@@ -6,7 +6,7 @@ description: |
   "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
   Note: Use /ai:dev command as the primary entry point. This skill is the backend implementation.
-version: 5.2.9
+version: 5.2.10
 status: ga
 triggers:
   - implement
@@ -83,6 +83,7 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 ### Phase Details
 
 **Phase 0: Context & Knowledge**
+- **Use:** [`confidence-gate`](../confidence-gate/SKILL.md), [`knowledge-graph`](../knowledge-graph/SKILL.md), [`mcp-integration`](../mcp-integration/SKILL.md)
 - Load `codebox/project-snapshot.json` (incremental via git diff)
 - Query `codebox/knowledge/` for patterns and errors
 - Detect blocking issues (🔴), warnings (🟡), info (🟢)
@@ -92,10 +93,12 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
   - <70%: Must ask clarifying questions
 
 **Phase 0.5: Research** (new features only)
+- **Use:** [`competitor-research`](../competitor-research/SKILL.md), [`mcp-integration`](../mcp-integration/SKILL.md)
 - Multi-source research via WebSearch/MCP Tavily
 - Save to `codebox/research/[feature]-research.md`
 
 **Phase 1: Requirement Interview**
+- **Use:** [`ai-dev-interview`](../ai-dev-interview/SKILL.md), [`interaction-protocol`](../interaction-protocol/SKILL.md)
 - Multi-round interview (2-6 questions based on complexity)
 - Parallel context collection from research, knowledge, project
 - Generate `proposal.md`
@@ -106,17 +109,20 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Generate `design.md`
 
 **Phase 2.5: Worktree Setup** (v5.0.7)
+- **Use:** [`git-worktree`](../git-worktree/SKILL.md)
 - Create isolated worktree: `.worktrees/{change-id}`
 - Install dependencies automatically
 - Verify test baseline passes
 - Parallel development without branch conflicts
 
 **Phase 3: Task Breakdown**
+- **Use:** [`task-templates`](../task-templates/SKILL.md), [`task-dependency-analyzer`](../task-dependency-analyzer/SKILL.md)
 - Auto-generate `tasks.md` with atomic subtasks (2-5 minutes each)
 - Each task includes: file path, verify command, acceptance criteria
 - Include success criteria and test requirements
 
 **Phase 4: OODA Implementation**
+- **Use:** [`ai-dev-ooda`](../ai-dev-ooda/SKILL.md), [`tdd-enforcement`](../tdd-enforcement/SKILL.md), [`subagent-driven-development`](../subagent-driven-development/SKILL.md)
 - Autonomous loop via Stop hook
 - **★ TDD Enforcement** (v5.0.7): Red → Green → Refactor cycle
 - Execute tasks, update checkboxes
@@ -124,6 +130,7 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Max iterations: 50 (configurable)
 
 **Phase 5: Quality Validation**
+- **Use:** [`spec-compliance-review`](../spec-compliance-review/SKILL.md), [`ai-dev-quality`](../ai-dev-quality/SKILL.md), [`agent-browser`](../agent-browser/SKILL.md), [`acceptance-reporter`](../acceptance-reporter/SKILL.md)
 - **Step 1**: spec-compliance-reviewer (规格符合性审查)
   - 验证实现是否**不多不少**符合原始需求
   - Missing/Extra/Misunderstood 检查
@@ -137,12 +144,14 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
   - 后端项目自动跳过
 
 **Phase 5.5: Code Simplification** (auto when `autoSimplify: true`)
+- **Use:** [`code-simplifier`](../code-simplifier/SKILL.md)
 - Triggered automatically after Phase 5 passes (if enabled in config)
 - Apply SOLID principles and complexity metrics
 - Reduce complexity while preserving functionality
 - Can also be triggered manually via "优化代码" / "simplify"
 
 **Phase 6: Finalization**
+- **Use:** [`knowledge-graph`](../knowledge-graph/SKILL.md), [`git-worktree`](../git-worktree/SKILL.md)
 - Update knowledge base with new patterns
 - Archive change to `codebox/changes/archived/`
 - Commit with structured message

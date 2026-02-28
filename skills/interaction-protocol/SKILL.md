@@ -8,7 +8,7 @@ description: |
   conducts multi-round conversations, or when the user mentions "interaction protocol",
   "交互协议", "对话协议", "引导模式". Referenced by brainstorm-mode, ai-dev-interview,
   multi-agent-discussion as their Facilitation Source of Truth.
-version: 5.2.9
+version: 5.2.10
 status: ga
 triggers:
   - interaction protocol

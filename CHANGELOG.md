@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.10] - 2026-02-28
+
+### Changed
+- feat(ai-dev): add explicit skill references to all phase descriptions
+- feat(skill-auditor): add find-skill.sh search utility
+
+
 ## [5.2.9] - 2026-02-28
 
 ### Changed
