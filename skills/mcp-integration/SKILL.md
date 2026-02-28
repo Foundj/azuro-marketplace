@@ -5,8 +5,8 @@ description: |
   It helps configure and use external MCP servers like Context7 (documentation), Tavily (web search),
   and Sequential-Thinking (reasoning). Use when the user mentions "MCP", "Context7", "Tavily",
   "官方文档查询", "MCP配置", "外部服务集成", or wants to enhance research with external tools.
-version: 5.3.0
-status: experimental
+version: 5.3.1
+status: ga
 triggers:
   - MCP
   - Context7

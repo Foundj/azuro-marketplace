@@ -5,7 +5,7 @@ description: |
   and automated verification. It includes code-reviewer, confidence-scorer, and verification-agent.
   Use this skill when the user mentions "code review", "quality check", "ai:review", "ai:quality",
   "代码审查", "质量检查", or during Phase 5 of the development workflow.
-version: 5.3.0
+version: 5.3.1
 status: ga
 triggers:
   - code review

@@ -7,7 +7,7 @@ description: |
   "检查插件质量", "插件评分".
   
   Provides multi-dimensional quality assessment with scoring, issue detection, and optimization recommendations for Claude Code Plugins.
-version: 5.3.0
+version: 5.3.1
 status: ga
 ---
 
@@ -117,8 +117,7 @@ Recursively audit `skills/` directory using `skill-auditor` logic.
 
 ### Reference Files
 
-- **`references/scoring-rules.md`** - Detailed scoring dimensions
-- **`references/best-practices.md`** - Common mistakes and solutions
+- **`references/scoring-rules.md`** - Detailed scoring dimensions and common mistakes
 
 ### Utility Scripts
 

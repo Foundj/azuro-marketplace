@@ -5,7 +5,7 @@ description: |
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
   "knowledge", "experience", "历史方案", "经验复用", "参考". Manages cross-project knowledge relationships
   and enables experience reuse across projects. Now enhanced with MCP semantic search and LSP-first navigation.
-version: 5.3.0
+version: 5.3.1
 status: ga
 triggers:
   - query knowledge
@@ -246,7 +246,7 @@ cleanup_priority:
 ### Manual Cleanup
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/knowledge-graph/scripts/cleanup.sh
+${CLAUDE_PLUGIN_ROOT}/skills/knowledge-graph/scripts/graph-manager.sh
 ```
 
 ---

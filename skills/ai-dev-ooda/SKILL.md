@@ -5,7 +5,7 @@ description: |
   Observe-Orient-Decide-Act cycle with verification gates, reflexion learning, and attention management.
   Use this skill when the user mentions "autonomous loop", "OODA", "自动执行", "循环执行", "ai:loop",
   "ai:auto", or when executing tasks autonomously until completion with <promise>DONE</promise> signal.
-version: 5.3.0
+version: 5.3.1
 status: ga
 triggers:
   - autonomous loop
@@ -200,7 +200,7 @@ Context reaches 80%
   "hooks": [{
     "id": "ooda-stop-hook",
     "type": "Stop",
-    "script": "hooks/ooda-stop-hook.sh",
+    "script": "hooks/scripts/ooda-stop-hook.sh",
     "conditions": {
       "currentPhase": 4,
       "oodaEnabled": true
@@ -307,7 +307,7 @@ This skill is used in **Phase 4 (Implementation)** of the 7-phase workflow:
 
 ## References
 
-See `references/ooda-loop.md` for complete specification including:
+See `references/state-machine.md` for complete specification including:
 - State transitions
 - Error recovery
 - Iteration limits

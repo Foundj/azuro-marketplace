@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.1] - 2026-02-28
+
+### Changed
+- feat(skills): graduate 10 experimental skills to GA status (28 GA / 3 experimental)
+- fix(skills): correct 7 broken file references across 6 skills
+- fix(skill-auditor): improve Self-contained checker to exclude cross-references and project-level paths
+- fix(changelog): backfill v5.2.7 entry
+
+
 ## [5.3.0] - 2026-02-28
 
 ### Added
@@ -41,7 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.2.7] - 2026-02-28
 
 ### Changed
-- TODO: Describe your changes here
+- fix(skill-auditor): fix pipefail crash on grep no-match in validate-skill.sh
+- feat(skills): integrate interaction-protocol into ai-dev-interview workflow
 
 
 ## [5.2.6] - 2026-02-28

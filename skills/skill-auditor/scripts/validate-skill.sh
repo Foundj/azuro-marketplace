@@ -544,7 +544,8 @@ fi
 
 # 2. Self-contained: Referenced files exist
 MISSING_REFS=0
-for ref in $(grep -oE '(references|scripts|examples)/[a-zA-Z0-9_-]+\.(md|sh|json)' "$SKILL_MD" 2>/dev/null || true); do
+# Filter out cross-references (../) and project-level paths (hooks/scripts/) to avoid false positives
+for ref in $(grep -v '\.\.' "$SKILL_MD" | grep -v 'hooks/' | grep -oE '(references|scripts|examples)/[a-zA-Z0-9_.-]+\.(md|sh|json|js)' 2>/dev/null || true); do
     if [[ ! -f "$SKILL_PATH/$ref" ]]; then
         MISSING_REFS=$((MISSING_REFS + 1))
     fi

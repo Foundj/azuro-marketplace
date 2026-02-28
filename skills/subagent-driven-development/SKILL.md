@@ -5,8 +5,8 @@ description: |
   It defines how to dispatch subagents for each task with self-review before handoff, two-stage
   review after completion, and structured reporting. Triggers on "subagent", "dispatch task",
   "子代理", "任务分发", "parallel implementation". Borrowed from Superpowers by obra.
-version: 5.3.0
-status: experimental
+version: 5.3.1
+status: ga
 triggers:
   - subagent
   - dispatch task

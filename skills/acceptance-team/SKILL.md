@@ -4,7 +4,7 @@ description: |
   Agent Teams 并行验收技能。使用 Claude Code 原生 Agent Teams 能力
   实现多页面并行验收测试，每个页面由独立的 acceptance-tester 处理。
   触发词: "并行验收", "团队验收", "acceptance team", "多页面测试"
-version: 5.3.0
+version: 5.3.1
 status: experimental
 triggers:
   - 并行验收

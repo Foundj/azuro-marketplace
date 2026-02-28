@@ -4,7 +4,7 @@ description: |
   Generate structured acceptance reports with screenshots, validations,
   and task associations. Use after web testing to create evidence reports.
   Triggers on: "acceptance report", "验收报告", "generate report", "报告生成".
-version: 5.3.0
+version: 5.3.1
 status: ga
 triggers:
   - acceptance report
@@ -38,7 +38,7 @@ Acceptance Reporter 用于生成结构化的前端验收报告，包含:
 /ai:acceptance http://localhost:3000 --change CHG-xxx --report
 
 # 手动生成报告
-node scripts/generate-report.js --state state.json --output report.md
+node scripts/generate-html.js --state state.json --output report.md
 ```
 
 ---

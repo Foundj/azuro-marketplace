@@ -5,7 +5,7 @@ description: |
   It creates the codebox/ directory, initializes knowledge base, and performs deep project
   structure scanning. Use when the user mentions "init project", "setup ai-dev", "initialize",
   "启用 AI 模式", "初始化项目", or wants to start a new AI-assisted development workflow.
-version: 5.3.0
+version: 5.3.1
 status: ga
 triggers:
   - init project
@@ -61,7 +61,7 @@ codebox/                          # AI 配置目录
 
 ### 3. 深度项目扫描
 
-执行 `scripts/scan-project.sh deep`：
+执行 `scripts/migrate-schema.sh deep`：
 - 识别技术栈和框架
 - 检测架构模式
 - 扫描现有模块
