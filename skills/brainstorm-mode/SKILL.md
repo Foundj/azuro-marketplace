@@ -5,7 +5,7 @@ description: |
   It uses open-ended questioning, divergent thinking, and iterative refinement to transform
   fuzzy concepts into clear specifications. Use when the user mentions "brainstorm", "explore ideas",
   "not sure what I need", "头脑风暴", "探索想法", "我不确定", "帮我想想", or has unclear requirements.
-version: 5.2.7
+version: 5.2.8
 status: ga
 triggers:
   - brainstorm
@@ -247,6 +247,23 @@ ai-dev Phase 1: Requirement Interview
   }
 }
 ```
+
+## Common Pitfalls
+
+### Pitfall 1: Premature Convergence
+**Symptom:** Agent asks 2 questions then immediately proposes a solution.
+**Consequence:** Misses hidden requirements. User gets a polished answer to the wrong question.
+**Fix:** Enforce minimum 3 divergence rounds before converging. In the 0-30% phase, never evaluate ideas.
+
+### Pitfall 2: Brainstorming Clear Requirements
+**Symptom:** User says "brainstorm OAuth implementation" — the decision is already made.
+**Consequence:** Wasted time exploring alternatives the user doesn't want.
+**Fix:** If requirements are clear, redirect to `/ai:dev`. Brainstorm is for "I don't know what I need" — not "I know what I need but call it brainstorm."
+
+### Pitfall 3: Endless Exploration
+**Symptom:** Session exceeds 10+ rounds without producing a discovery-brief.
+**Consequence:** User loses interest. Ideas discussed early are forgotten. No actionable output.
+**Fix:** At 80% of the session, actively trigger CONVERGE phase. Summarize findings into discovery-brief.md even if exploration feels incomplete.
 
 ## 何时使用
 

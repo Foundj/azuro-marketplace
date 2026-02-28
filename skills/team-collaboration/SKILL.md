@@ -4,7 +4,7 @@ description: |
   Agent Teams 团队协作技能。提供场景模板库、团队配置指南、协作最佳实践。
   使用 Claude Code 原生 Agent Teams 能力实现多代理并行协作。
   触发词: "团队协作", "team collaboration", "多代理", "并行开发", "agent teams"
-version: 5.2.7
+version: 5.2.8
 status: experimental
 triggers:
   - team collaboration

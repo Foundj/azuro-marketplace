@@ -1,6 +1,6 @@
 ---
 name: context-bridge
-version: 5.2.7
+version: 5.2.8
 status: ga
 description: |
   This skill should be used when managing cross-session context and in-session attention.
@@ -192,6 +192,7 @@ codebox/context/
 - [templates.md](references/templates.md) - 完整模板
 - [implementation.md](references/implementation.md) - 实现细节
 - [hooks-guide.md](references/hooks-guide.md) - Hook 配置指南
+- [context-engineering.md](references/context-engineering.md) - 上下文工程原则 (Research→Plan→Reset→Implement)
 
 ---
 

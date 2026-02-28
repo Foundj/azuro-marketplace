@@ -6,7 +6,7 @@ description: |
   "实现", "构建", or wants full development workflow with requirement interview,
   competitor research, OODA autonomous implementation, and quality validation.
   Note: Use /ai:dev command as the primary entry point. This skill is the backend implementation.
-version: 5.2.7
+version: 5.2.8
 status: ga
 triggers:
   - implement
@@ -265,6 +265,25 @@ codebox/
 ```
 
 See `references/project-structure.md` for full structure.
+
+---
+
+## Common Pitfalls
+
+### Pitfall 1: Skipping Requirement Interview
+**Symptom:** Agent jumps straight to Phase 3/4, produces code that doesn't match user intent.
+**Consequence:** Rework costs 3-5x more than the interview would have taken.
+**Fix:** Only skip Phase 1 with `quick` mode for bug fixes. New features always need Phase 1.
+
+### Pitfall 2: Over-Granular Task Breakdown
+**Symptom:** Phase 3 generates 20+ tasks for a simple feature. Each task is trivially small.
+**Consequence:** Context overhead per task exceeds the work itself. Subagents spend more time reading context than coding.
+**Fix:** Target 5-10 tasks. Each task should be 2-5 minutes of work, not 30 seconds.
+
+### Pitfall 3: Ignoring Confidence Gate
+**Symptom:** Agent proceeds at <70% confidence, makes assumptions, builds the wrong thing.
+**Consequence:** Phase 5 review catches fundamental misalignment. Entire implementation discarded.
+**Fix:** <70% must ask clarifying questions. No exceptions. This is cheaper than rebuilding.
 
 ---
 

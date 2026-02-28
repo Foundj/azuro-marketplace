@@ -5,7 +5,7 @@ description: |
   It provides a one-word trigger for a complete development workflow, orchestrating
   requirement clarification, worktree isolation, TDD implementation, two-stage review,
   and continuous execution until <promise>DONE</promise>.
-version: 5.2.7
+version: 5.2.8
 status: experimental
 triggers:
   - ultrawork
@@ -81,6 +81,23 @@ Activate when user prompt contains:
 - Requirements fundamentally unclear after 3 questions
 - Tests fail repeatedly with no progress
 - Subagent stuck in loop
+
+## Common Pitfalls
+
+### Pitfall 1: Ultrawork for Trivial Tasks
+**Symptom:** User triggers ultrawork for a one-line fix or config change.
+**Consequence:** 9-phase overhead (worktree, TDD, two-stage review) for 30 seconds of work. Wastes tokens and time.
+**Fix:** Phase 1 (Task Analysis) should detect SIMPLE and auto-downgrade to quick-fix mode.
+
+### Pitfall 2: Infinite Subagent Loop
+**Symptom:** Subagent retries the same failing approach repeatedly without progress.
+**Consequence:** Burns through max iterations (50) without producing working code.
+**Fix:** After 3 consecutive failures on the same task, stop and escalate to user. This is a Red Flag.
+
+### Pitfall 3: Skipping Review Under Time Pressure
+**Symptom:** Agent marks tasks as done without running Phase 6 review because "it looks correct."
+**Consequence:** Silent bugs, spec drift, technical debt accumulates.
+**Fix:** Review is non-negotiable. Spec compliance + code quality are always executed.
 
 ## Dependencies
 
