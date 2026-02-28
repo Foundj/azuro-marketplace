@@ -402,8 +402,8 @@ else
     DISCOVERABILITY_SCORE=$((DISCOVERABILITY_SCORE + 1))
 fi
 
-# Check for synonym coverage
-QUOTED_PHRASES=$(grep -oE '"[^"].{3,30}"' "$SKILL_MD" 2>/dev/null | wc -l | tr -d ' ')
+# Check for synonym coverage (|| echo 0 prevents pipefail crash when grep finds no matches)
+QUOTED_PHRASES=$(grep -oE '"[^"].{3,30}"' "$SKILL_MD" 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 if [[ $QUOTED_PHRASES -ge 5 ]]; then
     log_pass "Good synonym coverage ($QUOTED_PHRASES phrases) (+3)"
     DISCOVERABILITY_SCORE=$((DISCOVERABILITY_SCORE + 3))

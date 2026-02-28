@@ -5,7 +5,7 @@ description: |
   interviews with parallel context collection, risk detection, and proposal generation. Use this skill
   when the user mentions "requirement interview", "需求访谈", "ai:interview", "clarify requirements",
   "gather requirements", or when gathering requirements for new features or clarifying ambiguous specifications.
-version: 5.2.6
+version: 5.2.7
 status: ga
 triggers:
   - requirement interview
@@ -39,24 +39,41 @@ triggers:
 ┌─────────────────────────────────────────────────────────┐
 │                 INTERVIEW WORKFLOW                       │
 ├─────────────────────────────────────────────────────────┤
+│  0. ENTRY MODE SELECTION                                │
+│     └── Offer: Guided / Context dump / Quick mode       │
+│                                                         │
 │  1. CONTEXT COLLECTION (Parallel)                       │
 │     ├── @explore-fast: Scan project structure           │
 │     ├── @librarian: Query knowledge base                │
 │     └── Research: Load competitor insights              │
 │                                                         │
 │  2. INTERVIEW ROUNDS (2-6 based on complexity)          │
-│     ├── Each question includes context references       │
+│     ├── One question per turn with [Requirement QN/M]   │
+│     ├── Numbered options only at decision points        │
 │     ├── Detect risks and conflicts                      │
-│     └── Validate against project constraints            │
+│     └── Handle interruptions: answer, then resume       │
 │                                                         │
 │  3. PROPOSAL GENERATION                                 │
 │     └── Output: proposal.md with requirements           │
 └─────────────────────────────────────────────────────────┘
 ```
 
+## Entry Modes
+
+At session start, offer three entry modes per interaction-protocol:
+
+```
+How would you like to proceed?
+1. Guided — I'll walk you through step by step
+2. Context dump — Paste your existing spec/PRD, I'll fill gaps
+3. Quick mode — I'll infer details and flag assumptions with [assumed]
+```
+
+If the user ignores this and starts describing the feature, default to **Guided**.
+
 ## Parallel Context Collection
 
-Before asking questions, the interviewer collects context in parallel:
+Before asking questions, collect context in parallel:
 
 ```javascript
 // Parallel execution
@@ -75,6 +92,14 @@ await Promise.all([
 | Simple | 2 | Bug fix, small update |
 | Medium | 3-4 | New endpoint, component |
 | Complex | 5-6 | New system, major refactor |
+
+**Per-turn behavior** (follows interaction-protocol):
+- **One question per turn** — show progress label `[Requirement Q1/4]`
+- **Decision points** — numbered options (3-5) with trade-offs, only when choices matter
+- **Quick-select** — for routine questions, provide shortcuts + "Other (specify)"
+- **Flexible parsing** — accept `1`, `1,3`, free text, or `skip`
+- **Interruption** — answer the tangent directly, then offer resume
+- **Fast path** — if user says "just generate the proposal", infer all answers with `[assumed]`
 
 **Each question includes**:
 - Project context references

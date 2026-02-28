@@ -5,7 +5,7 @@ description: |
   It provides a one-word trigger for a complete development workflow, orchestrating
   requirement clarification, worktree isolation, TDD implementation, two-stage review,
   and continuous execution until <promise>DONE</promise>.
-version: 5.2.6
+version: 5.2.7
 status: experimental
 triggers:
   - ultrawork
@@ -38,10 +38,10 @@ Human Intent → Agent Execution → Verified Result
 ## Trigger Detection
 
 Activate when user prompt contains:
-- "ultrawork" or "ulw"
-- "自动完成" or "全自动"
-- "autonomous" or "just do it"
-- "帮我搞定" or "一键开发"
+- `ultrawork` or `ulw`
+- `自动完成` or `全自动`
+- `autonomous` or `just do it`
+- `帮我搞定` or `一键开发`
 
 ## The Ultrawork Flow
 
