@@ -18,8 +18,35 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
-// Try to load optional dependencies
+// Skill directory for local npm install
+const SKILL_DIR = path.resolve(__dirname, '..');
+
+// Check and auto-install missing dependencies
+function ensureDependencies() {
+  const missing = [];
+
+  try { require.resolve('markdown-it'); } catch (e) { missing.push('markdown-it'); }
+  try { require.resolve('pixelmatch'); } catch (e) { missing.push('pixelmatch'); }
+  try { require.resolve('pngjs'); } catch (e) { missing.push('pngjs'); }
+
+  if (missing.length > 0) {
+    console.log(`📦 Installing missing dependencies: ${missing.join(', ')}`);
+    try {
+      execSync(`npm install --prefix "${SKILL_DIR}" ${missing.join(' ')} --save --silent`, {
+        stdio: 'inherit',
+        cwd: SKILL_DIR
+      });
+      console.log(`✅ Dependencies installed successfully`);
+    } catch (e) {
+      console.warn(`⚠️ Could not install dependencies: ${e.message}`);
+      console.log(`💡 Manual install: cd ${SKILL_DIR} && npm install ${missing.join(' ')}`);
+    }
+  }
+}
+
+// Try to load dependencies (with auto-install)
 let markdownit = null;
 let pixelmatch = null;
 let PNG = null;
@@ -27,14 +54,26 @@ let PNG = null;
 try {
   markdownit = require('markdown-it');
 } catch (e) {
-  // markdown-it not installed, will use built-in renderer
+  // Will try auto-install below
 }
 
 try {
   pixelmatch = require('pixelmatch');
   PNG = require('pngjs').PNG;
 } catch (e) {
-  // pixelmatch not installed, comparison feature disabled
+  // Will try auto-install below
+}
+
+// Auto-install if missing and --compare is used
+if (!pixelmatch || !markdownit) {
+  ensureDependencies();
+
+  // Retry loading after install
+  try { markdownit = require('markdown-it'); } catch (e) {}
+  try {
+    pixelmatch = require('pixelmatch');
+    PNG = require('pngjs').PNG;
+  } catch (e) {}
 }
 
 // Parse command line arguments

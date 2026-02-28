@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.3] - 2026-02-28
+
+### Added
+- **Auto-install dependencies**: generate-html.js automatically installs markdown-it, pixelmatch, pngjs when missing
+  - Dependencies installed locally in skill directory (not global)
+  - Zero user setup required
+
+### Changed
+- **.gitignore**: Exclude auto-generated node_modules and package files
+
+
 ## [5.2.2] - 2026-02-28
 
 ### Added

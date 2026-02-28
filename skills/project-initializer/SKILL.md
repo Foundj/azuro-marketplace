@@ -5,7 +5,7 @@ description: |
   It creates the codebox/ directory, initializes knowledge base, and performs deep project
   structure scanning. Use when the user mentions "init project", "setup ai-dev", "initialize",
   "启用 AI 模式", "初始化项目", or wants to start a new AI-assisted development workflow.
-version: 5.2.2
+version: 5.2.3
 status: ga
 triggers:
   - init project
