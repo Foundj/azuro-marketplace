@@ -7,10 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.0] - 2026-03-01
+
+### Added
+- **multi-agent-discussion CLI 自动化编排架构** — Orchestrator-Driven Blackboard
+  - 7 种 CLI 工具后端: codex exec, opencode run, gemini -p, claude/claudea/claudec/claudeg -p
+  - 新增脚本: detect-cli-tools.sh, invoke-agent.sh, parse-response.sh, evaluate-convergence.sh, orchestrate-round.sh
+  - 讨论预设系统: product-discovery, architecture-design, full-review, security-audit
+  - 收敛评估机制 (consensus_ratio >= 0.7)
+  - 角色扩展: @Critic (反共识), @UserAdvocate (用户代言人)
+  - 反共识偏见和假设追踪 (`> [!assumption]`)
+- 新增参考文档: discussion-presets.md, cli-prompt-templates.md
+- detect-cli-tools.sh 增加 `in_claude_code` 嵌套环境检测
+
+### Fixed
+- **解决 Claude Code 嵌套调用问题** — 双重修复:
+  1. `env -u CLAUDECODE` 清除嵌套检测环境变量
+  2. `< /dev/null` 关闭 stdin 防止子进程挂起
+- evaluate-convergence.sh `grep -c` + `set -e` 崩溃
+- evaluate-convergence.sh 双重 "0" 输出 (grep pipefail)
+- 所有 7 个后端 E2E 实战验证通过
+
+
 ## [5.4.1] - 2026-03-01
 
-### Changed
-- TODO: Describe your changes here
+### Fixed
+- evaluate-convergence.sh grep pipefail 崩溃修复
+- invoke-agent.sh claude* 嵌套环境变量清理
+- detect-cli-tools.sh 嵌套检测字段
 
 
 ## [5.4.0] - 2026-03-01

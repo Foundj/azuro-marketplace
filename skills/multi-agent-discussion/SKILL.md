@@ -8,7 +8,7 @@ description: |
   (Codex, Cursor, OpenCode, Gemini, Claude variants) for collaborative
   requirement analysis and decision making. It provides a structured multi-agent discussion
   framework with automated CLI orchestration, shared markdown workspace, and convergence evaluation.
-version: 5.4.1
+version: 6.0.0
 status: ga
 triggers:
   - start a discussion

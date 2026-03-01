@@ -5,7 +5,7 @@ description: |
   It implements SuperClaude PM Agent's confidence gate pattern: ≥90% proceed, 70-89% present
   alternatives, <70% must ask questions. Use when starting tasks, before implementation,
   or when the user mentions "confidence check", "置信度", "确认方向", "ai:check".
-version: 5.4.1
+version: 6.0.0
 status: ga
 triggers:
   - confidence check

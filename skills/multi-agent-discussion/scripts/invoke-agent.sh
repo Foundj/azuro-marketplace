@@ -82,13 +82,11 @@ while IFS= read -r varname; do
 done < <(env | grep -o '^CLAUDE[A-Z_]*' || true)
 
 # 辅助函数：在干净环境中运行 claude* 命令
-# 注意: 从 Claude Code 内部调用 claude* 存在嵌套限制，可能挂起或返回空
-# 建议优先使用 codex/gemini 后端，claude* 适合从普通终端调用
+# 修复两个嵌套问题:
+# 1. CLAUDECODE=1 环境变量触发嵌套检测 → env -u 清除
+# 2. 父进程 stdin 未关闭导致子 claude 挂起 → < /dev/null
 run_claude_clean() {
-  if [ ${#CLAUDE_ENV_UNSET_ARGS[@]} -gt 0 ]; then
-    echo "警告: 检测到 Claude Code 嵌套环境，claude* 后端可能不稳定" >&2
-  fi
-  run_with_timeout env "${CLAUDE_ENV_UNSET_ARGS[@]}" "$@"
+  run_with_timeout env "${CLAUDE_ENV_UNSET_ARGS[@]}" "$@" < /dev/null
 }
 
 case "$TOOL" in
