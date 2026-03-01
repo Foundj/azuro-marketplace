@@ -31,7 +31,7 @@ description: |
   Bug fix request with quick/fix keywords triggers ai-dev in quick mode, skipping phases 0.5, 1, and 2.
   </commentary>
   </example>
-version: 6.0.14
+version: 6.0.15
 status: ga
 profile: dev
 triggers:
@@ -235,6 +235,30 @@ Controls skill activation to prevent context overload and undertrigger.
 - Each activated skill consumes context proportional to its SKILL.md size
 - If total activated skill context exceeds 80% of available window, shed lowest-ranked skills first
 - Skills idle for 5+ turns are unloaded from active context
+
+### Dual Path: Fast vs Deep (v6.0.14)
+
+Two execution paths for different task complexity:
+
+| Path | Trigger | Workflow | Cost |
+|------|---------|----------|------|
+| **Fast Path** (default) | `/ai:dev`, natural language | 7-phase single-agent workflow | Low |
+| **Deep Path** | `--team` flag, `/ai:team` | v6.0 multi-agent discussion + parallel execution | 3-5x Fast Path |
+
+**Path Selection Logic:**
+1. Default: Fast Path (single agent, 7-phase workflow)
+2. User adds `--team` → upgrade to Deep Path
+3. `/ai:team` → direct Deep Path entry
+4. Before Deep Path activation, show cost estimate:
+   ```
+   Deep Path will use 3-5 parallel agents (~3x token cost).
+   Proceed? [Y/n]
+   ```
+
+**Deep Path integrates:**
+- `multi-agent-discussion` for requirement exploration with multiple roles
+- `team-collaboration` for parallel implementation with Agent Teams
+- Profile-aware skill loading for each team member
 
 **Always prefer LSP tools over grep/glob for code navigation:**
 

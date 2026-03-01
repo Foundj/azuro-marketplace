@@ -31,7 +31,7 @@ description: |
   User requests structured bug fix tasks using the reproduce-first template pattern.
   </commentary>
   </example>
-version: 6.0.14
+version: 6.0.15
 status: ga
 profile: dev
 triggers:

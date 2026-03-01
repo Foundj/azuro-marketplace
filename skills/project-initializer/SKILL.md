@@ -32,7 +32,7 @@ description: |
   Chinese triggers "初始化项目" and "启用 AI 模式" together clearly activate project initialization.
   </commentary>
   </example>
-version: 6.0.14
+version: 6.0.15
 status: ga
 profile: dev
 triggers:

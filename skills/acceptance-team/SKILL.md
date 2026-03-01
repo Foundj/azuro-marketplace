@@ -31,7 +31,7 @@ description: |
   Post-refactor regression testing across many pages with team-based approach triggers this skill.
   </commentary>
   </example>
-version: 6.0.14
+version: 6.0.15
 status: ga
 profile: debug
 triggers:

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.15] - 2026-03-02
+
+### Added
+- Dual Path routing in ai-dev: Fast Path (default single-agent) / Deep Path (--team, v6.0 multi-agent)
+- `discuss` mode in ai:team command for v6.0 multi-agent-discussion orchestration
+- `scripts/trigger-monitor.sh` for skill trigger rate monitoring and reporting
+
+
 ## [6.0.14] - 2026-03-02
 
 ### Fixed

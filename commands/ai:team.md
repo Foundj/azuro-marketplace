@@ -47,6 +47,7 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 |------|------|------|
 | `review` | 代码审查 | 多角度并行审查 |
 | `debug` | 问题调查 | 竞争假设并行调查 |
+| `discuss` | 多Agent讨论 | v6.0 角色对抗式需求探索 |
 | `feature` 或其他 | 功能开发 | 前后端分离并行开发 (默认) |
 
 **选项:**
@@ -320,10 +321,14 @@ TeamDelete()
 
 | 命令 | 模式 | 适用场景 |
 |------|------|----------|
-| `/ai:dev` | 传统 subagent | 7阶段开发工作流 |
-| `/ai:dev --team` | Agent Teams | 自动选择团队模式 |
-| `/ai:team` | Agent Teams | 强制使用团队模式 |
+| `/ai:dev` | Fast Path (单Agent) | 7阶段开发工作流 |
+| `/ai:dev --team` | Deep Path (Agent Teams) | 自动选择团队模式 |
+| `/ai:team` | Deep Path (Agent Teams) | 强制使用团队模式 |
+| `/ai:team discuss` | v6.0 讨论编排 | 多角色需求探索与决策 |
 | `/ai:loop` | OODA 循环 | 快速迭代执行 |
+
+**Deep Path 路由**: 当使用 `--team` 或 `/ai:team` 时，系统进入 Deep Path 模式。
+`discuss` 子命令直接调用 `multi-agent-discussion` 技能进行角色对抗式讨论。
 
 ---
 
