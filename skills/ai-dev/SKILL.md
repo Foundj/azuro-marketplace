@@ -2,11 +2,36 @@
 name: ai-dev
 description: |
   This skill provides industrial-grade AI development orchestration with 7-phase gated workflow.
-  It should be used when the user mentions "implement feature", "develop", "build", "开发功能",
-  "实现", "构建", or wants full development workflow with requirement interview,
-  competitor research, OODA autonomous implementation, and quality validation.
-  Note: Use /ai:dev command as the primary entry point. This skill is the backend implementation.
-version: 6.0.10
+  It covers requirement interview, competitor research, OODA autonomous implementation, and quality validation.
+  Use /ai:dev command as the primary entry point. This skill is the backend implementation.
+
+  <example>
+  Context: User wants to build a new feature from scratch with full workflow
+  user: "帮我开发一个用户权限管理模块，要支持 RBAC，集成到现有的 Express 后端"
+  assistant: "I'll use the ai-dev skill to run the full 7-phase workflow: starting with requirement interview, then design, task breakdown, implementation, and quality validation."
+  <commentary>
+  User requests a complete feature development with specific technical requirements, triggering the full ai-dev workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to continue an interrupted development session
+  user: "/ai:dev auto — 上次 authentication 模块做到一半了，继续完成剩下的 tasks"
+  assistant: "I'll use the ai-dev skill to detect the active change and auto-complete the remaining tasks from where we left off."
+  <commentary>
+  User wants to resume interrupted development, triggering ai-dev's smart empty command and auto-continue.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User needs a quick bug fix without the full ceremony
+  user: "quick fix the pagination bug in src/components/DataTable.tsx, offset calculation is wrong"
+  assistant: "I'll use the ai-dev skill in quick mode, skipping research and interview phases, jumping directly to implementation."
+  <commentary>
+  Bug fix request with quick/fix keywords triggers ai-dev in quick mode, skipping phases 0.5, 1, and 2.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

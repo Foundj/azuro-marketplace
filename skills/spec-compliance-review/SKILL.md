@@ -5,7 +5,34 @@ description: |
   It verifies that implementation matches specification EXACTLY - nothing more, nothing less.
   Triggers on "spec review", "specification check", "规格审查", "compliance check", "符合性检查".
   Must pass before proceeding to Stage 2 code quality review.
-version: 6.0.10
+
+  <example>
+  Context: User finished implementing a feature and wants to verify it matches the spec before code review
+  user: "spec review 一下 Sprint 2 的实现，对照 docs/tasks/v1.2/plan.md 看有没有漏掉的需求"
+  assistant: "I'll use the spec-compliance-review skill to verify the Sprint 2 implementation against plan.md, checking for missing requirements, extra work, and misunderstandings."
+  <commentary>
+  Trigger phrase "spec review" with specific sprint and plan reference activates line-by-line spec compliance checking.
+  </commentary>
+  </example>
+
+  <example>
+  Context: Automated workflow reaches Phase 5 and needs compliance verification
+  user: "implementation done for the auth module, run 规格审查 against the original task requirements"
+  assistant: "I'll use the spec-compliance-review skill as Stage 1 of quality validation, independently verifying the auth module against its specification."
+  <commentary>
+  Chinese trigger "规格审查" in a post-implementation context triggers the compliance review stage.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User suspects the implementation has YAGNI violations and extra features not in spec
+  user: "compliance check the PR changes, I think the implementer added retry logic and extra config options that weren't in the spec"
+  assistant: "I'll use the spec-compliance-review skill to identify extra/unneeded work and YAGNI violations by comparing the PR changes against the original specification."
+  <commentary>
+  Trigger "compliance check" with suspicion of over-engineering activates the extra-work detection checks.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: review
 triggers:

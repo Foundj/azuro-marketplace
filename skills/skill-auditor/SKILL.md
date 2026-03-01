@@ -6,7 +6,34 @@ description: |
   Use when the user mentions "audit skill", "validate skill", "skill quality", "技能审计",
   "质量检查", "校验技能", or when reviewing skill implementations.
   Triggers on: "audit", "validate", "score", "检查", "审计".
-version: 6.0.10
+
+  <example>
+  Context: User has created a new skill and wants to check its quality before committing
+  user: "帮我审计一下 skills/knowledge-graph 这个技能，看看评分够不够 80 分"
+  assistant: "I'll use the skill-auditor to validate the knowledge-graph skill against all 5 scoring dimensions and check if it meets the 80-point threshold."
+  <commentary>
+  Chinese trigger "审计" with a specific skill path and score threshold triggers a full quality audit.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to batch validate all skills before a release
+  user: "validate skill quality for all skills in the skills/ directory, give me a summary report"
+  assistant: "I'll use the skill-auditor to scan and score every skill in the skills/ directory, then produce a summary report with grades."
+  <commentary>
+  Trigger phrase "validate skill quality" with batch scope activates multi-skill audit workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants specific improvement suggestions for a low-scoring skill
+  user: "skill-auditor 检查一下 skills/mcp-integration，告诉我哪些地方需要改进，能自动修复的就 --fix"
+  assistant: "I'll use the skill-auditor to audit mcp-integration, identify issues, and auto-fix what's possible like script permissions and missing version fields."
+  <commentary>
+  Direct mention of "skill-auditor" with "检查" and "--fix" flag triggers audit with auto-repair capabilities.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: review
 triggers:

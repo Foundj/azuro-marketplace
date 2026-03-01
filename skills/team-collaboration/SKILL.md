@@ -3,9 +3,35 @@ name: team-collaboration
 description: |
   This skill should be used when the user wants to set up multi-agent team collaboration.
   It provides scenario templates, team configuration guides, and collaboration best practices
-  using Claude Code native Agent Teams capabilities. Use when the user mentions "团队协作",
-  "team collaboration", "多代理", "并行开发", "agent teams", or wants parallel development.
-version: 6.0.10
+  using Claude Code native Agent Teams capabilities for parallel development.
+
+  <example>
+  Context: User wants to parallelize a feature across frontend, backend, and testing
+  user: "创建一个团队并行开发用户认证功能：前端做登录页面，后端做认证API，测试工程师写集成测试"
+  assistant: "I'll use team-collaboration to configure a 3-agent team with file scope isolation: frontend agent for login UI, backend agent for auth API, and test agent for integration tests."
+  <commentary>
+  User requests multi-agent team setup with clear role division, directly matching the feature development scenario template.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants team-based code review from multiple perspectives
+  user: "let's do a team review on the payment module - I want security, performance, and code style checked in parallel"
+  assistant: "I'll use team-collaboration to spin up a review team: security reviewer for vulnerability scanning, performance reviewer for bottleneck analysis, and style reviewer for code quality."
+  <commentary>
+  User wants parallel code review from multiple specialized perspectives, matching the code review scenario template.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User has a complex debugging task that needs investigation from multiple angles
+  user: "生产环境订单接口偶发超时，搞个调查团队：一个查日志，一个查数据库慢查询，一个查代码层面的问题"
+  assistant: "I'll use team-collaboration to create a debug investigation team with log analyzer, database query profiler, and code-level root cause analyst working in parallel."
+  <commentary>
+  User needs multi-angle investigation for a production issue, matching the problem investigation scenario template.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

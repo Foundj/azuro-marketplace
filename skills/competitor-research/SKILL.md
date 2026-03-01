@@ -4,7 +4,34 @@ description: |
   This skill provides multi-model research capabilities for gathering competitor insights and best practices.
   Use when implementing new features, researching libraries, or analyzing open-source patterns.
   Triggers on "research competitors", "analyze best practices", "compare libraries", "研究竞品", "最佳实践".
-version: 6.0.10
+
+  <example>
+  Context: User is about to implement a new authentication system and wants to research options
+  user: "我要给项目加用户认证，帮我调研一下 NextAuth vs Clerk vs Lucia，看看哪个最合适我们的 Next.js 项目"
+  assistant: "I'll use the competitor-research skill to compare these authentication libraries with best practices analysis."
+  <commentary>
+  User requesting library comparison with specific candidates and project context triggers the research workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to understand best practices before building a feature
+  user: "research best practices for implementing real-time notifications, 我们用的是 React + Node 技术栈"
+  assistant: "I'll use the competitor-research skill to gather best practices and implementation patterns for real-time notifications."
+  <commentary>
+  Explicit "research best practices" with technology context triggers multi-source research.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to analyze how open-source projects solve a similar problem
+  user: "帮我研究一下竞品怎么做的 rate limiting，看看 GitHub 上主流的开源方案"
+  assistant: "I'll use the competitor-research skill to analyze open-source rate limiting implementations and synthesize recommendations."
+  <commentary>
+  "研究竞品" combined with a specific technical topic triggers competitor analysis with code search.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: design
 triggers:

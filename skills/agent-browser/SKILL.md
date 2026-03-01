@@ -3,10 +3,36 @@ name: agent-browser
 description: |
   This skill should be used when the user needs to automate browser interactions,
   test web applications, fill forms, take screenshots, or extract data from web pages.
-  Triggers on: "browser", "test website", "screenshot", "fill form", "浏览器", "网页测试".
   Uses a ref-based element selection system (@e1, @e2) optimized for LLM interaction.
   Supports session isolation for parallel testing and semantic locators for accessibility.
-version: 6.0.10
+
+  <example>
+  Context: User wants to test a login flow on their local development server
+  user: "帮我测试一下 localhost:3000/login 的登录流程，用 admin@test.com 登录看看能不能进 dashboard"
+  assistant: "I'll use the agent-browser skill to open the login page, fill in the credentials, and verify the dashboard loads."
+  <commentary>
+  User requests browser-based testing of a specific web flow, triggering this skill for automated interaction.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User needs a screenshot of the current state of a deployed page
+  user: "screenshot the homepage at https://staging.myapp.com and check if the hero banner is showing correctly"
+  assistant: "I'll use the agent-browser skill to open the page, take a screenshot, and verify the hero banner element."
+  <commentary>
+  Screenshot and visual verification request for a web page triggers this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to fill out and submit a multi-step form
+  user: "网页测试一下注册表单，填完所有字段然后提交，看看有没有报错"
+  assistant: "I'll use the agent-browser skill to navigate to the registration form, fill all fields with test data, submit, and check for errors."
+  <commentary>
+  Form filling and submission testing on a web page triggers this skill.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: debug
 triggers:

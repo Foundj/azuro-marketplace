@@ -5,7 +5,34 @@ description: |
   It implements SuperClaude PM Agent's confidence gate pattern: ≥90% proceed, 70-89% present
   alternatives, <70% must ask questions. Use when starting tasks, before implementation,
   or when the user mentions "confidence check", "置信度", "确认方向", "ai:check".
-version: 6.0.10
+
+  <example>
+  Context: User asks to implement a complex feature but the requirements seem ambiguous
+  user: "帮我实现 SSO 单点登录，先做个 confidence check 看看你理解的对不对"
+  assistant: "I'll use the confidence-gate skill to assess my understanding before starting implementation."
+  <commentary>
+  User explicitly requests a confidence check before a complex feature, directly triggering the gate assessment.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to ensure the agent is on the right track before spending tokens
+  user: "before you start coding, 先确认一下方向，我怕你做错了浪费时间"
+  assistant: "I'll use the confidence-gate skill to present my understanding and confidence level for your validation."
+  <commentary>
+  User expressing concern about wrong direction ("确认方向", "怕做错") triggers pre-execution verification.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User gives a vague task and the agent should proactively check confidence
+  user: "把那个 API 改一下，用新的方案"
+  assistant: "I'll use the confidence-gate skill — my confidence is below 70% because 'that API' and 'new approach' are ambiguous. Let me ask clarifying questions."
+  <commentary>
+  Vague requirements trigger the <70% confidence path where the agent must ask targeted questions before proceeding.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: design
 triggers:

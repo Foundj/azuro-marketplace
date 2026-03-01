@@ -6,7 +6,34 @@ description: |
   validates state, and suggests next steps. Use when the user mentions "continue", "resume",
   "status", "progress", "恢复会话", "继续", "进度", or when starting a new session.
   Critical for long-running project continuity.
-version: 6.0.10
+
+  <example>
+  Context: User opens a new Claude session and wants to pick up where they left off
+  user: "continue，上次做到哪了？帮我恢复一下项目状态"
+  assistant: "I'll use the session-manager skill to recover your project context, check progress, and recommend the next task to work on."
+  <commentary>
+  Trigger word "continue" combined with "上次做到哪了" clearly indicates session recovery intent.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants a quick status check on overall project progress
+  user: "status check 一下，这个项目现在完成了百分之多少，还有哪些 feature 没做"
+  assistant: "I'll use the session-manager skill to analyze feature_list.json and progress.txt, then report completion percentage and remaining work."
+  <commentary>
+  Trigger word "status" with progress inquiry activates the session manager's status analysis workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User returns after a long break and needs full context restoration
+  user: "resume this project, I haven't touched it in 2 weeks. What's the current state and what should I work on next?"
+  assistant: "I'll use the session-manager skill to run the full 7-step recovery sequence, validate the environment, and suggest the highest priority next task."
+  <commentary>
+  Trigger "resume" with explicit need for context restoration and next-step recommendation activates full recovery.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: default
 allowed-tools: Read, Bash, Grep, Glob

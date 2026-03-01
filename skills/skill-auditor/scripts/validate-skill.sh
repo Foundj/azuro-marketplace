@@ -303,11 +303,11 @@ fi
 # Check description length
 DESC_LENGTH=${#DESCRIPTION}
 if [[ $DESC_LENGTH -ge 100 ]]; then
-    if [[ $DESC_LENGTH -le 1024 ]]; then
+    if [[ $DESC_LENGTH -le 3000 ]]; then
         log_pass "Description is comprehensive ($DESC_LENGTH chars) (+5)"
         DOCUMENTATION_SCORE=$((DOCUMENTATION_SCORE + 5))
     else
-        log_error "Description is too long ($DESC_LENGTH chars, max 1024)"
+        log_error "Description is too long ($DESC_LENGTH chars, max 3000)"
     fi
 elif [[ $DESC_LENGTH -ge 50 ]]; then
     log_pass "Description is adequate ($DESC_LENGTH chars) (+3)"

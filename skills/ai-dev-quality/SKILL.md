@@ -3,9 +3,35 @@ name: ai-dev-quality
 description: |
   This skill provides code quality validation system with multi-perspective review, confidence scoring,
   and automated verification. It includes code-reviewer, confidence-scorer, and verification-agent.
-  Use this skill when the user mentions "code review", "quality check", "ai:review", "ai:quality",
-  "代码审查", "质量检查", or during Phase 5 of the development workflow.
-version: 6.0.10
+  Use this skill for code review, quality gates, or during Phase 5 of the development workflow.
+
+  <example>
+  Context: User has finished implementing a feature and wants a thorough code review
+  user: "代码写完了，帮我做个全面的 code review，重点看 src/api/ 下面的安全问题"
+  assistant: "I'll use the ai-dev-quality skill to run multi-perspective review (security, bugs, maintainability) with confidence scoring on the API code."
+  <commentary>
+  User requests code review with a security focus after implementation, triggering the quality validation pipeline.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to run the full quality gate before merging a PR
+  user: "run quality check on the current changes before I merge — tests, build, lint, everything"
+  assistant: "I'll use the ai-dev-quality skill to run the full quality pipeline: 3x code-reviewers, confidence scoring, and automated verification."
+  <commentary>
+  Pre-merge quality check request triggers the complete quality validation system.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to review specific files for maintainability issues
+  user: "质量检查 src/utils/parser.ts 和 src/utils/formatter.ts，圈复杂度是不是太高了"
+  assistant: "I'll use the ai-dev-quality skill to analyze these files for maintainability, focusing on cyclomatic complexity and code structure."
+  <commentary>
+  Targeted quality check for specific files with complexity concerns triggers this skill.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: review
 triggers:

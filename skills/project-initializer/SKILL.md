@@ -5,7 +5,34 @@ description: |
   It creates the codebox/ directory, initializes knowledge base, and performs deep project
   structure scanning. Use when the user mentions "init project", "setup ai-dev", "initialize",
   "启用 AI 模式", "初始化项目", or wants to start a new AI-assisted development workflow.
-version: 6.0.10
+
+  <example>
+  Context: User has a new project and wants to set up AI-assisted development from scratch
+  user: "init project 电商后台管理系统，技术栈是 Next.js + Prisma + PostgreSQL"
+  assistant: "I'll use the project-initializer skill to set up the codebox/ directory, scan your tech stack, and initialize the knowledge base for this e-commerce admin project."
+  <commentary>
+  Trigger phrase "init project" with specific project description and tech stack triggers full initialization workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User cloned a repo and wants to enable AI development mode on it
+  user: "setup ai-dev for this repo, it's a Hono API server with Drizzle ORM"
+  assistant: "I'll use the project-initializer skill to scan the existing project structure, detect Hono and Drizzle, and create the AI development configuration."
+  <commentary>
+  Trigger "setup ai-dev" on an existing repo triggers initialization with deep project scanning.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to start fresh with AI workflow on a side project
+  user: "帮我初始化项目，这是一个 React Native 的健身打卡 app，启用 AI 模式"
+  assistant: "I'll use the project-initializer skill to initialize the AI development environment for your React Native fitness tracking app."
+  <commentary>
+  Chinese triggers "初始化项目" and "启用 AI 模式" together clearly activate project initialization.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

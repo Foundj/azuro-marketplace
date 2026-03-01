@@ -2,10 +2,37 @@
 name: ultrawork
 description: |
   This skill should be used when the user wants autonomous end-to-end task completion.
-  It provides a one-word trigger for a complete development workflow, orchestrating
+  It provides a one-word trigger for a complete 9-phase development workflow, orchestrating
   requirement clarification, worktree isolation, TDD implementation, two-stage review,
-  and continuous execution until <promise>DONE</promise>.
-version: 6.0.10
+  and continuous execution until done.
+
+  <example>
+  Context: User has a well-defined feature and wants fully autonomous implementation
+  user: "ultrawork 实现一个 REST API 的分页功能，支持 cursor-based pagination，在 src/api/routes/ 下面"
+  assistant: "I'll activate ultrawork mode: analyze complexity, clarify requirements if needed, create worktree for isolation, plan atomic tasks, dispatch subagents with TDD, run two-stage review, and loop until complete."
+  <commentary>
+  User triggers ultrawork with a specific feature request, activating the full 9-phase autonomous workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants something done without micromanaging the process
+  user: "帮我搞定这个 issue：用户注册时邮箱验证不工作，别问我太多问题直接修"
+  assistant: "I'll activate ultrawork mode for autonomous bug resolution: analyze the email validation issue, plan the fix with TDD, implement via subagent, review for spec compliance and code quality, then finish with passing tests."
+  <commentary>
+  User says "帮我搞定" (just handle it) wanting autonomous completion without babysitting, matching ultrawork's philosophy.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants team-mode parallel execution for a large feature
+  user: "just do it - implement the complete shopping cart feature with product listing, cart management, and checkout flow. Use team mode if it makes sense"
+  assistant: "I'll activate ultrawork in team mode: analyze complexity (COMPLEX), create worktree, plan tasks across waves, dispatch parallel subagents for independent components, and run full review pipeline."
+  <commentary>
+  User says "just do it" with a complex multi-component feature and mentions team mode, triggering ultrawork with Agent Teams integration.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

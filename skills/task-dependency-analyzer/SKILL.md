@@ -3,9 +3,35 @@ name: task-dependency-analyzer
 description: |
   This skill should be used when analyzing task dependencies and determining optimal execution order.
   It builds a dependency graph from plan.md, identifies parallelizable tasks, and outputs execution
-  recommendations. Use when the user mentions "dependencies", "parallel", "execution order", "任务依赖",
-  "并行执行", or when planning multi-task implementation.
-version: 6.0.10
+  recommendations for wave-based parallel dispatch.
+
+  <example>
+  Context: User has a plan.md with 8 tasks and wants to know which can run in parallel
+  user: "plan.md 里有8个任务，帮我分析一下哪些可以并行跑，哪些有依赖关系要排队"
+  assistant: "I'll use task-dependency-analyzer to build a dependency graph from your plan.md and identify parallel execution waves."
+  <commentary>
+  User explicitly asks about task dependencies and parallelization, directly triggering dependency analysis.
+  </commentary>
+  </example>
+
+  <example>
+  Context: Before executing tasks, user wants to optimize execution order
+  user: "I have 6 tasks in the plan. Task 3 depends on Task 1's types.ts output. Can you figure out the optimal execution order and which tasks can be dispatched together?"
+  assistant: "I'll use task-dependency-analyzer to detect file-based dependencies and generate an optimal wave-based execution plan."
+  <commentary>
+  User wants execution order optimization with explicit dependency information, matching the DAG analysis workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User notices sequential execution is slow and wants parallel optimization
+  user: "现在任务一个一个跑太慢了，能不能分析下依赖关系然后并行执行？src/api.ts 依赖 types.ts 和 utils.ts 但后两个应该可以同时做"
+  assistant: "I'll use task-dependency-analyzer to map the dependency graph and group independent tasks into parallel waves for faster execution."
+  <commentary>
+  User identifies a performance bottleneck in sequential execution and wants dependency-aware parallelization.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

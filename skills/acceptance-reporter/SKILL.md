@@ -3,8 +3,35 @@ name: acceptance-reporter
 description: |
   Generate structured acceptance reports with screenshots, validations,
   and task associations. Use after web testing to create evidence reports.
-  Triggers on: "acceptance report", "验收报告", "generate report", "报告生成".
-version: 6.0.10
+  Supports dual-format output (Markdown + HTML) with embedded screenshots and validation history.
+
+  <example>
+  Context: User has completed browser-based acceptance testing and needs a formal report
+  user: "刚测完 localhost:3000 的5个页面，帮我生成验收报告，关联变更 CHG-auth-refactor"
+  assistant: "I'll use the acceptance-reporter skill to generate a structured acceptance report linked to CHG-auth-refactor."
+  <commentary>
+  User has finished testing and explicitly requests report generation with a change ID, triggering this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: After acceptance testing, user wants an HTML report for stakeholder sharing
+  user: "acceptance report for today's testing, I need an HTML version to share with the team"
+  assistant: "I'll use the acceptance-reporter skill to generate both Markdown and HTML reports from the acceptance state."
+  <commentary>
+  Request for acceptance report output, especially HTML format for sharing, triggers this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to review historical acceptance records and generate a summary
+  user: "把最近三次验收的报告汇总一下，看看哪些页面反复出问题"
+  assistant: "I'll use the acceptance-reporter skill to aggregate recent acceptance history and generate a summary report."
+  <commentary>
+  Request for acceptance report aggregation and historical analysis triggers this skill.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: review
 triggers:

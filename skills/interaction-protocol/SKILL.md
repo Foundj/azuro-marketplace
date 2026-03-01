@@ -8,7 +8,34 @@ description: |
   conducts multi-round conversations, or when the user mentions "interaction protocol",
   "交互协议", "对话协议", "引导模式". Referenced by brainstorm-mode, ai-dev-interview,
   multi-agent-discussion as their Facilitation Source of Truth.
-version: 6.0.10
+
+  <example>
+  Context: User is building a new interactive skill and needs to follow the standard conversation protocol
+  user: "我在开发一个新的 interview skill，需要参考交互协议来规范多轮对话的行为"
+  assistant: "I'll use the interaction-protocol skill to provide the facilitation standard including entry modes, progress labels, and decision-point patterns."
+  <commentary>
+  Developer referencing "交互协议" while building a multi-turn skill triggers protocol guidance.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to switch from step-by-step guided mode to a faster approach
+  user: "太慢了一个个问，直接 quick mode 帮我推断剩下的，有问题我再改"
+  assistant: "I'll switch to quick mode as defined by the interaction-protocol — I'll infer the remaining details and mark assumptions with [assumed]."
+  <commentary>
+  User requesting fast-path output during a guided session triggers the Quick mode / fast-path behavior.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User interrupts a multi-turn interview with an unrelated question
+  user: "等一下，先帮我看一下 CI 为什么挂了，看完再继续刚才的 interview"
+  assistant: "I'll handle the CI issue first, then resume. Per the interaction-protocol, we were on [Design Q3/5]."
+  <commentary>
+  Mid-flow interruption triggers the protocol's interruption handling: answer first, then offer to resume with context.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: default
 triggers:

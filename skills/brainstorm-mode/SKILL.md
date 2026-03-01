@@ -3,9 +3,35 @@ name: brainstorm-mode
 description: |
   This skill provides Socratic exploration mode for discovering requirements from vague ideas.
   It uses open-ended questioning, divergent thinking, and iterative refinement to transform
-  fuzzy concepts into clear specifications. Use when the user mentions "brainstorm", "explore ideas",
-  "not sure what I need", "头脑风暴", "探索想法", "我不确定", "帮我想想", or has unclear requirements.
-version: 6.0.10
+  fuzzy concepts into clear specifications. Also supports Philosophy-Driven Creation for design work.
+
+  <example>
+  Context: User has a vague idea for a new feature and needs help thinking it through
+  user: "我想给产品加点社交元素，但还没想清楚具体要做什么，帮我想想"
+  assistant: "I'll use the brainstorm-mode skill to explore this through Socratic questioning, starting with divergent exploration before converging on specific requirements."
+  <commentary>
+  User has an unclear idea and explicitly asks for help thinking through it, triggering brainstorm mode.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User is unsure about architecture direction and wants to explore options
+  user: "not sure if we should go with microservices or monolith for this project, help me think through the trade-offs"
+  assistant: "I'll use the brainstorm-mode skill to explore both architectural directions through open-ended questioning and help discover your priorities."
+  <commentary>
+  User expresses uncertainty about a design decision and wants exploration, triggering brainstorm mode.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to design a UI but needs to establish design principles first
+  user: "要重新设计 dashboard 页面，但我想先想清楚设计理念再动手"
+  assistant: "I'll use the brainstorm-mode skill in Philosophy-Driven Creation mode to discover your design principles before starting implementation."
+  <commentary>
+  User wants to establish creative direction before implementation, triggering brainstorm's philosophy mode.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: design
 triggers:

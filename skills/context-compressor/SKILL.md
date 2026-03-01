@@ -6,7 +6,34 @@ description: |
   lean. Use when context window is filling up, during long ultrawork sessions,
   or when the user mentions "compress context", "summarize", "archive results",
   "上下文压缩", "结果归档".
-version: 6.0.10
+
+  <example>
+  Context: During a long ultrawork session, multiple subagents have completed and context is bloated
+  user: "context 太长了，已经跑了5个 subagent 了，帮我压缩一下结果，只保留关键信息"
+  assistant: "I'll use the context-compressor skill to archive the full subagent outputs and keep only summaries in the main context."
+  <commentary>
+  User noticing context bloat after multiple subagent runs and requesting compression triggers the archive-and-summarize flow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to archive completed task results before starting the next batch
+  user: "前面3个任务都完成了，summarize results 然后 archive 掉，我们继续下一批"
+  assistant: "I'll use the context-compressor skill to extract key information from completed tasks and archive full reports to codebox/archive/."
+  <commentary>
+  "summarize results" and "archive" for completed tasks triggers the compression algorithm.
+  </commentary>
+  </example>
+
+  <example>
+  Context: Agent is getting slow due to large context and user wants to trim it
+  user: "回复越来越慢了，把之前的结果归档一下，trim context"
+  assistant: "I'll use the context-compressor skill to identify compressible content and reduce the active context while preserving essential information."
+  <commentary>
+  User experiencing slowness and requesting context trimming ("结果归档", "trim context") triggers compression.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: default
 triggers:

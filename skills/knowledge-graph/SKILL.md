@@ -5,7 +5,34 @@ description: |
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
   "knowledge", "experience", "历史方案", "经验复用", "参考". Manages cross-project knowledge relationships
   and enables experience reuse across projects. Now enhanced with MCP semantic search and LSP-first navigation.
-version: 6.0.10
+
+  <example>
+  Context: User is starting a new feature and wants to check if similar work was done before
+  user: "我记得之前做过一个 JWT 鉴权的方案，帮我查一下知识库看看当时怎么实现的"
+  assistant: "I'll use the knowledge-graph skill to search for JWT authentication solutions in the knowledge base."
+  <commentary>
+  User explicitly requests querying the knowledge base for a historical solution about JWT auth, directly triggering this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to avoid repeating past mistakes on a new project
+  user: "this new project uses React + Prisma, find related projects and see what patterns worked well"
+  assistant: "I'll use the knowledge-graph skill to search for related projects with matching tech stacks and surface successful patterns."
+  <commentary>
+  Keywords "find related projects" and "patterns" combined with tech stack matching trigger this skill for experience reuse.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User encounters a familiar error and wants to check historical resolutions
+  user: "又碰到 CORS 跨域问题了，以前怎么解决的来着？查下历史方案"
+  assistant: "I'll use the knowledge-graph skill to look up historical CORS error resolutions from past projects."
+  <commentary>
+  Chinese trigger phrase "历史方案" combined with wanting to reuse past error resolution knowledge activates this skill.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: design
 triggers:

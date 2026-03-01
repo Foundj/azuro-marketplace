@@ -2,10 +2,36 @@
 name: ai-dev-interview
 description: |
   This skill provides multi-round requirement interview system for AI development. It conducts structured
-  interviews with parallel context collection, risk detection, and proposal generation. Use this skill
-  when the user mentions "requirement interview", "需求访谈", "ai:interview", "clarify requirements",
-  "gather requirements", or when gathering requirements for new features or clarifying ambiguous specifications.
-version: 6.0.10
+  interviews with parallel context collection, risk detection, and proposal generation.
+  Use this skill when gathering requirements for new features or clarifying ambiguous specifications.
+
+  <example>
+  Context: User wants to develop a feature but the requirements are not fully defined
+  user: "我想给系统加个通知功能，但具体怎么做还没完全想好，先做个需求访谈吧"
+  assistant: "I'll use the ai-dev-interview skill to conduct a structured requirement interview and help clarify the notification feature requirements."
+  <commentary>
+  User explicitly requests requirement interview for a partially-defined feature, directly triggering this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User has a PRD document and wants to fill in the gaps
+  user: "I have a rough spec for the payment integration, let me paste it — help me identify what's missing"
+  assistant: "I'll use the ai-dev-interview skill in context-dump mode to analyze your spec and fill in the gaps through targeted questions."
+  <commentary>
+  User wants to validate and complete an existing spec, triggering the interview skill's context-dump entry mode.
+  </commentary>
+  </example>
+
+  <example>
+  Context: During ai-dev workflow, requirements need clarification before design
+  user: "clarify requirements for the search API — do we need full-text search or just exact match?"
+  assistant: "I'll use the ai-dev-interview skill to conduct a focused interview on the search API requirements and generate a proposal."
+  <commentary>
+  Explicit request to clarify requirements for a specific component triggers the interview skill.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: design
 triggers:

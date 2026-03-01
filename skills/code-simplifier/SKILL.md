@@ -6,7 +6,34 @@ description: |
   and refactoring pattern recommendations. Use when the user mentions "simplify code", "refine code",
   "clean up code", "refactor", "reduce complexity", "technical debt", "代码简化", "代码重构", "优化",
   "技术债务", or after code review passes.
-version: 6.0.10
+
+  <example>
+  Context: User has a large function that handles too many responsibilities
+  user: "这个函数太长了有200多行，帮我拆分重构一下 src/services/payment.ts"
+  assistant: "I'll use the code-simplifier skill to analyze src/services/payment.ts and break the function into smaller, focused units."
+  <commentary>
+  User requesting code simplification with a specific file path and mentioning the function is too long triggers the refactoring workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: After code review, user receives feedback about high cyclomatic complexity
+  user: "review 说 src/utils/parser.ts 圈复杂度太高了，帮我优化一下，reduce the complexity"
+  assistant: "I'll use the code-simplifier skill to analyze complexity metrics and apply refactoring patterns to reduce cyclomatic complexity."
+  <commentary>
+  Code review feedback about complexity combined with "优化" and "reduce complexity" triggers this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to clean up technical debt before a major release
+  user: "sprint 结束了，帮我 clean up 一下 src/api/ 目录下的技术债务，check 一下 SOLID violations"
+  assistant: "I'll use the code-simplifier skill to run SOLID principles checking across src/api/ and generate a simplification report."
+  <commentary>
+  Technical debt cleanup request with specific directory and SOLID check mention triggers the full audit workflow.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: review
 triggers:

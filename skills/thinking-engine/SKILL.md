@@ -1,13 +1,38 @@
 ---
 name: thinking-engine
 description: |
-  This skill should be used when the user asks to "think deeply", "analyze task", "think step by step",
-  "好好思考", "仔细想", "深度分析", or uses keywords like "think", "ultrathink", "思考".
-  Provides structured sequential thinking with 5-6 step analysis for task planning,
-  problem solving, and architecture design decisions.
-
+  This skill should be used when the user asks to think deeply, analyze a task systematically,
+  or needs structured reasoning before implementation. Provides 5-6 step analysis frameworks
+  for task planning, problem solving, and architecture design decisions.
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 6.0.10
+
+  <example>
+  Context: User has a complex feature and wants thorough analysis before coding
+  user: "我要给系统加一个分布式缓存层，先好好思考一下技术选型和架构设计"
+  assistant: "I'll use thinking-engine in architecture design mode with 6-step analysis: requirements analysis, system decomposition, technology selection, interface design, performance/scaling, and security/reliability."
+  <commentary>
+  User explicitly asks to "think deeply" about architecture, triggering the 6-step architecture design mode.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User encounters a complex bug and needs systematic root cause analysis
+  user: "think step by step about why the WebSocket connections keep dropping after exactly 30 seconds in production but not locally"
+  assistant: "I'll use thinking-engine in problem solving mode: define the problem symptoms, generate root cause hypotheses, design verification methods, plan implementation fixes, and validate the solution."
+  <commentary>
+  User requests step-by-step analysis of a complex bug, triggering the 5-step problem solving mode.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to evaluate task complexity before starting implementation
+  user: "ultrathink 一下这个需求：实现完整的 OAuth2 + RBAC 权限系统，评估下复杂度和最优实现路径"
+  assistant: "I'll use thinking-engine in task analysis mode: understand requirements, analyze project context, evaluate complexity (likely COMPLEX 8+/10), select agent strategy, and validate the approach with alternatives."
+  <commentary>
+  User uses "ultrathink" trigger with a complex feature, activating deep task analysis with complexity scoring.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: design
 triggers:

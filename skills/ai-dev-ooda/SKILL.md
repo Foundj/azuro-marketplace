@@ -2,10 +2,36 @@
 name: ai-dev-ooda
 description: |
   This skill provides OODA Loop autonomous execution engine for AI development. It implements
-  Observe-Orient-Decide-Act cycle with verification gates, reflexion learning, and attention management.
-  Use this skill when the user mentions "autonomous loop", "OODA", "自动执行", "循环执行", "ai:loop",
-  "ai:auto", or when executing tasks autonomously until completion with <promise>DONE</promise> signal.
-version: 6.0.10
+  Observe-Orient-Decide-Act cycle with verification gates, TDD enforcement, reflexion learning,
+  and attention management. Use when executing tasks autonomously until completion.
+
+  <example>
+  Context: User has a task list ready and wants autonomous implementation
+  user: "tasks.md 已经准备好了，开始自动执行吧，OODA loop 跑起来"
+  assistant: "I'll use the ai-dev-ooda skill to start the OODA loop, executing each task with TDD verification until all are complete."
+  <commentary>
+  User has a prepared task list and requests autonomous execution via OODA loop, directly triggering this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to continue auto-completing remaining tasks from a previous session
+  user: "/ai:auto — continue where we left off, there are 3 tasks remaining in the REST API implementation"
+  assistant: "I'll use the ai-dev-ooda skill to resume the OODA loop and complete the remaining 3 tasks with verification."
+  <commentary>
+  Request to auto-complete remaining tasks triggers the OODA loop to resume execution.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to run implementation with strict TDD enforcement
+  user: "自动执行剩下的任务，每个都要先写测试再写实现，不能跳过 TDD"
+  assistant: "I'll use the ai-dev-ooda skill with TDD enforcement enabled, following Red-Green-Refactor for each task."
+  <commentary>
+  Autonomous execution request with explicit TDD requirement triggers this skill with mandatory test-first flow.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

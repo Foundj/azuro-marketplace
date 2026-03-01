@@ -5,7 +5,34 @@ description: |
   implementation plans, or when running parallel Claude sessions. It provides Git worktree management
   for isolated development. Triggers on "worktree", "isolated branch", "parallel development",
   "隔离开发", "并行分支", "worktree创建". Auto-triggers when ultrawork detects COMPLEX tasks (≥5 files).
-version: 6.0.10
+
+  <example>
+  Context: User wants to start a large feature without affecting the main branch
+  user: "我要开始做用户权限系统了，涉及7-8个文件，帮我创建一个 worktree 隔离开发"
+  assistant: "I'll use the git-worktree skill to create an isolated workspace at .worktrees/feature-auth with a new branch."
+  <commentary>
+  Large feature affecting multiple files with explicit "worktree" and "隔离开发" triggers worktree creation with dependency setup.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User is running multiple Claude sessions and needs branch isolation
+  user: "I need to work on the hotfix in parallel while keeping my feature branch, create a worktree for the hotfix"
+  assistant: "I'll use the git-worktree skill to create a separate worktree for the hotfix based on origin/main."
+  <commentary>
+  Parallel development need with explicit "worktree" mention triggers isolated workspace creation.
+  </commentary>
+  </example>
+
+  <example>
+  Context: Feature work is complete and user wants to clean up the worktree
+  user: "feature/auth 已经合并了，把那个 worktree 清理掉吧"
+  assistant: "I'll use the git-worktree skill to verify the branch is merged, then safely remove the worktree at .worktrees/feature-auth."
+  <commentary>
+  Post-merge cleanup request for a worktree triggers the removal workflow with safety checks.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

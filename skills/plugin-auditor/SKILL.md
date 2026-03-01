@@ -1,13 +1,40 @@
 ---
 name: plugin-auditor
 description: |
-  This skill should be used when the user asks to "audit plugin", "validate plugin", "check plugin quality", 
-  "review plugin structure", "plugin-check", "verify plugin", "score plugin", or wants to ensure plugins 
-  follow Claude Code best practices. Also triggers on Chinese phrases: "审计插件", "校验插件", 
+  This skill should be used when the user asks to "audit plugin", "validate plugin", "check plugin quality",
+  "review plugin structure", "plugin-check", "verify plugin", "score plugin", or wants to ensure plugins
+  follow Claude Code best practices. Also triggers on Chinese phrases: "审计插件", "校验插件",
   "检查插件质量", "插件评分".
-  
+
   Provides multi-dimensional quality assessment with scoring, issue detection, and optimization recommendations for Claude Code Plugins.
-version: 6.0.10
+
+  <example>
+  Context: User has finished developing a plugin and wants to check if it meets production standards
+  user: "audit plugin ./my-awesome-plugin 看看能不能发布到 marketplace"
+  assistant: "I'll use the plugin-auditor skill to run a full quality audit on your plugin and check if it meets marketplace publication standards."
+  <commentary>
+  Trigger phrase "audit plugin" with a specific path triggers a comprehensive plugin quality assessment.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to validate their plugin structure after reorganizing directories
+  user: "刚重构了插件目录结构，帮我校验插件看 commands 和 hooks 位置对不对"
+  assistant: "I'll use the plugin-auditor skill to validate the directory structure and ensure components are correctly placed."
+  <commentary>
+  Chinese trigger "校验插件" combined with structural concern triggers structure validation checks.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants a quick score to see where their plugin stands
+  user: "score plugin azuro-marketplace, I want to see the breakdown by dimension"
+  assistant: "I'll use the plugin-auditor skill to score your plugin across all 5 dimensions and provide a detailed breakdown."
+  <commentary>
+  Trigger phrase "score plugin" with request for dimensional breakdown activates scoring workflow.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: review
 ---

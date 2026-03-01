@@ -4,10 +4,35 @@ description: |
   This skill should be used when implementing any feature, bugfix, or refactoring code.
   It enforces strict Test-Driven Development discipline with the Iron Law:
   "NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST". Code written before tests must be
-  deleted and rewritten. Triggers on "TDD", "test first", "红绿重构", "implementing feature",
-  "writing code", "bug fix", "refactoring", "behavior change". No exceptions without
-  explicit user permission.
-version: 6.0.10
+  deleted and rewritten. No exceptions without explicit user permission.
+
+  <example>
+  Context: User asks to implement a new feature without mentioning tests
+  user: "帮我在 src/utils/retry.ts 里加一个 retryOperation 函数，支持最多重试3次"
+  assistant: "I'll use tdd-enforcement to implement retryOperation: first write a failing test for the 3-retry behavior, verify it fails, then write minimal code to pass."
+  <commentary>
+  Any feature implementation triggers TDD enforcement. The agent must write a failing test before any production code.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User reports a bug and wants a fix
+  user: "src/forms/submit.ts 有个 bug，空邮箱居然能提交成功，fix it"
+  assistant: "I'll use tdd-enforcement: first write a test that submits an empty email and expects rejection, verify it fails (confirming the bug), then apply the fix and verify the test passes."
+  <commentary>
+  Bug fixes follow TDD: reproduce the bug with a failing test first, then fix and verify.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wrote code first and wants to add tests after
+  user: "I already wrote the implementation in src/parser.ts, now help me add tests for it"
+  assistant: "Per tdd-enforcement, code written before tests should be deleted and rewritten using TDD. I'll delete the implementation, write failing tests first, then re-implement from the tests."
+  <commentary>
+  The Iron Law requires deleting code written before tests. No keeping it as "reference" - delete means delete.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

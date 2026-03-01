@@ -3,9 +3,35 @@ name: subagent-driven-development
 description: |
   This skill should be used when implementing complex features that benefit from task isolation.
   It defines how to dispatch subagents for each task with self-review before handoff, two-stage
-  review after completion, and structured reporting. Triggers on "subagent", "dispatch task",
-  "子代理", "任务分发", "parallel implementation". Borrowed from Superpowers by obra.
-version: 6.0.10
+  review after completion, and structured reporting. Borrowed from Superpowers by obra.
+
+  <example>
+  Context: User has a large feature with multiple independent components to build
+  user: "这个支付模块有5个子功能，每个都比较独立，能不能每个分一个 subagent 并行做？"
+  assistant: "I'll use subagent-driven-development to dispatch one subagent per payment sub-feature, with self-review and two-stage review after each completes."
+  <commentary>
+  User explicitly asks for subagent-per-task isolation for parallel implementation of independent components.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants structured task dispatch with quality gates
+  user: "dispatch 3 tasks in parallel: create src/types.ts, src/utils.ts, and src/api.ts. Make sure each one does self-review before handing off"
+  assistant: "I'll use subagent-driven-development to dispatch these three tasks as independent subagents, each performing self-review before handoff, followed by spec-compliance and code-quality reviews."
+  <commentary>
+  User requests parallel task dispatch with explicit self-review requirement, directly matching the subagent-driven-development pattern.
+  </commentary>
+  </example>
+
+  <example>
+  Context: After planning phase, user wants to execute tasks with isolation
+  user: "plan.md 写好了，现在开始任务分发吧，每个任务用独立子代理执行，别让上下文互相污染"
+  assistant: "I'll use subagent-driven-development to dispatch each task to a fresh subagent with full context, ensuring no context pollution between tasks."
+  <commentary>
+  User wants isolated execution per task to avoid context pollution, which is the core principle of this skill.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

@@ -8,7 +8,34 @@ description: |
   (Codex, Cursor, OpenCode, Gemini, Claude variants) for collaborative
   requirement analysis and decision making. It provides a structured multi-agent discussion
   framework with automated CLI orchestration, shared markdown workspace, and convergence evaluation.
-version: 6.0.10
+
+  <example>
+  Context: User wants to discuss architecture decisions for a new feature with multiple AI perspectives
+  user: "我想让多个 AI 工具一起讨论下这个微服务拆分方案，start a discussion 用 architecture-design preset"
+  assistant: "I'll use the multi-agent-discussion skill to initiate an architecture-design discussion, detecting available CLI tools and orchestrating the debate."
+  <commentary>
+  User explicitly asks to "start a discussion" with a specific preset, triggering multi-agent orchestration.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User has an ongoing discussion and wants to check convergence status
+  user: "检查讨论进度，看看 auth-system 那个讨论各个角色都发言了没"
+  assistant: "I'll use the multi-agent-discussion skill to check the progress of the auth-system discussion and evaluate convergence."
+  <commentary>
+  Chinese trigger "检查讨论进度" with a specific discussion topic triggers the progress check workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: Discussion rounds are complete and user wants deliverables
+  user: "讨论差不多了，汇总讨论结果生成 plan.md 和 task.md 吧"
+  assistant: "I'll use the multi-agent-discussion skill to summarize the discussion and generate plan.md and task.md deliverables."
+  <commentary>
+  Trigger phrase "汇总讨论结果" combined with explicit output request activates the Summarize phase.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: design
 triggers:

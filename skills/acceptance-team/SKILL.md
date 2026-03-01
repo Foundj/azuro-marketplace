@@ -3,9 +3,35 @@ name: acceptance-team
 description: |
   This skill should be used when the user wants to run parallel acceptance testing across
   multiple pages using Agent Teams. Each page is tested by an independent acceptance-tester
-  agent for maximum efficiency. Use when the user mentions "并行验收", "团队验收",
-  "acceptance team", "多页面测试", or wants to test multiple frontend pages simultaneously.
-version: 6.0.10
+  agent for maximum efficiency. Supports quick, full, regression, and smoke testing modes.
+
+  <example>
+  Context: User has a multi-page frontend app and wants to test all pages at once
+  user: "并行验收 localhost:3000 的 home, login, dashboard, settings 这几个页面，关联 CHG-ui-redesign"
+  assistant: "I'll use the acceptance-team skill to launch parallel acceptance testers for all 4 pages simultaneously."
+  <commentary>
+  User explicitly requests parallel/team-based acceptance across multiple pages, directly triggering this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants fast multi-page smoke testing before deployment
+  user: "deployment 之前跑个 smoke test，把所有核心页面过一遍，用 acceptance team"
+  assistant: "I'll use the acceptance-team skill in smoke mode to quickly verify all critical pages in parallel."
+  <commentary>
+  Pre-deployment multi-page testing request with team/parallel intent triggers this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants regression testing across many pages after a major refactor
+  user: "refactor 完了，帮我用团队验收跑一轮 regression，10个页面都要测"
+  assistant: "I'll use the acceptance-team skill in regression mode to run parallel testing across all 10 pages."
+  <commentary>
+  Post-refactor regression testing across many pages with team-based approach triggers this skill.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: debug
 triggers:

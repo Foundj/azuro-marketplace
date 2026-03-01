@@ -2,10 +2,36 @@
 name: task-templates
 description: |
   This skill should be used when breaking down features into implementation tasks. It provides
-  fine-grained task templates ensuring each task is 2-5 minutes of focused work. Triggers on
-  "task breakdown", "create tasks", "任务分解", "task template", "granular tasks".
+  fine-grained task templates ensuring each task is 2-5 minutes of focused work with TDD steps.
   Borrowed from Superpowers pattern of atomic TDD steps.
-version: 6.0.10
+
+  <example>
+  Context: User has a feature requirement and needs structured task breakdown
+  user: "我要实现用户登录功能，帮我把任务分解成细粒度的 task，每个 task 要包含 TDD 步骤"
+  assistant: "I'll use task-templates to break down the login feature into atomic 2-5 minute tasks, each with explicit write-test, verify-fail, implement, verify-pass steps."
+  <commentary>
+  User requests task decomposition with TDD steps for a new feature, directly matching the task-templates skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User's task list is too coarse-grained
+  user: "plan.md 里的任务太粗了，'Implement user authentication' 这种一个任务就太大了，帮我拆成 atomic tasks"
+  assistant: "I'll use task-templates to break 'Implement user authentication' into fine-grained subtasks: write failing test for login endpoint, implement minimal handler, add validation test, etc."
+  <commentary>
+  User identifies coarse-grained tasks and wants atomic breakdown, matching the core principle of this skill.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User needs task templates for a bug fix workflow
+  user: "create tasks for fixing the empty email validation bug in src/forms/submit.ts, follow the bug fix template with reproduce-first approach"
+  assistant: "I'll use the task-templates bug fix template: reproduce with failing test, identify root cause, apply minimal fix, verify no regression, commit."
+  <commentary>
+  User requests structured bug fix tasks using the reproduce-first template pattern.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: dev
 triggers:

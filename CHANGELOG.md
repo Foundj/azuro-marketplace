@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.12] - 2026-03-02
+
+### Changed
+- Increase skill auditor description length limit from 1024 to 3000 chars to accommodate `<example>` blocks
+
+
+## [6.0.11] - 2026-03-02
+
+### Changed
+- Rewrite all 31 skill descriptions with scenario-based `<example>` blocks (93 examples total)
+- Each skill now has 3 realistic conversation examples with Context/user/assistant/commentary
+- Mixed CN/EN trigger phrases with concrete file paths and project context
+
+
 ## [6.0.10] - 2026-03-01
 
 ### Fixed

@@ -1,6 +1,6 @@
 ---
 name: context-bridge
-version: 6.0.10
+version: 6.0.12
 status: ga
 profile: default
 description: |
@@ -11,6 +11,33 @@ description: |
 
   **Usage**: /focus (refresh goals), /ai:session-save (save progress), /ai:session-resume (continue),
   /lite-save (3-file save), /lite-resume (3-file restore), /progress (show status)
+
+  <example>
+  Context: User is about to end a long development session and wants to save progress
+  user: "今天先到这吧，帮我保存一下进度，明天继续"
+  assistant: "I'll use the context-bridge skill to save your session progress, generate a summary, and create next_steps.md for tomorrow's session."
+  <commentary>
+  User wanting to save progress before ending a session ("保存进度", "明天继续") triggers the session-save workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User starts a new session and wants to continue from where they left off
+  user: "resume 昨天的工作，我们昨天做到哪了？"
+  assistant: "I'll use the context-bridge skill to restore your previous session context and show the progress report."
+  <commentary>
+  "resume" combined with wanting to continue previous work triggers the session-resume flow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: During a long conversation, user feels the agent is losing focus on the original goal
+  user: "感觉你跑偏了，focus 一下，我们的目标是什么来着？"
+  assistant: "I'll use the context-bridge skill to refresh the current goal into the attention window and show the progress status."
+  <commentary>
+  User requesting focus refresh when attention drifts triggers the /focus command to re-inject goals.
+  </commentary>
+  </example>
 triggers:
   - save
   - resume

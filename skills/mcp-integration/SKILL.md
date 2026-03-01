@@ -5,7 +5,34 @@ description: |
   It helps configure and use external MCP servers like Context7 (documentation), Tavily (web search),
   and Sequential-Thinking (reasoning). Use when the user mentions "MCP", "Context7", "Tavily",
   "官方文档查询", "MCP配置", "外部服务集成", or wants to enhance research with external tools.
-version: 6.0.10
+
+  <example>
+  Context: User wants to look up official documentation for a library before implementing
+  user: "帮我用 Context7 查一下 Next.js App Router 的官方文档，我要看 middleware 怎么写"
+  assistant: "I'll use the mcp-integration skill to query Context7 for official Next.js App Router middleware documentation."
+  <commentary>
+  User explicitly mentions "Context7" and wants official documentation lookup, directly triggering MCP integration.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User needs to configure MCP servers for their Claude Code environment
+  user: "how do I set up MCP配置? I want to add Tavily for web search in my project"
+  assistant: "I'll use the mcp-integration skill to guide you through configuring Tavily MCP server in your project."
+  <commentary>
+  Keywords "MCP配置" and "Tavily" combined with setup intent trigger this skill for configuration guidance.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to enhance their research workflow with external services
+  user: "做竞品分析的时候能不能接入外部服务集成？我想用 web search 查最新的 React 状态管理方案"
+  assistant: "I'll use the mcp-integration skill to set up Tavily web search for competitive research on React state management."
+  <commentary>
+  Chinese phrase "外部服务集成" and research enhancement intent trigger this skill.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: default
 triggers:

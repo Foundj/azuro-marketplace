@@ -6,7 +6,34 @@ description: |
   "reflect", "audit CLAUDE.md", "improve context", "remember this", "更新规则", "审计文档",
   "质量检查", or when reviewing/updating project context files.
   Combines automatic learning capture with quality-based context optimization.
-version: 6.0.10
+
+  <example>
+  Context: User notices Claude keeps using the wrong test runner in a Node.js project
+  user: "no, use vitest not jest, 我们项目早就换了 vitest 了，记住这个"
+  assistant: "I'll use the claude-reflect skill to capture this correction and queue it for syncing to your CLAUDE.md."
+  <commentary>
+  User explicitly corrects a tool preference and says "记住这个" (remember this), which triggers the self-learning capture flow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to check the quality of their project context files before onboarding a new team member
+  user: "帮我审计一下 CLAUDE.md，看看质量评分怎么样，有没有缺少什么重要的内容"
+  assistant: "I'll use the claude-reflect skill to run a quality audit on your CLAUDE.md against the 7-dimension scoring rubric."
+  <commentary>
+  User requests a quality audit of context files using "审计" keyword, triggering the audit workflow.
+  </commentary>
+  </example>
+
+  <example>
+  Context: After a long development session, user wants to process accumulated learnings
+  user: "这次 session 积累了不少经验，跑一下 reflect 把 learnings 同步到文档里"
+  assistant: "I'll use the claude-reflect skill to process the queued learnings and present them for your review before writing to context files."
+  <commentary>
+  User wants to sync session learnings to project files, directly mentioning "reflect" as the trigger.
+  </commentary>
+  </example>
+version: 6.0.12
 status: ga
 profile: default
 triggers:
