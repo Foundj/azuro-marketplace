@@ -32,7 +32,7 @@ description: |
   Post-merge cleanup request for a worktree triggers the removal workflow with safety checks.
   </commentary>
   </example>
-version: 6.0.17
+version: 6.0.18
 status: ga
 profile: dev
 triggers:

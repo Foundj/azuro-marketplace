@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.18] - 2026-03-02
+
+### Added
+- New `task-planner` skill: independent versioned task planning with plan.md/task.md generation
+- `docs/tasks/README.md`: task management usage guide with 3 creation paths
+- Version decision rules with major/minor judgment and split strategy for large requirements
+- `check-version-status.sh`: script to scan docs/tasks/ version statuses
+- `archive-rules.md`: archival conditions and workflow reference
+
+
 ## [6.0.17] - 2026-03-02
 
 ### Changed

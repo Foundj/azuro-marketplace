@@ -33,7 +33,7 @@ description: |
   Technical debt cleanup request with specific directory and SOLID check mention triggers the full audit workflow.
   </commentary>
   </example>
-version: 6.0.17
+version: 6.0.18
 status: ga
 profile: review
 triggers:

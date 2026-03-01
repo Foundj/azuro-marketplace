@@ -31,7 +31,7 @@ description: |
   Autonomous execution request with explicit TDD requirement triggers this skill with mandatory test-first flow.
   </commentary>
   </example>
-version: 6.0.17
+version: 6.0.18
 status: ga
 profile: dev
 triggers:

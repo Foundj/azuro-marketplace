@@ -33,7 +33,7 @@ description: |
   Trigger "resume" with explicit need for context restoration and next-step recommendation activates full recovery.
   </commentary>
   </example>
-version: 6.0.17
+version: 6.0.18
 status: ga
 profile: default
 allowed-tools: Read, Bash, Grep, Glob
