@@ -1,15 +1,58 @@
 #!/usr/bin/env bash
 # 初始化讨论目录结构
-# 用法: bash init-discussion.sh <project-root> <topic-name> [max-rounds]
+# 用法: bash init-discussion.sh <project-root> <topic-name> [max-rounds] [--preset <preset>]
+#
+# 支持的预设:
+#   product-discovery    — @PM + @UserAdvocate + @Architect + @Critic
+#   architecture-design  — @Architect + @Backend + @Security + @Critic
+#   full-review          — @PM + @Architect + @Frontend + @Backend + @QA
+#   security-audit       — @Architect + @Security + @Backend + @DevOps
 #
 # 注意: 此脚本仅负责目录骨架创建。角色填充、context.md 自动填充、
 # Round 0 种子发言、邀请文件生成均由 Claude Code 在 SKILL.md 工作流中完成。
 
 set -euo pipefail
 
-PROJECT_ROOT="${1:?用法: init-discussion.sh <project-root> <topic-name> [max-rounds]}"
-TOPIC="${2:?请提供讨论主题名称（kebab-case）}"
-MAX_ROUNDS="${3:-3}"
+# 解析参数
+PROJECT_ROOT=""
+TOPIC=""
+MAX_ROUNDS="3"
+PRESET=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --preset)
+      PRESET="${2:?--preset 需要指定预设名称}"
+      shift 2
+      ;;
+    --preset=*)
+      PRESET="${1#--preset=}"
+      shift
+      ;;
+    *)
+      if [ -z "$PROJECT_ROOT" ]; then
+        PROJECT_ROOT="$1"
+      elif [ -z "$TOPIC" ]; then
+        TOPIC="$1"
+      else
+        MAX_ROUNDS="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+# 验证必需参数
+if [ -z "$PROJECT_ROOT" ]; then
+  echo "用法: init-discussion.sh <project-root> <topic-name> [max-rounds] [--preset <preset>]"
+  exit 1
+fi
+
+if [ -z "$TOPIC" ]; then
+  echo "请提供讨论主题名称（kebab-case）"
+  exit 1
+fi
+
 DISCUSSION_DIR="${PROJECT_ROOT}/docs/discussions/${TOPIC}"
 
 # 验证 project-root 存在
@@ -23,6 +66,30 @@ if [ -d "${DISCUSSION_DIR}" ]; then
   echo "如需重新初始化，请先删除该目录。"
   exit 1
 fi
+
+# 根据预设确定角色列表
+ROLES_DISPLAY=""
+case "$PRESET" in
+  product-discovery)
+    ROLES_DISPLAY="@PM, @UserAdvocate, @Architect, @Critic"
+    ;;
+  architecture-design)
+    ROLES_DISPLAY="@Architect, @Backend, @Security, @Critic"
+    ;;
+  full-review)
+    ROLES_DISPLAY="@PM, @Architect, @Frontend, @Backend, @QA"
+    ;;
+  security-audit)
+    ROLES_DISPLAY="@Architect, @Security, @Backend, @DevOps"
+    ;;
+  "")
+    ROLES_DISPLAY="（由初始化时填充）"
+    ;;
+  *)
+    echo "警告: 未知预设 '${PRESET}'，将使用自定义角色"
+    ROLES_DISPLAY="（自定义角色，由初始化时填充）"
+    ;;
+esac
 
 # 创建目录结构
 mkdir -p "${DISCUSSION_DIR}"/{refs,continue}
@@ -42,14 +109,18 @@ cat > "${DISCUSSION_DIR}/README.md" << 'HEREDOC'
 
 ## 概述
 
-本目录是一个跨 AI 工具的需求讨论空间。多个 AI 编码工具（Claude Code、Cursor、Codex 等）以不同专家角色在 `discussion.md` 中进行结构化讨论。Claude Code 以 @Coordinator 身份提供项目分析种子并协调流程。
+本目录是一个跨 AI 工具的需求讨论空间。多个 AI 编码工具（Claude Code、Cursor、Codex、Gemini、OpenCode 等）以不同专家角色在 `discussion.md` 中进行结构化讨论。Claude Code 以 @Coordinator 身份提供项目分析种子并协调流程。
+
+支持两种讨论模式：
+- **自动模式**：Claude Code 通过 CLI 自动调用各工具，全程无需手动操作
+- **手动模式**：通过邀请文件手动将提示词复制到各工具
 
 ## 参与角色
 
 | 角色 | 代号 | 职责 | 工具 |
 |------|------|------|------|
 | 协调者 | @Coordinator | 项目分析、流程调度、汇总产出 | Claude Code |
-| （其他角色由初始化时填充） | | | |
+| PRESET_ROLES_PLACEHOLDER |
 
 ## 讨论规则
 
@@ -58,13 +129,20 @@ cat > "${DISCUSSION_DIR}/README.md" << 'HEREDOC'
 3. **格式规范**：使用规定的发言格式（见下方语法说明）
 4. **@ 响应优先**：被 @ 提及时优先回应该议题
 5. **更新状态**：发言后更新顶部 STATUS 面板
-6. **完成后提示**：发言完毕后，打印下一步操作指引（哪个文件→哪个工具）
+6. **独立分析**：从自己的专业角度提出其他角色可能忽视的问题
+7. **假设标注**：使用 `> [!assumption]` 标注隐含假设
 
 ## 收敛规则
 
 - **最大讨论轮次**：MAX_ROUNDS 轮（不含 Round 0 种子）
-- **快速路径**：当所有 agent 的决策倾向一致（均标记 `#consensus`）时，可跳过草案直接汇总
+- **快速路径**：当收敛评估通过时（consensus_ratio >= 0.7），可跳过草案直接汇总
 - **超时调停**：超过最大轮次仍无共识时，Claude Code 介入调停
+
+## 反共识偏见
+
+- @Critic 角色每次发言必须包含至少 1 个反对意见或风险提示
+- 所有角色应独立分析，避免群体思维
+- 使用 `> [!assumption]` 标注隐含假设
 
 ## Markdown 增强语法
 
@@ -109,6 +187,7 @@ cat > "${DISCUSSION_DIR}/README.md" << 'HEREDOC'
 | `> [!decision]` | 决策记录 |
 | `> [!quote] @角色 Round N` | 引用 |
 | `> [!todo]` | 待办 |
+| `> [!assumption]` | 隐含假设（需后续验证） |
 
 ### 标签
 
@@ -134,13 +213,24 @@ cat > "${DISCUSSION_DIR}/README.md" << 'HEREDOC'
 | `README.md` | 本文件，讨论规则 |
 | `discussion.md` | 主讨论文档（含 Round 0 种子） |
 | `context.md` | 项目背景资料（自动填充） |
-| `invite-*.md` | 各角色邀请文件 |
+| `invite-*.md` | 各角色邀请文件（手动模式） |
 | `refs/` | 附件目录 |
-| `continue/` | 续接提示词 |
+| `continue/` | 续接提示词（手动模式） |
 HEREDOC
 
-# 替换 MAX_ROUNDS 占位符
+# 替换占位符
 sed_inplace "s/MAX_ROUNDS/${MAX_ROUNDS}/g" "${DISCUSSION_DIR}/README.md"
+
+# 替换预设角色占位符
+if [ -n "$PRESET" ] && [ "$ROLES_DISPLAY" != "（由初始化时填充）" ]; then
+  # 生成角色行（预设已知角色将由 Claude Code 详细填充）
+  sed_inplace "s/| PRESET_ROLES_PLACEHOLDER/| （预设: ${PRESET}）角色: ${ROLES_DISPLAY} — 详细信息由初始化流程填充 |/g" "${DISCUSSION_DIR}/README.md"
+else
+  sed_inplace "s/| PRESET_ROLES_PLACEHOLDER/| （其他角色由初始化时填充） | | | |/g" "${DISCUSSION_DIR}/README.md"
+fi
+
+# 确定讨论模式初始值
+MODE="pending"  # 模式将在 detect-cli-tools.sh 后确定
 
 # 生成 discussion.md（STATUS 面板 + 标题，Round 0 由 Claude Code 追加）
 cat > "${DISCUSSION_DIR}/discussion.md" << HEREDOC
@@ -150,13 +240,17 @@ pending: @Coordinator
 completed:
 mentions:
 phase: init
+mode: ${MODE}
 max_rounds: ${MAX_ROUNDS}
+preset: ${PRESET:-custom}
+tools:
 -->
 
 # ${TOPIC} — 需求讨论
 
 > 创建时间: $(date '+%Y-%m-%d %H:%M')
 > 参与者: （见 README.md 角色表）
+> 模式: 待检测（init 后确定）
 > 状态: 初始化中
 
 ---
@@ -207,11 +301,6 @@ cat > "${DISCUSSION_DIR}/continue/review.md" << HEREDOC
 3. 更新 STATUS 面板
 HEREDOC
 
-# 注意：角色专属的 round-N-role-tool.md 续接文件
-# 由 Claude Code 在 /discuss next 时动态生成，
-# 因为它们需要包含上一轮的 @ 提及上下文。
-# 此脚本不生成通用的 round-N-all.md（已证明无用）。
-
 echo "讨论空间已创建: ${DISCUSSION_DIR}"
 echo ""
 echo "目录结构:"
@@ -223,5 +312,10 @@ echo "  ├── refs/"
 echo "  └── continue/"
 echo "      ├── draft.md"
 echo "      └── review.md"
+if [ -n "$PRESET" ]; then
+  echo ""
+  echo "预设: ${PRESET}"
+  echo "角色: ${ROLES_DISPLAY}"
+fi
 echo ""
-echo "下一步: Claude Code 将自动填充 context.md、追加 Round 0 种子、生成邀请文件。"
+echo "下一步: Claude Code 将自动填充 context.md、追加 Round 0 种子、检测 CLI 工具并确定讨论模式。"

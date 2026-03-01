@@ -5,7 +5,7 @@ description: |
   multiple pages using Agent Teams. Each page is tested by an independent acceptance-tester
   agent for maximum efficiency. Use when the user mentions "并行验收", "团队验收",
   "acceptance team", "多页面测试", or wants to test multiple frontend pages simultaneously.
-version: 5.3.4
+version: 5.4.0
 status: ga
 triggers:
   - 并行验收
