@@ -71,6 +71,7 @@ clean_response() {
     sed '/^Writing to/d' | \
     sed '/^Edited file/d' | \
     sed '/^Created file/d' | \
+    sed '/^⚠️.*Using Claude via/d' | \
     sed '/^$/N;/^\n$/d'  # 合并连续空行
 }
 

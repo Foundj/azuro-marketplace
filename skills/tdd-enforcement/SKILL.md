@@ -7,7 +7,7 @@ description: |
   deleted and rewritten. Triggers on "TDD", "test first", "红绿重构", "implementing feature",
   "writing code", "bug fix", "refactoring", "behavior change". No exceptions without
   explicit user permission.
-version: 6.0.0
+version: 6.0.1
 status: ga
 triggers:
   - implementing feature

@@ -57,8 +57,13 @@ if [ -z "$ROUND" ]; then
 fi
 
 # 获取项目工作目录（讨论目录的祖先项目目录）
-# discussion-dir 通常是 <project-root>/docs/discussions/<topic>/
-WORKING_DIR=$(cd "$DISCUSSION_DIR/../../.." && pwd)
+# 优先使用 git 定位项目根目录，否则回退到相对路径推断
+if command -v git &>/dev/null && git -C "$DISCUSSION_DIR" rev-parse --show-toplevel &>/dev/null; then
+  WORKING_DIR=$(git -C "$DISCUSSION_DIR" rev-parse --show-toplevel)
+else
+  # 回退: discussion-dir 通常是 <project-root>/docs/discussions/<topic>/
+  WORKING_DIR=$(cd "$DISCUSSION_DIR/../../.." && pwd)
+fi
 
 echo "=== 开始 Round ${ROUND} 编排 ==="
 echo "讨论目录: ${DISCUSSION_DIR}"
@@ -69,6 +74,11 @@ echo ""
 ASSIGNMENT_COUNT=$(jq '.assignments | length' "$ASSIGNMENTS_FILE")
 SUCCESS_COUNT=0
 FAIL_COUNT=0
+
+# 创建临时文件（循环外创建，循环内复用）
+RESPONSE_FILE=$(mktemp)
+ERR_FILE=$(mktemp)
+trap "rm -f $RESPONSE_FILE $ERR_FILE" EXIT
 
 for i in $(seq 0 $((ASSIGNMENT_COUNT - 1))); do
   ROLE=$(jq -r ".assignments[$i].role" "$ASSIGNMENTS_FILE")
@@ -84,15 +94,12 @@ for i in $(seq 0 $((ASSIGNMENT_COUNT - 1))); do
     continue
   fi
 
-  # 调用 agent
-  RESPONSE_FILE=$(mktemp)
-  trap "rm -f $RESPONSE_FILE" EXIT
-
-  if bash "${SCRIPT_DIR}/invoke-agent.sh" "$TOOL" "$PROMPT_FILE" "$WORKING_DIR" 300 > "$RESPONSE_FILE" 2>&1; then
+  # 调用 agent（stdout → 响应文件，stderr → 错误日志）
+  if bash "${SCRIPT_DIR}/invoke-agent.sh" "$TOOL" "$PROMPT_FILE" "$WORKING_DIR" 300 > "$RESPONSE_FILE" 2>"$ERR_FILE"; then
     echo "  调用成功，解析响应..."
 
     # 解析响应并追加到 discussion.md
-    PARSED=$(bash "${SCRIPT_DIR}/parse-response.sh" "$ROLE" "$TOOL" "$ROUND" "$RESPONSE_FILE" 2>&1) || {
+    PARSED=$(bash "${SCRIPT_DIR}/parse-response.sh" "$ROLE" "$TOOL" "$ROUND" "$RESPONSE_FILE") || {
       echo "  警告: 响应解析失败，使用原始响应" >&2
       PARSED=$(cat "$RESPONSE_FILE")
     }
@@ -107,24 +114,28 @@ for i in $(seq 0 $((ASSIGNMENT_COUNT - 1))); do
     echo "  错误: ${TOOL} 调用失败，${ROLE} 的发言将跳过" >&2
     FAIL_COUNT=$((FAIL_COUNT + 1))
 
-    # 记录失败到 discussion.md
+    # 记录失败到 discussion.md（包含错误信息）
+    ERR_MSG=""
+    if [ -s "$ERR_FILE" ]; then
+      ERR_MSG=$(head -3 "$ERR_FILE")
+    fi
     cat >> "$DISCUSSION_FILE" <<EOF
 
 ## [Round ${ROUND}] ${ROLE} — ${TOOL} (调用失败)
 > 时间: $(date '+%Y-%m-%d %H:%M')
 > 状态: 工具调用失败，请使用手动模式补充此角色的发言
+> 错误: ${ERR_MSG:-未知错误}
 
 ---
 EOF
   fi
 
-  rm -f "$RESPONSE_FILE"
   echo ""
 done
 
 # 评估收敛
 echo "=== 收敛评估 ==="
-CONVERGENCE=$(bash "${SCRIPT_DIR}/evaluate-convergence.sh" "$DISCUSSION_FILE" 2>&1) || {
+CONVERGENCE=$(bash "${SCRIPT_DIR}/evaluate-convergence.sh" "$DISCUSSION_FILE") || {
   echo "警告: 收敛评估失败" >&2
   CONVERGENCE='{"converged": false, "recommendation": "evaluation_failed"}'
 }
