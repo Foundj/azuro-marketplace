@@ -38,7 +38,7 @@ if ! jq -e '.hooks' "$HOOKS_JSON" >/dev/null 2>&1; then
 fi
 
 # Validate hook event types
-VALID_EVENTS="PreToolUse PostToolUse Stop Notification SubagentStop"
+VALID_EVENTS="PreToolUse PostToolUse Stop Notification SubagentStop SessionStart"
 for event in $(jq -r '.hooks | keys[]' "$HOOKS_JSON" 2>/dev/null); do
     if ! echo "$VALID_EVENTS" | grep -qw "$event"; then
         echo -e "${RED}❌ Unknown hook event type: $event${NC}"

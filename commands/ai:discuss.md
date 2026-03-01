@@ -60,9 +60,9 @@ Initialize a new discussion space with project analysis seed.
 
 Re-generate invitation files with current discussion state.
 
-1. Read `docs/ai:discussions/<topic>/README.md` for role assignments
-2. Read `docs/ai:discussions/<topic>/ai:discussion.md` for STATUS and latest content
-3. Read `docs/ai:discussions/<topic>/context.md` for project data
+1. Read `docs/discussions/<topic>/README.md` for role assignments
+2. Read `docs/discussions/<topic>/discussion.md` for STATUS and latest content
+3. Read `docs/discussions/<topic>/context.md` for project data
 4. Read `${CLAUDE_PLUGIN_ROOT}/references/invitation-templates.md`
 5. **Write** fresh invitation files with up-to-date discussion context
 6. Print file list with instructions
@@ -71,7 +71,7 @@ Re-generate invitation files with current discussion state.
 
 Check discussion progress with deep scan.
 
-1. Read `docs/ai:discussions/<topic>/ai:discussion.md`
+1. Read `docs/discussions/<topic>/discussion.md`
 2. **Deep scan** — not just STATUS panel:
    - Parse actual `[Round N]` headers to determine who has responded
    - Scan `@` mentions in text to find unresolved ones
@@ -92,7 +92,7 @@ Check discussion progress with deep scan.
 
 Advance to next round with context-rich continuation files.
 
-1. Read `docs/ai:discussions/<topic>/ai:discussion.md`
+1. Read `docs/discussions/<topic>/discussion.md`
 2. **Deep scan** to verify current round is complete
 3. Update STATUS panel: increment round, reset all roles to pending
 4. **Dynamically generate** role-specific continuation files:
@@ -106,7 +106,7 @@ Advance to next round with context-rich continuation files.
 
 Enter draft phase (optional — skip if consensus is comprehensive).
 
-1. Read `docs/ai:discussions/<topic>/ai:discussion.md`
+1. Read `docs/discussions/<topic>/discussion.md`
 2. Verify at least 1 complete round
 3. Synthesize discussion into a `[Draft v1]` entry appended to `discussion.md`
 4. Update STATUS: set `phase: draft`
@@ -117,17 +117,17 @@ Enter draft phase (optional — skip if consensus is comprehensive).
 
 Generate final plan.md and task.md.
 
-1. Read entire `docs/ai:discussions/<topic>/ai:discussion.md`
+1. Read entire `docs/discussions/<topic>/discussion.md`
 2. Read `${CLAUDE_PLUGIN_ROOT}/references/output-format.md`
 3. **Deep extract**:
    - All `#consensus` decisions and `> [!decision]` callouts
    - All `> [!proposal]` callouts with their pros/cons
    - All `#pending` and `#needs-input` items → "Open Issues"
    - Core viewpoints from each role
-4. Generate `docs/ai:discussions/<topic>/plan.md`:
+4. Generate `docs/discussions/<topic>/plan.md`:
    - Fabula v5.x format with ADRs, confidence analysis, rollback points
    - Unresolved items listed explicitly
-5. Generate `docs/ai:discussions/<topic>/task.md`:
+5. Generate `docs/discussions/<topic>/task.md`:
    - Phase-grouped tasks with review gates
    - Each phase links to corresponding rollback point in plan.md
 6. Update STATUS: set `phase: done`

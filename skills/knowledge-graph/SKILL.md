@@ -5,7 +5,7 @@ description: |
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
   "knowledge", "experience", "历史方案", "经验复用", "参考". Manages cross-project knowledge relationships
   and enables experience reuse across projects. Now enhanced with MCP semantic search and LSP-first navigation.
-version: 5.3.3
+version: 5.3.4
 status: ga
 triggers:
   - query knowledge
@@ -197,10 +197,15 @@ In ai-dev Phase 0 (Pre-check), automatically queries:
   ],
   "tags": ["auth", "jwt", "security"],
   "created_at": "2025-01-07",
+  "status": "active",
   "success_count": 3,
   "failure_count": 0
 }
 ```
+
+**status 字段**:
+- `active` — 当前有效的知识（默认值，SessionStart hook 加载此类记录）
+- `superseded` — 被更新的知识替代（同 project + 重叠 tags 时自动标记）
 
 ### Relationship Record
 
@@ -236,6 +241,23 @@ Project level: `.claude-project/knowledge/`
 max_records: 50           # Maximum records
 retention_days: 30        # Retention period
 cleanup_on_start: true    # Cleanup on startup
+
+cleanup_priority:
+  1. Superseded records older than 30 days (first to go)
+  2. Any records older than 30 days
+  3. When over 50: keep active records, drop superseded first
+```
+
+### Knowledge Lifecycle
+
+```
+New knowledge added → Mark same-project overlapping-tag records as "superseded"
+                    → New record status = "active"
+
+SessionStart hook → Load top 10 "active" records → ~1500 tokens
+Query default     → Show "active" only (use --all for all)
+Cleanup           → Remove "superseded" before "active"
+```
 
 cleanup_priority:
   1. Records older than 30 days
@@ -307,6 +329,9 @@ Results:
 ┌─────────────────────────────────────────┐
 │           ai-dev Workflow               │
 ├─────────────────────────────────────────┤
+│                                         │
+│  SessionStart (Hook)                    │
+│  └── knowledge-graph: Auto-load active  │
 │                                         │
 │  Phase 0 (Pre-check)                    │
 │  └── knowledge-graph: Query knowledge   │
