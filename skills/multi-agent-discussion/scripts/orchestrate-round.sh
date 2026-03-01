@@ -27,6 +27,48 @@ AGENT_TIMEOUT="${4:-300}"  # 每个 agent 的超时秒数
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DISCUSSION_FILE="${DISCUSSION_DIR}/discussion.md"
 
+# --- STATUS 面板更新函数 ---
+
+# macOS/Linux 兼容的 sed in-place
+sed_inplace() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "$@"
+  else
+    sed -i "$@"
+  fi
+}
+
+# 更新 STATUS 面板中的指定字段
+# 用法: update_status_field <file> <field> <value>
+update_status_field() {
+  local file="$1" field="$2" value="$3"
+  sed_inplace "s|^${field}:.*|${field}: ${value}|" "$file"
+}
+
+# 将角色添加到 completed 列表
+# 用法: add_to_completed <file> <role>
+add_to_completed() {
+  local file="$1" role="$2"
+  local current
+  current=$(sed -n '/<!-- STATUS/,/-->/p' "$file" | grep '^completed:' | sed 's/^completed:[[:space:]]*//' | tr -d ' ')
+  if [ -z "$current" ]; then
+    update_status_field "$file" "completed" "$role"
+  else
+    update_status_field "$file" "completed" "${current}, ${role}"
+  fi
+}
+
+# 从 pending 列表中移除角色
+# 用法: remove_from_pending <file> <role>
+remove_from_pending() {
+  local file="$1" role="$2"
+  local current new_pending
+  current=$(sed -n '/<!-- STATUS/,/-->/p' "$file" | grep '^pending:' | sed 's/^pending:[[:space:]]*//')
+  # 移除角色（处理逗号分隔）
+  new_pending=$(echo "$current" | sed "s/${role}//g" | sed 's/^[, ]*//;s/[, ]*$//;s/,  *,/,/g' | sed 's/^, *//;s/, *$//')
+  update_status_field "$file" "pending" "$new_pending"
+}
+
 # 验证输入
 if [ ! -d "$DISCUSSION_DIR" ]; then
   echo "错误: 讨论目录不存在: $DISCUSSION_DIR" >&2
@@ -76,6 +118,24 @@ ASSIGNMENT_COUNT=$(jq '.assignments | length' "$ASSIGNMENTS_FILE")
 SUCCESS_COUNT=0
 FAIL_COUNT=0
 
+# 收集本轮所有角色名称
+ALL_ROLES=""
+for i in $(seq 0 $((ASSIGNMENT_COUNT - 1))); do
+  R=$(jq -r ".assignments[$i].role" "$ASSIGNMENTS_FILE")
+  if [ -z "$ALL_ROLES" ]; then
+    ALL_ROLES="$R"
+  else
+    ALL_ROLES="${ALL_ROLES}, ${R}"
+  fi
+done
+
+# 更新 STATUS 面板：轮次开始
+update_status_field "$DISCUSSION_FILE" "round" "$ROUND"
+update_status_field "$DISCUSSION_FILE" "pending" "$ALL_ROLES"
+update_status_field "$DISCUSSION_FILE" "completed" ""
+update_status_field "$DISCUSSION_FILE" "phase" "discuss"
+update_status_field "$DISCUSSION_FILE" "mode" "auto"
+
 # 创建临时文件（循环外创建，循环内复用）
 RESPONSE_FILE=$(mktemp)
 ERR_FILE=$(mktemp)
@@ -111,9 +171,16 @@ for i in $(seq 0 $((ASSIGNMENT_COUNT - 1))); do
 
     SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
     echo "  已追加到 discussion.md"
+
+    # 更新 STATUS: 角色完成
+    remove_from_pending "$DISCUSSION_FILE" "$ROLE"
+    add_to_completed "$DISCUSSION_FILE" "$ROLE"
   else
     echo "  错误: ${TOOL} 调用失败，${ROLE} 的发言将跳过" >&2
     FAIL_COUNT=$((FAIL_COUNT + 1))
+
+    # 更新 STATUS: 角色失败（从 pending 移除但不加入 completed）
+    remove_from_pending "$DISCUSSION_FILE" "$ROLE"
 
     # 记录失败到 discussion.md（包含错误信息）
     ERR_MSG=""
@@ -152,3 +219,8 @@ CONVERGED=$(echo "$CONVERGENCE" | jq -r '.converged' 2>/dev/null || echo "unknow
 RECOMMENDATION=$(echo "$CONVERGENCE" | jq -r '.recommendation' 2>/dev/null || echo "unknown")
 echo "  收敛: ${CONVERGED}"
 echo "  建议: ${RECOMMENDATION}"
+
+# 更新 STATUS: 根据收敛结果设置 phase
+if [ "$CONVERGED" = "true" ]; then
+  update_status_field "$DISCUSSION_FILE" "phase" "summarize"
+fi
