@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.16] - 2026-03-02
+
+### Fixed
+- Sprint 3 review: remove dead --report/--since params from trigger-monitor.sh
+- Fix --since crash on missing argument (unbound variable)
+- Add discuss mode to TeamRequest type and Phase 2 config in ai:team.md
+- Fix Dual Path version tag v6.0.14→v6.0.15
+- Remove unused BLUE color variable
+
+
 ## [6.0.15] - 2026-03-02
 
 ### Added

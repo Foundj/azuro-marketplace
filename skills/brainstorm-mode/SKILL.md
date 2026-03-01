@@ -31,7 +31,7 @@ description: |
   User wants to establish creative direction before implementation, triggering brainstorm's philosophy mode.
   </commentary>
   </example>
-version: 6.0.15
+version: 6.0.16
 status: ga
 profile: design
 triggers:

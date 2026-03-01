@@ -31,7 +31,7 @@ description: |
   User identifies a performance bottleneck in sequential execution and wants dependency-aware parallelization.
   </commentary>
   </example>
-version: 6.0.15
+version: 6.0.16
 status: ga
 profile: dev
 triggers:

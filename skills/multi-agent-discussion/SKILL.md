@@ -35,7 +35,7 @@ description: |
   Trigger phrase "汇总讨论结果" combined with explicit output request activates the Summarize phase.
   </commentary>
   </example>
-version: 6.0.15
+version: 6.0.16
 status: ga
 profile: design
 triggers:

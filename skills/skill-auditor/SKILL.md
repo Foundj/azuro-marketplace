@@ -33,7 +33,7 @@ description: |
   Direct mention of "skill-auditor" with "检查" and "--fix" flag triggers audit with auto-repair capabilities.
   </commentary>
   </example>
-version: 6.0.15
+version: 6.0.16
 status: ga
 profile: review
 triggers:

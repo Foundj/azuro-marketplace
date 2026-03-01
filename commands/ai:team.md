@@ -63,7 +63,7 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 
 ```typescript
 interface TeamRequest {
-  mode: "feature" | "review" | "debug"
+  mode: "feature" | "review" | "debug" | "discuss"
   description: string
   complexity: "simple" | "medium" | "complex"
   estimatedTeammates: number
@@ -170,6 +170,13 @@ const DEBUG_TEAM = {
   workflow: "competitive-hypothesis"
 }
 ```
+
+### 模式 4: 多Agent讨论 (discuss)
+
+**触发词:** "讨论", "discuss", "探讨", "辩论"
+
+`discuss` 模式不创建 Agent Teams，而是直接路由到 `multi-agent-discussion` 技能。
+使用 `/ai:team discuss <topic>` 等同于 `/ai:discuss <topic>`。
 
 ---
 

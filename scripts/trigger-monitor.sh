@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# trigger-monitor.sh — Skill trigger rate monitoring and reporting
-# Usage: bash scripts/trigger-monitor.sh [--report] [--json] [--since DAYS]
+# trigger-monitor.sh — Skill trigger eval coverage analysis
+# Usage: bash scripts/trigger-monitor.sh [--json]
 #
-# Analyzes git log for skill activation patterns, generates trigger rate
-# statistics, and identifies low-frequency skills for potential deprecation.
+# Analyzes evals/trigger-eval.json coverage against all skills,
+# reports which skills have trigger eval cases and which are uncovered.
 
 set -euo pipefail
 
@@ -13,17 +13,14 @@ EVALS_FILE="$PROJECT_ROOT/evals/trigger-eval.json"
 SKILLS_DIR="$PROJECT_ROOT/skills"
 
 # Defaults
-REPORT_MODE=false
 JSON_MODE=false
-SINCE_DAYS=7
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --report) REPORT_MODE=true; shift ;;
         --json) JSON_MODE=true; shift ;;
-        --since) SINCE_DAYS="$2"; shift 2 ;;
-        *) echo "Unknown option: $1"; exit 1 ;;
+        --help) echo "Usage: bash scripts/trigger-monitor.sh [--json]"; exit 0 ;;
+        *) echo "Unknown option: $1. Use --help for usage."; exit 1 ;;
     esac
 done
 
@@ -31,7 +28,6 @@ done
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Get all skill names
@@ -90,10 +86,9 @@ generate_report() {
 
     echo ""
     echo "╔════════════════════════════════════════════════════════════╗"
-    echo "║               TRIGGER RATE MONITOR REPORT                 ║"
+    echo "║            TRIGGER EVAL COVERAGE REPORT                  ║"
     echo "╠════════════════════════════════════════════════════════════╣"
-    echo "║  Date: $(date '+%Y-%m-%d')                                         ║"
-    echo "║  Period: Last ${SINCE_DAYS} days                                        ║"
+    printf "║  Date: %-51s║\n" "$(date '+%Y-%m-%d')"
     echo "╚════════════════════════════════════════════════════════════╝"
     echo ""
 

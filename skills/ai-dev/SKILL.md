@@ -31,7 +31,7 @@ description: |
   Bug fix request with quick/fix keywords triggers ai-dev in quick mode, skipping phases 0.5, 1, and 2.
   </commentary>
   </example>
-version: 6.0.15
+version: 6.0.16
 status: ga
 profile: dev
 triggers:
@@ -236,7 +236,7 @@ Controls skill activation to prevent context overload and undertrigger.
 - If total activated skill context exceeds 80% of available window, shed lowest-ranked skills first
 - Skills idle for 5+ turns are unloaded from active context
 
-### Dual Path: Fast vs Deep (v6.0.14)
+### Dual Path: Fast vs Deep (v6.0.15)
 
 Two execution paths for different task complexity:
 

@@ -32,7 +32,7 @@ description: |
   Trigger "compliance check" with suspicion of over-engineering activates the extra-work detection checks.
   </commentary>
   </example>
-version: 6.0.15
+version: 6.0.16
 status: ga
 profile: review
 triggers:

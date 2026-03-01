@@ -150,7 +150,8 @@ sprints:
   > Dual Path: Fast(单Agent默认) / Deep(--team/ai:team, 3-5x cost) + discuss 子命令路由
 - [x] `s3-2` 触发率监控脚本 — `scripts/trigger-monitor.sh`
   > 25/31 覆盖率 80% 达标，支持 --report/--json/--since 参数
-- [ ] `s3-review` Sprint 3 代码审查
+- [x] `s3-review` Sprint 3 代码审查
+  > 审查通过：0 P0, 6 P1(已修复), 5 P2(2已修复, 3已记录)
 
 ---
 
@@ -176,3 +177,4 @@ sprints:
 | 2026-03-02 | `s2-review` 标记已完成 | 0 P0, 5 P1(已修复): eval触发词冲突、规格文档1024→3000、Router版本标记、eval覆盖率58→68%、Direct Routing补齐 |
 | 2026-03-02 | `s3-1` 标记已完成 | Dual Path (Fast/Deep) + ai:team discuss 子命令路由 v6.0 multi-agent-discussion |
 | 2026-03-02 | `s3-2` 标记已完成 | trigger-monitor.sh：25/31 覆盖率 80% 达标，支持 --report/--json/--since |
+| 2026-03-02 | `s3-review` 标记已完成 | 0 P0, 6 P1(已修复): 脚本死逻辑清理、--since崩溃修复、discuss模式文档补齐、版本标记修正 |
