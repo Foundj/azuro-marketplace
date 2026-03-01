@@ -139,7 +139,8 @@ sprints:
   > Intent Router v6.0.12：Top-K(1-3) 激活约束 + Direct Routing 兜底 + Context Budget 卸载
 - [x] `s2-3` 构建触发率评估基准 — `evals/trigger-eval.json`
   > 30 条评估用例，覆盖 feature-dev/bug-fix/browser/discussion/team/trivial/casual 等场景
-- [ ] `s2-review` Sprint 2 代码审查
+- [x] `s2-review` Sprint 2 代码审查
+  > 审查通过：0 P0, 5 P1(已修复), 3 P2(已记录)
 
 ---
 
@@ -170,3 +171,4 @@ sprints:
 | 2026-03-02 | `s2-1` 标记已完成 | 31 技能 × 3 个 `<example>` 场景块，审计器限制提升至 3000 chars（commit 214a885） |
 | 2026-03-02 | `s2-2` 标记已完成 | Intent Router：Top-K(1-3) + Direct Routing 兜底 + Context Budget 卸载 |
 | 2026-03-02 | `s2-3` 标记已完成 | 30 条 trigger eval 用例（should-trigger + should-not-trigger），目标通过率 ≥80% |
+| 2026-03-02 | `s2-review` 标记已完成 | 0 P0, 5 P1(已修复): eval触发词冲突、规格文档1024→3000、Router版本标记、eval覆盖率58→68%、Direct Routing补齐 |

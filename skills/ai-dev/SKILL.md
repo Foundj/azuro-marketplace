@@ -31,7 +31,7 @@ description: |
   Bug fix request with quick/fix keywords triggers ai-dev in quick mode, skipping phases 0.5, 1, and 2.
   </commentary>
   </example>
-version: 6.0.13
+version: 6.0.14
 status: ga
 profile: dev
 triggers:
@@ -211,7 +211,7 @@ When `/ai:dev` or `/ai:dev auto` runs without arguments:
 - Detects active changes in `codebox/changes/active/`
 - Offers to continue or start new
 
-### Intent Router (v6.0.12)
+### Intent Router (v6.0.13)
 
 Controls skill activation to prevent context overload and undertrigger.
 
@@ -226,6 +226,8 @@ Controls skill activation to prevent context overload and undertrigger.
   - `/ai:fix` → ai-dev quick mode (fix cycle)
   - `/ai:status` → session-manager (status panel)
   - `/ai:team` → team-collaboration (team orchestration)
+  - `/ai:session-save` → session-manager (save progress)
+  - `/ai:session-resume` → session-manager (restore session)
   - `@agent-name` → named agent directly
 - This ensures skills are always reachable regardless of description matching quality
 

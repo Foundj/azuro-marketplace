@@ -32,7 +32,7 @@ description: |
   User says "just do it" with a complex multi-component feature and mentions team mode, triggering ultrawork with Agent Teams integration.
   </commentary>
   </example>
-version: 6.0.13
+version: 6.0.14
 status: ga
 profile: dev
 triggers:

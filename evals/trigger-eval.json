@@ -83,7 +83,7 @@
     },
     {
       "id": 12,
-      "prompt": "好好想想这个数据库设计方案，分析一下 PostgreSQL 和 MongoDB 的 tradeoff",
+      "prompt": "好好思考这个数据库设计方案，分析一下 PostgreSQL 和 MongoDB 的 tradeoff",
       "should_trigger": ["thinking-engine"],
       "should_not_trigger": ["brainstorm-mode"],
       "category": "deep-thinking"
@@ -213,6 +213,55 @@
       "should_trigger": [],
       "should_not_trigger": ["ai-dev", "brainstorm-mode", "multi-agent-discussion", "agent-browser"],
       "category": "casual-chat"
+    },
+    {
+      "id": 31,
+      "prompt": "ulw 全力处理这个 payment integration，从头到尾一气呵成不要停",
+      "should_trigger": ["ultrawork"],
+      "should_not_trigger": ["brainstorm-mode"],
+      "category": "ultrawork"
+    },
+    {
+      "id": 32,
+      "prompt": "先评估一下我的信心度，这个 WebSocket 重构我有多大把握做对",
+      "should_trigger": ["confidence-gate"],
+      "should_not_trigger": ["brainstorm-mode", "thinking-engine"],
+      "category": "confidence-check"
+    },
+    {
+      "id": 33,
+      "prompt": "bridge the context from my last session about the auth refactor, I need the key decisions",
+      "should_trigger": ["context-bridge"],
+      "should_not_trigger": ["session-manager", "knowledge-graph"],
+      "category": "context-bridge"
+    },
+    {
+      "id": 34,
+      "prompt": "审计一下这个插件的结构和配置是否合规，包括 marketplace.json 和 hooks",
+      "should_trigger": ["plugin-auditor"],
+      "should_not_trigger": ["skill-auditor", "ai-dev-quality"],
+      "category": "plugin-audit"
+    },
+    {
+      "id": 35,
+      "prompt": "用 subagent 并行拆分实现这 5 个独立的 API endpoints",
+      "should_trigger": ["subagent-driven-development"],
+      "should_not_trigger": ["team-collaboration", "ai-dev"],
+      "category": "subagent-dev"
+    },
+    {
+      "id": 36,
+      "prompt": "审查一下 CLAUDE.md 的配置，看看有没有过时的规则需要更新",
+      "should_trigger": ["claude-reflect"],
+      "should_not_trigger": ["ai-dev-quality", "code-simplifier"],
+      "category": "claude-md-review"
+    },
+    {
+      "id": 37,
+      "prompt": "integrate Context7 MCP server to get up-to-date docs for React 19",
+      "should_trigger": ["mcp-integration"],
+      "should_not_trigger": ["competitor-research", "knowledge-graph"],
+      "category": "mcp-integration"
     }
   ]
 }

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.14] - 2026-03-02
+
+### Fixed
+- Sprint 2 review: fix eval #12 trigger word conflict (好好想想→好好思考)
+- Update docs/skills/specification.md description limit 1024→3000
+- Fix Intent Router version tag v6.0.12→v6.0.13
+- Add /ai:session-save and /ai:session-resume to Direct Routing table
+- Expand trigger eval from 30→37 cases (coverage 58%→68%)
+
+
 ## [6.0.13] - 2026-03-02
 
 ### Added

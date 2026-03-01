@@ -33,7 +33,7 @@ description: |
   User wants to sync session learnings to project files, directly mentioning "reflect" as the trigger.
   </commentary>
   </example>
-version: 6.0.13
+version: 6.0.14
 status: ga
 profile: default
 triggers:
