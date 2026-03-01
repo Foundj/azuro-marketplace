@@ -5,7 +5,7 @@ description: |
   It verifies that implementation matches specification EXACTLY - nothing more, nothing less.
   Triggers on "spec review", "specification check", "规格审查", "compliance check", "符合性检查".
   Must pass before proceeding to Stage 2 code quality review.
-version: 6.0.2
+version: 6.0.3
 status: ga
 triggers:
   - spec review

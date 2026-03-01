@@ -8,7 +8,7 @@ description: |
   (Codex, Cursor, OpenCode, Gemini, Claude variants) for collaborative
   requirement analysis and decision making. It provides a structured multi-agent discussion
   framework with automated CLI orchestration, shared markdown workspace, and convergence evaluation.
-version: 6.0.2
+version: 6.0.3
 status: ga
 triggers:
   - start a discussion
@@ -121,7 +121,7 @@ Parse `$ARGUMENTS` for topic and options. Show progress labels:
 Then:
 
 1. Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/init-discussion.sh <project-root> <topic> [max-rounds] [--preset <preset>]`
-2. **Auto-populate `context.md`**：使用 Glob/Grep/Read 分析目标项目，自动填充技术栈、架构概览、关键数据指标
+2. **Auto-populate `context.md`**：Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/populate-context.sh <project-root> <context-file>` 自动扫描技术栈、目录结构、关键文件，然后用 Glob/Grep/Read 增强分析
 3. Read `references/role-catalog.md` to select roles (from preset or user choice)
 4. Update generated `README.md` with role table, update STATUS panel
 5. **Seed Round 0**：以 @Coordinator 身份在 `discussion.md` 中追加项目分析种子发言
@@ -277,6 +277,7 @@ Use [`interaction-protocol`](../interaction-protocol/SKILL.md) as the default in
 - **`scripts/evaluate-convergence.sh`** — Evaluate discussion convergence
 - **`scripts/orchestrate-round.sh`** — Orchestrate a single discussion round
 - **`scripts/init-discussion.sh`** — Initialize discussion directory structure
+- **`scripts/populate-context.sh`** — Auto-scan project and populate context.md
 
 ### Documentation
 - **`docs/cli-non-interactive-modes.md`** — CLI non-interactive mode reference
