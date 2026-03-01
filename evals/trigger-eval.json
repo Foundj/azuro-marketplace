@@ -1,0 +1,218 @@
+{
+  "version": "1.0",
+  "description": "Trigger rate evaluation baseline for azuro-marketplace skills",
+  "created": "2026-03-02",
+  "target_pass_rate": 0.80,
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我开发一个用户权限管理模块，要支持 RBAC，集成到现有的 Express 后端",
+      "should_trigger": ["ai-dev"],
+      "should_not_trigger": ["agent-browser", "multi-agent-discussion"],
+      "category": "feature-development"
+    },
+    {
+      "id": 2,
+      "prompt": "fix the pagination bug in src/components/DataTable.tsx, offset calculation is wrong",
+      "should_trigger": ["ai-dev"],
+      "should_not_trigger": ["brainstorm-mode", "competitor-research"],
+      "category": "bug-fix"
+    },
+    {
+      "id": 3,
+      "prompt": "打开 http://localhost:3000/login 页面，截图看看登录表单渲染对不对",
+      "should_trigger": ["agent-browser"],
+      "should_not_trigger": ["ai-dev", "code-simplifier"],
+      "category": "browser-automation"
+    },
+    {
+      "id": 4,
+      "prompt": "I want to discuss the authentication architecture with multiple perspectives before implementing",
+      "should_trigger": ["multi-agent-discussion"],
+      "should_not_trigger": ["ai-dev", "agent-browser"],
+      "category": "discussion"
+    },
+    {
+      "id": 5,
+      "prompt": "创建一个团队来并行开发前后端，前端做 React dashboard，后端做 REST API",
+      "should_trigger": ["team-collaboration"],
+      "should_not_trigger": ["multi-agent-discussion"],
+      "category": "team-orchestration"
+    },
+    {
+      "id": 6,
+      "prompt": "这段代码太复杂了，帮我重构简化一下 src/utils/dataProcessor.ts",
+      "should_trigger": ["code-simplifier"],
+      "should_not_trigger": ["ai-dev", "brainstorm-mode"],
+      "category": "code-simplification"
+    },
+    {
+      "id": 7,
+      "prompt": "我有个模糊的想法，想做一个类似 Notion 的笔记功能，但不确定具体需求",
+      "should_trigger": ["brainstorm-mode"],
+      "should_not_trigger": ["ai-dev", "code-simplifier"],
+      "category": "brainstorming"
+    },
+    {
+      "id": 8,
+      "prompt": "/ai:dev implement user authentication with JWT",
+      "should_trigger": ["ai-dev"],
+      "should_not_trigger": [],
+      "category": "explicit-command"
+    },
+    {
+      "id": 9,
+      "prompt": "/ai:fix login button not responding on mobile",
+      "should_trigger": ["ai-dev"],
+      "should_not_trigger": ["agent-browser"],
+      "category": "explicit-command"
+    },
+    {
+      "id": 10,
+      "prompt": "research how competitors like Linear and Jira handle task dependencies",
+      "should_trigger": ["competitor-research"],
+      "should_not_trigger": ["ai-dev", "multi-agent-discussion"],
+      "category": "research"
+    },
+    {
+      "id": 11,
+      "prompt": "agent-browser open https://staging.example.com and fill the signup form",
+      "should_trigger": ["agent-browser"],
+      "should_not_trigger": ["ai-dev"],
+      "category": "browser-automation"
+    },
+    {
+      "id": 12,
+      "prompt": "好好想想这个数据库设计方案，分析一下 PostgreSQL 和 MongoDB 的 tradeoff",
+      "should_trigger": ["thinking-engine"],
+      "should_not_trigger": ["brainstorm-mode"],
+      "category": "deep-thinking"
+    },
+    {
+      "id": 13,
+      "prompt": "save my current session progress, I'll continue tomorrow",
+      "should_trigger": ["session-manager"],
+      "should_not_trigger": ["ai-dev", "knowledge-graph"],
+      "category": "session-management"
+    },
+    {
+      "id": 14,
+      "prompt": "审计一下 skills/ai-dev 这个技能的质量评分",
+      "should_trigger": ["skill-auditor"],
+      "should_not_trigger": ["ai-dev-quality", "code-simplifier"],
+      "category": "skill-audit"
+    },
+    {
+      "id": 15,
+      "prompt": "帮我把 README 里的 typo 改一下，第三段 \"recieve\" 应该是 \"receive\"",
+      "should_trigger": [],
+      "should_not_trigger": ["ai-dev", "code-simplifier", "brainstorm-mode"],
+      "category": "trivial-edit"
+    },
+    {
+      "id": 16,
+      "prompt": "开个讨论，我想让 PM 和 Critic 两个角色辩论一下微服务 vs 单体架构",
+      "should_trigger": ["multi-agent-discussion"],
+      "should_not_trigger": ["team-collaboration", "brainstorm-mode"],
+      "category": "discussion"
+    },
+    {
+      "id": 17,
+      "prompt": "ulw 全力并行重构整个 authentication 模块，拆分成 auth-service 和 token-manager",
+      "should_trigger": ["ai-dev"],
+      "should_not_trigger": ["code-simplifier"],
+      "category": "ultrawork"
+    },
+    {
+      "id": 18,
+      "prompt": "查一下知识库里有没有之前处理过 CORS 跨域的方案",
+      "should_trigger": ["knowledge-graph"],
+      "should_not_trigger": ["competitor-research", "ai-dev"],
+      "category": "knowledge-query"
+    },
+    {
+      "id": 19,
+      "prompt": "run the E2E tests on http://localhost:3000, check login → dashboard → logout flow",
+      "should_trigger": ["agent-browser"],
+      "should_not_trigger": ["ai-dev-quality"],
+      "category": "e2e-testing"
+    },
+    {
+      "id": 20,
+      "prompt": "git worktree 创建一个隔离环境来做 payment 模块的开发",
+      "should_trigger": ["git-worktree"],
+      "should_not_trigger": ["ai-dev", "team-collaboration"],
+      "category": "worktree"
+    },
+    {
+      "id": 21,
+      "prompt": "review the code changes in src/api/ for security vulnerabilities and performance issues",
+      "should_trigger": ["ai-dev-quality"],
+      "should_not_trigger": ["code-simplifier", "ai-dev"],
+      "category": "code-review"
+    },
+    {
+      "id": 22,
+      "prompt": "/ai:team feature 开发用户管理系统，前后端并行",
+      "should_trigger": ["team-collaboration"],
+      "should_not_trigger": ["multi-agent-discussion"],
+      "category": "explicit-command"
+    },
+    {
+      "id": 23,
+      "prompt": "what does the function handleTokenRefresh do in src/auth/tokenManager.ts?",
+      "should_trigger": [],
+      "should_not_trigger": ["ai-dev", "brainstorm-mode", "code-simplifier"],
+      "category": "code-question"
+    },
+    {
+      "id": 24,
+      "prompt": "我想初始化一个新项目，创建 codebox 目录和基础配置文件",
+      "should_trigger": ["project-initializer"],
+      "should_not_trigger": ["ai-dev", "brainstorm-mode"],
+      "category": "project-init"
+    },
+    {
+      "id": 25,
+      "prompt": "帮我用 TDD 方式实现 calculateDiscount 函数，先写测试再写实现",
+      "should_trigger": ["tdd-enforcement"],
+      "should_not_trigger": ["ai-dev-quality"],
+      "category": "tdd"
+    },
+    {
+      "id": 26,
+      "prompt": "compress the current context, it's getting too long and I'm losing track",
+      "should_trigger": ["context-compressor"],
+      "should_not_trigger": ["code-simplifier", "session-manager"],
+      "category": "context-management"
+    },
+    {
+      "id": 27,
+      "prompt": "检查一下我的实现是否符合 proposal.md 里的需求规格，不要多也不要少",
+      "should_trigger": ["spec-compliance-review"],
+      "should_not_trigger": ["ai-dev-quality", "code-simplifier"],
+      "category": "spec-compliance"
+    },
+    {
+      "id": 28,
+      "prompt": "/ai:status show me the current feature progress",
+      "should_trigger": ["session-manager"],
+      "should_not_trigger": ["ai-dev"],
+      "category": "explicit-command"
+    },
+    {
+      "id": 29,
+      "prompt": "analyze the task dependencies in tasks.md and find the optimal execution order",
+      "should_trigger": ["task-dependency-analyzer"],
+      "should_not_trigger": ["ai-dev", "task-templates"],
+      "category": "task-analysis"
+    },
+    {
+      "id": 30,
+      "prompt": "我只是想聊聊天，今天工作好累啊",
+      "should_trigger": [],
+      "should_not_trigger": ["ai-dev", "brainstorm-mode", "multi-agent-discussion", "agent-browser"],
+      "category": "casual-chat"
+    }
+  ]
+}

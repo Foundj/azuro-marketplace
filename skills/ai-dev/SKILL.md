@@ -31,7 +31,7 @@ description: |
   Bug fix request with quick/fix keywords triggers ai-dev in quick mode, skipping phases 0.5, 1, and 2.
   </commentary>
   </example>
-version: 6.0.12
+version: 6.0.13
 status: ga
 profile: dev
 triggers:
@@ -211,7 +211,28 @@ When `/ai:dev` or `/ai:dev auto` runs without arguments:
 - Detects active changes in `codebox/changes/active/`
 - Offers to continue or start new
 
-### LSP-First Navigation (v5.0.9)
+### Intent Router (v6.0.12)
+
+Controls skill activation to prevent context overload and undertrigger.
+
+**Top-K Activation Constraint:**
+- Each turn activates at most **3 skills** (K=1-3), ranked by semantic relevance
+- If 4+ skills match, select the top 3 and log skipped candidates
+- K=1 for simple tasks (bug fix, single-file edit); K=3 for complex tasks (new feature, multi-phase)
+
+**Direct Routing (Fallback):**
+- Explicit commands bypass probability matching entirely:
+  - `/ai:dev` → ai-dev skill (full workflow)
+  - `/ai:fix` → ai-dev quick mode (fix cycle)
+  - `/ai:status` → session-manager (status panel)
+  - `/ai:team` → team-collaboration (team orchestration)
+  - `@agent-name` → named agent directly
+- This ensures skills are always reachable regardless of description matching quality
+
+**Context Budget:**
+- Each activated skill consumes context proportional to its SKILL.md size
+- If total activated skill context exceeds 80% of available window, shed lowest-ranked skills first
+- Skills idle for 5+ turns are unloaded from active context
 
 **Always prefer LSP tools over grep/glob for code navigation:**
 

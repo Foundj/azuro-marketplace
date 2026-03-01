@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.13] - 2026-03-02
+
+### Added
+- Intent Router in ai-dev SKILL.md: Top-K(1-3) activation constraint, Direct Routing fallback, Context Budget unload
+- Trigger evaluation baseline `evals/trigger-eval.json` with 30 test cases
+
+
 ## [6.0.12] - 2026-03-02
 
 ### Changed

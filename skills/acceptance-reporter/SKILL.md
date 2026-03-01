@@ -31,7 +31,7 @@ description: |
   Request for acceptance report aggregation and historical analysis triggers this skill.
   </commentary>
   </example>
-version: 6.0.12
+version: 6.0.13
 status: ga
 profile: review
 triggers:
