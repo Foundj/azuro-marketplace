@@ -128,7 +128,7 @@ Core workflow:
 <!-- BEGIN_PLUGIN_TABLE -->
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **ai-dev** | 6.0.8 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **ai-dev** | 6.0.9 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
 <!-- END_PLUGIN_TABLE -->
 
 ## Main Plugin (ai-dev) Features
@@ -146,13 +146,13 @@ Core workflow:
 
 > **Note**: Additional commands (like `/ai:skills-audit`, `/ai:test-web`) are internal tools triggered automatically by workflows. They are fully functional but not exposed to avoid user confusion. See [docs/INDEX.md](docs/INDEX.md) for design principles.
 
-### Specialized Agents (24)
+### Specialized Agents (20)
 
 - **Architecture**: `code-architect`, `backend-architect`, `frontend-developer`
 - **Quality**: `code-reviewer`, `quality-guardian`, `confidence-scorer`
 - **Development**: `javascript-pro`, `typescript-pro`, `quick-fixer`
-- **Debugging**: `debugger`, `error-detective`, `project-doctor`
-- **Planning**: `requirement-analyzer`, `feature-planner`, `task-decomposer`
+- **Debugging**: `debugger`, `project-doctor`
+- **Planning**: `requirement-analyzer`, `task-decomposer`
 
 ### Agent Skills (9)
 

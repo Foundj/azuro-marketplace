@@ -255,7 +255,7 @@ function identifyParallelTasks(tasks: Task[]): ParallelGroup[] {
 ## 任务: 修复 [Bug描述]
 
 ### 子任务分解
-1. **问题调查** (error-detective, 1-2h)
+1. **问题调查** (debugger, 1-2h)
    - 复现问题步骤
    - 分析错误日志
 

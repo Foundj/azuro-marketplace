@@ -5,7 +5,7 @@ description: |
   It provides scenario templates, team configuration guides, and collaboration best practices
   using Claude Code native Agent Teams capabilities. Use when the user mentions "团队协作",
   "team collaboration", "多代理", "并行开发", "agent teams", or wants parallel development.
-version: 6.0.8
+version: 6.0.9
 status: ga
 profile: dev
 triggers:

@@ -186,7 +186,7 @@ echo "-------------------------------------------"
 
 AGENTS=(
     "requirement-interviewer.md"
-    "feature-planner.md"
+    "requirement-analyzer.md"
     "code-explorer.md"
     "code-architect.md"
     "task-decomposer.md"

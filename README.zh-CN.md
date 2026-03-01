@@ -104,7 +104,7 @@ Claude 会自动使用市场中合适的技能和代理。
 <!-- BEGIN_PLUGIN_TABLE -->
 | 插件 | 版本 | 描述 |
 |------|------|------|
-| **ai-dev** | 6.0.8 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
+| **ai-dev** | 6.0.9 | Industrial-grade AI development orchestration with 7-phase gated workflow, OODA autonomous completion, knowledge management, and project context awareness |
 <!-- END_PLUGIN_TABLE -->
 
 ## 主插件 (ai-dev) 功能
@@ -122,13 +122,13 @@ Claude 会自动使用市场中合适的技能和代理。
 
 > **说明**: 其他命令（如 `/ai:skills-audit`、`/ai:test-web`）是内部工具，由工作流自动触发调用。它们功能完整，但不暴露给用户以避免混淆。详见 [docs/INDEX.md](docs/INDEX.md) 设计原则。
 
-### 专业代理 (24个)
+### 专业代理 (20个)
 
 - **架构**: `code-architect`, `backend-architect`, `frontend-developer`
 - **质量**: `code-reviewer`, `quality-guardian`, `confidence-scorer`
 - **开发**: `javascript-pro`, `typescript-pro`, `quick-fixer`
-- **调试**: `debugger`, `error-detective`, `project-doctor`
-- **规划**: `requirement-analyzer`, `feature-planner`, `task-decomposer`
+- **调试**: `debugger`, `project-doctor`
+- **规划**: `requirement-analyzer`, `task-decomposer`
 
 ### 代理技能 (9个)
 

@@ -4,7 +4,7 @@ description: |
   Generate structured acceptance reports with screenshots, validations,
   and task associations. Use after web testing to create evidence reports.
   Triggers on: "acceptance report", "验收报告", "generate report", "报告生成".
-version: 6.0.8
+version: 6.0.9
 status: ga
 profile: review
 triggers:

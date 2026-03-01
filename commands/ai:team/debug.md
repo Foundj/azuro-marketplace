@@ -41,7 +41,7 @@ const DEBUG_TEAMMATES = {
 
   codeTracer: {
     role: "code-tracer",
-    type: "ai-dev:error-detective",
+    type: "ai-dev:debugger",
     focus: [
       "代码路径追踪",
       "数据流分析",
@@ -181,7 +181,7 @@ Task({
 
 // 代码追踪师
 Task({
-  subagent_type: "ai-dev:error-detective",
+  subagent_type: "ai-dev:debugger",
   team_name: currentTeam,
   name: "code-tracer",
   prompt: `

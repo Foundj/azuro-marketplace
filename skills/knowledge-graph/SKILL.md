@@ -5,7 +5,7 @@ description: |
   "查知识库", "知识图谱", "related projects", "similar implementations", or uses keywords like
   "knowledge", "experience", "历史方案", "经验复用", "参考". Manages cross-project knowledge relationships
   and enables experience reuse across projects. Now enhanced with MCP semantic search and LSP-first navigation.
-version: 6.0.8
+version: 6.0.9
 status: ga
 profile: design
 triggers:
@@ -118,7 +118,7 @@ Query Priority:
 
 ## Agent Collaboration
 - **@librarian**: Uses knowledge graph to provide historical context during research.
-- **feature-planner**: Queries graph for similar project structures during Phase 1.
+- **requirement-analyzer**: Queries graph for similar project structures during Phase 1.
 
 ## Version History
 - **5.0.9**: Add LSP-first navigation, MCP semantic search, tool priority chain

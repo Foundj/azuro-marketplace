@@ -41,7 +41,7 @@ ai 实现头像上传
 ### 4. 工作流编排
 ```
 Phase 1: 需求分析 (10% 时间)
-  Agents: feature-planner
+  Agents: requirement-analyzer
 
 Phase 2: 架构设计 (30% 时间)
   Agents: api-helper, frontend-developer (并行)

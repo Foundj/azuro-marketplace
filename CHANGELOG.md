@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.9] - 2026-03-01
+
+### Changed
+- Consolidate agents: 30 → 25 active agents
+  - Merge root-cause-analyst + error-detective → debugger (enhanced with fishbone, FTA, error forensics)
+  - Merge feature-planner → requirement-analyzer (enhanced with task decomposition)
+  - Deprecate task-orchestrator v1 (replaced by task-orchestrator-v2)
+- Update 23+ files with agent reference migrations
+
+
 ## [6.0.8] - 2026-03-01
 
 ### Fixed

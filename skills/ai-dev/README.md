@@ -71,7 +71,7 @@ dev fix the login button bug
 | debugger | Deep debugging |
 | api-helper | API integration |
 | test-automator | Test generation |
-| feature-planner | Feature planning |
+| requirement-analyzer | Feature planning and requirement analysis |
 
 ## Directory Structure
 

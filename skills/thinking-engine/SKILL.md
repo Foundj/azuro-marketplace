@@ -7,7 +7,7 @@ description: |
   problem solving, and architecture design decisions.
 
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 6.0.8
+version: 6.0.9
 status: ga
 profile: design
 triggers:
@@ -175,7 +175,7 @@ Step 6: Security & Reliability
 
 | Agent | Expertise | Complexity | Thinking Depth |
 |-------|-----------|------------|----------------|
-| feature-planner | Requirements, design | MEDIUM, COMPLEX | deep |
+| requirement-analyzer | Requirements, design | MEDIUM, COMPLEX | deep |
 | api-helper | API design, specs | ALL | medium |
 | frontend-developer | UI/UX, frameworks | SIMPLE, MEDIUM | medium |
 | backend-architect | System, database | COMPLEX | deep |
@@ -233,7 +233,7 @@ ai think design payment system     # → architecture (COMPLEX)
 |-------|------|
 | `ai-dev` | Triggers thinking-engine for complex tasks |
 | `@oracle` | Strategic reasoning consultation |
-| `feature-planner` | Receives task analysis output |
+| `requirement-analyzer` | Receives task analysis output |
 | `backend-architect` | Uses architecture analysis |
 
 ## Version History
@@ -268,7 +268,7 @@ See `references/analysis-frameworks.md` for detailed frameworks.
    Dependencies: Database schema, API routes
 
 🎯 Step 4: Select Strategy
-   Agents: feature-planner → api-helper → code-reviewer → test-automator
+   Agents: requirement-analyzer → api-helper → code-reviewer → test-automator
    Steps: 8 tasks
    Time: 30-45 minutes
 

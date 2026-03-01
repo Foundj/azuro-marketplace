@@ -4,7 +4,7 @@
 
 ## 概述
 
-本目录包含 25 个专业化 Agent，按职能分为以下类别：
+本目录包含 21 个专业化 Agent，按职能分为以下类别：
 
 ## 核心协调
 
@@ -19,8 +19,6 @@
 | Agent | 描述 | 触发场景 |
 |-------|------|----------|
 | [requirement-analyzer](requirement-analyzer.md) | 需求分析专家 | Phase 1 需求理解 |
-| [feature-planner](feature-planner.md) | 功能规划专家 | 新功能拆分和评估 |
-| [task-orchestrator](task-orchestrator.md) | 任务分析和规划 | 复杂任务分解 |
 | [task-orchestrator-v2](task-orchestrator-v2.md) | Sequential Thinking 版本 | 深度任务规划 |
 | [task-decomposer](task-decomposer.md) | 任务分解专家 | 子任务拆分 |
 
@@ -55,8 +53,6 @@
 | Agent | 描述 | 触发场景 |
 |-------|------|----------|
 | [debugger](debugger.md) | 调试专家 (含根因分析) | 错误/测试失败时主动触发 |
-| [root-cause-analyst](root-cause-analyst.md) | 根因分析专家 | 5-Why/鱼骨图/故障树分析 |
-| [error-detective](error-detective.md) | 错误分析调查 | 堆栈追踪和错误取证 |
 | [project-doctor](project-doctor.md) | 项目健康诊断 | 配置/依赖/性能问题 |
 
 ## 辅助工具

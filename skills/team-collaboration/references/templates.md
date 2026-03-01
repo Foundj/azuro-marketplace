@@ -84,8 +84,8 @@ const INVESTIGATION_TEMPLATE = {
   name: "问题调查团队",
   teammates: [
     {
-      role: "error-detective",
-      type: "ai-dev:error-detective",
+      role: "debugger",
+      type: "ai-dev:debugger",
       task: "分析错误日志和堆栈"
     },
     {
@@ -95,7 +95,7 @@ const INVESTIGATION_TEMPLATE = {
     },
     {
       role: "root-cause-analyst",
-      type: "ai-dev:root-cause-analyst",
+      type: "ai-dev:debugger",
       task: "5-Why分析根因"
     }
   ],

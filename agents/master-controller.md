@@ -88,16 +88,16 @@ function scoreAgent(agent: AgentInfo, task: TaskAnalysis): number {
 ```typescript
 const AGENT_REGISTRY: AgentRegistry = {
   // 🔄 工作流管理
-  "feature-planner": {
-    intent: [TaskIntent.FEATURE_DEVELOPMENT, TaskIntent.PROJECT_SETUP],
-    keywords: ["功能", "需求", "规划", "分析", "设计", "实现"],
+  "requirement-analyzer": {
+    intent: [TaskIntent.FEATURE_DEVELOPMENT, TaskIntent.PROJECT_SETUP, TaskIntent.PLANNING],
+    keywords: ["功能", "需求", "规划", "分析", "设计", "实现", "评估", "可行性", "范围", "验收"],
     complexity: ["simple", "medium", "complex"],
-    capabilities: ["requirement_analysis", "task_breakdown", "planning"],
+    capabilities: ["requirement_analysis", "task_breakdown", "planning", "feasibility_assessment", "scope_definition", "acceptance_criteria"],
     priority: 1,
-    description: "功能规划和需求分析专家"
+    description: "需求分析和功能规划专家"
   },
-  
-  "task-orchestrator": {
+
+  "task-orchestrator-v2": {
     intent: [TaskIntent.FEATURE_DEVELOPMENT, TaskIntent.PROJECT_SETUP],
     keywords: ["任务", "规划", "管理", "Sprint", "计划"],
     complexity: ["medium", "complex"],
@@ -179,7 +179,7 @@ const AGENT_REGISTRY: AgentRegistry = {
     description: "React/Next.js前端开发专家"
   },
 
-  // 🛠️ 开发助手 (扩展) - debugger, test-automator, error-detective
+  // 🛠️ 开发助手 (扩展) - debugger, test-automator
   "debugger": {
     intent: [TaskIntent.TROUBLESHOOTING, TaskIntent.BUG_FIXING],
     keywords: ["调试", "诊断", "错误", "问题", "故障", "异常", "trace"],
@@ -198,16 +198,6 @@ const AGENT_REGISTRY: AgentRegistry = {
     priority: 1,
     timeEstimate: "1-3天",
     description: "测试自动化和质量保证专家"
-  },
-
-  "error-detective": {
-    intent: [TaskIntent.TROUBLESHOOTING, TaskIntent.BUG_FIXING],
-    keywords: ["错误", "侦探", "调查", "模式", "分析", "追踪"],
-    complexity: ["medium", "complex"],
-    capabilities: ["error_investigation", "pattern_analysis", "root_cause_analysis", "forensic_analysis"],
-    priority: 2,
-    timeEstimate: "1-4天",
-    description: "错误侦探和模式分析专家"
   },
 
   // 🔤 语言专家 (2个)
@@ -285,7 +275,7 @@ const WORKFLOW_TEMPLATES = {
     phases: [
       {
         name: "需求分析",
-        agents: ["feature-planner", "requirement-analyzer"],
+        agents: ["requirement-analyzer"],
         parallel: true,
         outputs: ["requirements.md", "user-stories.md"]
       },
@@ -471,11 +461,11 @@ claude ai "我想实现一个用户评论功能，包括发表、回复、点赞
 关键词: [用户, 评论, 功能, 发表, 回复, 点赞]
 
 # 自动选择agents
-主要负责: feature-planner (规划) + api-helper (后端) + frontend-developer (前端)
+主要负责: requirement-analyzer (规划) + api-helper (后端) + frontend-developer (前端)
 支持agents: code-reviewer (质量) + test-automator (测试)
 
 # 执行计划
-Phase 1: 需求规划 (feature-planner) - 预计2天
+Phase 1: 需求规划 (requirement-analyzer) - 预计2天
 Phase 2: API设计 (api-helper) + 界面设计 (frontend-developer) - 预计3天 [并行]
 Phase 3: 功能实现 (api-helper + frontend-developer) - 预计2天
 Phase 4: 质量检查 (code-reviewer + test-automator) - 预计1天

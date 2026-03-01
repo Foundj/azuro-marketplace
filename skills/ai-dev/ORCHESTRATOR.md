@@ -286,7 +286,7 @@ const WORKFLOW_TEMPLATES: Record<TaskIntent, WorkflowTemplate> = {
     phases: [
       {
         name: "需求分析",
-        agents: ["feature-planner", "requirement-analyzer"],
+        agents: ["requirement-analyzer"],
         parallel: true,
         timeEstimate: "0.1 * totalTime",
         outputs: ["requirements.md", "user-stories.md"]

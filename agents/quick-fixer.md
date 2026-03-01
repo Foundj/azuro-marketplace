@@ -74,7 +74,7 @@ interface QuickFixable {
 
 这些情况我会建议：
 - 联系 `backend-architect` 进行架构设计
-- 使用 `feature-planner` 进行全面规划
+- 使用 `requirement-analyzer` 进行全面规划
 - 找 `debugger` 进行深度调试
 
 ## 📝 工作流程

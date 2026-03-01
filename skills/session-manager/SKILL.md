@@ -6,7 +6,7 @@ description: |
   validates state, and suggests next steps. Use when the user mentions "continue", "resume",
   "status", "progress", "恢复会话", "继续", "进度", or when starting a new session.
   Critical for long-running project continuity.
-version: 6.0.8
+version: 6.0.9
 status: ga
 profile: default
 allowed-tools: Read, Bash, Grep, Glob

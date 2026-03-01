@@ -215,7 +215,7 @@ export const INVESTIGATION: TeamTemplate = {
     },
     {
       role: "code-tracer",
-      type: "ai-dev:error-detective",
+      type: "ai-dev:debugger",
       description: "代码追踪",
       focus: "代码路径、数据流、状态变化",
       estimatedTasks: 2

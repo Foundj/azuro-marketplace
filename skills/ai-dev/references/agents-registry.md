@@ -11,7 +11,7 @@
 | Agent | 文件 | 阶段 | 用途 |
 |-------|------|------|------|
 | `requirement-interviewer` | ✅ `agents/requirement-interviewer.md` | Phase 1 | 多轮需求采访 |
-| `feature-planner` | ✅ `agents/feature-planner.md` | Phase 1 | 功能规划和需求分析 |
+| `requirement-analyzer` | ✅ `agents/requirement-analyzer.md` | Phase 1 | 需求分析和功能规划 |
 | `code-explorer` | ✅ `agents/code-explorer.md` | Phase 2 | 代码库深度探索 |
 | `code-architect` | ✅ `agents/code-architect.md` | Phase 3 | 架构设计方案 |
 | `task-decomposer` | ✅ `agents/task-decomposer.md` | Phase 3 | 任务分解和协作规划 |
@@ -23,23 +23,21 @@
 | `api-helper` | ✅ `agents/api-helper.md` | 开发 | API 开发和后端实现 |
 | `test-automator` | ✅ `agents/test-automator.md` | Phase 5 | 测试自动化 |
 
-### 📋 规划中 Agents (10个)
+### 📋 规划中 Agents (8个)
 
 > 以下 agents 已设计能力描述，但尚未创建独立文件。
 > 可根据需要逐步实现。
 
 | 分类 | Agent | 状态 |
 |------|-------|------|
-| 🔄 工作流管理 | task-orchestrator | 📋 规划中 |
+| 🔄 工作流管理 | task-orchestrator-v2 | 📋 规划中 |
 | 🔄 工作流管理 | sprint-manager | 📋 规划中 |
 | 🔄 工作流管理 | requirement-analyzer | 📋 规划中 |
 | 🔄 工作流管理 | ooda-manager | 📋 规划中 |
 | 🏗️ 架构开发 | backend-architect | 📋 规划中 |
 | 🏗️ 架构开发 | frontend-developer | 📋 规划中 |
-| 🛠️ 开发助手 | error-detective | 📋 规划中 |
 | 🎯 质量保障 | code-mentor | 📋 规划中 |
 | 🎯 质量保障 | quality-guardian | 📋 规划中 |
-| 🔤 语言专家 | typescript-pro | 📋 规划中 |
 
 ---
 
@@ -49,51 +47,23 @@
 
 | 分类 | Agent数量 | 主要职责 |
 |------|----------|---------| 
-| 🔄 工作流管理 | 6 | 需求分析、任务规划、Sprint管理 |
+| 🔄 工作流管理 | 5 | 需求分析、任务规划、Sprint管理 |
 | 🔍 代码探索 | 1 | 深度代码库理解、架构探索 |
 | 🏗️ 架构开发 | 3 | 架构设计、后端开发、前端开发 |
-| 🛠️ 开发助手 | 5 | API开发、Bug修复、调试、测试 |
+| 🛠️ 开发助手 | 4 | API开发、Bug修复、调试、测试 |
 | 🎯 质量保障 | 4 | 代码审查、置信度评分、质量守护、指导教学 |
 | 🔤 语言专家 | 1 | TypeScript优化 |
 
-**总计**: 22个专业agents（12个已实现，10个规划中）
+**总计**: 20个专业agents（12个已实现，8个规划中）
 
 ---
 
 ## 🔄 工作流管理 (6个)
 
-### 1. feature-planner
-**功能规划和需求分析专家**
-
-**适用意图**: 
-- `FEATURE_DEVELOPMENT`
-- `PROJECT_SETUP`
-
-**关键词触发**:
-- 功能、需求、规划、分析、设计、实现
-
-**复杂度**: Simple → Medium → Complex
-
-**核心能力**:
-- `requirement_analysis` - 需求分析和澄清
-- `task_breakdown` - 任务分解和拆分
-- `planning` - 实施计划制定
-- `risk_assessment` - 风险识别和评估
-- `milestone_definition` - 里程碑定义
-
-**典型使用场景**:
-```
-用户: "我想实现一个用户认证系统"
-→ feature-planner分析需求
-→ 输出: requirements.md, user-stories.md, implementation-plan.md
-```
-
-**时间估算**: 根据项目规模，1-3天
-
 ---
 
-### 2. task-orchestrator
-**任务分析和Sprint规划专家**
+### 2. task-orchestrator-v2
+**任务分析和Sprint规划专家 (Sequential Thinking 版本)**
 
 **适用意图**:
 - `FEATURE_DEVELOPMENT`
@@ -159,19 +129,24 @@
 ---
 
 ### 4. requirement-analyzer
-**需求分析和可行性评估专家**
+**需求分析、功能规划和可行性评估专家**
 
 **适用意图**:
 - `PLANNING`
 - `FEATURE_DEVELOPMENT`
+- `PROJECT_SETUP`
 
 **关键词触发**:
-- 需求、分析、评估、可行性、范围、验收
+- 功能、需求、规划、分析、设计、实现、评估、可行性、范围、验收
 
 **复杂度**: Simple → Medium → Complex
 
 **核心能力**:
-- `requirement_analysis` - 深度需求分析
+- `requirement_analysis` - 深度需求分析和澄清
+- `task_breakdown` - 任务分解和拆分
+- `planning` - 实施计划制定
+- `risk_assessment` - 风险识别和评估
+- `milestone_definition` - 里程碑定义
 - `feasibility_assessment` - 可行性评估（21天Sprint）
 - `scope_definition` - 范围定义
 - `acceptance_criteria` - 验收标准制定
@@ -507,7 +482,7 @@ Phase 3 (Design): "设计用户认证功能架构"
 
 ---
 
-## 🛠️ 开发助手 (5个)
+## 🛠️ 开发助手 (4个)
 
 ### 12. api-helper
 **API开发和后端实现专家**
@@ -637,35 +612,6 @@ Phase 3 (Design): "设计用户认证功能架构"
 ```
 
 **时间估算**: 1-3天
-
----
-
-### 16. error-detective
-**错误侦探和模式分析专家**
-
-**适用意图**:
-- `TROUBLESHOOTING`
-- `BUG_FIXING`
-
-**关键词触发**:
-- 错误、侦探、调查、模式、分析、追踪、取证
-
-**复杂度**: Medium → Complex
-
-**核心能力**:
-- `error_investigation` - 错误调查
-- `pattern_analysis` - 模式分析
-- `root_cause_analysis` - 根本原因分析
-- `forensic_analysis` - 取证分析
-
-**典型使用场景**:
-```
-用户: "系统偶尔出现内存泄漏"
-→ error-detective分析模式
-→ 输出: 错误模式报告、根本原因、修复建议
-```
-
-**时间估算**: 1-4天
 
 ---
 
@@ -938,15 +884,15 @@ code-reviewer (报告所有)
 
 | 场景 | 推荐Agents |
 |------|-----------|
-| 新功能开发 (7-Phase) | feature-planner, code-explorer, code-architect, api-helper, frontend-developer, code-reviewer, confidence-scorer |
+| 新功能开发 (7-Phase) | requirement-analyzer, code-explorer, code-architect, api-helper, frontend-developer, code-reviewer, confidence-scorer |
 | 代码库理解 (Phase 2) | code-explorer (2-3并行) |
 | 架构设计 (Phase 3) | code-architect (2-3并行), backend-architect |
 | 质量验证 (Phase 5) | code-reviewer, confidence-scorer |
 | 快速Bug修复 | quick-fixer, test-automator |
-| 复杂Bug调查 | debugger, error-detective, test-automator |
+| 复杂Bug调查 | debugger, test-automator |
 | 代码优化 | code-reviewer, typescript-pro, javascript-pro |
 | 学习指导 | code-mentor |
-| 项目规划 | task-orchestrator, requirement-analyzer, sprint-manager |
+| 项目规划 | task-orchestrator-v2, requirement-analyzer, sprint-manager |
 | 快速验证 | ooda-manager, quick-fixer |
 
 ### 质量优先原则

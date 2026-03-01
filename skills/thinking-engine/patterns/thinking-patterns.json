@@ -42,7 +42,7 @@
     }
   },
   "agent_capabilities": {
-    "feature-planner": {
+    "requirement-analyzer": {
       "expertise": ["需求分析", "功能设计", "用户体验", "业务逻辑"],
       "complexity_preference": ["MEDIUM", "COMPLEX"],
       "thinking_depth": "deep"

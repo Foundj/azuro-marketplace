@@ -22,7 +22,7 @@
 **适用场景**: 新功能开发、功能增强
 
 ### Phase 1: 需求分析 (10% 时间)
-- **Agents**: feature-planner, requirement-analyzer (并行)
+- **Agents**: requirement-analyzer (并行)
 - **目标**: 明确需求、定义验收标准
 - **输出**: requirements.md, user-stories.md, acceptance-criteria.md
 - **质量门禁**: 需求清晰度检查
@@ -125,7 +125,7 @@
 **适用场景**: 性能瓶颈优化、资源优化
 
 ### Phase 1: 性能分析 (25% 时间)
-- **Agents**: debugger, error-detective (并行)
+- **Agents**: debugger (并行)
 - **目标**: 识别性能瓶颈
 - **输出**: performance-analysis.md, bottlenecks.md
 
@@ -185,7 +185,7 @@
 **适用场景**: 测试编写、测试覆盖率提升
 
 ### Phase 1: 测试规划 (20% 时间)
-- **Agents**: test-automator, feature-planner
+- **Agents**: test-automator, requirement-analyzer
 - **目标**: 设计测试策略
 - **输出**: test-plan.md, test-cases.md
 
