@@ -6,8 +6,9 @@ description: |
   lean. Use when context window is filling up, during long ultrawork sessions,
   or when the user mentions "compress context", "summarize", "archive results",
   "上下文压缩", "结果归档".
-version: 6.0.5
+version: 6.0.6
 status: ga
+profile: default
 triggers:
   - compress context
   - summarize results

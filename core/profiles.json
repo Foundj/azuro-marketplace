@@ -1,0 +1,72 @@
+{
+  "$schema": "https://azuro.dev/profiles.schema.json",
+  "version": "1.0.0",
+  "description": "Skill profile groups for lazy loading. Default profile is always active; others activate based on development phase.",
+  "profiles": {
+    "default": {
+      "description": "Core infrastructure — always active",
+      "skills": [
+        "claude-reflect",
+        "context-bridge",
+        "context-compressor",
+        "interaction-protocol",
+        "mcp-integration",
+        "session-manager"
+      ]
+    },
+    "design": {
+      "description": "Requirements analysis, architecture design, and knowledge discovery",
+      "skills": [
+        "ai-dev-interview",
+        "brainstorm-mode",
+        "competitor-research",
+        "confidence-gate",
+        "knowledge-graph",
+        "multi-agent-discussion",
+        "thinking-engine"
+      ]
+    },
+    "dev": {
+      "description": "Coding, implementation, and workflow execution",
+      "skills": [
+        "ai-dev",
+        "ai-dev-ooda",
+        "git-worktree",
+        "project-initializer",
+        "subagent-driven-development",
+        "task-dependency-analyzer",
+        "task-templates",
+        "tdd-enforcement",
+        "team-collaboration",
+        "ultrawork"
+      ]
+    },
+    "review": {
+      "description": "Quality auditing, compliance checks, and code review",
+      "skills": [
+        "acceptance-reporter",
+        "ai-dev-quality",
+        "code-simplifier",
+        "plugin-auditor",
+        "skill-auditor",
+        "spec-compliance-review"
+      ]
+    },
+    "debug": {
+      "description": "Testing, browser automation, and fault investigation",
+      "skills": [
+        "acceptance-team",
+        "agent-browser"
+      ]
+    }
+  },
+  "phase_mapping": {
+    "init": ["default", "design"],
+    "design": ["default", "design"],
+    "implement": ["default", "dev"],
+    "test": ["default", "dev", "debug"],
+    "review": ["default", "review"],
+    "deploy": ["default", "dev", "debug"],
+    "maintain": ["default", "review", "debug"]
+  }
+}
