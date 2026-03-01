@@ -85,7 +85,7 @@
 **典型使用场景**:
 ```
 用户: "帮我规划这个月的开发任务"
-→ task-orchestrator分析项目
+→ task-orchestrator-v2 分析项目
 → 输出: sprint-plan.md, task-breakdown.md, timeline.md
 ```
 

@@ -86,24 +86,19 @@ const INVESTIGATION_TEMPLATE = {
     {
       role: "debugger",
       type: "ai-dev:debugger",
-      task: "分析错误日志和堆栈"
+      task: "分析错误日志、堆栈和5-Why根因分析"
     },
     {
       role: "code-tracer",
       type: "ai-dev:code-explorer",
       task: "追踪代码执行路径"
-    },
-    {
-      role: "root-cause-analyst",
-      type: "ai-dev:debugger",
-      task: "5-Why分析根因"
     }
   ],
   workflow: {
     type: "parallel-then-synthesize",
     phases: [
       { name: "并行调查", parallel: true },
-      { name: "综合分析", teammate: "root-cause-analyst" }
+      { name: "综合分析", teammate: "debugger" }
     ]
   }
 }

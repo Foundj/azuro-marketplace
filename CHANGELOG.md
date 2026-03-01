@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.10] - 2026-03-01
+
+### Fixed
+- Sprint 1 review: remove duplicate debugger role in team-collaboration debug template
+- Fix task-orchestrator → task-orchestrator-v2 in agents-registry example
+
+
 ## [6.0.9] - 2026-03-01
 
 ### Changed
