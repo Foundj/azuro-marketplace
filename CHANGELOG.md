@@ -7,10 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.8] - 2026-03-01
+
+### Fixed
+- Fix plan.md template comment containing literal checkbox pattern causing false-positive grep match
+- Apply same fix to output-format.md template source
+
 ## [6.0.7] - 2026-03-01
 
 ### Changed
-- TODO: Describe your changes here
+- Rewrite output-format.md with multiClaw-inspired templates (plan.md no-checkbox, task.md YAML frontmatter)
+- Update SKILL.md Phase 4 with version determination and structured output
+- Update ai:discuss.md summarize subcommand with --version parameter
 
 
 ## [6.0.6] - 2026-03-01

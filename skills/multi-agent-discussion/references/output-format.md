@@ -46,7 +46,7 @@ discussion_source: docs/discussions/{{TOPIC}}/discussion.md
   ┌─────────────────────────────────────────────────────┐
   │  本文件职责：WHY + WHAT + HOW                        │
   │  ✅ 背景动机、现状分析、技术方案、接口设计、风险控制     │
-  │  ❌ 不含任何 - [ ] 复选框、任务状态、进度追踪           │
+  │  ❌ 不含任何复选框(checkbox)、任务状态、进度追踪        │
   │  状态追踪统一在 task.md                               │
   │                                                       │
   │  来源讨论：{{DISCUSSION_SOURCE}}                       │

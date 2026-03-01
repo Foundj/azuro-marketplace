@@ -7,7 +7,7 @@ description: |
   problem solving, and architecture design decisions.
 
   Integrates with ai-dev workflow for complex task analysis and agent selection.
-version: 6.0.7
+version: 6.0.8
 status: ga
 profile: design
 triggers:
