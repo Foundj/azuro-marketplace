@@ -6,7 +6,7 @@ description: |
   Use when the user mentions "audit skill", "validate skill", "skill quality", "技能审计",
   "质量检查", "校验技能", or when reviewing skill implementations.
   Triggers on: "audit", "validate", "score", "检查", "审计".
-version: 6.0.4
+version: 6.0.5
 status: ga
 triggers:
   - audit skill

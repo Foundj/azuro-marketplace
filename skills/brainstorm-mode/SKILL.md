@@ -5,7 +5,7 @@ description: |
   It uses open-ended questioning, divergent thinking, and iterative refinement to transform
   fuzzy concepts into clear specifications. Use when the user mentions "brainstorm", "explore ideas",
   "not sure what I need", "头脑风暴", "探索想法", "我不确定", "帮我想想", or has unclear requirements.
-version: 6.0.4
+version: 6.0.5
 status: ga
 triggers:
   - brainstorm

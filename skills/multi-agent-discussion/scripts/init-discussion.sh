@@ -258,28 +258,42 @@ tools:
 <!-- Round 0 种子发言由 Claude Code 追加 -->
 HEREDOC
 
-# 生成 context.md 骨架（Claude Code 将自动填充具体内容）
-cat > "${DISCUSSION_DIR}/context.md" << HEREDOC
+# 自动填充 context.md（使用 populate-context.sh 扫描项目）
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONTEXT_FILE="${DISCUSSION_DIR}/context.md"
+
+if [ -x "${SCRIPT_DIR}/populate-context.sh" ] || [ -f "${SCRIPT_DIR}/populate-context.sh" ]; then
+  bash "${SCRIPT_DIR}/populate-context.sh" "$PROJECT_ROOT" "$CONTEXT_FILE" 2>/dev/null || {
+    echo "警告: context.md 自动填充失败，生成骨架" >&2
+    cat > "$CONTEXT_FILE" << SKEL_EOF
 # 项目背景
 
-> 此文件由 Claude Code 自动填充。如需补充信息，可直接编辑。
+> 自动填充失败，请手动补充或重新运行 populate-context.sh。
 
 ## 技术栈
 
-（自动填充）
+（待填充）
 
 ## 架构概览
 
-（自动填充）
+（待填充）
+SKEL_EOF
+  }
+else
+  cat > "$CONTEXT_FILE" << SKEL_EOF
+# 项目背景
 
-## 关键数据指标
+> populate-context.sh 不可用，请手动补充。
 
-（自动填充）
+## 技术栈
 
-## 约束条件
+（待填充）
 
-（自动填充）
-HEREDOC
+## 架构概览
+
+（待填充）
+SKEL_EOF
+fi
 
 # 生成草案和审阅续接提示词（通用的，不依赖角色）
 cat > "${DISCUSSION_DIR}/continue/draft.md" << HEREDOC
@@ -307,7 +321,7 @@ echo "目录结构:"
 echo "  ${DISCUSSION_DIR}/"
 echo "  ├── README.md        # 讨论规则"
 echo "  ├── discussion.md    # 主讨论文档（待 Round 0 种子）"
-echo "  ├── context.md       # 项目背景（待自动填充）"
+echo "  ├── context.md       # 项目背景（已自动填充）"
 echo "  ├── refs/"
 echo "  └── continue/"
 echo "      ├── draft.md"
@@ -318,4 +332,4 @@ if [ -n "$PRESET" ]; then
   echo "角色: ${ROLES_DISPLAY}"
 fi
 echo ""
-echo "下一步: Claude Code 将自动填充 context.md、追加 Round 0 种子、检测 CLI 工具并确定讨论模式。"
+echo "下一步: Claude Code 将追加 Round 0 种子、检测 CLI 工具并确定讨论模式。"
