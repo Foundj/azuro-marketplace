@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.17] - 2026-03-02
+
+### Changed
+- V1.0 task board: all 3 Sprints + full validation completed, status→completed
+
+
 ## [6.0.16] - 2026-03-02
 
 ### Fixed

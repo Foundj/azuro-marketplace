@@ -34,7 +34,7 @@ description: |
   Trigger phrase "score plugin" with request for dimensional breakdown activates scoring workflow.
   </commentary>
   </example>
-version: 6.0.16
+version: 6.0.17
 status: ga
 profile: review
 ---

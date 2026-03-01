@@ -31,7 +31,7 @@ description: |
   User wants isolated execution per task to avoid context pollution, which is the core principle of this skill.
   </commentary>
   </example>
-version: 6.0.16
+version: 6.0.17
 status: ga
 profile: dev
 triggers:

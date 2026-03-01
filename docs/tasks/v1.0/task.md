@@ -1,8 +1,8 @@
 ---
 version: "1.0"
 name: 插件市场产品策略优化
-status: pending
-updated: 2026-03-01
+status: completed
+updated: 2026-03-02
 baseline: v0 (当前状态)
 discussion_source: docs/discussions/plugin-marketplace-strategy/discussion.md
 
@@ -157,10 +157,14 @@ sprints:
 
 ## 全量验证
 
-- [ ] `bash skills/skill-auditor/scripts/validate-skill.sh skills/ai-dev` 通过质量门禁
-- [ ] trigger eval 通过率 ≥ 80%
-- [ ] 默认 Profile 注入技能数 ≤ 15
-- [ ] `--team` flag 正确触发 v6.0 讨论编排
+- [x] `bash skills/skill-auditor/scripts/validate-skill.sh skills/ai-dev` 通过质量门禁
+  > 96/100 (A) PRODUCTION READY
+- [x] trigger eval 通过率 ≥ 80%
+  > 25/31 = 80% PASS
+- [x] 默认 Profile 注入技能数 ≤ 15
+  > default: 6, design: 7, dev: 10, review: 6, debug: 2
+- [x] `--team` flag 正确触发 v6.0 讨论编排
+  > Dual Path (Fast/Deep) + discuss 模式路由已配置
 
 ---
 
