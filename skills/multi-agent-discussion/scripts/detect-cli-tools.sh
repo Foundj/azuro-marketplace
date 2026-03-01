@@ -100,10 +100,18 @@ for cmd in codex opencode gemini claudea claudec claudeg; do
   fi
 done
 
+# 检测是否在 Claude Code 嵌套环境中
+in_claude_code=false
+if [ "${CLAUDECODE:-}" = "1" ] || [ -n "${CLAUDE_CODE_ENTRYPOINT:-}" ]; then
+  in_claude_code=true
+fi
+
 echo "  \"available_count\": $available_count,"
 echo "  \"external_count\": $external_count,"
+echo "  \"in_claude_code\": $in_claude_code,"
 
 # 至少需要 1 个外部工具才能进入自动模式
+# 注意: 在 Claude Code 内部，claude* 变体受嵌套限制，优先使用 codex/gemini
 if [ "$external_count" -ge 1 ]; then
   echo '  "auto_mode_possible": true'
 else

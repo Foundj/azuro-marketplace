@@ -32,7 +32,9 @@ CONTENT=$(cat "$DISCUSSION_FILE")
 # 统计各标签数量
 count_tag() {
   local tag="$1"
-  echo "$CONTENT" | grep -o "$tag" | wc -l | tr -d ' '
+  local count
+  count=$(echo "$CONTENT" | grep -c "$tag" || true)
+  echo "$count"
 }
 
 CONSENSUS_COUNT=$(count_tag '#consensus')
@@ -57,16 +59,17 @@ fi
 # 统计未解决的 @ 提及（从 STATUS 面板的 mentions 字段）
 UNRESOLVED_MENTIONS=$(echo "$CONTENT" | \
   sed -n '/<!-- STATUS/,/-->/p' | \
-  grep -c '^\s*- target:' || echo "0")
+  { grep -c '^\s*- target:' || true; })
 
 # 获取当前轮次（从 STATUS 面板）
 CURRENT_ROUND=$(echo "$CONTENT" | \
   sed -n '/<!-- STATUS/,/-->/p' | \
   grep 'round:' | head -1 | \
-  sed 's/.*round:\s*//' | tr -d ' ' || echo "0")
+  sed 's/.*round:\s*//' | tr -d ' ')
+CURRENT_ROUND="${CURRENT_ROUND:-0}"
 
 # 统计 [Round N] 发言总数
-TOTAL_ENTRIES=$(echo "$CONTENT" | grep -c '^\#\#\s*\[Round' || echo "0")
+TOTAL_ENTRIES=$(echo "$CONTENT" | { grep -c '^\#\#\s*\[Round' || true; })
 
 # 收敛判定:
 # 1. consensus_ratio >= 0.7

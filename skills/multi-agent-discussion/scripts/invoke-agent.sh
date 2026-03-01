@@ -72,6 +72,25 @@ run_with_timeout() {
   fi
 }
 
+# claude* 变体需要清除所有嵌套 session 环境变量
+# 因为编排器本身运行在 Claude Code 内部
+# CLAUDECODE、CLAUDE_CODE_ENTRYPOINT 及其他 CLAUDE_CODE_* 都可能触发嵌套检测
+# 构建 env -u 参数列表，清除所有 CLAUDE 相关环境变量
+CLAUDE_ENV_UNSET_ARGS=()
+while IFS= read -r varname; do
+  CLAUDE_ENV_UNSET_ARGS+=(-u "$varname")
+done < <(env | grep -o '^CLAUDE[A-Z_]*' || true)
+
+# 辅助函数：在干净环境中运行 claude* 命令
+# 注意: 从 Claude Code 内部调用 claude* 存在嵌套限制，可能挂起或返回空
+# 建议优先使用 codex/gemini 后端，claude* 适合从普通终端调用
+run_claude_clean() {
+  if [ ${#CLAUDE_ENV_UNSET_ARGS[@]} -gt 0 ]; then
+    echo "警告: 检测到 Claude Code 嵌套环境，claude* 后端可能不稳定" >&2
+  fi
+  run_with_timeout env "${CLAUDE_ENV_UNSET_ARGS[@]}" "$@"
+}
+
 case "$TOOL" in
   codex)
     if ! command -v codex &>/dev/null; then
@@ -112,7 +131,7 @@ case "$TOOL" in
       echo "错误: claude 未安装" >&2
       exit 1
     fi
-    run_with_timeout claude -p "$PROMPT" \
+    run_claude_clean claude -p "$PROMPT" \
       --output-format text \
       --no-session-persistence \
       --max-turns 5 \
@@ -124,7 +143,7 @@ case "$TOOL" in
       echo "错误: claudea 未安装" >&2
       exit 1
     fi
-    run_with_timeout claudea -p "$PROMPT" \
+    run_claude_clean claudea -p "$PROMPT" \
       --output-format text \
       --no-session-persistence \
       --max-turns 5 \
@@ -136,7 +155,7 @@ case "$TOOL" in
       echo "错误: claudec 未安装" >&2
       exit 1
     fi
-    run_with_timeout claudec -p "$PROMPT" \
+    run_claude_clean claudec -p "$PROMPT" \
       --output-format text \
       --no-session-persistence \
       --max-turns 5 \
@@ -148,7 +167,7 @@ case "$TOOL" in
       echo "错误: claudeg 未安装" >&2
       exit 1
     fi
-    run_with_timeout claudeg -p "$PROMPT" \
+    run_claude_clean claudeg -p "$PROMPT" \
       --output-format text \
       --no-session-persistence \
       --max-turns 5 \
