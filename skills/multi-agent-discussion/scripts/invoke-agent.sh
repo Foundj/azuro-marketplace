@@ -107,9 +107,8 @@ case "$TOOL" in
       echo "错误: opencode 未安装" >&2
       exit 1
     fi
-    # opencode 需要在工作目录下运行
-    cd "$WORKING_DIR"
-    run_with_timeout opencode run "$PROMPT" --format json
+    # opencode 需要在工作目录下运行（子 shell 隔离 cd）
+    (cd "$WORKING_DIR" && run_with_timeout opencode run "$PROMPT" --format json)
     ;;
 
   gemini)
@@ -124,48 +123,12 @@ case "$TOOL" in
       --include-directories "$WORKING_DIR"
     ;;
 
-  claude)
-    if ! command -v claude &>/dev/null; then
-      echo "错误: claude 未安装" >&2
+  claude|claudea|claudec|claudeg)
+    if ! command -v "$TOOL" &>/dev/null; then
+      echo "错误: $TOOL 未安装" >&2
       exit 1
     fi
-    run_claude_clean claude -p "$PROMPT" \
-      --output-format text \
-      --no-session-persistence \
-      --max-turns 5 \
-      --allowedTools "Read,Write,Edit,Glob,Grep"
-    ;;
-
-  claudea)
-    if ! command -v claudea &>/dev/null; then
-      echo "错误: claudea 未安装" >&2
-      exit 1
-    fi
-    run_claude_clean claudea -p "$PROMPT" \
-      --output-format text \
-      --no-session-persistence \
-      --max-turns 5 \
-      --allowedTools "Read,Write,Edit,Glob,Grep"
-    ;;
-
-  claudec)
-    if ! command -v claudec &>/dev/null; then
-      echo "错误: claudec 未安装" >&2
-      exit 1
-    fi
-    run_claude_clean claudec -p "$PROMPT" \
-      --output-format text \
-      --no-session-persistence \
-      --max-turns 5 \
-      --allowedTools "Read,Write,Edit,Glob,Grep"
-    ;;
-
-  claudeg)
-    if ! command -v claudeg &>/dev/null; then
-      echo "错误: claudeg 未安装" >&2
-      exit 1
-    fi
-    run_claude_clean claudeg -p "$PROMPT" \
+    run_claude_clean "$TOOL" -p "$PROMPT" \
       --output-format text \
       --no-session-persistence \
       --max-turns 5 \

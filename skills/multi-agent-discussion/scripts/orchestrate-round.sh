@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 单轮编排 - 协调一轮讨论中所有角色的发言
-# 用法: bash orchestrate-round.sh <discussion-dir> <assignments-file> [round]
+# 用法: bash orchestrate-round.sh <discussion-dir> <assignments-file> [round] [timeout]
 #
 # assignments-file 格式（JSON）:
 # {
@@ -19,9 +19,10 @@
 
 set -euo pipefail
 
-DISCUSSION_DIR="${1:?用法: orchestrate-round.sh <discussion-dir> <assignments-file> [round]}"
+DISCUSSION_DIR="${1:?用法: orchestrate-round.sh <discussion-dir> <assignments-file> [round] [timeout]}"
 ASSIGNMENTS_FILE="${2:?请提供角色分配文件}"
 ROUND="${3:-}"
+AGENT_TIMEOUT="${4:-300}"  # 每个 agent 的超时秒数
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DISCUSSION_FILE="${DISCUSSION_DIR}/discussion.md"
@@ -95,7 +96,7 @@ for i in $(seq 0 $((ASSIGNMENT_COUNT - 1))); do
   fi
 
   # 调用 agent（stdout → 响应文件，stderr → 错误日志）
-  if bash "${SCRIPT_DIR}/invoke-agent.sh" "$TOOL" "$PROMPT_FILE" "$WORKING_DIR" 300 > "$RESPONSE_FILE" 2>"$ERR_FILE"; then
+  if bash "${SCRIPT_DIR}/invoke-agent.sh" "$TOOL" "$PROMPT_FILE" "$WORKING_DIR" "$AGENT_TIMEOUT" > "$RESPONSE_FILE" 2>"$ERR_FILE"; then
     echo "  调用成功，解析响应..."
 
     # 解析响应并追加到 discussion.md
