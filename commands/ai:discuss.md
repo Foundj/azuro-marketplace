@@ -1,7 +1,7 @@
 ---
 name: ai:discuss
 description: Multi-agent discussion coordinator — init, run, invite, check progress, or summarize with automated CLI orchestration
-argument-hint: "<init|run|invite|status|next|draft|summarize> [topic] [--preset product-discovery|architecture-design|full-review|security-audit] [--auto] [--roles PM,Architect,Security] [--rounds 3] [--project-root .]"
+argument-hint: "<init|run|invite|status|next|draft|summarize> [topic] [--preset product-discovery|architecture-design|full-review|security-audit] [--auto] [--roles PM,Architect,Security] [--rounds 3] [--version 1.0] [--project-root .]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Task
 internal: true
 ---
@@ -137,16 +137,25 @@ Enter draft phase (optional — skip if consensus is comprehensive).
 4. Write review continuation files
 5. Print instructions
 
-### `summarize <topic>`
+### `summarize <topic> [--version <ver>]`
 
-Generate final plan.md and task.md.
+Generate final plan.md and task.md in versioned output directory.
 
 1. Read entire `docs/discussions/<topic>/discussion.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/references/output-format.md`
-3. **Deep extract** all decisions, proposals, pending items
-4. Generate `plan.md` and `task.md` in Fabula v5.x format
-5. Update STATUS: set `phase: done`
-6. Print deliverable summary
+2. Read `${CLAUDE_PLUGIN_ROOT}/references/output-format.md` for template and output path rules
+3. **Determine version**:
+   - If `--version` specified, use it
+   - Otherwise, scan `docs/tasks/` for existing `v*` directories, auto-increment
+   - First time: default to `v1.0`
+4. **Create output dir**: `docs/tasks/v<VERSION>/`
+5. **Deep extract** all decisions (`> [!decision]`), proposals, `#consensus`, `#pending` items
+6. Generate `plan.md` — design-only document (NO checkboxes), with `discussion_source` cross-reference
+7. Generate `task.md` — sole status tracker with YAML sprints, Git commit rules, Review Gates
+8. Update STATUS: set `phase: done`
+9. Print deliverable summary:
+   - `docs/tasks/v<VERSION>/plan.md` — 设计文档
+   - `docs/tasks/v<VERSION>/task.md` — 执行看板
+   - 来源讨论：`docs/discussions/<topic>/discussion.md`
 
 ## Default Behavior
 
@@ -162,7 +171,7 @@ If no subcommand is recognized, print usage help:
   status <topic>     深度扫描讨论进度 + 收敛评估
   next <topic>       推进下一轮（手动模式，动态生成续接文件）
   draft <topic>      进入草案阶段（可选）
-  summarize <topic>  汇总生成 plan.md + task.md
+  summarize <topic>  汇总生成 plan.md + task.md（输出到 docs/tasks/v<VER>/）
 
 选项:
   --preset <name>        预设角色组合:
@@ -173,6 +182,7 @@ If no subcommand is recognized, print usage help:
   --auto                 强制自动编排模式
   --roles <list>         自定义角色 (覆盖 preset)
   --rounds <n>           最大讨论轮次 (默认: 3)
+  --version <ver>        指定产出版本号 (默认: 自动递增)
   --project-root <path>  目标项目根目录 (默认: .)
 
 示例:
@@ -181,6 +191,7 @@ If no subcommand is recognized, print usage help:
   /ai:discuss run auth-system
   /ai:discuss status auth-system
   /ai:discuss summarize auth-system
+  /ai:discuss summarize auth-system --version 2.0
 
 工作流 (自动模式):
   init → run → (自动多轮讨论) → summarize

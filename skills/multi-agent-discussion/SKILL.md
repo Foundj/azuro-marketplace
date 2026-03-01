@@ -8,7 +8,7 @@ description: |
   (Codex, Cursor, OpenCode, Gemini, Claude variants) for collaborative
   requirement analysis and decision making. It provides a structured multi-agent discussion
   framework with automated CLI orchestration, shared markdown workspace, and convergence evaluation.
-version: 6.0.6
+version: 6.0.7
 status: ga
 profile: design
 triggers:
@@ -53,7 +53,7 @@ Create a discussion space in a target project's `docs/discussions/` directory. C
 │     │    parse-response.sh → 追加黑板         │           │
 │     └────────────────────────────────────────┘           │
 │  4. evaluate-convergence.sh → 评估收敛                   │
-│  5. 收敛 → summarize → plan.md + task.md                 │
+│  5. 收敛 → summarize → docs/tasks/v<VER>/plan.md + task.md  │
 └──────────────────────────────────────────────────────────┘
       │          │          │          │
  ┌────┴───┐ ┌───┴────┐ ┌───┴────┐ ┌───┴──────────┐
@@ -209,11 +209,31 @@ When discussion has converged but details need refinement. Skip if `#consensus` 
 When convergence is reached (auto) or user triggers manually:
 
 1. Read entire `discussion.md`
-2. **Deep extract**: scan all tags and callouts
-3. Read `references/output-format.md` for template structure
-4. Generate `plan.md` — Fabula v5.x format
-5. Generate `task.md` — Fabula v5.x format
-6. Update STATUS panel: set `phase: done`
+2. **Deep extract**: scan all tags, callouts, `#consensus`, `> [!decision]`
+3. Read `references/output-format.md` for template structure and output path rules
+4. **Determine version**:
+   - If user specified `--version`, use it
+   - Otherwise, scan target project's `docs/tasks/` for existing `v*` directories
+   - Auto-increment: take max version + 0.1 (e.g., v1.2 → v1.3)
+   - First time: default to `v1.0`
+5. **Create output directory**: `docs/tasks/v<VERSION>/`
+6. Generate `plan.md` — multiClaw v6 format:
+   - YAML frontmatter with `discussion_source` pointing to this discussion
+   - **NO checkboxes** anywhere — plan is WHY/WHAT/HOW only
+   - Sprint-based with file change lists
+   - Preserve ADR records, confidence analysis, risk table from discussion
+   - Acceptance criteria as numbered prose, not checkboxes
+7. Generate `task.md` — multiClaw v6 format:
+   - Rich YAML frontmatter with sprints, tasks, dependencies, rules
+   - Git commit rules: `feat(v<VERSION>/s<N>): description`
+   - Mandatory `sN-review` gate after each Sprint
+   - Change log table initialized with creation record
+   - `discussion_source` cross-reference
+8. Update STATUS panel: set `phase: done`
+9. Print deliverable summary:
+   - `docs/tasks/v<VERSION>/plan.md` — 设计文档
+   - `docs/tasks/v<VERSION>/task.md` — 执行看板
+   - 来源讨论：`docs/discussions/<topic>/discussion.md`
 
 ## STATUS Panel Format
 
