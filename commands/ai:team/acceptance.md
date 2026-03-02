@@ -4,6 +4,7 @@ description: Agent Teams parallel acceptance testing - multiple pages tested sim
 argument-hint: "<url> --pages <list> [--change <id>] [--mode <mode>] [--report]"
 allowed-tools: TeamCreate, TeamDelete, TaskCreate, TaskUpdate, TaskList, TaskGet, SendMessage, Task, Bash, Read, Write
 execution-mode: subagent
+internal: true
 ---
 
 # /ai:team:acceptance - 团队并行验收

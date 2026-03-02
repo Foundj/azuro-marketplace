@@ -101,7 +101,7 @@ fi
 
 ```bash
 # Run .agent-setup script
-bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/agent-dir-setup.sh" "init" "." 2>/dev/null || {
+bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/agent-setup.sh" "init" "." 2>/dev/null || {
     # Fallback if script not found
     mkdir -p .agent/changes
     mkdir -p .agent/archive

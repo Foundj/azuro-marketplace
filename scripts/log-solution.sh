@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # log-solution.sh - Log verified solutions to Reflexion knowledge base
 #

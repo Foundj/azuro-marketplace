@@ -31,7 +31,7 @@ description: |
   Explicit request to clarify requirements for a specific component triggers the interview skill.
   </commentary>
   </example>
-version: 6.0.24
+version: 6.0.25
 status: ga
 profile: design
 triggers:

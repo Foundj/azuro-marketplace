@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # worker-main.sh - Worker session lifecycle management (ai-dev v4.0)
 #

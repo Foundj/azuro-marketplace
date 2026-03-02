@@ -31,7 +31,7 @@ description: |
   "研究竞品" combined with a specific technical topic triggers competitor analysis with code search.
   </commentary>
   </example>
-version: 6.0.24
+version: 6.0.25
 status: ga
 profile: design
 triggers:

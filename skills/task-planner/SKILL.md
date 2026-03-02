@@ -8,7 +8,7 @@ description: >
   "create a version", or when multi-agent-discussion or ai-dev need to produce structured task
   output. Also triggers when user mentions "docs/tasks", "版本计划", "任务看板", "Sprint规划",
   or wants to archive a completed version.
-version: 6.0.24
+version: 6.0.25
 status: ga
 ---
 

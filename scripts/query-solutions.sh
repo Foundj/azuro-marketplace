@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # query-solutions.sh - Query Reflexion knowledge base for similar errors
 #

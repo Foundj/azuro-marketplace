@@ -32,7 +32,7 @@ description: |
   User requests supervised mode, changing execution.mode from autonomous to supervised.
   </commentary>
   </example>
-version: 6.0.24
+version: 6.0.25
 status: ga
 profile: dev
 triggers:
@@ -195,7 +195,7 @@ bash skills/task-executor/scripts/verify-task.sh <verify-command>
 ```yaml
 ---
 active: true
-version: 6.0.24
+version: 6.0.25
 current_sprint: sprint-1
 current_task: s1-2
 current_phase: implement

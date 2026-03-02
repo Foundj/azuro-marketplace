@@ -32,7 +32,7 @@ description: |
   Form filling and submission testing on a web page triggers this skill.
   </commentary>
   </example>
-version: 6.0.24
+version: 6.0.25
 status: ga
 profile: debug
 triggers:

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # spawn-worker.sh - Delegate tasks to sub-agent sessions (ai-dev v4.0)
 #

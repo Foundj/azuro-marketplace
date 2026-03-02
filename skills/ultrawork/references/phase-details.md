@@ -72,7 +72,7 @@ cd .worktrees/<feature-name>
 mkdir -p .agent/changes .agent/archive
 
 # Create spec.md, plan.md, active.md
-# See references/agent-dir-setup.md for templates
+# See hooks/scripts/agent-setup.sh for templates
 ```
 
 ### Step 3: Project Setup
