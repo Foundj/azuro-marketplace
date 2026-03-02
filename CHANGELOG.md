@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.20] - 2026-03-02
+
+### Fixed
+- Update archive-change.sh references to archive-version.sh in hooks-scripts.md and check-dependencies.sh
+- Remove stale codebox/changes/ template checks from dependency scripts
+
+
 ## [6.0.19] - 2026-03-02
 
 ### Added

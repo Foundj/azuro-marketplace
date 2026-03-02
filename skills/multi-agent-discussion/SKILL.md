@@ -35,7 +35,7 @@ description: |
   Trigger phrase "汇总讨论结果" combined with explicit output request activates the Summarize phase.
   </commentary>
   </example>
-version: 6.0.19
+version: 6.0.20
 status: ga
 profile: design
 triggers:
@@ -300,6 +300,7 @@ Claude Code automatically orchestrates each discussion round:
 - Default: 3 discussion rounds + 1 optional draft round
 - **Fast path**: when `evaluate-convergence.sh` reports `converged: true`, skip Draft
 - Timeout: Claude Code intervenes after exceeding max rounds
+- **Parallel ensemble**: at `#decision-point` tags, multiple agents analyze in parallel with differentiated prompts, results aggregated via weighted voting (`ensemble-vote.sh`)
 
 **Progress check** — when user says "检查讨论进度" or "check progress":
 
@@ -308,16 +309,34 @@ Show progress label `[Round N/Max]`, then:
 2. If auto mode: also show `evaluate-convergence.sh` output
 3. Report current state and recommend next action
 
-### Phase 3: Draft (Optional)
+### Phase 3: Draft (Optional + Verification Loop)
 
 When discussion has converged but details need refinement. Skip if `#consensus` is already clear and comprehensive (auto mode will skip automatically based on convergence evaluation).
+
+**Verification Loop (生成-校验循环):**
+
+Draft 阶段引入迭代校验机制，借鉴 MiroFlow 校验策略：
+
+```
+Draft → Verify → (score < 7?) → Revise → Verify → ... → Accept
+最多 3 轮，或校验分数 >= 7/10 时通过
+```
+
+校验脚本 `verify-draft.sh` 评估 4 个维度（各 1-10 分，加权平均）：
+- **完整性 (30%)**：是否覆盖了所有 `#consensus` 议题
+- **一致性 (30%)**：是否与讨论共识一致，不包含已否决内容
+- **可行性 (20%)**：是否有具体代码、步骤和实现细节
+- **风险覆盖 (20%)**：是否回应了 @Critic 提出的问题
+
+不通过时，反馈具体改进建议，由 @Drafter 修正后重新校验。
 
 ### Phase 4: Summarize
 
 When convergence is reached (auto) or user triggers manually:
 
 1. Read entire `discussion.md`
-2. **Deep extract**: scan all tags, callouts, `#consensus`, `> [!decision]`
+2. **Update agent history**: Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/update-history.sh discussion.md data/agent-history.json` to persist performance data
+3. **Deep extract**: scan all tags, callouts, `#consensus`, `> [!decision]`
 3. **Invoke `task-planner` skill** to generate versioned plan.md + task.md:
    - Pass extracted decisions, consensus items, and pending questions as input
    - task-planner handles version determination, requirement-analyzer evaluation, and template rendering
@@ -392,6 +411,9 @@ Use [`interaction-protocol`](../interaction-protocol/SKILL.md) as the default in
 - **`scripts/parse-response.sh`** — Parse agent response into structured format
 - **`scripts/evaluate-convergence.sh`** — Evaluate discussion convergence (weighted voting)
 - **`scripts/score-response.sh`** — Quality scoring engine for response evaluation
+- **`scripts/verify-draft.sh`** — Draft verification loop (generator-verifier cycle)
+- **`scripts/ensemble-vote.sh`** — Parallel ensemble voting for decision points
+- **`scripts/update-history.sh`** — Update agent performance history after discussion
 - **`scripts/orchestrate-round.sh`** — Orchestrate a single discussion round
 - **`scripts/init-discussion.sh`** — Initialize discussion directory structure
 - **`scripts/populate-context.sh`** — Auto-scan project and populate context.md

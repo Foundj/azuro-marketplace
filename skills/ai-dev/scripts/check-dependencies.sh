@@ -124,7 +124,7 @@ else
 fi
 
 # 核心脚本
-SCRIPTS=("scan-project.sh" "query-knowledge.sh" "init-version.sh" "archive-change.sh")
+SCRIPTS=("scan-project.sh" "query-knowledge.sh" "init-version.sh" "archive-version.sh")
 for script in "${SCRIPTS[@]}"; do
     print_check "scripts/${script}"
     if [ -x "${AI_ORCH_DIR}/scripts/${script}" ]; then
@@ -145,7 +145,7 @@ fi
 echo ""
 
 # ========== 4. 模板文件检查 ==========
-echo "📁 Codebox 模板"
+echo "📁 Codebox 工具层模板 (保留层)"
 echo "-------------------------------------------"
 
 TEMPLATES=(
@@ -154,8 +154,6 @@ TEMPLATES=(
     "design.md"
     "CLAUDE.md"
     "constraints.md"
-    "feature_list.json"
-    "progress.txt"
 )
 
 for template in "${TEMPLATES[@]}"; do
@@ -167,8 +165,8 @@ for template in "${TEMPLATES[@]}"; do
     fi
 done
 
-# 子目录
-SUBDIRS=("knowledge" "changes/active" "changes/archived" "research")
+# 子目录 (工具层保留 knowledge, 任务管理已迁移到 docs/tasks/)
+SUBDIRS=("knowledge" "research")
 for subdir in "${SUBDIRS[@]}"; do
     print_check "templates/codebox/${subdir}/"
     if [ -d "${AI_ORCH_DIR}/templates/codebox/${subdir}" ]; then

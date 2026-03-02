@@ -32,7 +32,7 @@ description: |
   Vague requirements trigger the <70% confidence path where the agent must ask targeted questions before proceeding.
   </commentary>
   </example>
-version: 6.0.19
+version: 6.0.20
 status: ga
 profile: design
 triggers:

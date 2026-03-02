@@ -32,7 +32,7 @@ description: |
   User uses "ultrathink" trigger with a complex feature, activating deep task analysis with complexity scoring.
   </commentary>
   </example>
-version: 6.0.19
+version: 6.0.20
 status: ga
 profile: design
 triggers:

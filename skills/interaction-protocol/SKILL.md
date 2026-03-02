@@ -35,7 +35,7 @@ description: |
   Mid-flow interruption triggers the protocol's interruption handling: answer first, then offer to resume with context.
   </commentary>
   </example>
-version: 6.0.19
+version: 6.0.20
 status: ga
 profile: default
 triggers:

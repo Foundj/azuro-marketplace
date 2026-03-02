@@ -20,7 +20,7 @@
 | `scan-project.sh` | Deep/incremental project scanning |
 | `query-knowledge.sh` | Query patterns and errors |
 | `init-version.sh` | Initialize new versioned task directory |
-| `archive-change.sh` | Archive completed change |
+| `archive-version.sh` | Archive completed version |
 | `check-dependencies.sh` | Verify external dependencies |
 
 ## Configuration Example

@@ -31,7 +31,7 @@ description: |
   Bug fix request with quick/fix keywords triggers ai-dev in quick mode, skipping phases 0.5, 1, and 2.
   </commentary>
   </example>
-version: 6.0.19
+version: 6.0.20
 status: ga
 profile: dev
 triggers:
