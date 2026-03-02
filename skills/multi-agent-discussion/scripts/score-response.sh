@@ -1,28 +1,26 @@
 #!/usr/bin/env bash
-# 质量评分引擎 - 自动评估 Agent 发言质量
-# 用法: bash score-response.sh <response-text-file>
+# 质量评分引擎 - 自动评估 Agent 发言质量 + 工具维度评分
+# 用法: bash score-response.sh <response-text-file> [tool-name] [topic-type]
 #
-# 输入: Agent 发言文本文件
-# 输出: JSON 格式的质量评分
+# 输入:
+#   response-text-file: Agent 发言文本文件
+#   tool-name: 可选，工具名（codex/claude/gemini/cursor），用于计算 tool_score
+#   topic-type: 可选，主题类型（code-review/architecture/requirement/security/default）
+#
+# 输出 JSON:
 # {
 #   "quality_score": N,       — 总分 (0-5)
 #   "quality_bonus": 1.XX,    — 权重加成因子
-#   "dimensions": {
-#     "code_reference": bool,  — 引用了代码/文档
-#     "risk_identified": bool, — 识别了风险
-#     "alternative_compared": bool, — 提供了替代方案对比
-#     "peer_reference": bool,  — 引用了其他 Agent
-#     "action_proposed": bool  — 提出了行动项
-#   }
+#   "tool_score": 0.XX,       — 工具维度评分（无工具名时为 1.0）
+#   "dimensions": { ... },    — 质量维度明细
+#   "tool_dimensions": { ... } — 工具维度明细（无工具名时省略）
 # }
-#
-# 质量加权公式:
-#   quality_bonus = 1.0 + (quality_score × 0.05)
-#   有效范围: 1.00 - 1.25
 
 set -euo pipefail
 
-RESPONSE_FILE="${1:?用法: score-response.sh <response-text-file>}"
+RESPONSE_FILE="${1:?用法: score-response.sh <response-text-file> [tool-name] [topic-type]}"
+TOOL_NAME="${2:-}"
+TOPIC_TYPE="${3:-default}"
 
 if [ ! -f "$RESPONSE_FILE" ]; then
   echo "错误: 响应文件不存在: $RESPONSE_FILE" >&2
@@ -36,6 +34,7 @@ if [ -z "$RESPONSE" ]; then
 {
   "quality_score": 0,
   "quality_bonus": 1.00,
+  "tool_score": 1.00,
   "dimensions": {
     "code_reference": false,
     "risk_identified": false,
@@ -96,20 +95,58 @@ if echo "$RESPONSE" | grep -qi '#action' || \
 fi
 
 # === 计算质量加成因子 ===
-# quality_bonus = 1.0 + (quality_score × 0.05)
 quality_bonus=$(awk "BEGIN {printf \"%.2f\", 1.0 + ($quality_score * 0.05)}")
+
+# === 计算工具维度评分 ===
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DATA_DIR="${SCRIPT_DIR}/../data"
+tool_score="1.00"
+tool_dims_json=""
+
+if [ -n "$TOOL_NAME" ] && command -v jq &>/dev/null; then
+  PROFILES_FILE="${DATA_DIR}/tool-profiles.json"
+  WEIGHTS_FILE="${DATA_DIR}/topic-weights.json"
+
+  if [ -f "$PROFILES_FILE" ] && [ -f "$WEIGHTS_FILE" ]; then
+    # Resolve alias
+    resolved_tool=$(jq -r --arg t "$TOOL_NAME" '
+      (.aliases[$t] // $t) as $rt |
+      if .profiles[$rt] then $rt else empty end
+    ' "$PROFILES_FILE" 2>/dev/null || echo "")
+
+    if [ -n "$resolved_tool" ]; then
+      tool_score=$(jq -r --arg t "$resolved_tool" --arg tt "$TOPIC_TYPE" '
+        . as $profiles |
+        input as $weights |
+        ($weights.topics[$tt] // $weights.topics["default"]) as $tw |
+        $profiles.profiles[$t] |
+        (.thoroughness * $tw.thoroughness) +
+        (.accuracy * $tw.accuracy) +
+        (.creativity * $tw.creativity) +
+        (.execution * $tw.execution) |
+        . * 100 | round / 100 | tostring
+      ' "$PROFILES_FILE" "$WEIGHTS_FILE" 2>/dev/null || echo "1.00")
+
+      tool_dims_json=$(jq -r --arg t "$resolved_tool" '
+        .profiles[$t] | 
+        ",\n  \"tool_dimensions\": " + tojson
+      ' "$PROFILES_FILE" 2>/dev/null || echo "")
+    fi
+  fi
+fi
 
 # === 输出 JSON ===
 cat <<EOF
 {
   "quality_score": ${quality_score},
   "quality_bonus": ${quality_bonus},
+  "tool_score": ${tool_score},
   "dimensions": {
     "code_reference": ${code_reference},
     "risk_identified": ${risk_identified},
     "alternative_compared": ${alternative_compared},
     "peer_reference": ${peer_reference},
     "action_proposed": ${action_proposed}
-  }
+  }${tool_dims_json}
 }
 EOF

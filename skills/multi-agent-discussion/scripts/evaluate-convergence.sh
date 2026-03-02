@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
-# 收敛评估 - 分析 discussion.md 讨论收敛状态（加权投票版）
+# 收敛评估 - 分析 discussion.md 讨论收敛状态（五因子加权投票版）
 # 用法: bash evaluate-convergence.sh <discussion-file>
 #
-# 分析 discussion.md 中的标签、置信度和角色权重，输出收敛指标 JSON:
+# 五因子公式:
+#   effective_weight = role_weight × confidence × quality_bonus × tool_score × history_modifier
+#
+# 依赖数据文件（均在 ../data/ 下，缺失时优雅降级为 1.0）:
+#   tool-profiles.json   — 工具多维度评分（thoroughness/accuracy/creativity/execution）
+#   topic-weights.json   — 主题类型对应的维度权重分配
+#   agent-history.json   — Agent 历史表现数据
+#
+# 输出 JSON:
 # {
 #   "consensus_count":       N,   — #consensus 标签总数
 #   "pending_count":         N,   — #pending 标签总数
@@ -11,7 +19,8 @@
 #   "blocker_count":         N,   — #blocker 标签总数
 #   "total_tags":            N,   — 状态标签总数
 #   "consensus_ratio":       0.X, — 简单共识率（向后兼容）
-#   "weighted_consensus":    0.X, — 加权共识值
+#   "weighted_consensus":    0.X, — 五因子加权共识值
+#   "topic_type":            "...",— 推断的主题类型
 #   "unresolved_mentions":   N,   — 未回应的 @ 提及数
 #   "current_round":         N,   — 当前轮次
 #   "total_entries":         N,   — [Round N] 发言总数
@@ -79,34 +88,47 @@ fi
 # 格式: ## [Round N] @Role — tool 或 ## [Round N] @Role [confidence: 0.85] — tool
 # 支持历史权重修正（如果 agent-history.json 存在）
 
-# 加载历史权重修正数据
+# 加载外部数据
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HISTORY_FILE="${SCRIPT_DIR}/../data/agent-history.json"
+DATA_DIR="${SCRIPT_DIR}/../data"
+
+# 历史权重修正
+HISTORY_FILE="${DATA_DIR}/agent-history.json"
 HISTORY_DATA=""
 if [ -f "$HISTORY_FILE" ] && command -v jq &>/dev/null; then
   HISTORY_DATA=$(cat "$HISTORY_FILE")
 fi
 
-# 获取历史权重修正因子
-# 用法: get_history_modifier <tool:role>
-get_history_modifier() {
-  local key="$1"
-  if [ -n "$HISTORY_DATA" ]; then
-    local modifier
-    modifier=$(echo "$HISTORY_DATA" | jq -r ".\"$key\".weight_modifier // 1.0" 2>/dev/null)
-    echo "${modifier:-1.0}"
-  else
-    echo "1.0"
-  fi
-}
+# 工具多维度评分
+TOOL_PROFILES_FILE="${DATA_DIR}/tool-profiles.json"
+TOOL_PROFILES_DATA=""
+if [ -f "$TOOL_PROFILES_FILE" ] && command -v jq &>/dev/null; then
+  TOOL_PROFILES_DATA=$(cat "$TOOL_PROFILES_FILE")
+fi
+
+# 主题维度权重
+TOPIC_WEIGHTS_FILE="${DATA_DIR}/topic-weights.json"
+TOPIC_WEIGHTS_DATA=""
+if [ -f "$TOPIC_WEIGHTS_FILE" ] && command -v jq &>/dev/null; then
+  TOPIC_WEIGHTS_DATA=$(cat "$TOPIC_WEIGHTS_FILE")
+fi
+
+# 从 STATUS 面板提取 preset，推断 topic 类型
+PRESET=$(echo "$CONTENT" | sed -n '/<!-- STATUS/,/-->/p' | grep 'preset:' | head -1 | sed 's/.*preset:\s*//' | tr -d ' ')
+PRESET="${PRESET:-custom}"
+
+TOPIC_TYPE="default"
+if [ -n "$TOPIC_WEIGHTS_DATA" ]; then
+  MAPPED=$(echo "$TOPIC_WEIGHTS_DATA" | jq -r ".preset_mapping.\"$PRESET\" // \"default\"" 2>/dev/null)
+  TOPIC_TYPE="${MAPPED:-default}"
+fi
 
 calculate_weighted_consensus() {
   local weighted_sum=0
   local weight_total=0
   local entry_count=0
 
-  # 预提取历史权重修正数据为 awk 可用的格式
-  # 格式: "key1=val1,key2=val2"
+  # 预提取历史权重修正数据为 awk 可用格式: "key1=val1,key2=val2"
   local history_modifiers=""
   if [ -n "$HISTORY_DATA" ]; then
     history_modifiers=$(echo "$HISTORY_DATA" | jq -r '
@@ -116,12 +138,40 @@ calculate_weighted_consensus() {
     ' 2>/dev/null || echo "")
   fi
 
-  # 使用 awk 一次性完成所有条目的解析和加权计算（含质量评分 + 历史权重）
-  # 输出格式: weighted_sum weight_total entry_count
-  # effective_weight = base_role_weight × confidence × quality_bonus × history_modifier
+  # 预提取工具评分为 awk 可用格式: "tool:dim=val,..."
+  # 同时解析 aliases
+  local tool_scores_str=""
+  if [ -n "$TOOL_PROFILES_DATA" ]; then
+    tool_scores_str=$(echo "$TOOL_PROFILES_DATA" | jq -r '
+      (.aliases // {}) as $aliases |
+      .profiles | to_entries | map(
+        .key as $tool |
+        .value | to_entries | map($tool + ":" + .key + "=" + (.value | tostring))
+      ) | flatten | join(",")
+    ' 2>/dev/null || echo "")
+    # 追加 alias 映射: "alias>canonical,..."
+    local alias_str=""
+    alias_str=$(echo "$TOOL_PROFILES_DATA" | jq -r '
+      (.aliases // {}) | to_entries | map(.key + ">" + .value) | join(",")
+    ' 2>/dev/null || echo "")
+  fi
+
+  # 预提取当前 topic 的维度权重: "dim=weight,..."
+  local topic_weights_str=""
+  if [ -n "$TOPIC_WEIGHTS_DATA" ]; then
+    topic_weights_str=$(echo "$TOPIC_WEIGHTS_DATA" | jq -r --arg tt "$TOPIC_TYPE" '
+      (.topics[$tt] // .topics["default"]) |
+      to_entries | map(.key + "=" + (.value | tostring)) | join(",")
+    ' 2>/dev/null || echo "")
+  fi
+
+  # 使用 awk 一次性完成所有条目的解析和加权计算（五因子）
+  # effective_weight = role_weight × confidence × quality_bonus × tool_score × history_modifier
   local result
-  result=$(echo "$CONTENT" | awk -v hist="$history_modifiers" '
-    # 角色权重表
+  result=$(echo "$CONTENT" | awk -v hist="$history_modifiers" \
+    -v tscores="$tool_scores_str" -v aliases="${alias_str:-}" \
+    -v tweights="$topic_weights_str" '
+
     function get_weight(role) {
       sub(/^@/, "", role)
       if (role == "Architect") return 0.90
@@ -134,32 +184,66 @@ calculate_weighted_consensus() {
       return 0.75
     }
 
-    # 提交上一个条目的计算结果
     function flush_entry() {
       if (cur_role == "" || !has_tag) return
-      # 质量加成
       qb = 1.0 + (qscore * 0.05)
-      # 历史权重修正
       hm = get_history_mod(cur_tool, cur_role)
-      ew = base_w * conf * qb * hm
+      ts = get_tool_score(cur_tool)
+      ew = base_w * conf * qb * ts * hm
       ws += ew * vote
       wt += ew
       ec++
     }
 
-    # 查找历史权重修正因子
     function get_history_mod(tool, role) {
       key = tool ":" role
       if (key in hist_map) return hist_map[key]
       return 1.0
     }
 
+    # tool_score = Σ(dimension_value × topic_weight) 对每个维度
+    function get_tool_score(tool) {
+      # 解析 alias
+      if (tool in alias_map) tool = alias_map[tool]
+      score = 0
+      dims[1] = "thoroughness"; dims[2] = "accuracy"
+      dims[3] = "creativity"; dims[4] = "execution"
+      has_data = 0
+      for (d = 1; d <= 4; d++) {
+        key = tool ":" dims[d]
+        if (key in tscore_map) {
+          tw_key = dims[d]
+          tw = (tw_key in tweight_map) ? tweight_map[tw_key] : 0.25
+          score += tscore_map[key] * tw
+          has_data = 1
+        }
+      }
+      return has_data ? score : 1.0
+    }
+
     BEGIN {
-      # 解析历史权重数据: "key1=val1,key2=val2"
       n = split(hist, pairs, ",")
       for (i = 1; i <= n; i++) {
         split(pairs[i], kv, "=")
         if (kv[1] != "") hist_map[kv[1]] = kv[2] + 0
+      }
+      # 工具评分: "tool:dim=val,..."
+      n = split(tscores, pairs, ",")
+      for (i = 1; i <= n; i++) {
+        split(pairs[i], kv, "=")
+        if (kv[1] != "") tscore_map[kv[1]] = kv[2] + 0
+      }
+      # Alias: "alias>canonical,..."
+      n = split(aliases, pairs, ",")
+      for (i = 1; i <= n; i++) {
+        split(pairs[i], kv, ">")
+        if (kv[1] != "") alias_map[kv[1]] = kv[2]
+      }
+      # 主题权重: "dim=weight,..."
+      n = split(tweights, pairs, ",")
+      for (i = 1; i <= n; i++) {
+        split(pairs[i], kv, "=")
+        if (kv[1] != "") tweight_map[kv[1]] = kv[2] + 0
       }
     }
 
@@ -309,6 +393,7 @@ cat <<EOF
   "total_tags": ${TOTAL_TAGS},
   "consensus_ratio": ${CONSENSUS_RATIO},
   "weighted_consensus": ${WEIGHTED_CONSENSUS},
+  "topic_type": "${TOPIC_TYPE}",
   "unresolved_mentions": ${UNRESOLVED_MENTIONS},
   "current_round": ${CURRENT_ROUND},
   "total_entries": ${TOTAL_ENTRIES},

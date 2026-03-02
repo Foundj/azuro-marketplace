@@ -92,7 +92,7 @@ case "$PRESET" in
 esac
 
 # 创建目录结构
-mkdir -p "${DISCUSSION_DIR}"/{refs,continue}
+mkdir -p "${DISCUSSION_DIR}"/{refs,continue,drafts,plans,notepads}
 
 # 跨平台 sed -i 兼容函数
 sed_inplace() {
@@ -214,6 +214,9 @@ cat > "${DISCUSSION_DIR}/README.md" << 'HEREDOC'
 | `discussion.md` | 主讨论文档（含 Round 0 种子） |
 | `context.md` | 项目背景资料（自动填充） |
 | `invite-*.md` | 各角色邀请文件（手动模式） |
+| `drafts/` | Draft 迭代产物（草案版本、校验结果） |
+| `plans/` | 决策交付物（讨论本地 plan.md / task.md 副本） |
+| `notepads/` | 过程笔记（集成投票、收敛日志） |
 | `refs/` | 附件目录 |
 | `continue/` | 续接提示词（手动模式） |
 HEREDOC
@@ -322,6 +325,9 @@ echo "  ${DISCUSSION_DIR}/"
 echo "  ├── README.md        # 讨论规则"
 echo "  ├── discussion.md    # 主讨论文档（待 Round 0 种子）"
 echo "  ├── context.md       # 项目背景（已自动填充）"
+echo "  ├── drafts/          # Draft 迭代产物"
+echo "  ├── plans/           # 决策交付物"
+echo "  ├── notepads/        # 过程笔记"
 echo "  ├── refs/"
 echo "  └── continue/"
 echo "      ├── draft.md"

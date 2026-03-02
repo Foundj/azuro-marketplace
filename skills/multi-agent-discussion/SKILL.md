@@ -35,7 +35,7 @@ description: |
   Trigger phrase "汇总讨论结果" combined with explicit output request activates the Summarize phase.
   </commentary>
   </example>
-version: 6.0.21
+version: 6.0.22
 status: ga
 profile: design
 triggers:
@@ -140,10 +140,10 @@ Agent 发言时可附带置信度声明，范围 `[0.0, 1.0]`：
 - 置信度反映 Agent 对当前发言的确信程度
 - 低置信度（如 0.5）表示"倾向但不确定"
 
-### 加权收敛算法
+### 加权收敛算法（五因子公式）
 
 ```
-effective_weight = base_role_weight × confidence × quality_bonus
+effective_weight = role_weight × confidence × quality_bonus × tool_score × history_modifier
 weighted_consensus = Σ(effective_weight × vote_value) / Σ(effective_weight)
 
 vote_value:
@@ -155,13 +155,58 @@ vote_value:
   weighted_consensus >= 0.65 且 blocker_count == 0 且 needs_input_count == 0
 ```
 
-### 示例
+### 工具多维度评分（Tool Score）
+
+不同工具在不同维度上表现差异显著。tool_score 基于 4 个维度和讨论主题类型计算：
+
+| 维度 | 含义 | 说明 |
+|------|------|------|
+| thoroughness（彻底性） | 全面审查，不遗漏 | 高分 = 审查踏实、覆盖全面 |
+| accuracy（真实性） | 事实准确，不幻觉 | 高分 = 输出可靠、少编造 |
+| creativity（创造性） | 创新方案和思路 | 高分 = 方案新颖、视角独特 |
+| execution（落实性） | 方案具体可执行 | 高分 = 细节充足、可直接落地 |
 
 ```
-@Architect [confidence: 0.9]  → #consensus  → weight: 0.90×0.9 = 0.81, vote: +0.81
-@PM        [confidence: 0.8]  → #consensus  → weight: 0.80×0.8 = 0.64, vote: +0.64
-@Critic    [confidence: 0.7]  → #pending    → weight: 0.70×0.7 = 0.49, vote:  0.00
-weighted_consensus = (0.81 + 0.64 + 0) / (0.81 + 0.64 + 0.49) = 0.75 → converged ✓
+tool_score = Σ(dimension_value × topic_weight) 对每个维度
+```
+
+不同主题类型下维度权重不同（由 `data/topic-weights.json` 配置）：
+- **code-review**: 彻底性和真实性最重要（各 0.35）
+- **architecture**: 创造性和落实性重要（各 0.30）
+- **requirement**: 四维度均衡（各 0.25）
+- **security**: 真实性最重要（0.35）
+
+工具初始评分在 `data/tool-profiles.json` 中配置，可根据实际使用经验调整。`claudea`/`claudec`/`claudeg` 等变体共享 `claude` 的 profile。
+
+### 历史权重修正（History Modifier）
+
+`history_modifier` 基于 Agent 在历往讨论中的表现自动计算：
+- 质量得分平均值和共识对齐度越高，权重修正越大
+- 范围 `[0.6, 1.4]`，初始值 `1.0`
+- 由 `update-history.sh` 在讨论结束后更新到 `data/agent-history.json`
+
+### 示例
+
+code-review 场景下，使用 codex 的 @Architect：
+```
+role_weight  = 0.90 (Architect)
+confidence   = 0.9
+quality_bonus = 1.15 (3/5 质量维度命中)
+tool_score   = 0.95×0.35 + 0.90×0.35 + 0.75×0.10 + 0.90×0.20 = 0.9025 (codex)
+history_mod  = 1.08 (历史表现良好)
+
+effective_weight = 0.90 × 0.9 × 1.15 × 0.9025 × 1.08 = 0.908
+```
+
+对比使用 gemini 的 @PM：
+```
+role_weight  = 0.80 (PM)
+confidence   = 0.8
+quality_bonus = 1.10 (2/5 质量维度命中)
+tool_score   = 0.75×0.35 + 0.78×0.35 + 0.85×0.10 + 0.75×0.20 = 0.7705 (gemini)
+history_mod  = 1.00 (无历史数据)
+
+effective_weight = 0.80 × 0.8 × 1.10 × 0.7705 × 1.00 = 0.542
 ```
 
 ### 质量加分系统（Quality Scoring）
@@ -179,10 +224,11 @@ weighted_consensus = (0.81 + 0.64 + 0) / (0.81 + 0.64 + 0.49) = 0.75 → converg
 ```
 quality_bonus = 1.0 + (quality_score × 0.05)
 # 范围: 1.00（0分）— 1.25（5分满分）
-effective_weight = base_role_weight × confidence × quality_bonus
 ```
 
 高质量发言（引用代码、识别风险、提出行动项）的投票权重最高可获得 25% 加成。
+
+> **Note**: quality_bonus 是五因子公式中的一个因子。完整公式见「加权收敛算法」章节。
 
 ## Discussion Presets
 
@@ -245,15 +291,25 @@ Then:
 **Directory created:**
 ```
 docs/discussions/<topic>/
-├── README.md                    # Rules, roles, syntax reference
-├── discussion.md                # Main file (STATUS panel + Round 0 seed + discussion)
+├── discussion.md                # Main blackboard (STATUS panel + rounds)
 ├── context.md                   # Auto-populated project background
-├── invite-<role>-<tool>.md      # Self-contained invitation per role+tool (manual mode)
-├── refs/                        # Attachments (code, designs)
-└── continue/                    # Continuation prompts (manual mode)
-    ├── round-N-<role>-<tool>.md
-    ├── draft.md
-    └── review.md
+├── README.md                    # Rules, roles, syntax reference
+├── drafts/                      # Draft iteration artifacts
+│   ├── v1.md, v1-verify.json   # Draft versions + verification results
+│   └── final.md                # Accepted final draft
+├── plans/                       # Decision deliverables (local copies)
+│   ├── plan.md                 # Implementation plan
+│   └── task.md                 # Task breakdown
+├── notepads/                    # Process notes
+│   ├── ensemble-*.json         # Parallel voting results
+│   └── convergence.log         # Convergence snapshots
+├── prompts/                     # Agent invocation prompts
+├── continue/                    # Continuation prompts (manual mode)
+│   ├── round-N-<role>-<tool>.md
+│   ├── draft.md
+│   └── review.md
+├── invite-<role>-<tool>.md      # Self-contained invitation (manual mode)
+└── refs/                        # Attachments (code, designs)
 ```
 
 ### Phase 2: Discuss (Auto or Manual)
@@ -300,7 +356,7 @@ Claude Code automatically orchestrates each discussion round:
 - Default: 3 discussion rounds + 1 optional draft round
 - **Fast path**: when `evaluate-convergence.sh` reports `converged: true`, skip Draft
 - Timeout: Claude Code intervenes after exceeding max rounds
-- **Parallel ensemble**: at `#decision-point` tags, multiple agents analyze in parallel with differentiated prompts, results aggregated via weighted voting (`ensemble-vote.sh`)
+- **Parallel ensemble**: at `#decision-point` tags, multiple agents analyze in parallel with differentiated prompts, results aggregated via weighted voting (`ensemble-vote.sh`). Results saved to `notepads/ensemble-{N}.json`
 
 **Progress check** — when user says "检查讨论进度" or "check progress":
 
@@ -330,6 +386,11 @@ Draft → Verify → (score < 7?) → Revise → Verify → ... → Accept
 
 不通过时，反馈具体改进建议，由 @Drafter 修正后重新校验。
 
+**Output paths:**
+- Draft 草案写入 `drafts/v{N}.md`（v1.md, v2.md, ...）
+- 校验结果写入 `drafts/v{N}-verify.json`
+- 最终通过的草案复制为 `drafts/final.md`
+
 ### Phase 4: Summarize
 
 When convergence is reached (auto) or user triggers manually:
@@ -341,10 +402,12 @@ When convergence is reached (auto) or user triggers manually:
    - Pass extracted decisions, consensus items, and pending questions as input
    - task-planner handles version determination, requirement-analyzer evaluation, and template rendering
    - Output goes to `docs/tasks/v<VERSION>/`
-4. Update STATUS panel: set `phase: done`
-5. Print deliverable summary:
-   - `docs/tasks/v<VERSION>/plan.md` — 设计文档
-   - `docs/tasks/v<VERSION>/task.md` — 执行看板
+4. **Local copies**: Copy generated plan.md and task.md to `plans/` directory for discussion-local reference
+5. Update STATUS panel: set `phase: done`
+6. Print deliverable summary:
+   - `docs/tasks/v<VERSION>/plan.md` — 设计文档（正式位置）
+   - `docs/tasks/v<VERSION>/task.md` — 执行看板（正式位置）
+   - `plans/plan.md`, `plans/task.md` — 讨论本地副本
    - 来源讨论：`docs/discussions/<topic>/discussion.md`
 
 > **Note**: Template specifications are maintained in `references/output-format.md` for reference, but the actual generation logic is handled by the `task-planner` skill to ensure consistency across all creation paths (discussion-driven, dev-driven, and direct).
@@ -409,14 +472,19 @@ Use [`interaction-protocol`](../interaction-protocol/SKILL.md) as the default in
 - **`scripts/detect-cli-tools.sh`** — Detect available CLI tool backends
 - **`scripts/invoke-agent.sh`** — Unified agent invocation wrapper
 - **`scripts/parse-response.sh`** — Parse agent response into structured format
-- **`scripts/evaluate-convergence.sh`** — Evaluate discussion convergence (weighted voting)
-- **`scripts/score-response.sh`** — Quality scoring engine for response evaluation
+- **`scripts/evaluate-convergence.sh`** — Evaluate discussion convergence (five-factor weighted voting)
+- **`scripts/score-response.sh`** — Quality + tool dimension scoring engine
 - **`scripts/verify-draft.sh`** — Draft verification loop (generator-verifier cycle)
 - **`scripts/ensemble-vote.sh`** — Parallel ensemble voting for decision points
 - **`scripts/update-history.sh`** — Update agent performance history after discussion
 - **`scripts/orchestrate-round.sh`** — Orchestrate a single discussion round
 - **`scripts/init-discussion.sh`** — Initialize discussion directory structure
 - **`scripts/populate-context.sh`** — Auto-scan project and populate context.md
+
+### Data Files
+- **`data/agent-history.json`** — Agent historical performance data (auto-updated)
+- **`data/tool-profiles.json`** — Tool multi-dimensional capability scores (configurable)
+- **`data/topic-weights.json`** — Topic-type dimension weight templates
 
 ### Documentation
 - **`docs/cli-non-interactive-modes.md`** — CLI non-interactive mode reference

@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "description": "主题类型对应的维度权重分配 — 不同讨论场景下各维度重要性不同",
+    "version": "1.0",
+    "constraint": "各维度权重之和必须等于 1.0"
+  },
+  "topics": {
+    "code-review": {
+      "thoroughness": 0.35,
+      "accuracy": 0.35,
+      "creativity": 0.10,
+      "execution": 0.20
+    },
+    "architecture": {
+      "thoroughness": 0.20,
+      "accuracy": 0.20,
+      "creativity": 0.30,
+      "execution": 0.30
+    },
+    "requirement": {
+      "thoroughness": 0.25,
+      "accuracy": 0.25,
+      "creativity": 0.25,
+      "execution": 0.25
+    },
+    "security": {
+      "thoroughness": 0.30,
+      "accuracy": 0.35,
+      "creativity": 0.10,
+      "execution": 0.25
+    },
+    "default": {
+      "thoroughness": 0.25,
+      "accuracy": 0.25,
+      "creativity": 0.25,
+      "execution": 0.25
+    }
+  },
+  "preset_mapping": {
+    "product-discovery": "requirement",
+    "architecture-design": "architecture",
+    "full-review": "code-review",
+    "security-audit": "security",
+    "custom": "default"
+  }
+}

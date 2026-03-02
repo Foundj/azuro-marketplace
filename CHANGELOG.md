@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.22] - 2026-03-02
+
+### Added
+- `data/tool-profiles.json` — multi-dimensional tool capability scores (thoroughness/accuracy/creativity/execution)
+- `data/topic-weights.json` — topic-type dimension weight templates with preset mapping
+- Discussion directory restructure: `drafts/`, `plans/`, `notepads/` subdirectories
+
+### Changed
+- `evaluate-convergence.sh` — upgrade to five-factor formula (role × confidence × quality × tool_score × history)
+- `score-response.sh` — add optional tool-name and topic-type params for tool_score output
+- `init-discussion.sh` — create new subdirectories (drafts, plans, notepads)
+- SKILL.md — update directory structure, Phase 3/4 output paths, five-factor weighted voting docs
+
+
 ## [6.0.21] - 2026-03-02
 
 ### Added

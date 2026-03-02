@@ -1,0 +1,45 @@
+{
+  "_meta": {
+    "description": "工具多维度能力评分 — 影响加权共识中的 tool_score 因子",
+    "version": "1.0",
+    "formula": "tool_score = Σ(dimension_value × topic_weight)"
+  },
+  "dimensions": ["thoroughness", "accuracy", "creativity", "execution"],
+  "profiles": {
+    "codex": {
+      "thoroughness": 0.95,
+      "accuracy": 0.90,
+      "creativity": 0.75,
+      "execution": 0.90
+    },
+    "claude": {
+      "thoroughness": 0.80,
+      "accuracy": 0.82,
+      "creativity": 0.90,
+      "execution": 0.80
+    },
+    "gemini": {
+      "thoroughness": 0.75,
+      "accuracy": 0.78,
+      "creativity": 0.85,
+      "execution": 0.75
+    },
+    "cursor": {
+      "thoroughness": 0.70,
+      "accuracy": 0.75,
+      "creativity": 0.80,
+      "execution": 0.85
+    },
+    "opencode": {
+      "thoroughness": 0.70,
+      "accuracy": 0.75,
+      "creativity": 0.75,
+      "execution": 0.80
+    }
+  },
+  "aliases": {
+    "claudea": "claude",
+    "claudec": "claude",
+    "claudeg": "claude"
+  }
+}

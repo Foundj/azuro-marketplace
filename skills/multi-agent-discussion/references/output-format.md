@@ -11,15 +11,25 @@
 
 ```
 docs/
-├── discussions/<topic>/          # 讨论过程（不变）
-│   ├── discussion.md
+├── discussions/<topic>/          # 讨论过程
+│   ├── discussion.md             # 黑板
 │   ├── context.md
+│   ├── drafts/                   # Draft 迭代产物
+│   │   ├── v1.md, v1-verify.json
+│   │   └── final.md
+│   ├── plans/                    # 决策交付物（讨论本地副本）
+│   │   ├── plan.md
+│   │   └── task.md
+│   ├── notepads/                 # 过程笔记
+│   │   └── ensemble-*.json
 │   └── ...
-└── tasks/<version>/              # 讨论产出
+└── tasks/<version>/              # 讨论产出（正式位置）
     ├── plan.md                   # WHY + WHAT + HOW（无复选框）
     ├── task.md                   # 唯一状态看板（复选框 + YAML 依赖）
     └── reports/                  # 可选：自动化验证报告
 ```
+
+`plans/` 中为讨论本地副本，方便从讨论目录追溯交付物。正式位置始终在 `docs/tasks/v<VERSION>/`。
 
 ### 版本号确定规则
 
