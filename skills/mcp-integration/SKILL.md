@@ -32,7 +32,7 @@ description: |
   Chinese phrase "外部服务集成" and research enhancement intent trigger this skill.
   </commentary>
   </example>
-version: 6.0.20
+version: 6.0.21
 status: ga
 profile: default
 triggers:

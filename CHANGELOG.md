@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.21] - 2026-03-02
+
+### Added
+- `scripts/ensemble-vote.sh` — parallel ensemble voting for decision points (MiroFlow-inspired)
+- `scripts/verify-draft.sh` — draft verification loop with 4-dimension scoring
+- `scripts/update-history.sh` — post-discussion agent performance history update
+- `data/agent-history.json` — agent historical performance data store
+
+### Changed
+- `evaluate-convergence.sh` — integrate history weight modifier into weighted consensus formula
+
+### Removed
+- `scripts/archive-change.sh` — replaced by archive-version.sh
+- `skills/ai-dev/scripts/archive-change.sh` — duplicate removed
+
+
 ## [6.0.20] - 2026-03-02
 
 ### Fixed

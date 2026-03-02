@@ -77,17 +77,50 @@ fi
 # === 加权共识计算 ===
 # 从每个 [Round N] 条目中提取角色、置信度和投票标签
 # 格式: ## [Round N] @Role — tool 或 ## [Round N] @Role [confidence: 0.85] — tool
+# 支持历史权重修正（如果 agent-history.json 存在）
+
+# 加载历史权重修正数据
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HISTORY_FILE="${SCRIPT_DIR}/../data/agent-history.json"
+HISTORY_DATA=""
+if [ -f "$HISTORY_FILE" ] && command -v jq &>/dev/null; then
+  HISTORY_DATA=$(cat "$HISTORY_FILE")
+fi
+
+# 获取历史权重修正因子
+# 用法: get_history_modifier <tool:role>
+get_history_modifier() {
+  local key="$1"
+  if [ -n "$HISTORY_DATA" ]; then
+    local modifier
+    modifier=$(echo "$HISTORY_DATA" | jq -r ".\"$key\".weight_modifier // 1.0" 2>/dev/null)
+    echo "${modifier:-1.0}"
+  else
+    echo "1.0"
+  fi
+}
+
 calculate_weighted_consensus() {
   local weighted_sum=0
   local weight_total=0
   local entry_count=0
 
-  # 使用 awk 一次性完成所有条目的解析和加权计算（含质量评分）
+  # 预提取历史权重修正数据为 awk 可用的格式
+  # 格式: "key1=val1,key2=val2"
+  local history_modifiers=""
+  if [ -n "$HISTORY_DATA" ]; then
+    history_modifiers=$(echo "$HISTORY_DATA" | jq -r '
+      to_entries | map(select(.key != "_meta")) |
+      map(.key + "=" + (.value.weight_modifier | tostring)) |
+      join(",")
+    ' 2>/dev/null || echo "")
+  fi
+
+  # 使用 awk 一次性完成所有条目的解析和加权计算（含质量评分 + 历史权重）
   # 输出格式: weighted_sum weight_total entry_count
-  # effective_weight = base_role_weight × confidence × quality_bonus
-  # quality_bonus = 1.0 + (quality_score × 0.05)，quality_score 范围 0-5
+  # effective_weight = base_role_weight × confidence × quality_bonus × history_modifier
   local result
-  result=$(echo "$CONTENT" | awk '
+  result=$(echo "$CONTENT" | awk -v hist="$history_modifiers" '
     # 角色权重表
     function get_weight(role) {
       sub(/^@/, "", role)
@@ -106,10 +139,28 @@ calculate_weighted_consensus() {
       if (cur_role == "" || !has_tag) return
       # 质量加成
       qb = 1.0 + (qscore * 0.05)
-      ew = base_w * conf * qb
+      # 历史权重修正
+      hm = get_history_mod(cur_tool, cur_role)
+      ew = base_w * conf * qb * hm
       ws += ew * vote
       wt += ew
       ec++
+    }
+
+    # 查找历史权重修正因子
+    function get_history_mod(tool, role) {
+      key = tool ":" role
+      if (key in hist_map) return hist_map[key]
+      return 1.0
+    }
+
+    BEGIN {
+      # 解析历史权重数据: "key1=val1,key2=val2"
+      n = split(hist, pairs, ",")
+      for (i = 1; i <= n; i++) {
+        split(pairs[i], kv, "=")
+        if (kv[1] != "") hist_map[kv[1]] = kv[2] + 0
+      }
     }
 
     /^## \[Round [0-9]+\]/ {
@@ -120,11 +171,20 @@ calculate_weighted_consensus() {
 
       # 提取角色
       cur_role = ""
+      cur_tool = ""
       s = $0
       sub(/^## \[Round [0-9]+\] */, "", s)
       split(s, parts, " ")
       if (length(parts) > 0) cur_role = parts[1]
       sub(/\[.*/, "", cur_role)
+
+      # 提取工具名（在 " — " 之后）
+      if (index($0, " — ") > 0) {
+        t = $0
+        sub(/.* — /, "", t)
+        sub(/ .*/, "", t)
+        cur_tool = t
+      }
 
       # 提取置信度
       conf = 1.0
