@@ -19,7 +19,7 @@
 |--------|---------|
 | `scan-project.sh` | Deep/incremental project scanning |
 | `query-knowledge.sh` | Query patterns and errors |
-| `init-change.sh` | Initialize new change directory |
+| `init-version.sh` | Initialize new versioned task directory |
 | `archive-change.sh` | Archive completed change |
 | `check-dependencies.sh` | Verify external dependencies |
 

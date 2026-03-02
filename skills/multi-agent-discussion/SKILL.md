@@ -35,7 +35,7 @@ description: |
   Trigger phrase "汇总讨论结果" combined with explicit output request activates the Summarize phase.
   </commentary>
   </example>
-version: 6.0.18
+version: 6.0.19
 status: ga
 profile: design
 triggers:
@@ -102,6 +102,87 @@ Create a discussion space in a target project's `docs/discussions/` directory. C
 3. **降级兼容**：无 CLI 工具时自动切换手动邀请文件模式
 4. **反共识偏见**：@Critic 角色强制反对，问题框架优先于方案设计
 5. **收敛驱动**：自动评估收敛指标，达成共识后可跳过 Draft 直接 Summarize
+6. **加权共识**：基于角色专业度和发言置信度的加权投票，提升决策质量
+
+## Weighted Voting System
+
+### 概述
+
+借鉴 MiroFlow 深度推理模式的集成策略，本讨论框架引入加权投票机制。每个 Agent 的投票权重由**角色基础权重**和**发言置信度**共同决定，避免均等投票导致的专业意见被稀释。
+
+### 角色基础权重表
+
+| 角色 | 权重 | 说明 |
+|------|------|------|
+| @Architect | 0.90 | 架构决策权重最高 |
+| @Engineer / @Backend / @Frontend | 0.85 | 实现可行性权威 |
+| @Coordinator | 0.85 | 项目全局视角 |
+| @PM | 0.80 | 需求理解与优先级 |
+| @Security / @QA / @DevOps | 0.80 | 专业维度评审 |
+| @UserAdvocate | 0.75 | 用户视角代表 |
+| @Critic | 0.70 | 反对意见（权重略低防止过度否决） |
+| 自定义角色 | 0.75 | 默认权重 |
+
+### 发言置信度（Confidence）
+
+Agent 发言时可附带置信度声明，范围 `[0.0, 1.0]`：
+
+```markdown
+## [Round 1] @Architect [confidence: 0.85] — codex
+> 时间: 2025-01-15 14:30
+
+方案 A 更优，因为...
+
+#consensus(方案A)
+```
+
+- 未声明置信度时默认为 `1.0`（向后兼容）
+- 置信度反映 Agent 对当前发言的确信程度
+- 低置信度（如 0.5）表示"倾向但不确定"
+
+### 加权收敛算法
+
+```
+effective_weight = base_role_weight × confidence × quality_bonus
+weighted_consensus = Σ(effective_weight × vote_value) / Σ(effective_weight)
+
+vote_value:
+  #consensus  →  1.0（同意）
+  #pending    →  0.0（待定）
+  #rejected   → -0.5（反对）
+
+收敛条件:
+  weighted_consensus >= 0.65 且 blocker_count == 0 且 needs_input_count == 0
+```
+
+### 示例
+
+```
+@Architect [confidence: 0.9]  → #consensus  → weight: 0.90×0.9 = 0.81, vote: +0.81
+@PM        [confidence: 0.8]  → #consensus  → weight: 0.80×0.8 = 0.64, vote: +0.64
+@Critic    [confidence: 0.7]  → #pending    → weight: 0.70×0.7 = 0.49, vote:  0.00
+weighted_consensus = (0.81 + 0.64 + 0) / (0.81 + 0.64 + 0.49) = 0.75 → converged ✓
+```
+
+### 质量加分系统（Quality Scoring）
+
+每次发言自动评估 5 个质量维度，每个维度 +1 分（最高 5 分），通过 `quality_bonus` 因子影响有效权重：
+
+| 维度 | 检测条件 | 加分 |
+|------|---------|------|
+| 代码引用 | 包含代码块、文件路径或内联代码 | +1 |
+| 风险识别 | 包含 `#risk`、安全/性能/漏洞等关键词 | +1 |
+| 方案对比 | 包含 vs 对比、trade-off、权衡分析 | +1 |
+| 引用他人 | 引用 `@Role`、引述其他 Agent 观点 | +1 |
+| 行动项 | 包含 `#action`、建议、TODO、下一步 | +1 |
+
+```
+quality_bonus = 1.0 + (quality_score × 0.05)
+# 范围: 1.00（0分）— 1.25（5分满分）
+effective_weight = base_role_weight × confidence × quality_bonus
+```
+
+高质量发言（引用代码、识别风险、提出行动项）的投票权重最高可获得 25% 加成。
 
 ## Discussion Presets
 
@@ -237,30 +318,17 @@ When convergence is reached (auto) or user triggers manually:
 
 1. Read entire `discussion.md`
 2. **Deep extract**: scan all tags, callouts, `#consensus`, `> [!decision]`
-3. Read `references/output-format.md` for template structure and output path rules
-4. **Determine version**:
-   - If user specified `--version`, use it
-   - Otherwise, scan target project's `docs/tasks/` for existing `v*` directories
-   - Auto-increment: take max version + 0.1 (e.g., v1.2 → v1.3)
-   - First time: default to `v1.0`
-5. **Create output directory**: `docs/tasks/v<VERSION>/`
-6. Generate `plan.md` — multiClaw v6 format:
-   - YAML frontmatter with `discussion_source` pointing to this discussion
-   - **NO checkboxes** anywhere — plan is WHY/WHAT/HOW only
-   - Sprint-based with file change lists
-   - Preserve ADR records, confidence analysis, risk table from discussion
-   - Acceptance criteria as numbered prose, not checkboxes
-7. Generate `task.md` — multiClaw v6 format:
-   - Rich YAML frontmatter with sprints, tasks, dependencies, rules
-   - Git commit rules: `feat(v<VERSION>/s<N>): description`
-   - Mandatory `sN-review` gate after each Sprint
-   - Change log table initialized with creation record
-   - `discussion_source` cross-reference
-8. Update STATUS panel: set `phase: done`
-9. Print deliverable summary:
+3. **Invoke `task-planner` skill** to generate versioned plan.md + task.md:
+   - Pass extracted decisions, consensus items, and pending questions as input
+   - task-planner handles version determination, requirement-analyzer evaluation, and template rendering
+   - Output goes to `docs/tasks/v<VERSION>/`
+4. Update STATUS panel: set `phase: done`
+5. Print deliverable summary:
    - `docs/tasks/v<VERSION>/plan.md` — 设计文档
    - `docs/tasks/v<VERSION>/task.md` — 执行看板
    - 来源讨论：`docs/discussions/<topic>/discussion.md`
+
+> **Note**: Template specifications are maintained in `references/output-format.md` for reference, but the actual generation logic is handled by the `task-planner` skill to ensure consistency across all creation paths (discussion-driven, dev-driven, and direct).
 
 ## STATUS Panel Format
 
@@ -322,7 +390,8 @@ Use [`interaction-protocol`](../interaction-protocol/SKILL.md) as the default in
 - **`scripts/detect-cli-tools.sh`** — Detect available CLI tool backends
 - **`scripts/invoke-agent.sh`** — Unified agent invocation wrapper
 - **`scripts/parse-response.sh`** — Parse agent response into structured format
-- **`scripts/evaluate-convergence.sh`** — Evaluate discussion convergence
+- **`scripts/evaluate-convergence.sh`** — Evaluate discussion convergence (weighted voting)
+- **`scripts/score-response.sh`** — Quality scoring engine for response evaluation
 - **`scripts/orchestrate-round.sh`** — Orchestrate a single discussion round
 - **`scripts/init-discussion.sh`** — Initialize discussion directory structure
 - **`scripts/populate-context.sh`** — Auto-scan project and populate context.md

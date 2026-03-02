@@ -124,7 +124,7 @@ else
 fi
 
 # 核心脚本
-SCRIPTS=("scan-project.sh" "query-knowledge.sh" "init-change.sh" "archive-change.sh")
+SCRIPTS=("scan-project.sh" "query-knowledge.sh" "init-version.sh" "archive-change.sh")
 for script in "${SCRIPTS[@]}"; do
     print_check "scripts/${script}"
     if [ -x "${AI_ORCH_DIR}/scripts/${script}" ]; then

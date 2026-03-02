@@ -1,7 +1,7 @@
 ---
 name: ai:status
-description: AI development status - show project status, feature list, or feature details
-argument-hint: "[--list] [--detailed] [<feature-id>]"
+description: AI development status - show project status, feature list, version overview, or feature details
+argument-hint: "[--list] [--versions] [--detailed] [<feature-id>]"
 allowed-tools: Read, Bash, Grep, Glob
 ---
 
@@ -10,6 +10,7 @@ allowed-tools: Read, Bash, Grep, Glob
 **Usage:**
 - `/ai:status` - Show project status and current progress
 - `/ai:status --list` - List all features with status
+- `/ai:status --versions` - Show versioned task overview
 - `/ai:status <id>` - Show detailed info for specific feature
 
 ---
@@ -17,6 +18,9 @@ allowed-tools: Read, Bash, Grep, Glob
 ## Mode Detection
 
 Parse $ARGUMENTS to determine mode:
+
+**If argument is `--versions`:**
+→ Execute **Version Overview Mode**
 
 **If argument is `--list`:**
 → Execute **Feature List Mode**
@@ -36,27 +40,25 @@ Parse $ARGUMENTS to determine mode:
 ### Step 1: Check Project Initialization
 
 ```bash
-test -d codebox && echo "INITIALIZED" || echo "NOT_INITIALIZED"
+test -d docs/tasks && echo "INITIALIZED" || echo "NOT_INITIALIZED"
 ```
 
 If NOT_INITIALIZED:
 ```
 ⚠️ Project not initialized
-Run /init to set up AI development environment
+Run /ai:dev <feature> to start your first versioned task
 ```
 
 ### Step 2: Gather Status
 
-**Active Changes:**
+**Active Versions:**
 ```bash
-ls -la codebox/changes/active/ 2>/dev/null
+bash skills/task-planner/scripts/check-version-status.sh 2>/dev/null
 ```
 
-For each active change, check:
-- `proposal.md` exists → Phase 1 complete
-- `design.md` exists → Phase 2 complete
-- `tasks.md` exists → Phase 3 complete
-- Task completion % → Phase 4 progress
+For each active version, check task.md:
+- Task completion % from `[x]` vs `[ ]` counts
+- Current Sprint progress
 
 **Recent Activity:**
 ```bash
@@ -96,37 +98,38 @@ git log --oneline -5
 
 ## Feature List Mode (`--list`)
 
-**Goal**: Display all features with their status
+**Goal**: Display all versioned features with their status
 
-### Step 1: Read feature_list.json
+### Step 1: Read Version Status
 
 ```bash
-cat codebox/feature_list.json
+bash skills/task-planner/scripts/check-version-status.sh
 ```
 
 ### Step 2: Apply Filters (if specified)
 
-- `--active`: Active features only
-- `--archived`: Archived features only
-- `--stage=X`: Specific phase
+- `--active`: Active versions only
+- `--archived`: Archived versions only
 
 ### Step 3: Display List
 
 ```
-# Feature List
+# Version List
 
 ## Summary
-- **Total**: 15
-- **Active**: 3
-- **Completed**: 10
+- **Total**: 3
+- **Active**: 1
+- **Completed**: 1
+- **Archived**: 1
 
-## Active Features
-001 🟡 用户登录功能 [Phase 4] 62.5% - 2 issues
-002 🟡 数据分析仪表板 [Phase 2] 30% - exploring
-003 ⚪ 支付集成 [Phase 1] 0% - pending approval
+## Active Versions
+v2.0 🔄 统一任务架构 [in_progress] 37% - Sprint 2
+
+## Completed/Archived Versions
+v1.0 ✅ 产品策略优化 [archived] 100%
 
 ## Quick Commands
-- View details: /ai:status <id>
+- View details: /ai:status <version>
 - Continue work: /ai:dev auto
 ```
 
@@ -134,56 +137,53 @@ cat codebox/feature_list.json
 
 ## Feature Detail Mode (`<id>`)
 
-**Goal**: Show detailed information for a specific feature
+**Goal**: Show detailed information for a specific version
 
-### Step 1: Find Feature
+### Step 1: Find Version
 
-Search in `feature_list.json` by ID or change_id.
+Search in `docs/tasks/` by version number (e.g., `v1.0`, `v2.0`).
 
 If not found:
 ```
-❌ Feature not found: <id>
-Use /ai:status --list to see available features
+❌ Version not found: <id>
+Use /ai:status --list to see available versions
 ```
 
 ### Step 2: Display Details
 
 ```markdown
-# Feature: [Title]
+# Version: v2.0 — 统一任务架构
 
 ## Basic Info
-- **ID**: 001
-- **Change ID**: 001-user-auth
-- **Phase**: Phase 4 (Implementation)
+- **Version**: v2.0
 - **Status**: in_progress
+- **Created**: 2026-03-01
 
 ## Progress
-- **Tasks**: 5/8 complete (62.5%)
-- **OODA Iterations**: 6/10
-- **Quality Score**: 92/100
+- **Tasks**: 5/12 complete (41.6%)
+- **Current Sprint**: Sprint 2
 
 ## Task List
-- [x] Task 1: Create IUserRepository interface
-- [x] Task 2: Implement UserRepository class
-- [ ] Task 3: Add unit tests
-- [ ] Task 4: Fix security issues
+- [x] s1-1: 创建 task-planner 独立技能
+- [x] s1-review: Sprint 1 代码审查
+- [ ] s2-1: codebox 完全迁移
+- [ ] s2-review: Sprint 2 代码审查
 
 ## Related Files
-- changes/active/001-user-auth/proposal.md
-- changes/active/001-user-auth/design.md
-- changes/active/001-user-auth/tasks.md
+- docs/tasks/v2.0/plan.md
+- docs/tasks/v2.0/task.md
 
 ## Next Steps
-- Complete remaining 3 tasks
-- Fix 2 high-confidence issues
+- Complete remaining tasks in Sprint 2
 ```
 
 ### Step 3: If Archived
 
 ```
-⚠️ This feature is archived
-Location: changes/archived/2024-01/001-user-auth/
-Archived: 2024-01-20 15:30
+This version is archived
+Location: docs/tasks/v1.0/
+Archived: 2026-02-28
+See: docs/tasks/v1.0/ARCHIVED.md
 ```
 
 ---
@@ -195,3 +195,41 @@ Add to any mode for extra information:
 - Test coverage summary
 - Dependency health check
 - Agent execution history
+
+---
+
+## Version Overview Mode (`--versions`)
+
+**Goal**: Display all versioned task plans and their status
+
+### Step 1: Scan Version Directories
+
+```bash
+bash skills/task-planner/scripts/check-version-status.sh
+```
+
+### Step 2: Display Version Table
+
+```
+┌──────────┬──────────────┬────────────┬────────────┐
+│ Version  │ Name         │ Status     │ Progress   │
+├──────────┼──────────────┼────────────┼────────────┤
+│ v1.0     │ 产品策略优化  │ ✅ archived │ 9/9 (100%) │
+│ v2.0     │ 统一任务架构  │ 🔄 active   │ 3/8 (37%)  │
+└──────────┴──────────────┴────────────┴────────────┘
+```
+
+### Step 3: Per-Version Detail
+
+For each version with status `pending` or `in_progress`, show:
+- Current Sprint progress
+- Next unchecked task
+- Blocking issues (if any)
+
+### Step 4: Recommendations
+
+| State | Recommendation |
+|-------|----------------|
+| No versions | Create first version with `/ai:dev <feature>` |
+| Active version exists | Continue with `/ai:dev auto` |
+| All versions archived | Start new version |

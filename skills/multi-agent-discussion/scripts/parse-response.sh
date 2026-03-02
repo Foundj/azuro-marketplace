@@ -77,21 +77,54 @@ clean_response() {
 
 CLEANED=$(clean_response "$RESPONSE")
 
-# Step 3: 检查响应是否已包含标准格式头
+# Step 3: 提取置信度 [confidence: X]
+# Agent 可以在发言开头或任意位置标注 [confidence: 0.85]
+extract_confidence() {
+  local input="$1"
+  local conf
+  conf=$(echo "$input" | grep -oE '\[confidence:[[:space:]]*[0-9.]+\]' | head -1 | grep -oE '[0-9.]+')
+  if [ -n "$conf" ]; then
+    # 验证范围 [0.0, 1.0]
+    if [ "$(awk "BEGIN {print ($conf >= 0.0 && $conf <= 1.0)}")" = "1" ]; then
+      echo "$conf"
+      return
+    fi
+  fi
+  echo ""  # 未找到有效置信度
+}
+
+CONFIDENCE=$(extract_confidence "$CLEANED")
+
+# 从正文中移除 [confidence: X] 标记（已提升到标题）
+if [ -n "$CONFIDENCE" ]; then
+  CLEANED=$(echo "$CLEANED" | sed 's/\[confidence:[[:space:]]*[0-9.]*\]//g')
+fi
+
+# Step 4: 检查响应是否已包含标准格式头
 has_round_header() {
   echo "$1" | grep -q "^\#\#\s*\[Round"
 }
 
-# Step 4: 构建输出
+# Step 5: 构建输出
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M')
 
+# 构建标题后缀：包含 confidence（如果有）
+CONFIDENCE_TAG=""
+if [ -n "$CONFIDENCE" ]; then
+  CONFIDENCE_TAG=" [confidence: ${CONFIDENCE}]"
+fi
+
 if has_round_header "$CLEANED"; then
-  # 响应已包含标准格式，直接输出
-  echo "$CLEANED"
+  # 响应已包含标准格式头，尝试注入 confidence 到现有标题
+  if [ -n "$CONFIDENCE" ]; then
+    echo "$CLEANED" | sed "s/^\(## \[Round [0-9]*\] [^ ]*\)/\1${CONFIDENCE_TAG}/"
+  else
+    echo "$CLEANED"
+  fi
 else
   # 包裹为标准格式
   cat <<EOF
-## [Round ${ROUND}] ${ROLE} — ${TOOL}
+## [Round ${ROUND}] ${ROLE}${CONFIDENCE_TAG} — ${TOOL}
 > 时间: ${TIMESTAMP}
 
 ${CLEANED}

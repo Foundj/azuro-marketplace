@@ -31,7 +31,7 @@ description: |
   Bug fix request with quick/fix keywords triggers ai-dev in quick mode, skipping phases 0.5, 1, and 2.
   </commentary>
   </example>
-version: 6.0.18
+version: 6.0.19
 status: ga
 profile: dev
 triggers:
@@ -100,11 +100,11 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 | 1 | Requirement Interview | User | Multi-round interview, generate proposal.md |
 | 2 | Design Approval | User | Present approaches, user selects, generate design.md |
 | 2.5 | Worktree Setup | Auto | Create isolated worktree for feature development |
-| 3 | Task Breakdown | Auto | Generate tasks.md with 2-5min atomic subtasks |
+| 3 | Task Breakdown | Auto | Invoke `task-planner` to generate versioned task.md in docs/tasks/ |
 | 4 | Implementation | OODA | Autonomous execution with **TDD enforcement** |
 | 5 | Quality Validation | Auto | Spec compliance → Code review → Confidence ≥80 filter |
 | 5.5 | Code Simplification | Auto/Skip | Polish code (if autoSimplify enabled) |
-| 6 | Finalization | User | Archive to knowledge, commit, cleanup worktree |
+| 6 | Finalization | User | Archive version, update knowledge, commit, cleanup worktree |
 
 ### Phase Details
 
@@ -121,7 +121,7 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 **Phase 0.5: Research** (new features only)
 - **Use:** [`competitor-research`](../competitor-research/SKILL.md), [`mcp-integration`](../mcp-integration/SKILL.md)
 - Multi-source research via WebSearch/MCP Tavily
-- Save to `codebox/research/[feature]-research.md`
+- Save to `docs/tasks/v<VERSION>/research/[feature]-research.md`
 
 **Phase 1: Requirement Interview**
 - **Use:** [`ai-dev-interview`](../ai-dev-interview/SKILL.md), [`interaction-protocol`](../interaction-protocol/SKILL.md)
@@ -142,16 +142,16 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Parallel development without branch conflicts
 
 **Phase 3: Task Breakdown**
-- **Use:** [`task-templates`](../task-templates/SKILL.md), [`task-dependency-analyzer`](../task-dependency-analyzer/SKILL.md)
-- Auto-generate `tasks.md` with atomic subtasks (2-5 minutes each)
-- Each task includes: file path, verify command, acceptance criteria
-- Include success criteria and test requirements
+- **Use:** [`task-planner`](../task-planner/SKILL.md), [`task-templates`](../task-templates/SKILL.md), [`task-dependency-analyzer`](../task-dependency-analyzer/SKILL.md)
+- Invoke `task-planner` to generate versioned `docs/tasks/v<VERSION>/plan.md` and `task.md`
+- task-planner calls requirement-analyzer for feasibility assessment
+- Task templates and dependency analyzer provide fine-grained breakdown
 
 **Phase 4: OODA Implementation**
 - **Use:** [`ai-dev-ooda`](../ai-dev-ooda/SKILL.md), [`tdd-enforcement`](../tdd-enforcement/SKILL.md), [`subagent-driven-development`](../subagent-driven-development/SKILL.md)
 - Autonomous loop via Stop hook
 - **★ TDD Enforcement** (v5.0.7): Red → Green → Refactor cycle
-- Execute tasks, update checkboxes
+- Execute tasks from `docs/tasks/v<VERSION>/task.md`, update checkboxes
 - Output `<promise>DONE</promise>` to exit
 - Max iterations: 50 (configurable)
 
@@ -177,10 +177,11 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 - Can also be triggered manually via "优化代码" / "simplify"
 
 **Phase 6: Finalization**
-- **Use:** [`knowledge-graph`](../knowledge-graph/SKILL.md), [`git-worktree`](../git-worktree/SKILL.md)
+- **Use:** [`knowledge-graph`](../knowledge-graph/SKILL.md), [`git-worktree`](../git-worktree/SKILL.md), [`task-planner`](../task-planner/SKILL.md)
 - Update knowledge base with new patterns
-- Archive change to `codebox/changes/archived/`
-- Commit with structured message
+- Mark `docs/tasks/v<VERSION>/task.md` status as `completed`
+- Archive version via `task-planner` archive flow (when conditions met)
+- Commit with structured message: `feat(v<VERSION>/s<N>): <description>`
 - **★ Cleanup worktree** (v5.0.7): Remove after merge
 
 ---
@@ -208,7 +209,7 @@ Read Before Decide pattern prevents goal drift:
 ### Smart Empty Command (v4.2)
 
 When `/ai:dev` or `/ai:dev auto` runs without arguments:
-- Detects active changes in `codebox/changes/active/`
+- Scans `docs/tasks/` for versions with `status: pending` or `in_progress`
 - Offers to continue or start new
 
 ### Intent Router (v6.0.13)
@@ -333,17 +334,24 @@ See `references/agents.md` for full agent list.
 ## Project Structure
 
 ```
-codebox/
-├── config.json                # Project config
-├── requirements.md            # Global requirements
-├── design.md                  # Architecture constraints
-├── CLAUDE.md                  # AI behavior rules
-├── knowledge/                 # Patterns & errors
-├── research/                  # Competitor research
-├── context/                   # Lite mode files
-└── changes/
-    ├── active/[id]/           # Current change
-    └── archived/              # Completed changes
+codebox/                         # Tool layer (preserved)
+├── config.json                  # Project config
+├── requirements.md              # Global requirements
+├── design.md                    # Architecture constraints
+├── CLAUDE.md                    # AI behavior rules
+├── knowledge/                   # Patterns & errors
+├── scripts/                     # Utility scripts (scan, query)
+└── context/                     # Lite mode files
+
+docs/tasks/                      # Versioned task management
+├── README.md                    # Usage guide
+├── v1.0/                        # Version 1.0
+│   ├── plan.md                  # Design doc (WHY/WHAT/HOW)
+│   ├── task.md                  # Execution board (checkboxes)
+│   ├── state.json               # OODA state
+│   └── research/                # Research findings
+└── v2.0/                        # Version 2.0
+    └── ...
 ```
 
 See `references/project-structure.md` for full structure.

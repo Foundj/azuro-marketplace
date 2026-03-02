@@ -120,4 +120,4 @@ bash scripts/archive-version.sh --force <version>
 
 ## 脚本位置
 
-归档脚本位于项目根目录 `scripts/archive-version.sh`，将在 Sprint 3 中创建。
+归档脚本位于项目根目录 `scripts/archive-version.sh`。

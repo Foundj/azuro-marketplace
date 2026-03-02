@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.19] - 2026-03-02
+
+### Added
+- `scripts/archive-version.sh` — versioned task archive script with condition checks
+- `scripts/init-version.sh` — version initialization (replaces init-change.sh)
+- `version_release` node type and `released_in` relation in knowledge-graph
+- Version Overview Mode (`--versions`) in ai:status command
+
+### Changed
+- codebox → docs/tasks/ migration in ai:dev command, ai-dev SKILL, multi-agent-discussion
+- multi-agent-discussion Phase 4 now delegates to task-planner skill
+- ai:status Feature List/Detail modes adapted for docs/tasks/ architecture
+- Unified YAML frontmatter parsing (awk-based) across archive and status scripts
+- Unified checkbox regex patterns across all task counting scripts
+
+### Removed
+- `scripts/init-change.sh` (replaced by init-version.sh)
+
+
 ## [6.0.18] - 2026-03-02
 
 ### Added

@@ -47,13 +47,13 @@ for version in "${sorted[@]}"; do
         continue
     fi
 
-    # 提取 status 和 name (从 YAML frontmatter)
-    status=$(grep -m1 '^status:' "$task_file" | sed 's/status: *//' | tr -d '"' || echo "unknown")
-    name=$(grep -m1 '^name:' "$task_file" | sed 's/name: *//' || echo "unnamed")
+    # 提取 status 和 name (从 YAML frontmatter, 限定在 --- 之间)
+    status=$(awk '/^---$/{if(++c==2)exit}c==1 && /^status:/{print $2}' "$task_file" | tr -d '"' || echo "unknown")
+    name=$(awk '/^---$/{if(++c==2)exit}c==1 && /^name:/{sub(/^name: */, ""); print}' "$task_file" || echo "unnamed")
 
-    # 计算任务进度 (统计 checkbox)
-    total=$(grep -c '^\- \[[ x]\]' "$task_file" 2>/dev/null || echo "0")
-    done_count=$(grep -c '^\- \[x\]' "$task_file" 2>/dev/null || echo "0")
+    # 计算任务进度 (统一 regex: 允许缩进)
+    total=$(grep -c '^\s*- \[[ x]\]' "$task_file" 2>/dev/null || echo "0")
+    done_count=$(grep -c '^\s*- \[x\]' "$task_file" 2>/dev/null || echo "0")
 
     if [[ "$total" -gt 0 ]]; then
         pct=$((done_count * 100 / total))

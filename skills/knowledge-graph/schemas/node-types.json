@@ -35,6 +35,12 @@
       "description": "错误记录节点",
       "icon": "🐛",
       "fields": ["title", "symptom", "cause", "fix"]
+    },
+    {
+      "type": "version_release",
+      "description": "版本发布节点 — 记录版本关键变更和学习",
+      "icon": "📦",
+      "fields": ["version", "name", "key_changes", "decisions", "git_range", "archived_date"]
     }
   ],
   "relation_types": [
@@ -73,6 +79,12 @@
       "description": "学习关系",
       "from": ["solution", "decision"],
       "to": ["error"]
+    },
+    {
+      "type": "released_in",
+      "description": "在某版本中发布",
+      "from": ["solution", "decision", "pattern"],
+      "to": ["version_release"]
     }
   ],
   "config": {

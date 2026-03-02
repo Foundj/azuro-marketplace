@@ -8,7 +8,7 @@ description: >
   "create a version", or when multi-agent-discussion or ai-dev need to produce structured task
   output. Also triggers when user mentions "docs/tasks", "版本计划", "任务看板", "Sprint规划",
   or wants to archive a completed version.
-version: 6.0.18
+version: 6.0.19
 status: ga
 ---
 
@@ -139,7 +139,7 @@ Git 提交格式: feat(v{{VERSION}}/s{N}): <description>
 3. task.md `status: completed`
 4. Git 无未提交变更
 
-归档脚本（Sprint 3 中创建）：
+归档脚本：
 ```bash
 bash scripts/archive-version.sh [--dry-run] <version>
 ```

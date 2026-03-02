@@ -87,31 +87,33 @@ if (needsTeam) {
 
 ## Auto-Complete Mode
 
-**Goal**: Automatically complete all remaining unchecked tasks in the active change.
+**Goal**: Automatically complete all remaining unchecked tasks in the active version.
 
 ### Step 1: Parse Options
 
 - `--dry-run`: Preview tasks without executing
-- `--from-task N.N`: Start from specific task (e.g., `1.3`)
+- `--from-task N.N`: Start from specific task (e.g., `s1-3`)
 
-### Step 2: Find Active Change
+### Step 2: Find Active Version
 
 ```bash
-ACTIVE_CHANGE=$(find codebox/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
-TASKS_FILE="${ACTIVE_CHANGE}/tasks.md"
+# Scan docs/tasks/ for versions with status: pending or in_progress
+bash skills/task-planner/scripts/check-version-status.sh --json 2>/dev/null
 ```
 
-**If no active change exists:**
-```
-❌ No active change found.
+Look for versions where `status` is `pending` or `in_progress`. Select the most recent active version.
 
-To start a new change, use:
+**If no active version exists:**
+```
+❌ No active version found in docs/tasks/.
+
+To start a new feature, use:
   /ai:dev <feature-description>
 ```
 
 ### Step 3: Analyze Task Status
 
-Read `tasks.md` and count completed vs remaining tasks.
+Read `docs/tasks/v<VERSION>/task.md` and count completed `[x]` vs remaining `[ ]` tasks.
 
 **If all tasks complete:**
 ```
@@ -125,9 +127,9 @@ Nothing to do. Use /ai:status for details.
 - Show task preview and exit
 
 **Otherwise**, invoke OODA loop:
-1. Read next unchecked task
+1. Read next unchecked task from `docs/tasks/v<VERSION>/task.md`
 2. Execute task
-3. Update checkbox
+3. Update checkbox in task.md
 4. Run tests
 5. Continue until all complete
 6. Output `<promise>DONE</promise>`
@@ -138,24 +140,25 @@ Nothing to do. Use /ai:status for details.
 
 Implement feature: $ARGUMENTS
 
-**Pre-check: Auto-initialize if needed**
+**Pre-check: Ensure docs/tasks/ exists**
 
-Check if codebox/ exists: !`test -d codebox && echo "OK" || echo "NOT_INITIALIZED"`
+Check if docs/tasks/ exists: !`test -d docs/tasks && echo "OK" || echo "NOT_INITIALIZED"`
 
 If NOT_INITIALIZED:
-- **Auto-initialize** codebox structure:
+- **Auto-initialize** docs/tasks/ structure:
   ```
-  mkdir -p codebox/{changes/{active,archived},knowledge,research,scripts}
-  echo '[]' > codebox/feature_list.json
-  echo '# Design Constraints' > codebox/design.md
+  mkdir -p docs/tasks
   ```
-- Log: "Auto-initialized codebox/ for ai-dev workflow"
+- Create `docs/tasks/README.md` if not present (reference skills/task-planner/ for template)
+- Log: "Auto-initialized docs/tasks/ for versioned task management"
 
 **Parse options:**
 - `--skip-research`: Skip Phase 0.5 competitor research
 - `--quick`: Skip Phase 2 (resource discovery) and Phase 3 (design review)
 
 **Phase 0: Context Awareness**
+
+> Note: `codebox/scripts/` 和 `codebox/knowledge/` 作为工具层保留，不在迁移范围内。
 
 1. Run project scan: !`./codebox/scripts/scan-project.sh incremental 2>/dev/null || echo "Scan skipped"`
 2. Query knowledge base: !`./codebox/scripts/query-knowledge.sh "$ARGUMENTS" 2>/dev/null || echo "No prior knowledge"`
@@ -169,7 +172,7 @@ For new features, execute research using available tools:
 2. **Otherwise**: Use WebSearch for best practices:
    - Search for: "[feature topic] best practices 2024"
    - Search for: "[feature topic] implementation patterns"
-3. Save findings to `codebox/research/[feature]-research.md`
+3. Save findings to `docs/tasks/v<VERSION>/research/[feature]-research.md`
 
 Skip for bug fixes, simple tasks, or when --skip-research flag is present.
 
@@ -207,10 +210,10 @@ Present design options and wait for user to select approach.
 
 **Phase 4: OODA Implementation Loop**
 
-Initialize tasks.md with implementation steps.
+Invoke `task-planner` skill to generate versioned `docs/tasks/v<VERSION>/task.md` with implementation steps.
 
 Execute OODA cycle (max 10 iterations):
-1. **Observe**: Check current state, read relevant files
+1. **Observe**: Check current state, read `docs/tasks/v<VERSION>/task.md`
 2. **Orient**: Analyze what needs to be done next
 3. **Decide**: Choose specific action
 4. **Act**: Implement the change
@@ -233,15 +236,15 @@ Check if git repository: `git rev-parse --git-dir 2>/dev/null && echo "GIT_OK" |
 
 If the above command outputs GIT_OK:
 1. Stage changes: `git add -A`
-2. Create commit with descriptive message
+2. Create commit with structured message: `feat(v<VERSION>/s<N>): <description>`
 
 If the above command outputs NO_GIT:
 - Skip git operations
 - Inform user: "Note: Not a git repository, skipping commit step"
 
 Always:
-3. Update codebox/feature_list.json
-4. Archive change to codebox/changes/archived/
+3. Mark `docs/tasks/v<VERSION>/task.md` status as `completed`
+4. Archive version via `task-planner` archive flow (when conditions met)
 5. Update knowledge base with learnings
 
 **Completion:**

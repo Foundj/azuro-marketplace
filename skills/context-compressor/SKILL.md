@@ -33,7 +33,7 @@ description: |
   User experiencing slowness and requesting context trimming ("结果归档", "trim context") triggers compression.
   </commentary>
   </example>
-version: 6.0.18
+version: 6.0.19
 status: ga
 profile: default
 triggers:
