@@ -31,7 +31,7 @@ description: |
   User wants to establish creative direction before implementation, triggering brainstorm's philosophy mode.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: design
 triggers:
@@ -289,7 +289,7 @@ ai-dev Phase 1: Requirement Interview
 ## 配置
 
 ```json
-// codebox/config.json
+// .agent/config.json
 {
   "brainstorm": {
     "minDivergenceRounds": 3,

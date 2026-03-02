@@ -22,7 +22,7 @@ Pre-Implementation Check: $ARGUMENTS
 Load cached constraints:
 
 ```bash
-CONSTRAINTS_FILE="codebox/implementation-constraints.json"
+CONSTRAINTS_FILE=".agent/implementation-constraints.json"
 if [[ -f "$CONSTRAINTS_FILE" ]]; then
     cat "$CONSTRAINTS_FILE"
 else
@@ -67,7 +67,7 @@ find . -type f \( -name "*User*" -o -name "*Auth*" \) | head -20
 
 # Check feature index
 jq '.features[] | select(.keywords[] | contains("auth"))' \
-    codebox/knowledge/feature-index.json
+    .agent/knowledge/feature-index.json
 ```
 
 ---

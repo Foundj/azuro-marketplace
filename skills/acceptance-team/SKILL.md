@@ -31,7 +31,7 @@ description: |
   Post-refactor regression testing across many pages with team-based approach triggers this skill.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: debug
 triggers:
@@ -242,7 +242,7 @@ SendMessage({
 |------|------|--------|
 | `ACCEPTANCE_TEAM_MAX_SIZE` | 最大并行队友数 | 5 |
 | `ACCEPTANCE_TIMEOUT` | 验收超时时间 (秒) | 300 |
-| `ACCEPTANCE_SCREENSHOT_DIR` | 截图保存目录 | codebox/acceptance/ |
+| `ACCEPTANCE_SCREENSHOT_DIR` | 截图保存目录 | .agent/acceptance/ |
 | `ACCEPTANCE_HEADLESS` | 无头模式 | true |
 
 ### 任务配置
@@ -270,7 +270,7 @@ SendMessage({
 ## 输出目录结构
 
 ```
-codebox/acceptance/
+.agent/acceptance/
 ├── index.json                       # 全局验收索引
 ├── templates/
 │   ├── index-schema.json
@@ -389,10 +389,10 @@ SendMessage({
 
 ```bash
 # 检查目录权限
-ls -la codebox/acceptance/
+ls -la .agent/acceptance/
 
 # 创建目录
-mkdir -p codebox/acceptance/$(date +%Y-%m)/${CHANGE_ID}/screenshots
+mkdir -p .agent/acceptance/$(date +%Y-%m)/${CHANGE_ID}/screenshots
 ```
 
 ### 问题: 浏览器启动失败
@@ -420,7 +420,7 @@ frontend_acceptance:
 
     - name: "Review report"
       action: read_file
-      path: codebox/acceptance/${DATE}/${CHANGE_ID}/report.md
+      path: .agent/acceptance/${DATE}/${CHANGE_ID}/report.md
 ```
 
 ### 与 Change Management 集成
@@ -431,7 +431,7 @@ frontend_acceptance:
   "acceptance": {
     "latestId": "ACC-20260227-001",
     "latestStatus": "passed",
-    "reportPath": "codebox/acceptance/2026-02/CHG-xxx/report.md",
+    "reportPath": ".agent/acceptance/2026-02/CHG-xxx/report.md",
     "linkedTaskIds": ["1", "2", "3"]
   }
 }

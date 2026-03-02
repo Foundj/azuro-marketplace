@@ -1,11 +1,11 @@
 # Project Structure
 
-## codebox/ Directory
+## .agent/ Directory
 
 项目 AI 配置和状态管理目录结构：
 
 ```
-codebox/                          # Project AI configuration
+.agent/                            # Project AI configuration
 ├── config.json                   # Project config
 ├── requirements.md               # Global requirements (EARS format)
 ├── design.md                     # Architecture constraints

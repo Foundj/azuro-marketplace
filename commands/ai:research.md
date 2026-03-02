@@ -38,7 +38,7 @@ Returns Research Report to main session
 ## Options
 
 - `--deep`: Comprehensive research with multiple searches
-- `--save`: Save results to `codebox/research/`
+- `--save`: Save results to `.agent/research/`
 - Default: Quick research with key findings
 
 ---
@@ -120,7 +120,7 @@ Compile findings:
 
 ## Step 4: Save Results (if --save)
 
-Save to: `codebox/research/[topic]-research.md`
+Save to: `.agent/research/[topic]-research.md`
 
 **Next Step**:
 > 调研完成。可继续 `/ai:interview` 进行需求沟通，或 `/ai:design` 设计评审。

@@ -290,7 +290,7 @@ ACCEPTANCE_ID="ACC-$(date +%Y%m%d)-001"
 SESSION_NAME="acceptance-$ACCEPTANCE_ID"
 
 # 创建验收目录
-mkdir -p "codebox/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots"
+mkdir -p ".agent/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots"
 
 # 打开浏览器
 agent-browser open "$BASE_URL" --session "$SESSION_NAME"
@@ -326,7 +326,7 @@ for PAGE in "${PAGES[@]}"; do
   # 截图 (带时间戳命名)
   TIMESTAMP=$(date +%Y%m%d-%H%M%S)
   SCREENSHOT_NAME="${PAGE}-${TIMESTAMP}.png"
-  agent-browser screenshot "codebox/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots/$SCREENSHOT_NAME" --session "$SESSION_NAME"
+  agent-browser screenshot ".agent/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots/$SCREENSHOT_NAME" --session "$SESSION_NAME"
 
   # 验证关键元素
   agent-browser snapshot -i --session "$SESSION_NAME"
@@ -340,7 +340,7 @@ done
 
 ```bash
 # 收集验收证据
-ACCEPTANCE_DIR="codebox/acceptance/$(date +%Y-%m-%d)/{changeId}"
+ACCEPTANCE_DIR=".agent/acceptance/$(date +%Y-%m-%d)/{changeId}"
 
 # 创建状态文件
 cat > "$ACCEPTANCE_DIR/state.json" <<EOF
@@ -410,10 +410,10 @@ agent-browser close --session "$SESSION_NAME"
 
 # 清理旧验收记录 (保留最近 5 次)
 MAX_HISTORY=5
-HISTORY_COUNT=$(ls -1d "codebox/acceptance"/*/* 2>/dev/null | wc -l)
+HISTORY_COUNT=$(ls -1d ".agent/acceptance"/*/* 2>/dev/null | wc -l)
 
 if [ "$HISTORY_COUNT" -gt "$MAX_HISTORY" ]; then
-  OLDEST=$(ls -1dt "codebox/acceptance"/*/* | tail -1)
+  OLDEST=$(ls -1dt ".agent/acceptance"/*/* | tail -1)
   rm -rf "$OLDEST"
   echo "🗑️ Removed old acceptance: $OLDEST"
 fi
@@ -438,7 +438,7 @@ agent-browser wait --load networkidle
 
 # 2. 快速验证
 agent-browser snapshot -i --session "$SESSION_NAME"
-agent-browser screenshot "codebox/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots/quick-$(date +%Y%m%d-%H%M%S).png" --session "$SESSION_NAME"
+agent-browser screenshot ".agent/acceptance/$(date +%Y-%m-%d)/{changeId}/screenshots/quick-$(date +%Y%m%d-%H%M%S).png" --session "$SESSION_NAME"
 
 # 3. 关闭
 agent-browser close --session "$SESSION_NAME"
@@ -465,7 +465,7 @@ agent-browser click @e3 --session "$SESSION_NAME"
 agent-browser wait --text "Dashboard" --session "$SESSION_NAME"
 
 # 保存登录状态供后续使用
-agent-browser state save "codebox/acceptance/auth-state.json" --session "$SESSION_NAME"
+agent-browser state save ".agent/acceptance/auth-state.json" --session "$SESSION_NAME"
 
 # 继续验收流程...
 ```

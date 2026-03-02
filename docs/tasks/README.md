@@ -1,3 +1,109 @@
+---
+# ═══════════════════════════════════════════════════════════
+# 1. 全局执行配置
+# ═══════════════════════════════════════════════════════════
+execution:
+  engine: task-executor
+  mode: autonomous             # 可选: autonomous | supervised
+  max_iterations: 50
+  pause_on_unclear: true
+  completion_promise: "ALL_TASKS_DONE"
+
+# ═══════════════════════════════════════════════════════════
+# 2. 执行周期 — 每个步骤可配置执行器（简写或展开均可）
+#    默认全部 self，只需改你想调整的
+#
+#    简写语法:
+#      self                       — 当前会话（默认）
+#      subagent                   — 派遣 subagent
+#      subagent:<type>            — 指定类型 subagent
+#      gemini / codex / claude    — CLI 工具（自动识别）
+#      opencode / claudea / ...   — 其他 CLI 工具
+#      agent-team                 — Agent Team 默认模板
+#      agent-team:<template>      — Agent Team 指定模板
+# ═══════════════════════════════════════════════════════════
+steps:
+  understand: self             # 可选: self | subagent
+  implement: self              # 可选: self | subagent | <tool> | agent-team
+  test: self                   # 可选: self | subagent | <tool>
+  review: self                 # 可选: self | subagent | <tool> | agent-team
+  # review 额外选项:
+  # scope: sprint              # 可选: sprint | task (默认 sprint)
+
+# ═══════════════════════════════════════════════════════════
+# 3. 执行器配置 — 各执行器的默认参数（用户按需调整）
+#    简写语法会自动查找此区块中对应工具的参数
+# ═══════════════════════════════════════════════════════════
+executors:
+  subagent:
+    type: generalPurpose       # 可选: generalPurpose | frontend-developer |
+                               #       code-reviewer | test-automator |
+                               #       debugger | typescript-pro | backend-architect
+
+  # CLI 工具预设参数
+  # 底层复用 skills/multi-agent-discussion/scripts/invoke-agent.sh
+  cli:
+    timeout: 300               # 全局超时(秒)
+    claude:
+      flags: "--output-format text --no-session-persistence --max-turns 10"
+      allowed_tools: "Read,Write,Edit,Glob,Grep"
+    codex:
+      flags: "--full-auto --ephemeral"
+      reasoning: xhigh         # 可选: low | medium | high | xhigh
+    gemini:
+      flags: "--sandbox -o text --approval-mode yolo"
+    opencode:
+      flags: "--format json"
+
+  # Agent Team 模板（引用 skills/team-collaboration）
+  agent-team:
+    fallback: subagent         # 不可用时降级
+    default_template: feature-development
+    templates:
+      feature-development:
+        ref: team-collaboration#FEATURE_DEVELOPMENT
+        tool_override: {}      # 可选: { frontend-dev: gemini, backend-dev: codex }
+      code-review:
+        ref: team-collaboration#CODE_REVIEW
+        tool_override: {}
+      investigation:
+        ref: team-collaboration#INVESTIGATION
+        tool_override: {}
+      architecture:
+        ref: team-collaboration#ARCHITECTURE
+        tool_override: {}
+
+# ═══════════════════════════════════════════════════════════
+# 4. 角色路由 — 按任务 tags 匹配，覆盖 steps 默认执行器
+#    简写: roles.frontend: gemini  (全部步骤用 gemini)
+#    展开: roles.frontend: { implement: gemini, review: claude }
+#    未匹配任何角色的任务使用 steps 默认值
+# ═══════════════════════════════════════════════════════════
+roles:
+  # frontend: gemini
+  # backend: codex
+  # infra: codex
+  # review-task: claude
+  #
+  # 展开示例:
+  # frontend:
+  #   match: { tags: [frontend, ui, design] }
+  #   implement: gemini
+  #   review: claude
+  #   team_template: feature-development
+
+# ═══════════════════════════════════════════════════════════
+# 5. 全局规则
+# ═══════════════════════════════════════════════════════════
+rules:
+  - task.md 是唯一状态真相
+  - Sprint 间依赖必须顺序执行
+  - 每个 Sprint 必须通过 review 才进入下一 Sprint
+  - 实现前必须充分理解 plan.md 设计意图
+  - 需求不清时暂停并澄清，不猜测
+  - "Git 提交格式: feat(v{VERSION}/s{N}): <description>"
+---
+
 # docs/tasks/ — 版本化任务管理
 
 本目录包含项目的版本化任务计划。每个版本目录下有 `plan.md`（设计文档）和 `task.md`（执行看板）。
@@ -6,16 +112,37 @@
 
 ```
 docs/tasks/
-├── README.md           # 本文件：使用指南
+├── README.md           # 本文件：执行配置 + 使用指南
 ├── v1.0/               # 版本 1.0
 │   ├── plan.md         # WHY + WHAT + HOW（设计文档）
 │   └── task.md         # 唯一状态看板（执行追踪）
 ├── v2.0/               # 版本 2.0
+│   ├── README.md       # 可选: 版本级配置覆盖（优先级 > 全局）
 │   ├── plan.md
 │   ├── task.md
 │   └── knowledge.md    # 归档时生成：版本知识提取
 └── ...
 ```
+
+## 配置层级
+
+执行器解析按以下优先级（高→低）：
+
+```
+task.md 单任务 executor 字段     ← 最高
+  ↓
+roles 中匹配角色的配置
+  ↓
+docs/tasks/vX.Y/README.md      ← 版本级覆盖
+  ↓
+docs/tasks/README.md            ← 全局配置
+  ↓
+steps 中各阶段默认 executor
+  ↓
+self                            ← 兜底默认
+```
+
+版本级 README.md 通过 `extends: ../README.md` 继承全局配置，只需声明差异部分。
 
 ## 创建任务计划
 
@@ -55,6 +182,23 @@ ai-dev 在 Phase 1（需求访谈）后调用 task-planner 生成版本化任务
 
 task-planner 技能自动触发，评估需求并生成 plan.md + task.md。
 
+## 自动执行
+
+task-executor 技能可自动执行 task.md 中的所有任务：
+
+```
+"执行 docs/tasks/v2.0 的所有任务"
+```
+
+执行周期：**充分理解 → 实现 → 阶段测试 → Code Review → 下一 Sprint**
+
+也可通过 Ralph Loop 实现持续自主执行：
+
+```bash
+/ralph-loop "执行 docs/tasks/v2.0 的所有任务" \
+  --completion-promise "ALL_TASKS_DONE" --max-iterations 50
+```
+
 ## 版本号规则
 
 ### 版本号格式
@@ -80,7 +224,7 @@ task-planner 技能自动触发，评估需求并生成 plan.md + task.md。
 
 详见 `skills/task-planner/references/versioning.md`。
 
-## 执行任务
+## 执行任务（手动模式）
 
 ### 开始工作
 
@@ -99,11 +243,7 @@ task-planner 技能自动触发，评估需求并生成 plan.md + task.md。
 ### 检查进度
 
 ```bash
-# 查看所有版本状态
 bash skills/task-planner/scripts/check-version-status.sh
-
-# 或使用命令
-/ai:status --versions
 ```
 
 ## 归档

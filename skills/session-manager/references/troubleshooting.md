@@ -8,7 +8,7 @@
 
 **检查清单**:
 1. 确保在正确的项目目录 (`pwd`)
-2. 检查 `codebox/` 目录存在
+2. 检查 `.agent/` 目录存在
 3. 验证文件格式：`jq . feature_list.json`
 
 **解决方案**:
@@ -16,11 +16,11 @@
 # 检查当前目录
 pwd
 
-# 创建 codebox 目录（如果不存在）
-mkdir -p codebox
+# 创建 .agent 目录（如果不存在）
+mkdir -p .agent
 
 # 验证 JSON 格式
-jq . codebox/feature_list.json
+jq . .agent/feature_list.json
 ```
 
 ## 环境启动失败
@@ -55,7 +55,7 @@ lsof -i :3000  # 替换为实际端口
 **解决方案**:
 ```bash
 # 查看特性依赖
-jq '.features[] | select(.id == 43) | .dependencies' codebox/feature_list.json
+jq '.features[] | select(.id == 43) | .dependencies' .agent/feature_list.json
 
 # 先完成依赖特性，或选择其他可执行特性
 ```
@@ -87,7 +87,7 @@ git add . && git commit -m "WIP"
 **解决方案**:
 ```bash
 # 手动归档
-head -n 1000 codebox/progress.txt > codebox/progress.txt.new
-tail -n +1001 codebox/progress.txt >> codebox/archive/progress-$(date +%Y%m%d).txt
-mv codebox/progress.txt.new codebox/progress.txt
+head -n 1000 .agent/progress.txt > .agent/progress.txt.new
+tail -n +1001 .agent/progress.txt >> .agent/archive/progress-$(date +%Y%m%d).txt
+mv .agent/progress.txt.new .agent/progress.txt
 ```

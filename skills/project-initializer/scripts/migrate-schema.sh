@@ -3,8 +3,8 @@
 
 set -e
 
-FEATURE_LIST="codebox/feature_list.json"
-BACKUP_FILE="codebox/feature_list.v1.backup.json"
+FEATURE_LIST=".agent/feature_list.json"
+BACKUP_FILE=".agent/feature_list.v1.backup.json"
 
 echo "🔄 开始迁移 feature_list.json schema (v1 → v2)..."
 

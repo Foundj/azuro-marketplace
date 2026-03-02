@@ -31,7 +31,7 @@ description: |
   "研究竞品" combined with a specific technical topic triggers competitor analysis with code search.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: design
 triggers:
@@ -150,7 +150,7 @@ Output: 3-5 bullet points with recommendations
 /research "feature name" --deep
 ```
 
-Output: Full JSON report saved to `codebox/research/`
+Output: Full JSON report saved to `.agent/research/`
 
 ---
 
@@ -266,7 +266,7 @@ User: "ai 实现用户登录"
 │ competitor-research executes   │
 │ - Gemini: web search           │
 │ - Codex: code analysis         │
-│ - Saves to codebox/research/   │
+│ - Saves to .agent/research/   │
 └────────────────────────────────┘
          │
          ▼
@@ -331,7 +331,7 @@ When research reveals significant risks:
     "code_analysis": "codex"
   },
   "default_mode": "quick",
-  "results_path": "codebox/research/"
+  "results_path": ".agent/research/"
 }
 ```
 

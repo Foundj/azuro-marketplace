@@ -13,13 +13,13 @@ Design review for: $ARGUMENTS
 **Step 1: Load Context**
 
 1. Check for existing proposal:
-   - If `--from-proposal`: Load `codebox/changes/active/*/proposal.md`
+   - If `--from-proposal`: Load `.agent/changes/active/*/proposal.md`
    - Otherwise: Quick requirement summary from $ARGUMENTS
 
 2. Load constraints:
-   - `codebox/design.md` - Architecture constraints
-   - `codebox/CLAUDE.md` - AI behavior rules
-   - `codebox/constraints.md` - Global constraints
+   - `.agent/design.md` - Architecture constraints
+   - `.agent/CLAUDE.md` - AI behavior rules
+   - `.agent/constraints.md` - Global constraints
 
 3. Scan related code:
    - Find integration points
@@ -65,7 +65,7 @@ Ask user to select:
 
 **Step 5: Generate Design Document**
 
-After selection, create `codebox/changes/active/[id]/design.md`:
+After selection, create `.agent/changes/active/[id]/design.md`:
 
 ```markdown
 # Design: [Feature Name]

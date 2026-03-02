@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.24] - 2026-03-02
+
+### Changed
+- **V3.0 完全去 codebox 化**: 全项目 `codebox` → `.agent` 路径迁移 (120 files, 615+/1107-)
+- Rename `hooks/scripts/codebox-setup.sh` → `agent-setup.sh`
+- Rename `skills/ai-dev/templates/codebox/` → `agent-dir/`
+- Update all 20+ command definitions, 30+ scripts, 25+ skill docs to use `.agent/`
+- Update `.gitignore`, `evals/trigger-eval.json`, `core/FLAGS.md`, `agents/team-orchestrator.md`
+- Update `hooks/pre-change-check.md` (8 codebox path references)
+
+### Fixed
+- `directory-structure.sh` missing `mkdir -p "$PROJECT_DIR"` before first file copy (discovered in integration test)
+
+### Added
+- `skills/task-templates/SKILL.md`: cross-reference table with `task-planner` skill
+- `skills/session-manager/references/recovery-guide.md`: clarification note for non-existent `init.sh`
+
+
 ## [6.0.23] - 2026-03-02
 
 ### Fixed

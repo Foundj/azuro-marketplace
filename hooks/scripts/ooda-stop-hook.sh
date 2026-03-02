@@ -20,8 +20,8 @@ source "$SCRIPT_DIR/lib/check-tasks.sh" 2>/dev/null || true
 # Configuration
 # ============================================================================
 
-CODEBOX_DIR="codebox"
-CHANGES_DIR="${CODEBOX_DIR}/changes/active"
+AGENT_DIR=".agent"
+CHANGES_DIR="${AGENT_DIR}/changes/active"
 COMPLETION_PROMISE="DONE"
 MAX_ITERATIONS=50
 LOG_PREFIX="🔄 OODA"

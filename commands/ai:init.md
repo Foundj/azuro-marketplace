@@ -97,16 +97,16 @@ if [[ ! -d ".git" ]]; then
 fi
 ```
 
-### 3.3 Create Codebox Structure
+### 3.3 Create .agent Structure
 
 ```bash
-# Run codebox-setup script
-bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/codebox-setup.sh" "init" "." 2>/dev/null || {
+# Run .agent-setup script
+bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/agent-dir-setup.sh" "init" "." 2>/dev/null || {
     # Fallback if script not found
-    mkdir -p codebox/changes
-    mkdir -p codebox/archive
+    mkdir -p .agent/changes
+    mkdir -p .agent/archive
 
-    cat > codebox/spec.md << 'EOF'
+    cat > .agent/spec.md << 'EOF'
 # Project Specification
 
 ## Overview
@@ -129,7 +129,7 @@ bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/codebox-setup.sh" "init" "." 2>/dev/nu
 - [ ] Code review approved
 EOF
 
-    echo "✅ Codebox created"
+    echo "✅ .agent created"
 }
 ```
 
@@ -166,7 +166,7 @@ fi
 ║  Template: ${TEMPLATE}                                           ║
 ║                                                                   ║
 ║  Structure:                                                      ║
-║    ├── codebox/              # Requirements & plans               ║
+║    ├── .agent/              # Requirements & plans               ║
 ║    │   ├── spec.md                                          ║
 ║    │   ├── plan.md                                          ║
 ║    │   └── changes/                                          ║
@@ -179,7 +179,7 @@ fi
 ╠═══════════════════════════════════════════════════════════════╣
 ║                                                                   ║
 ║  1. cd ${PROJECT_NAME}                                           ║
-║  2. Edit codebox/spec.md with your requirements                ║
+║  2. Edit .agent/spec.md with your requirements                ║
 ║  3. Run /ultrawork to start development                        ║
 ║                                                                   ║
 ║  Or start coding manually:                                        ║
@@ -204,7 +204,7 @@ fi
 ## Integration
 
 - Called by user to quickly start a new project
-- Creates codebox structure for ultrawork compatibility
+- Creates .agent structure for ultrawork compatibility
 - Can be followed by `/ultrawork` for full automation
 
 ---

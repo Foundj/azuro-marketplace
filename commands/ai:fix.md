@@ -226,7 +226,7 @@ echo '{
   "fix": "[solution]",
   "files": ["file1.ts"],
   "date": "YYYY-MM-DD"
-}' >> codebox/knowledge/errors.json
+}' >> .agent/knowledge/errors.json
 ```
 
 ---

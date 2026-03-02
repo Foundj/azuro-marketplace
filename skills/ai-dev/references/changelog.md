@@ -16,7 +16,7 @@
 ```
 用户输入: "/ai:dev" (无参数)
   ↓
-检测 codebox/changes/active/ 是否有未完成的 change
+检测 .agent/changes/active/ 是否有未完成的 change
   ↓
 ├─ 有 active change →
 │   ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -32,7 +32,7 @@
 │   3. Show details (/ai:status)
 │   ━━━━━━━━━━━━━━━━━━━━━━━━━
 │
-└─ 无 active change → 检测 codebox/context/tasks.md (Lite Mode)
+└─ 无 active change → 检测 .agent/context/tasks.md (Lite Mode)
     ↓
     ├─ 有 tasks.md → 询问是否升级到 Full Mode
     └─ 无任务 → 提示 "Usage: /ai:dev <feature>"
@@ -43,7 +43,7 @@
 ```
 用户输入: "/ai:auto" (无参数)
   ↓
-检测 codebox/changes/active/*/tasks.md
+检测 .agent/changes/active/*/tasks.md
   ↓
 ├─ 有未完成任务 → 自动继续执行
 ├─ 全部完成 →
@@ -58,7 +58,7 @@
 ### Enhanced Context Bridge Integration
 
 - **Auto Checkpoint (90%)**: 当 context 达到 90% 时自动保存
-- **Lite Mode 统一**: 共享 `codebox/context/` 目录
+- **Lite Mode 统一**: 共享 `.agent/context/` 目录
 - **任务完成检测**: 所有任务完成时自动提示保存/归档
 
 ---

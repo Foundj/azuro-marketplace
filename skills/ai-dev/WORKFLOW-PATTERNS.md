@@ -210,7 +210,7 @@
 ### Phase 1: 环境设置 (40% 时间)
 - **Agents**: project-initializer (Skill)
 - **目标**: 创建项目结构和配置
-- **输出**: 项目骨架、配置文件、codebox/
+- **输出**: 项目骨架、配置文件、.agent/
 
 ### Phase 2: 初始化验证 (60% 时间)
 - **Agents**: project-initializer, project-doctor
@@ -222,7 +222,7 @@
 
 ## 长运行项目工作流增强
 
-当检测到长运行项目模式时（codebox/存在），所有工作流都会添加以下增强：
+当检测到长运行项目模式时（.agent/存在），所有工作流都会添加以下增强：
 
 ### 前置Phase: 上下文恢复
 - **Agent**: session-manager (Skill)

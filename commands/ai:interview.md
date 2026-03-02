@@ -13,8 +13,8 @@ Conduct requirement interview for: $ARGUMENTS
 **Step 1: Context Collection (Parallel)**
 
 Launch parallel context gathering:
-1. Project scan: `./codebox/scripts/scan-project.sh incremental 2>/dev/null`
-2. Knowledge query: `./codebox/scripts/query-knowledge.sh "$ARGUMENTS" 2>/dev/null`
+1. Project scan: `./skills/ai-dev/scripts/scan-project.sh incremental 2>/dev/null`
+2. Knowledge query: `./skills/ai-dev/scripts/query-knowledge.sh "$ARGUMENTS" 2>/dev/null`
 3. Similar features: Search codebase for related implementations
 
 **Step 2: Multi-Round Interview**
@@ -38,7 +38,7 @@ For each round:
 
 **Step 3: Generate Proposal**
 
-Create `codebox/changes/active/[id]/proposal.md`:
+Create `.agent/changes/active/[id]/proposal.md`:
 
 ```markdown
 # Feature: [Name]

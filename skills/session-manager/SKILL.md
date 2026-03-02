@@ -33,7 +33,7 @@ description: |
   Trigger "resume" with explicit need for context restoration and next-step recommendation activates full recovery.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: default
 allowed-tools: Read, Bash, Grep, Glob
@@ -131,7 +131,7 @@ Staged: 5
 
 ### Pitfall 1: 不在项目目录就运行恢复
 
-**症状**: 在错误目录运行 `continue`，找不到 codebox/ 文件
+**症状**: 在错误目录运行 `continue`，找不到 .agent/ 文件
 **后果**: 恢复失败或生成错误的上下文，进入错误的项目状态
 **修正**: 恢复前确认 `pwd` 在正确的项目根目录
 
@@ -151,7 +151,7 @@ Staged: 5
 
 1. **每个 session 开始时运行**：`continue` 或 `resume`
 2. **定期更新进度**：完成任务后更新 tasks.md
-3. **保持 Git 干净**：定期 commit codebox/
+3. **保持 Git 干净**：定期 commit .agent/
 
 ## ❌ 常见错误
 
@@ -188,7 +188,7 @@ feature_list.json > 500 特性 → 建议拆分项目
 
 **恢复失败？**
 - 确保在正确的项目目录
-- 检查 codebox/ 目录存在
+- 检查 .agent/ 目录存在
 - 验证文件格式：`jq . feature_list.json`
 
 **环境启动失败？**

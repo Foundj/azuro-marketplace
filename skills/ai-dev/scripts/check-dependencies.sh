@@ -145,7 +145,7 @@ fi
 echo ""
 
 # ========== 4. 模板文件检查 ==========
-echo "📁 Codebox 工具层模板 (保留层)"
+echo "📁 .agent 工具层模板 (保留层)"
 echo "-------------------------------------------"
 
 TEMPLATES=(
@@ -157,8 +157,8 @@ TEMPLATES=(
 )
 
 for template in "${TEMPLATES[@]}"; do
-    print_check "templates/codebox/${template}"
-    if [ -f "${AI_ORCH_DIR}/templates/codebox/${template}" ]; then
+    print_check "templates/agent-dir/${template}"
+    if [ -f "${AI_ORCH_DIR}/templates/agent-dir/${template}" ]; then
         print_pass
     else
         print_fail "未找到"
@@ -168,8 +168,8 @@ done
 # 子目录 (工具层保留 knowledge, 任务管理已迁移到 docs/tasks/)
 SUBDIRS=("knowledge" "research")
 for subdir in "${SUBDIRS[@]}"; do
-    print_check "templates/codebox/${subdir}/"
-    if [ -d "${AI_ORCH_DIR}/templates/codebox/${subdir}" ]; then
+    print_check "templates/agent-dir/${subdir}/"
+    if [ -d "${AI_ORCH_DIR}/templates/agent-dir/${subdir}" ]; then
         print_pass
     else
         print_fail "目录不存在"

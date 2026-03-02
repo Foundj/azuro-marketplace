@@ -33,19 +33,19 @@ or automatic trigger after 3 subagents complete
 **Files**: `package.json`, `src/index.ts`
 **Changes**: Added decimal.js dependency, created project structure
 **Tests**: N/A (setup only)
-**Archive**: `codebox/archive/task-1.md`
+**Archive**: `.agent/archive/task-1.md`
 
 ### Task 2: Utils Implementation ✅
 **Files**: `src/utils.ts`
 **Changes**: Implemented precise(), toNumber(), round() functions using decimal.js
 **Tests**: 4/4 passing
-**Archive**: `codebox/archive/task-2.md`
+**Archive**: `.agent/archive/task-2.md`
 
 ### Task 3: Core Implementation ✅
 **Files**: `src/calculator.ts`
 **Changes**: Implemented Calculator class with add, subtract, multiply, divide, modulo
 **Tests**: 10/10 passing
-**Archive**: `codebox/archive/task-3.md`
+**Archive**: `.agent/archive/task-3.md`
 
 ## Current Task
 Task 4: Error Handling (in progress)
@@ -61,7 +61,7 @@ Task 4: Error Handling (in progress)
 ## Archive File Example
 
 ```markdown
-# codebox/archive/task-2.md
+# .agent/archive/task-2.md
 
 ## Task 2: Utils Implementation
 
@@ -104,7 +104,7 @@ Tests: 4 passed, 0 failed
 In Phase 5 (Execute), after each subagent completes:
 
 1. **Immediate**: Extract 1-2 sentence summary
-2. **Archive**: Write full result to `codebox/archive/task-N.md`
+2. **Archive**: Write full result to `.agent/archive/task-N.md`
 3. **Update**: Mark task complete in `active.md` with summary only
 4. **Continue**: Next subagent gets clean context
 

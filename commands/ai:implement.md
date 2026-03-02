@@ -37,7 +37,7 @@ This validates:
    - Otherwise: Quick task analysis
 
 2. Load project context:
-   - `codebox/project-snapshot.json`
+   - `.agent/project-snapshot.json`
    - Relevant code files
    - Pre-check report (from Step 1)
 

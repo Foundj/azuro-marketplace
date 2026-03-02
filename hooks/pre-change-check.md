@@ -19,7 +19,7 @@ Phase 0 是所有变更的第一阶段，在进入 Phase 1（需求澄清）之�
 
 ```typescript
 async function checkGlobalConstraints(): Promise<ConstraintCheckResult> {
-  const projectRoot = 'codebox';
+  const projectRoot = '.agent';
   const requiredFiles = [
     'requirements.md',
     'design.md',
@@ -89,7 +89,7 @@ interface KnowledgeCheckResult {
 }
 
 async function queryKnowledgeBase(query: KnowledgeQuery): Promise<KnowledgeCheckResult> {
-  const knowledgeDir = 'codebox/knowledge';
+  const knowledgeDir = '.agent/knowledge';
 
   // 1. 读取知识库文件
   const patternsDB = JSON.parse(Bash(`cat ${knowledgeDir}/patterns.json`));
@@ -617,10 +617,10 @@ async function phase0KnowledgeCheck(userRequest: string): Promise<Phase0Result> 
 
   // Step 2: 读取全局约束
   console.log('Step 2: 读取全局约束...');
-  const requirements = fs.readFileSync('codebox/requirements.md', 'utf-8');
-  const design = fs.readFileSync('codebox/design.md', 'utf-8');
-  const claudeMd = fs.readFileSync('codebox/CLAUDE.md', 'utf-8');
-  const constraints = fs.readFileSync('codebox/constraints.md', 'utf-8');
+  const requirements = fs.readFileSync('.agent/requirements.md', 'utf-8');
+  const design = fs.readFileSync('.agent/design.md', 'utf-8');
+  const claudeMd = fs.readFileSync('.agent/CLAUDE.md', 'utf-8');
+  const constraints = fs.readFileSync('.agent/constraints.md', 'utf-8');
   console.log('✅ 全局约束已加载\n');
 
   // Step 3: 知识库查询
@@ -650,7 +650,7 @@ async function phase0KnowledgeCheck(userRequest: string): Promise<Phase0Result> 
 
   // 保存到临时文件，供 Phase 1 使用
   const changeId = generateChangeId(userRequest);
-  const contextPath = `codebox/changes/active/${changeId}/phase0-context.md`;
+  const contextPath = `.agent/changes/active/${changeId}/phase0-context.md`;
   fs.mkdirSync(path.dirname(contextPath), { recursive: true });
   fs.writeFileSync(contextPath, knowledgeContext);
   console.log(`✅ 知识上下文已保存: ${contextPath}\n`);

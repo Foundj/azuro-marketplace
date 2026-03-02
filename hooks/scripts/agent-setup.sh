@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Codebox Setup Script
-# Creates standardized codebox directory structure for ultrawork workflow
-# Usage: bash codebox-setup.sh <feature-name> [worktree-path]
+# .agent Setup Script
+# Creates standardized .agent directory structure for ultrawork workflow
+# Usage: bash .agent-setup.sh <feature-name> [worktree-path]
 
 set -euo pipefail
 
-LOG_PREFIX="📦 Codebox"
+LOG_PREFIX="📦 .agent"
 
 log_info() {
     echo -e "\033[0;32m${LOG_PREFIX}: $1\033[0m"
@@ -29,27 +29,27 @@ WORKTREE_PATH="${2:-.}"
 
 if [[ -z "$FEATURE_NAME" ]]; then
     log_error "Feature name required"
-    echo "Usage: codebox-setup.sh <feature-name> [worktree-path]"
+    echo "Usage: .agent-setup.sh <feature-name> [worktree-path]"
     exit 1
 fi
 
 # Normalize path
-CODEBOX_PATH="${WORKTREE_PATH}/codebox"
+AGENT_PATH="${WORKTREE_PATH}/.agent"
 
 # ============================================================================
 # Create Directory Structure
 # ============================================================================
 
-log_info "Creating codebox at: ${CODEBOX_PATH}"
+log_info "Creating .agent at: ${AGENT_PATH}"
 
-mkdir -p "${CODEBOX_PATH}/changes"
-mkdir -p "${CODEBOX_PATH}/archive"
+mkdir -p "${AGENT_PATH}/changes"
+mkdir -p "${AGENT_PATH}/archive"
 
 # ============================================================================
 # Create spec.md (Requirements Template)
 # ============================================================================
 
-cat > "${CODEBOX_PATH}/spec.md" << 'SPEC_EOF'
+cat > "${AGENT_PATH}/spec.md" << 'SPEC_EOF'
 # [Feature Name] Specification
 
 > Replace [Feature Name] with actual feature name
@@ -100,8 +100,8 @@ Brief description of what this feature does and why it's needed.
 SPEC_EOF
 
 # Replace placeholder with actual feature name
-sed -i "s/\[Feature Name\]/${FEATURE_NAME}/g" "${CODEBOX_PATH}/spec.md" 2>/dev/null || \
-sed -i '' "s/\[Feature Name\]/${FEATURE_NAME}/g" "${CODEBOX_PATH}/spec.md"
+sed -i "s/\[Feature Name\]/${FEATURE_NAME}/g" "${AGENT_PATH}/spec.md" 2>/dev/null || \
+sed -i '' "s/\[Feature Name\]/${FEATURE_NAME}/g" "${AGENT_PATH}/spec.md"
 
 log_info "Created spec.md (requirements template)"
 
@@ -109,7 +109,7 @@ log_info "Created spec.md (requirements template)"
 # Create plan.md (Implementation Plan Template)
 # ============================================================================
 
-cat > "${CODEBOX_PATH}/plan.md" << 'PLAN_EOF'
+cat > "${AGENT_PATH}/plan.md" << 'PLAN_EOF'
 # Implementation Plan
 
 ## Task Breakdown
@@ -174,7 +174,7 @@ log_info "Created plan.md (implementation template)"
 
 DATE=$(date '+%Y-%m-%d')
 
-cat > "${CODEBOX_PATH}/changes/active.md" << ACTIVE_EOF
+cat > "${AGENT_PATH}/changes/active.md" << ACTIVE_EOF
 # Active Tasks: [Feature Name]
 
 ## Current Sprint
@@ -201,7 +201,7 @@ log_info "Created changes/active.md (progress tracking)"
 # Create completed.md (Archive Template)
 # ============================================================================
 
-cat > "${CODEBOX_PATH}/changes/completed.md" << COMPLETED_EOF
+cat > "${AGENT_PATH}/changes/completed.md" << COMPLETED_EOF
 # Completed Tasks: [Feature Name]
 
 ## Sprint Summary
@@ -229,10 +229,10 @@ log_info "Created changes/completed.md (archive template)"
 
 echo ""
 echo "╔═══════════════════════════════════════════════════════════════╗"
-echo "║                    📦 CODEBOX READY                             ║"
+echo "║                    📦 .agent READY                             ║"
 echo "╠═══════════════════════════════════════════════════════════════╣"
 echo "║                                                               ║"
-echo "║  📁 Directory: ${CODEBOX_PATH}"
+echo "║  📁 Directory: ${AGENT_PATH}"
 echo "║                                                               ║"
 echo "║  📄 Files created:                                            ║"
 echo "║     ├── spec.md          (requirements)                      ║"

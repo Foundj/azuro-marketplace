@@ -16,8 +16,8 @@
 
 set -uo pipefail
 
-CODEBOX_ROOT="${CODEBOX_ROOT:-./codebox}"
-SOLUTIONS_FILE="${CODEBOX_ROOT}/knowledge/solutions_learned.jsonl"
+AGENT_ROOT="${AGENT_ROOT:-./.agent}"
+SOLUTIONS_FILE="${AGENT_ROOT}/knowledge/solutions_learned.jsonl"
 
 PATTERN=""
 LIMIT=5

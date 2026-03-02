@@ -4,7 +4,7 @@
 
 set -e
 
-KNOWLEDGE_DIR="codebox/knowledge"
+KNOWLEDGE_DIR=".agent/knowledge"
 
 echo "📚 初始化知识管理系统..."
 

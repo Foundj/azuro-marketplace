@@ -10,7 +10,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ## 命令格式
 
 ```bash
-/lite-resume            # 从 codebox/context/ 恢复
+/lite-resume            # 从 .agent/context/ 恢复
 lite-resume             # 简写
 简单恢复                 # 中文
 继续 lite               # 中文
@@ -22,15 +22,15 @@ lite-resume             # 简写
 
 核心：**Read Before Decide** — 先读取 tasks.md，将目标刷新到注意力窗口。
 
-**v4.2.0 变更**：文件位置统一到 `codebox/context/`，与 Full Mode 共享目录。
+**v4.2.0 变更**：文件位置统一到 `.agent/context/`，与 Full Mode 共享目录。
 
 ## 执行流程
 
-### Step 1: 读取 codebox/context/tasks.md (最重要!)
+### Step 1: 读取 .agent/context/tasks.md (最重要!)
 
 ```bash
 # 这是核心步骤 - 将目标刷新到注意力窗口
-Read codebox/context/tasks.md
+Read .agent/context/tasks.md
 ```
 
 提取：
@@ -39,21 +39,21 @@ Read codebox/context/tasks.md
 - 未完成的 checkbox
 - Status（当前状态）
 
-### Step 2: 读取 codebox/context/notes.md
+### Step 2: 读取 .agent/context/notes.md
 
 ```bash
-Read codebox/context/notes.md
+Read .agent/context/notes.md
 ```
 
 提取：
 - 已有的研究发现
 - 做出的决策
 
-### Step 3: 读取 codebox/context/session_summary.md (如果存在)
+### Step 3: 读取 .agent/context/session_summary.md (如果存在)
 
 ```bash
-if [ -f "codebox/context/session_summary.md" ]; then
-  Read codebox/context/session_summary.md
+if [ -f ".agent/context/session_summary.md" ]; then
+  Read .agent/context/session_summary.md
 fi
 ```
 
@@ -68,7 +68,7 @@ fi
 📦 Lite Mode Resume
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Location: codebox/context/
+Location: .agent/context/
 
 🎯 Goal: {从 tasks.md 提取}
 
@@ -108,7 +108,7 @@ Location: codebox/context/
 📦 Lite Mode Resume
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Location: codebox/context/
+Location: .agent/context/
 
 Files Found:
   ✅ tasks.md
@@ -147,7 +147,7 @@ Files Found:
 📦 Lite Mode Resume (Partial)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Location: codebox/context/
+Location: .agent/context/
 
 Files Found:
   ✅ tasks.md
@@ -171,7 +171,7 @@ Continuing from tasks.md only...
 ⚠️ No Lite Mode Files Found
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Looked for in codebox/context/:
+Looked for in .agent/context/:
   ❌ tasks.md
   ❌ notes.md
   ❌ session_summary.md
@@ -198,7 +198,7 @@ Suggestions:
 
 | 特性 | /lite-resume | /ai:session-resume |
 |------|-------------|-----------------|
-| 读取位置 | codebox/context/ | codebox/context/ |
+| 读取位置 | .agent/context/ | .agent/context/ |
 | 核心文件 | tasks.md, notes.md, session_summary.md | 同 + next_steps.md |
 | 状态来源 | checkbox | state.json (如果有) |
 | 适用场景 | 简单任务 | 复杂项目 |
@@ -214,15 +214,15 @@ Suggestions:
 用户: "/lite-resume"
 
 Claude 执行:
-📖 Reading codebox/context/tasks.md...
+📖 Reading .agent/context/tasks.md...
   Goal: Research TypeScript best practices
   Phase: 2 (Research)
   Status: Gathering sources
 
-📖 Reading codebox/context/notes.md...
+📖 Reading .agent/context/notes.md...
   Found: 3 sources, 5 key findings
 
-📖 Reading codebox/context/session_summary.md...
+📖 Reading .agent/context/session_summary.md...
   Last session: 2025-01-09
   Next: Continue research on advanced types
 
@@ -230,7 +230,7 @@ Claude 执行:
 📦 Lite Mode Resume
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Location: codebox/context/
+Location: .agent/context/
 
 🎯 Goal: Research TypeScript best practices
 
@@ -263,7 +263,7 @@ Loop 4: Deliver → 完成任务
 
 ## 从 Lite Mode 检测到 Full Mode
 
-如果检测到 `codebox/changes/active/` 目录存在 state.json：
+如果检测到 `.agent/changes/active/` 目录存在 state.json：
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -273,8 +273,8 @@ Loop 4: Deliver → 完成任务
 ⚠️ Detected ai-dev workflow state
 
 Found:
-  - codebox/context/tasks.md (Lite Mode)
-  - codebox/changes/active/001/state.json (Full Mode)
+  - .agent/context/tasks.md (Lite Mode)
+  - .agent/changes/active/001/state.json (Full Mode)
 
 Recommendation:
   Use /ai:session-resume for Full Mode features

@@ -1,10 +1,12 @@
 #!/bin/bash
-# 创建增强的 codebox 目录结构
+# 创建增强的 .agent 目录结构
 # 集成 OpenSpec + Netflix Conductor + AISD-R + Kiro Spec 模式
 
 set -e
 
-PROJECT_DIR="codebox"
+PROJECT_DIR=".agent"
+
+mkdir -p "$PROJECT_DIR"
 
 echo "🏗️  创建增强项目目录结构..."
 

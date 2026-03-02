@@ -97,7 +97,7 @@ ai-dev/
 │   ├── scan-project.sh
 │   └── ...
 └── templates/
-    └── codebox/          # Project template
+    └── agent-dir/        # Project template
 ```
 
 ## Dependencies
@@ -105,7 +105,7 @@ ai-dev/
 | Dependency | Required | Description |
 |------------|----------|-------------|
 | competitor-research | Yes | Phase 0.5 research |
-| project-initializer | Yes | Codebox setup |
+| project-initializer | Yes | Agent dir setup |
 | session-manager | Yes | Cross-session continuity |
 | claude-reflect | No | Learning capture |
 | MCP Context7 | No | Documentation lookup |

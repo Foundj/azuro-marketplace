@@ -384,7 +384,7 @@ acceptance_test:
     - name: Upload Evidence
       uses: actions/upload-artifact@v3
       with:
-        path: codebox/acceptance/
+        path: .agent/acceptance/
 ```
 
 ---

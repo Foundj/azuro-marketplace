@@ -1,6 +1,6 @@
 ---
 name: context-bridge
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: default
 description: |
@@ -119,8 +119,8 @@ model: sonnet
 执行步骤：
 1. 扫描 active changes 状态
 2. 收集本次 session 完成的工作
-3. 生成 `codebox/context/session_summary.md`
-4. 更新 `codebox/context/next_steps.md`
+3. 生成 `.agent/context/session_summary.md`
+4. 更新 `.agent/context/next_steps.md`
 5. 归档历史 session
 
 ### `/ai:session-resume` - 恢复并继续
@@ -139,17 +139,17 @@ Context Bridge 自动检测当前环境：
 
 | 模式 | 检测条件 | 特性 |
 |------|----------|------|
-| **Mode A: ai-dev** | `codebox/changes/active/*/state.json` 存在 | 读取 state.json, tasks.md, 7-Phase 集成 |
-| **Mode B: 独立** | 无 codebox 或无 active changes | 从对话 + git 收集信息 |
+| **Mode A: ai-dev** | `.agent/changes/active/*/state.json` 存在 | 读取 state.json, tasks.md, 7-Phase 集成 |
+| **Mode B: 独立** | 无 .agent 或无 active changes | 从对话 + git 收集信息 |
 
-两种模式统一输出到 `codebox/context/` 目录。
+两种模式统一输出到 `.agent/context/` 目录。
 
 ---
 
 ## 📁 文件结构
 
 ```
-codebox/context/
+.agent/context/
 ├── session_summary.md    # 上次 session 摘要
 ├── next_steps.md         # 下一步任务 (新 session 入口)
 ├── current_focus.md      # 当前焦点 (可选)
@@ -166,13 +166,13 @@ codebox/context/
 
 | 命令 | 作用 |
 |------|------|
-| `/lite-save` | 生成 3 文件到 `codebox/context/` |
+| `/lite-save` | 生成 3 文件到 `.agent/context/` |
 | `/lite-resume` | 从 3 文件恢复 |
 
 ### 3 文件结构
 
 ```
-codebox/context/
+.agent/context/
 ├── tasks.md              # 任务进度
 ├── notes.md              # 研究笔记
 └── session_summary.md    # Session 摘要

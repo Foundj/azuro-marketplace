@@ -134,7 +134,7 @@ Phase 5 (Quality Validation)
   │   ├─ Validate: All pages load correctly
   │   ├─ Capture: Screenshots for evidence
   │   ├─ Generate: Markdown + HTML reports
-  │   └─ Store: codebox/acceptance/{date}/{changeId}/
+  │   └─ Store: .agent/acceptance/{date}/{changeId}/
   ├─ If no frontend:
   │   └─ Skip this verification point
   └─ Result: Acceptance evidence collected
@@ -448,19 +448,19 @@ frontend_acceptance:
 
   # Step 4: Collect evidence
   evidence:
-    screenshots: codebox/acceptance/{date}/{changeId}/screenshots/
-    state: codebox/acceptance/{date}/{changeId}/state.json
-    report_md: codebox/acceptance/{date}/{changeId}/report.md
-    report_html: codebox/acceptance/{date}/{changeId}/report.html
+    screenshots: .agent/acceptance/{date}/{changeId}/screenshots/
+    state: .agent/acceptance/{date}/{changeId}/state.json
+    report_md: .agent/acceptance/{date}/{changeId}/report.md
+    report_html: .agent/acceptance/{date}/{changeId}/report.html
 
   # Step 5: Update change state
   update:
-    file: codebox/changes/active/{changeId}/state.json
+    file: .agent/changes/active/{changeId}/state.json
     field: acceptance
     value:
       latestId: ACC-xxx
       status: passed/failed
-      reportPath: codebox/acceptance/...
+      reportPath: .agent/acceptance/...
 ```
 
 **Output Files**:

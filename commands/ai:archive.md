@@ -38,7 +38,7 @@ knowledge base updates, and documentation synchronization.
 ```
 Priority order:
 1. Explicit change_id → archive that change
-2. --current → detect from codebox/changes/active/
+2. --current → detect from .agent/changes/active/
 3. --all-completed → scan for all DONE changes
 4. Interactive → list and select from active changes
 ```
@@ -82,8 +82,8 @@ validation_checks:
 │     └─ Update feature-index.json                             │
 │                                                              │
 │  4. Move to Archive                                          │
-│     ├─ codebox/changes/active/{id}/                          │
-│     └─ → codebox/changes/archived/{YYYY-MM}/{id}/            │
+│     ├─ .agent/changes/active/{id}/                          │
+│     └─ → .agent/changes/archived/{YYYY-MM}/{id}/            │
 │                                                              │
 │  5. Prompt Documentation Update                              │
 │     └─ Detect if README/docs need updates                    │

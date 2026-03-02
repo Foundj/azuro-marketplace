@@ -8,14 +8,14 @@ echo "===================="
 echo ""
 
 # 检查文件存在
-if [ ! -f "codebox/feature_list.json" ]; then
+if [ ! -f ".agent/feature_list.json" ]; then
   echo "❌ ERROR: feature_list.json not found"
   exit 1
 fi
 
 # 基本统计
-TOTAL=$(jq '.total_features' codebox/feature_list.json)
-COMPLETED=$(jq '.completed_features' codebox/feature_list.json)
+TOTAL=$(jq '.total_features' .agent/feature_list.json)
+COMPLETED=$(jq '.completed_features' .agent/feature_list.json)
 
 if [ "$TOTAL" -eq 0 ]; then
   echo "⚠️  No features found in feature_list.json"
@@ -37,7 +37,7 @@ echo "📂 By Category"
 echo "-------------------"
 jq -r '.features | group_by(.category) | .[] |
   "\(.[0].category): \(map(select(.passes == true)) | length)/\(length) (\((map(select(.passes == true)) | length) * 100 / length)%)"' \
-  codebox/feature_list.json
+  .agent/feature_list.json
 
 echo ""
 
@@ -46,7 +46,7 @@ echo "⭐ By Priority"
 echo "-------------------"
 jq -r '.features | group_by(.priority) | .[] |
   "\(.[0].priority): \(map(select(.passes == true)) | length)/\(length)"' \
-  codebox/feature_list.json
+  .agent/feature_list.json
 
 echo ""
 
@@ -55,7 +55,7 @@ echo "✅ Recently Completed (Last 5)"
 echo "-------------------"
 jq -r '.features | map(select(.passes == true)) | .[-5:] | .[] |
   "#\(.id): \(.description)"' \
-  codebox/feature_list.json
+  .agent/feature_list.json
 
 echo ""
 
@@ -64,7 +64,7 @@ echo "🎯 Next High Priority Features"
 echo "-------------------"
 jq -r '.features | map(select(.passes == false and .priority == "high")) | .[0:3] | .[] |
   "#\(.id): \(.description)"' \
-  codebox/feature_list.json
+  .agent/feature_list.json
 
 echo ""
 echo "===================="

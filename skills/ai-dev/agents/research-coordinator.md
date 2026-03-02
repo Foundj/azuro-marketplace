@@ -64,8 +64,8 @@ Execute in parallel:
    - Map tech stack
 
 2. Task(subagent_type="general", prompt="...")
-   - Query codebox/knowledge/patterns.json
-   - Query codebox/knowledge/errors.json
+   - Query .agent/knowledge/patterns.json
+   - Query .agent/knowledge/errors.json
    - Find relevant historical insights
 
 3. Task(subagent_type="general", prompt="...")
@@ -119,7 +119,7 @@ Time: [X]s | Sources: [N] explore + [M] general
 ```
 
 **Deep Mode (JSON file):**
-Save to `codebox/research/{feature-slug}-research.json`:
+Save to `.agent/research/{feature-slug}-research.json`:
 
 ```json
 {

@@ -22,7 +22,7 @@ find_project_root() {
 PROJECT_ROOT=$(find_project_root)
 KNOWLEDGE_DIR="$PROJECT_ROOT/.claude-project/knowledge"
 NODES_FILE="$KNOWLEDGE_DIR/nodes.json"
-NEXT_STEPS="$PROJECT_ROOT/codebox/context/next_steps.md"
+NEXT_STEPS="$PROJECT_ROOT/.agent/context/next_steps.md"
 
 MAX_ITEMS=10
 OUTPUT=""

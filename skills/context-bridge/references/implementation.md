@@ -9,10 +9,10 @@
 ```bash
 # Step 0: 检测运行模式
 detect_mode() {
-  if [ -d "codebox/changes/active" ]; then
-    active_count=$(ls codebox/changes/active/ 2>/dev/null | wc -l)
+  if [ -d ".agent/changes/active" ]; then
+    active_count=$(ls .agent/changes/active/ 2>/dev/null | wc -l)
     if [ "$active_count" -gt 0 ]; then
-      for dir in codebox/changes/active/*/; do
+      for dir in .agent/changes/active/*/; do
         if [ -f "${dir}state.json" ]; then
           echo "ai-dev"  # Mode A
           return
@@ -24,7 +24,7 @@ detect_mode() {
 }
 
 MODE=$(detect_mode)
-CONTEXT_DIR="codebox/context"
+CONTEXT_DIR=".agent/context"
 mkdir -p "$CONTEXT_DIR/sessions"
 ```
 
@@ -36,10 +36,10 @@ mkdir -p "$CONTEXT_DIR/sessions"
 
 ```bash
 MODE="standalone"
-CONTEXT_DIR="codebox/context"
+CONTEXT_DIR=".agent/context"
 
-if [ -d "codebox/changes/active" ]; then
-  for dir in codebox/changes/active/*/; do
+if [ -d ".agent/changes/active" ]; then
+  for dir in .agent/changes/active/*/; do
     if [ -f "${dir}state.json" ]; then
       MODE="ai-dev"
       break
@@ -57,18 +57,18 @@ echo "📍 Running in $MODE mode, output to $CONTEXT_DIR"
 
 ```bash
 # 1. 扫描 active changes
-active_changes=$(ls codebox/changes/active/ 2>/dev/null)
+active_changes=$(ls .agent/changes/active/ 2>/dev/null)
 
 # 2. 读取每个 change 的 state.json
 for change in $active_changes; do
-  state=$(cat "codebox/changes/active/$change/state.json")
+  state=$(cat ".agent/changes/active/$change/state.json")
   change_id=$(echo "$state" | jq -r '.changeId')
   phase=$(echo "$state" | jq -r '.currentPhase')
   ooda_count=$(echo "$state" | jq -r '.ooda.iterationCount // 0')
   ooda_max=$(echo "$state" | jq -r '.ooda.maxIterations // 10')
 
   # 读取 tasks.md 统计完成情况
-  tasks_file="codebox/changes/active/$change/tasks.md"
+  tasks_file=".agent/changes/active/$change/tasks.md"
   if [ -f "$tasks_file" ]; then
     completed=$(grep -c "^\s*- \[x\]" "$tasks_file" 2>/dev/null || echo "0")
     pending=$(grep -c "^\s*- \[ \]" "$tasks_file" 2>/dev/null || echo "0")
@@ -76,7 +76,7 @@ for change in $active_changes; do
 done
 
 # 3. 读取 progress.txt 最近条目
-recent_progress=$(tail -50 codebox/progress.txt 2>/dev/null)
+recent_progress=$(tail -50 .agent/progress.txt 2>/dev/null)
 ```
 
 #### Mode B (独立模式): 从对话和 git 收集
@@ -99,10 +99,10 @@ files_changed=$(git diff --stat HEAD~5..HEAD 2>/dev/null || git diff --stat)
 
 ```bash
 # 归档历史 Session
-session_count=$(ls codebox/context/sessions/ 2>/dev/null | wc -l)
+session_count=$(ls .agent/context/sessions/ 2>/dev/null | wc -l)
 next_session=$((session_count + 1))
-mv codebox/context/session_summary.md \
-   codebox/context/sessions/session-$(printf "%03d" $next_session).md
+mv .agent/context/session_summary.md \
+   .agent/context/sessions/session-$(printf "%03d" $next_session).md
 ```
 
 ---
@@ -113,13 +113,13 @@ mv codebox/context/session_summary.md \
 
 ```bash
 # 1. 读取 next_steps.md
-next_steps=$(cat codebox/context/next_steps.md)
+next_steps=$(cat .agent/context/next_steps.md)
 
 # 2. 读取上次 session 摘要
-last_summary=$(cat codebox/context/session_summary.md)
+last_summary=$(cat .agent/context/session_summary.md)
 
 # 3. 验证 active changes 状态
-for change in codebox/changes/active/*/state.json; do
+for change in .agent/changes/active/*/state.json; do
   # 验证 state.json 有效
   # 检查 resumability.canResume
 done
@@ -152,7 +152,7 @@ Completed: 2 tasks | In progress: Task 6
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🔴 Auto Checkpoint (Context 90%)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Progress saved to codebox/context/
+✅ Progress saved to .agent/context/
    - session_summary.md (updated)
    - next_steps.md (updated)
 
@@ -178,7 +178,7 @@ Completed: 2 tasks | In progress: Task 6
 | 任务来源 | state.json + tasks.md | 对话上下文 + git |
 | Phase 追踪 | ✅ 自动 | ❌ 无 |
 | OODA 状态 | ✅ 自动 | ❌ 无 |
-| 输出目录 | codebox/context/ | codebox/context/ |
+| 输出目录 | .agent/context/ | .agent/context/ |
 | 恢复精度 | 高 (结构化数据) | 中 (文本描述) |
 
 ---
@@ -223,7 +223,7 @@ session-manager (完整恢复)     context-bridge (轻量恢复)
 - `git` - Version history and commit tracking
 
 **Optional**:
-- `codebox/` - ai-dev workflow integration (auto-detected)
+- `.agent/` - ai-dev workflow integration (auto-detected)
 
 **Skill Dependencies**:
 - `ai-dev` - 7-Phase workflow integration (optional)

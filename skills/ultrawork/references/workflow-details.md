@@ -1,9 +1,9 @@
 # Ultrawork Autonomous Workflow Reference
 
-## Codebox Structure
+## .agent Structure
 
 ```
-codebox/
+.agent/
 ├── spec.md              # Requirements specification
 ├── plan.md              # Implementation plan with tasks
 └── changes/
@@ -18,7 +18,7 @@ codebox/
 | 0 | Confidence Gate | Pre-execution confidence check | ≥90% to proceed |
 | 1 | Analyze | Detect task complexity | SIMPLE/MEDIUM/COMPLEX |
 | 2 | Clarify | Ask questions if ambiguous | Clear requirements |
-| 3 | Isolate | Create worktree + codebox | Isolated environment |
+| 3 | Isolate | Create worktree + .agent | Isolated environment |
 | 4 | Plan | Generate atomic tasks | plan.md, TaskCreate |
 | 5 | Execute | Dispatch subagents | Implementation |
 | 6 | Review | Two-stage review | Spec + Quality pass |
@@ -45,7 +45,7 @@ codebox/
 ### active.md (Progress Tracking)
 
 - **Purpose**: Real-time task status
-- **Created**: Phase 3 (Codebox Setup)
+- **Created**: Phase 3 (.agent Setup)
 - **Updated**: After each task completion
 - **Used by**: Phase 7 (Continuation Enforcement)
 
@@ -104,7 +104,7 @@ Last Updated: 2026-02-26T15:30:00
 The Stop hook checks:
 1. Is there a `<promise>DONE</promise>` in last output?
 2. Are there pending tasks in TaskList?
-3. Are there unchecked items in codebox/changes/active.md?
+3. Are there unchecked items in .agent/changes/active.md?
 
 If any tasks are incomplete:
 - Block exit with Sisyphus message

@@ -20,12 +20,12 @@ Continuously execute tasks until `<promise>DONE</promise>` is detected or max it
 
 ```bash
 # Locate active change directory
-ACTIVE_CHANGE=$(find codebox/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
+ACTIVE_CHANGE=$(find .agent/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
 ```
 
 If no active change exists:
 1. Initialize a new change with the provided task description
-2. Create `codebox/changes/active/<change-id>/` directory
+2. Create `.agent/changes/active/<change-id>/` directory
 3. Generate initial `tasks.md` from task description
 
 ---
@@ -39,7 +39,7 @@ If no active change exists:
 ```
 
 This will:
-1. Search `codebox/knowledge/` for related implementations
+1. Search `.agent/knowledge/` for related implementations
 2. Check `feature-index.json` for existing features
 3. Load `implementation-constraints.json` for patterns
 4. Generate a pre-check report with:
@@ -58,7 +58,7 @@ This will:
 
 ## Step 3: Load State
 
-Read from `codebox/changes/active/<change-id>/`:
+Read from `.agent/changes/active/<change-id>/`:
 - `tasks.md`: Task checklist (- [ ] format)
 - `state.json`: Phase and iteration tracking
 - `pre-check-report.md`: Constraints and patterns to follow

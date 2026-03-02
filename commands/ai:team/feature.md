@@ -466,7 +466,7 @@ if (hasFrontendPages) {
 - **关联变更**: CHG-xxx
 - **验收页面**: 3
 - **通过率**: 100%
-- **报告**: codebox/acceptance/2026-02-27/CHG-xxx/report.md
+- **报告**: .agent/acceptance/2026-02-27/CHG-xxx/report.md
 
 ### 验收详情
 | 页面 | 状态 | 截图 |

@@ -13,8 +13,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMMON_LIB="${HOME}/.claude/common/lib"
 MEM0_SCRIPT="${COMMON_LIB}/mem0-integration.sh"
-CODEBOX_DIR="codebox"
-KNOWLEDGE_DIR="${CODEBOX_DIR}/knowledge"
+AGENT_DIR=".agent"
+KNOWLEDGE_DIR="${AGENT_DIR}/knowledge"
 
 # ============================================================================
 # Helper Functions
@@ -183,7 +183,7 @@ Options:
 
 Examples:
     $(basename "$0") query "user authentication"
-    $(basename "$0") generate codebox/changes/active/CHG-001 "login feature"
+    $(basename "$0") generate .agent/changes/active/CHG-001 "login feature"
     $(basename "$0") check "password storage"
 EOF
 }

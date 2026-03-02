@@ -37,7 +37,7 @@ Parse $ARGUMENTS to determine mode:
 ### Step 1: 检查 Context 文件
 
 ```bash
-if [ ! -f "codebox/context/next_steps.md" ]; then
+if [ ! -f ".agent/context/next_steps.md" ]; then
   echo "⚠️ 未找到 next_steps.md，请先使用 /ai:session-save 保存进度"
   exit 1
 fi
@@ -57,7 +57,7 @@ fi
 
 **验证 active changes:**
 ```bash
-for state_file in codebox/changes/active/*/state.json; do
+for state_file in .agent/changes/active/*/state.json; do
   jq -e '.changeId' "$state_file" > /dev/null 2>&1
   can_resume=$(jq -r '.resumability.canResume // true' "$state_file")
 done

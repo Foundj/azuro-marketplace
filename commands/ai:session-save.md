@@ -13,13 +13,13 @@ allowed-tools: Read, Write, Bash, Grep, Glob
 
 ### 1. 检查并创建目录结构
 ```bash
-mkdir -p codebox/context/sessions
+mkdir -p .agent/context/sessions
 ```
 
 ### 2. 收集当前状态
 
 **扫描 active changes:**
-- 读取 `codebox/changes/active/*/state.json`
+- 读取 `.agent/changes/active/*/state.json`
 - 提取 changeId, currentPhase, ooda iteration, blockers
 
 **统计任务进度:**
@@ -34,12 +34,12 @@ git diff --stat HEAD~5..HEAD 2>/dev/null
 
 **读取最近进度:**
 ```bash
-tail -30 codebox/progress.txt 2>/dev/null
+tail -30 .agent/progress.txt 2>/dev/null
 ```
 
 ### 3. 生成 session_summary.md
 
-在 `codebox/context/session_summary.md` 创建包含:
+在 `.agent/context/session_summary.md` 创建包含:
 - Session 日期时间
 - 完成的任务列表
 - 进行中的任务
@@ -51,7 +51,7 @@ tail -30 codebox/progress.txt 2>/dev/null
 
 ### 4. 生成 next_steps.md
 
-在 `codebox/context/next_steps.md` 创建包含:
+在 `.agent/context/next_steps.md` 创建包含:
 - Quick Resume 命令说明
 - P0 任务 (Blockers - 立即处理)
 - P1 任务 (In Progress - 继续进行)
@@ -62,13 +62,13 @@ tail -30 codebox/progress.txt 2>/dev/null
 ### 5. 归档历史 Session
 
 ```bash
-session_count=$(ls codebox/context/sessions/ 2>/dev/null | grep -c "session-" || echo "0")
+session_count=$(ls .agent/context/sessions/ 2>/dev/null | grep -c "session-" || echo "0")
 next_session=$((session_count + 1))
 session_id=$(printf "%03d" $next_session)
 
-if [ -f "codebox/context/session_summary.md" ]; then
-  cp codebox/context/session_summary.md \
-     "codebox/context/sessions/session-${session_id}-$(date +%Y%m%d).md"
+if [ -f ".agent/context/session_summary.md" ]; then
+  cp .agent/context/session_summary.md \
+     ".agent/context/sessions/session-${session_id}-$(date +%Y%m%d).md"
 fi
 ```
 
@@ -93,8 +93,8 @@ fi
    - Active Changes: 2
 
 📁 Files Generated:
-   - codebox/context/session_summary.md
-   - codebox/context/next_steps.md
+   - .agent/context/session_summary.md
+   - .agent/context/next_steps.md
 
 🎯 Next Priority:
    Fix 4 failing tests in AuthService.test.ts

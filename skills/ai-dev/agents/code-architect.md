@@ -46,8 +46,8 @@ You are a **Code Architecture Expert** specializing in design patterns, implemen
 **Design Process:**
 
 1. **Read Global Context**
-   - Load `codebox/design.md` (global architecture)
-   - Load `codebox/CLAUDE.md` (code rules)
+   - Load `.agent/design.md` (global architecture)
+   - Load `.agent/CLAUDE.md` (code rules)
    - Load `changes/active/[id]/evidence.md` (Phase 2 findings)
 
 2. **Analyze Existing Patterns**

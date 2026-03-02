@@ -26,7 +26,7 @@ git commit -m "chore: init from template"
 
 ```
 my-project/
-├── codebox/
+├── .agent/
 │   ├── spec.md
 │   ├── plan.md
 │   └── changes/

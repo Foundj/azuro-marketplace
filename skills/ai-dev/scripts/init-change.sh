@@ -9,8 +9,8 @@ set -euo pipefail
 # Configuration
 # ============================================================================
 
-CODEBOX_DIR="codebox"
-CHANGES_DIR="${CODEBOX_DIR}/changes/active"
+AGENT_DIR=".agent"
+CHANGES_DIR="${AGENT_DIR}/changes/active"
 TEMPLATES_DIR="${HOME}/.claude/skills/ai-dev/templates"
 
 # ============================================================================

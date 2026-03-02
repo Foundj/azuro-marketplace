@@ -58,8 +58,8 @@ Execute in parallel (max 3 Tasks):
    - Find similar existing features
 
 2. Task(subagent_type="general", prompt="...")
-   - Query codebox/knowledge/patterns.json for relevant patterns
-   - Query codebox/knowledge/errors.json for pitfalls
+   - Query .agent/knowledge/patterns.json for relevant patterns
+   - Query .agent/knowledge/errors.json for pitfalls
    - Summarize historical insights
 
 3. Task(subagent_type="general", prompt="...") [if new feature]
@@ -69,10 +69,10 @@ Execute in parallel (max 3 Tasks):
 ```
 
 After parallel collection, load additional context:
-- Project context (codebox/project-snapshot.json)
-- Global requirements (codebox/requirements.md)
-- Existing features (codebox/feature_list.json)
-- Research results (codebox/research/*.json)
+- Project context (.agent/project-snapshot.json)
+- Global requirements (.agent/requirements.md)
+- Existing features (.agent/feature_list.json)
+- Research results (.agent/research/*.json)
 
 Use collected context to provide **data-driven suggestions** in interview questions.
 

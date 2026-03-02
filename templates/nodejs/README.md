@@ -4,7 +4,7 @@ A pre-configured project template for Node.js with ultrawork compatibility.
 
 ## Features
 
-- ✅ Standard codebox structure
+- ✅ Standard .agent structure
 - ✅ Pre-configured package.json
 - ✅ Test framework setup (Node.js native assert)
 - ✅ Example spec.md and plan.md
@@ -30,7 +30,7 @@ git commit -m "chore: init from template"
 
 ```
 my-project/
-├── codebox/
+├── .agent/
 │   ├── spec.md           # Requirements specification
 │   ├── plan.md           # Implementation plan
 │   └── changes/

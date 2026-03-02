@@ -19,7 +19,7 @@ description: |
   <example>
   Context: User wants to archive completed task results before starting the next batch
   user: "前面3个任务都完成了，summarize results 然后 archive 掉，我们继续下一批"
-  assistant: "I'll use the context-compressor skill to extract key information from completed tasks and archive full reports to codebox/archive/."
+  assistant: "I'll use the context-compressor skill to extract key information from completed tasks and archive full reports to .agent/archive/."
   <commentary>
   "summarize results" and "archive" for completed tasks triggers the compression algorithm.
   </commentary>
@@ -33,7 +33,7 @@ description: |
   User experiencing slowness and requesting context trimming ("结果归档", "trim context") triggers compression.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: default
 triggers:
@@ -81,7 +81,7 @@ triggers:
 │                                                              │
 │  Subagent result → Extract key info → 1-2 sentences        │
 │                  ↓                                           │
-│  Archive full result to codebox/archive/                     │
+│  Archive full result to .agent/archive/                     │
 │                  ↓                                           │
 │  Keep only summary in main context                           │
 │                                                              │
@@ -119,17 +119,17 @@ NOT Compressible:
 **Tests**: X passing, Y failing
 **Key Changes**: [1-2 sentences]
 **Concerns**: [Any blockers or notes]
-**Archive**: `codebox/archive/task-N.md`
+**Archive**: `.agent/archive/task-N.md`
 ```
 
 ### Step 3: Archive Full Content
 
 ```bash
 # Create archive
-mkdir -p codebox/archive
+mkdir -p .agent/archive
 
 # Archive subagent result
-cat > codebox/archive/task-N.md << 'EOF'
+cat > .agent/archive/task-N.md << 'EOF'
 # Task N: [Name]
 
 ## Full Report
@@ -156,11 +156,11 @@ On Subagent Complete:
      - Any concerns
 
   2. Archive:
-     - Full report → codebox/archive/task-N.md
+     - Full report → .agent/archive/task-N.md
      - Include timestamp and task ID
 
   3. Update Active:
-     - codebox/changes/active.md with summary only
+     - .agent/changes/active.md with summary only
      - Mark task complete with ✅
 
   4. Context Cleanup:
@@ -218,9 +218,9 @@ Action:
 ║  Reduced: XX%                                                 ║
 ║                                                               ║
 ║  Archived:                                                    ║
-║    - Task 1: codebox/archive/task-1.md                       ║
-║    - Task 2: codebox/archive/task-2.md                       ║
-║    - Task 3: codebox/archive/task-3.md                       ║
+║    - Task 1: .agent/archive/task-1.md                       ║
+║    - Task 2: .agent/archive/task-2.md                       ║
+║    - Task 3: .agent/archive/task-3.md                       ║
 ║                                                               ║
 ║  Summary in active.md:                                        ║
 ║    - [x] Task 1: Setup ✅                                     ║

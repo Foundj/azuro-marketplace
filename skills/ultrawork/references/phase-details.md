@@ -67,12 +67,12 @@ git worktree add .worktrees/<feature-name> -b feature/<feature-name>
 cd .worktrees/<feature-name>
 ```
 
-### Step 2: Codebox Setup
+### Step 2: Agent Dir Setup
 ```bash
-mkdir -p codebox/changes codebox/archive
+mkdir -p .agent/changes .agent/archive
 
 # Create spec.md, plan.md, active.md
-# See references/codebox-setup.md for templates
+# See references/agent-dir-setup.md for templates
 ```
 
 ### Step 3: Project Setup

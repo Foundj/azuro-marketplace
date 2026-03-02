@@ -352,7 +352,7 @@ TaskUpdate({ taskId: "3", addBlockedBy: ["1", "2"] })
 
 | 特性 | ultrawork | team-orchestrator |
 |------|-----------|-------------------|
-| 任务管理 | 文件系统 (codebox) | 原生 Task 工具 |
+| 任务管理 | 文件系统 (.agent) | 原生 Task 工具 |
 | 隔离机制 | 手动 git worktree | `isolation: worktree` 参数 |
 | 通信方式 | 单向 (主→子) | 双向 (队友互发) |
 | 协调方式 | Skill 传递上下文 | 原生消息系统 |

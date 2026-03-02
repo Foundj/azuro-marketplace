@@ -10,7 +10,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ## 命令格式
 
 ```bash
-/lite-save              # 生成 3 个文件到 codebox/context/
+/lite-save              # 生成 3 个文件到 .agent/context/
 lite-save               # 简写
 简单存档                 # 中文
 极简保存                 # 中文
@@ -27,7 +27,7 @@ lite-save               # 简写
 ## 生成的文件
 
 ```
-codebox/context/              # 统一位置 (与 Full Mode 相同)
+.agent/context/              # 统一位置 (与 Full Mode 相同)
 ├── tasks.md                  # 任务进度追踪 (原 task_plan.md)
 ├── notes.md                  # 研究笔记和发现
 └── session_summary.md        # Session 摘要 (原 session.md)
@@ -44,7 +44,7 @@ codebox/context/              # 统一位置 (与 Full Mode 相同)
 
 ```bash
 # 1. 确保目录存在
-mkdir -p codebox/context
+mkdir -p .agent/context
 
 # 2. 从对话上下文提取：
 #    - 当前任务的目标
@@ -58,7 +58,7 @@ mkdir -p codebox/context
 #    - 文件变更
 ```
 
-### Step 2: 生成/更新 codebox/context/tasks.md
+### Step 2: 生成/更新 .agent/context/tasks.md
 
 **如果文件不存在**，创建新文件：
 
@@ -96,7 +96,7 @@ mkdir -p codebox/context
 - 追加新的 Errors
 - 更新 Status 部分
 
-### Step 3: 生成/更新 codebox/context/notes.md
+### Step 3: 生成/更新 .agent/context/notes.md
 
 **如果文件不存在**，创建新文件：
 
@@ -121,7 +121,7 @@ mkdir -p codebox/context
 
 **如果文件已存在**，追加新内容（保留历史）。
 
-### Step 4: 生成 codebox/context/session_summary.md
+### Step 4: 生成 .agent/context/session_summary.md
 
 每次 `/lite-save` 都覆盖 session_summary.md：
 
@@ -172,7 +172,7 @@ Resume with: `/lite-resume` or `/ai:session-resume`
 📦 Lite Mode Save Complete
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Location: codebox/context/
+Location: .agent/context/
 
 Files:
   ✅ tasks.md           (updated)
@@ -193,7 +193,7 @@ Resume with: /lite-resume or /ai:session-resume
 
 | 特性 | Lite Mode | Full Mode |
 |------|-----------|-----------|
-| 文件位置 | `codebox/context/` | `codebox/context/` + `codebox/changes/` |
+| 文件位置 | `.agent/context/` | `.agent/context/` + `.agent/changes/` |
 | 核心文件 | tasks.md, notes.md, session_summary.md | 同 + state.json, design.md 等 |
 | 文件数 | 3 | 15+ |
 | 状态追踪 | checkbox | state.json |
@@ -221,7 +221,7 @@ Claude 执行:
   - Phase: 2 (Research)
   - Completed: Initial setup
 
-📝 Generating files to codebox/context/...
+📝 Generating files to .agent/context/...
   - tasks.md (created)
   - notes.md (created)
   - session_summary.md (created)
@@ -230,7 +230,7 @@ Claude 执行:
 📦 Lite Mode Save Complete
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Location: codebox/context/
+Location: .agent/context/
 
 Files:
   ✅ tasks.md
@@ -253,7 +253,7 @@ Resume with: /lite-resume or /ai:session-resume
 /lite-save                    # 保存当前进度
 
 # 2. 初始化 ai-dev 工作流
-/ai:dev "继续当前任务"          # 会读取 codebox/context/tasks.md
+/ai:dev "继续当前任务"          # 会读取 .agent/context/tasks.md
 
 # 3. ai-dev 会自动：
 #    - 检测到现有的 tasks.md

@@ -31,7 +31,7 @@ description: |
   User wants isolated execution per task to avoid context pollution, which is the core principle of this skill.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: dev
 triggers:
@@ -364,7 +364,7 @@ Problem:
 
 Solution:
   1. Summarize subagent results (don't include full code)
-  2. Archive completed task details to codebox/archive/
+  2. Archive completed task details to .agent/archive/
   3. Only keep summary in main context:
      - Task N: ✅ Complete (files: X, Y, Z)
      - Task N+1: 🔄 In progress
@@ -374,7 +374,7 @@ Pattern:
     1. Extract: What was implemented (1-2 sentences)
     2. Extract: Files changed (list only)
     3. Extract: Any concerns (if any)
-    4. Archive: Full report to codebox/archive/task-N.md
+    4. Archive: Full report to .agent/archive/task-N.md
     5. Keep: Only summary in active context
 ```
 

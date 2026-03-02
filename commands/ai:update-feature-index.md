@@ -32,7 +32,7 @@ enabling intelligent pre-implementation checks and duplicate detection.
 ```yaml
 sources:
   archived_changes:
-    - Read from codebox/changes/archived/
+    - Read from .agent/changes/archived/
     - Extract feature names from proposals
     - Map to implementation files
   

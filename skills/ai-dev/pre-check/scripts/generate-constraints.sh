@@ -2,12 +2,12 @@
 
 # Generate Implementation Constraints
 # Extracts technical standards from project config and code samples
-# Outputs: codebox/implementation-constraints.json
+# Outputs: .agent/implementation-constraints.json
 
 set -euo pipefail
 
-CODEBOX_DIR="${CODEBOX_DIR:-codebox}"
-OUTPUT_FILE="${CODEBOX_DIR}/implementation-constraints.json"
+AGENT_DIR="${AGENT_DIR:-.agent}"
+OUTPUT_FILE="${AGENT_DIR}/implementation-constraints.json"
 
 log_info() {
     echo "🔧 Constraints: $1"
@@ -174,13 +174,13 @@ detect_patterns() {
 extract_forbidden() {
     local forbidden='["no any type", "no var", "no console.log in production"]'
     
-    if [[ -f "${CODEBOX_DIR}/CLAUDE.md" ]]; then
+    if [[ -f "${AGENT_DIR}/CLAUDE.md" ]]; then
         # Try to extract forbidden patterns from CLAUDE.md
-        local claude_forbidden=$(grep -i "don't\|never\|avoid\|forbidden\|禁止" "${CODEBOX_DIR}/CLAUDE.md" 2>/dev/null | head -5 || echo "")
+        local claude_forbidden=$(grep -i "don't\|never\|avoid\|forbidden\|禁止" "${AGENT_DIR}/CLAUDE.md" 2>/dev/null | head -5 || echo "")
         # For now, use defaults
     fi
     
-    if [[ -f "${CODEBOX_DIR}/constraints.md" ]]; then
+    if [[ -f "${AGENT_DIR}/constraints.md" ]]; then
         # Try to extract from constraints.md
         :
     fi

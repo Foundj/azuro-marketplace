@@ -19,22 +19,22 @@ WARNINGS=0
 
 # 1. 检查目录结构
 echo "📁 Checking directory structure..."
-if [ ! -d "codebox" ]; then
-  echo -e "${RED}❌ ERROR: codebox/ directory not found${NC}"
+if [ ! -d ".agent" ]; then
+  echo -e "${RED}❌ ERROR: .agent/ directory not found${NC}"
   echo "   → Run 'project-initializer' to initialize the project"
   exit 1
 fi
-echo -e "${GREEN}✅ codebox/ exists${NC}"
+echo -e "${GREEN}✅ .agent/ exists${NC}"
 
 # 2. 检查必需文件
 echo ""
 echo "📄 Checking required files..."
 
 REQUIRED_FILES=(
-  "codebox/feature_list.json"
-  "codebox/progress.txt"
-  "codebox/config.json"
-  "codebox/init.sh"
+  ".agent/feature_list.json"
+  ".agent/progress.txt"
+  ".agent/config.json"
+  ".agent/init.sh"
 )
 
 for file in "${REQUIRED_FILES[@]}"; do
@@ -50,14 +50,14 @@ done
 echo ""
 echo "🔍 Validating JSON files..."
 
-if ! jq empty codebox/feature_list.json 2>/dev/null; then
+if ! jq empty .agent/feature_list.json 2>/dev/null; then
   echo -e "${RED}❌ ERROR: feature_list.json is invalid JSON${NC}"
   ((ERRORS++))
 else
   echo -e "${GREEN}✅ feature_list.json is valid JSON${NC}"
 fi
 
-if ! jq empty codebox/config.json 2>/dev/null; then
+if ! jq empty .agent/config.json 2>/dev/null; then
   echo -e "${RED}❌ ERROR: config.json is invalid JSON${NC}"
   ((ERRORS++))
 else
@@ -68,10 +68,10 @@ fi
 echo ""
 echo "📊 Checking file sizes..."
 
-PROGRESS_LINES=$(wc -l < codebox/progress.txt 2>/dev/null || echo "0")
-FEATURE_COUNT=$(jq '.features | length' codebox/feature_list.json 2>/dev/null || echo "0")
-COMPLETED_COUNT=$(jq '.completed_features' codebox/feature_list.json 2>/dev/null || echo "0")
-TOTAL_COUNT=$(jq '.total_features' codebox/feature_list.json 2>/dev/null || echo "0")
+PROGRESS_LINES=$(wc -l < .agent/progress.txt 2>/dev/null || echo "0")
+FEATURE_COUNT=$(jq '.features | length' .agent/feature_list.json 2>/dev/null || echo "0")
+COMPLETED_COUNT=$(jq '.completed_features' .agent/feature_list.json 2>/dev/null || echo "0")
+TOTAL_COUNT=$(jq '.total_features' .agent/feature_list.json 2>/dev/null || echo "0")
 
 echo "   Progress: $PROGRESS_LINES lines"
 echo "   Features: $FEATURE_COUNT items"
@@ -122,8 +122,8 @@ fi
 echo ""
 echo "📦 Checking archive..."
 
-if [ -d "codebox/archive" ]; then
-  ARCHIVE_COUNT=$(ls -1 codebox/archive 2>/dev/null | wc -l)
+if [ -d ".agent/archive" ]; then
+  ARCHIVE_COUNT=$(ls -1 .agent/archive 2>/dev/null | wc -l)
   echo -e "${GREEN}✅ Archive directory exists ($ARCHIVE_COUNT files)${NC}"
 else
   echo -e "${YELLOW}ℹ️  Archive directory not created yet${NC}"

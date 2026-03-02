@@ -100,9 +100,9 @@ Complete ✅
 
 1. **读取全局约束**
    ```typescript
-   const requirements = readFile('codebox/requirements.md');
-   const design = readFile('codebox/design.md');
-   const claudeMd = readFile('codebox/CLAUDE.md');
+   const requirements = readFile('.agent/requirements.md');
+   const design = readFile('.agent/design.md');
+   const claudeMd = readFile('.agent/CLAUDE.md');
    ```
 
 2. **启动 requirement-analyzer agent**
@@ -286,7 +286,7 @@ if (complexity === 'simple') {
 
 1. **读取全局设计模式**
    ```typescript
-   const globalDesign = readFile('codebox/design.md');
+   const globalDesign = readFile('.agent/design.md');
    ```
 
 2. **并行启动 2-3 code-architect agents**
@@ -845,7 +845,7 @@ COMMIT_HASH=$(git rev-parse HEAD)
 #### 6.2 更新 feature_list.json
 
 ```typescript
-const featureList = JSON.parse(readFile('codebox/feature_list.json'));
+const featureList = JSON.parse(readFile('.agent/feature_list.json'));
 
 // 更新 feature
 const feature = featureList.features.find(f => f.change_id === '001-user-auth');
@@ -868,28 +868,28 @@ featureList.changes.active = featureList.changes.active.filter(
 // 增加 archived 计数
 featureList.changes.archived_count++;
 
-writeFile('codebox/feature_list.json', JSON.stringify(featureList, null, 2));
+writeFile('.agent/feature_list.json', JSON.stringify(featureList, null, 2));
 ```
 
 #### 6.3 追加 progress.txt
 
 ```bash
-echo "$(date): ✅ Feature #1 完成 - 用户 JWT 登录 (001-user-auth)" >> codebox/progress.txt
-echo "  - Commit: $COMMIT_HASH" >> codebox/progress.txt
-echo "  - OODA iterations: 5" >> codebox/progress.txt
-echo "  - Test coverage: 95%" >> codebox/progress.txt
-echo "" >> codebox/progress.txt
+echo "$(date): ✅ Feature #1 完成 - 用户 JWT 登录 (001-user-auth)" >> .agent/progress.txt
+echo "  - Commit: $COMMIT_HASH" >> .agent/progress.txt
+echo "  - OODA iterations: 5" >> .agent/progress.txt
+echo "  - Test coverage: 95%" >> .agent/progress.txt
+echo "" >> .agent/progress.txt
 ```
 
 #### 6.4 归档变更
 
 ```bash
 YEAR_MONTH=$(date +"%Y-%m")
-ARCHIVE_DIR="codebox/changes/archived/$YEAR_MONTH"
+ARCHIVE_DIR=".agent/changes/archived/$YEAR_MONTH"
 
 mkdir -p "$ARCHIVE_DIR"
 
-mv "codebox/changes/active/001-user-auth" \
+mv ".agent/changes/active/001-user-auth" \
    "$ARCHIVE_DIR/001-user-auth"
 
 echo "✅ 已归档到 $ARCHIVE_DIR/001-user-auth"
@@ -899,7 +899,7 @@ echo "✅ 已归档到 $ARCHIVE_DIR/001-user-auth"
 
 ```typescript
 // 1. 更新成功模式使用次数
-const patterns = JSON.parse(readFile('codebox/knowledge/patterns.json'));
+const patterns = JSON.parse(readFile('.agent/knowledge/patterns.json'));
 const usedPatterns = ['PATTERN-001', 'PATTERN-002']; // 从 proposal.md 提取
 
 usedPatterns.forEach(patternId => {
@@ -910,7 +910,7 @@ usedPatterns.forEach(patternId => {
   }
 });
 
-writeFile('codebox/knowledge/patterns.json', JSON.stringify(patterns, null, 2));
+writeFile('.agent/knowledge/patterns.json', JSON.stringify(patterns, null, 2));
 
 // 2. 追加经验总结
 const learnings = `
@@ -926,7 +926,7 @@ const learnings = `
 - Zod schema 可提取为共享模块
 `;
 
-appendFile('codebox/knowledge/learnings.md', learnings);
+appendFile('.agent/knowledge/learnings.md', learnings);
 
 console.log('✅ 知识库已更新');
 ```
@@ -1028,7 +1028,7 @@ Feature #${recommended.id}: ${recommended.description}
 
 ```typescript
 async function resumeWorkflow(changeId: string) {
-  const statePath = `codebox/changes/active/${changeId}/state.json`;
+  const statePath = `.agent/changes/active/${changeId}/state.json`;
   const state = JSON.parse(readFile(statePath));
 
   if (!state.resumability.can_resume) {
@@ -1041,7 +1041,7 @@ async function resumeWorkflow(changeId: string) {
 
   // 读取上下文文件
   state.resumability.context_files.forEach(file => {
-    const content = readFile(`codebox/changes/active/${changeId}/${file}`);
+    const content = readFile(`.agent/changes/active/${changeId}/${file}`);
     console.log(`📄 Loaded: ${file}`);
   });
 

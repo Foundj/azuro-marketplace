@@ -9,7 +9,7 @@
 
 知识库位置：
 ```
-codebox/knowledge/
+.agent/knowledge/
 ├── patterns.json      # 成功模式库
 ├── errors.json        # 历史错误库
 └── learnings.md       # 经验总结文档
@@ -796,24 +796,24 @@ function appendLearningEntry(entry: LearningEntry): void {
 
 ```bash
 # 由project-initializer在初始化时创建
-mkdir -p codebox/knowledge
+mkdir -p .agent/knowledge
 
 # 创建空的patterns.json
 echo '{
   "version": "1.0",
   "lastUpdated": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
   "patterns": []
-}' > codebox/knowledge/patterns.json
+}' > .agent/knowledge/patterns.json
 
 # 创建空的errors.json
 echo '{
   "version": "1.0",
   "lastUpdated": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
   "errors": []
-}' > codebox/knowledge/errors.json
+}' > .agent/knowledge/errors.json
 
 # 创建learnings.md模板
-cat > codebox/knowledge/learnings.md << 'EOF'
+cat > .agent/knowledge/learnings.md << 'EOF'
 # Project Learnings - 项目经验总结
 
 > 记录每次变更的经验教训，持续改进

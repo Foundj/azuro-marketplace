@@ -27,11 +27,21 @@ rules:
 # 开发顺序与依赖（YAML 结构化描述）
 #
 # 字段说明：
-#   id          - Sprint/Task 唯一标识，在看板区域引用
-#   name        - 人类可读名称
-#   depends_on  - 前置依赖（Sprint 级或 Task 级）
-#   files       - 涉及的文件列表，对应 plan.md 中的文件变更清单
-#   verify      - 完成后的验证命令（可复现）
+#   id            - Sprint/Task 唯一标识，在看板区域引用
+#   name          - 人类可读名称
+#   depends_on    - 前置依赖（Sprint 级或 Task 级）
+#   files         - 涉及的文件列表，对应 plan.md 中的文件变更清单
+#   verify        - 完成后的验证命令（可复现）
+#
+# 可选字段（用于 task-executor 自动执行）：
+#   tags          - 标签列表，用于 roles 路由匹配
+#   executor      - 执行器简写，覆盖 README 默认值
+#                   可选: self | subagent | subagent:<type> |
+#                         claude | codex | gemini | opencode |
+#                         agent-team | agent-team:<template>
+#   tdd_required  - 是否要求 TDD（默认 true）
+#   context_files - 理解阶段额外读取的文件列表
+#   timeout       - 任务超时(秒)
 # ════════════════════════════════════════════════════════
 sprints:
   - id: sprint-1
@@ -43,6 +53,11 @@ sprints:
         files: [path/to/file]
         depends_on: []
         # verify: "bash test.sh"
+        # tags: [backend]
+        # executor: self
+        # tdd_required: true
+        # context_files: []
+        # timeout: 300
 
       - id: s1-review
         name: Sprint 1 代码审查

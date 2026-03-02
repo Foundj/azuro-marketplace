@@ -24,7 +24,7 @@ TASKS_FILE="tasks.md"
 
 # Auto-detect active change if not in CWD
 if [[ ! -f "$STATE_FILE" || ! -f "$TASKS_FILE" || ! -f "$HANDOVER_FILE" ]]; then
-    ACTIVE_CHANGE=$(find codebox/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
+    ACTIVE_CHANGE=$(find .agent/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
     if [[ -n "$ACTIVE_CHANGE" ]]; then
         STATE_FILE="${ACTIVE_CHANGE}/state.json"
         TASKS_FILE="${ACTIVE_CHANGE}/tasks.md"

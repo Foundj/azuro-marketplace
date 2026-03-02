@@ -326,7 +326,7 @@ TeamDelete()
 | settings | ✅ PASS | settings-20260227-143031.png | 4/4 |
 | profile | ✅ PASS | profile-20260227-143034.png | 4/4 |
 
-📁 报告: codebox/acceptance/2026-02-27/CHG-xxx/report.md
+📁 报告: .agent/acceptance/2026-02-27/CHG-xxx/report.md
 ```
 
 ### 部分失败
@@ -344,7 +344,7 @@ TeamDelete()
 - login: JavaScript 错误 - Cannot read property 'value' of null
 - dashboard: 页面加载超时
 
-📁 报告: codebox/acceptance/2026-02-27/CHG-xxx/report.md
+📁 报告: .agent/acceptance/2026-02-27/CHG-xxx/report.md
 ```
 
 ---

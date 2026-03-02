@@ -31,7 +31,7 @@ description: |
   User requests structured bug fix tasks using the reproduce-first template pattern.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: dev
 triggers:
@@ -282,12 +282,26 @@ ultrawork Phase 4 (PLAN):
 - No "Run test" step
 - No explicit pass/fail expectations
 
+## Related Skills
+
+### task-templates vs task-planner
+
+| 维度 | task-templates (本技能) | task-planner |
+|------|------------------------|--------------|
+| **粒度** | 单个 task（2-5 min） | Sprint / 版本级别 |
+| **关注点** | TDD 步骤、原子化操作 | 里程碑排期、依赖图 |
+| **输出** | tasks.md 中的细粒度条目 | docs/tasks/ 下的版本计划 |
+| **使用时机** | 设计通过后分解实现 | 需求明确后规划迭代 |
+
+**协作流程**: task-planner 产出 Sprint 计划 → task-templates 将其中每项进一步拆为原子 task。
+
 ## Agent Collaboration
 
 | Agent | Role |
 |-------|------|
 | `ultrawork` | Uses templates in Phase 4 (PLAN) |
 | `task-decomposer` | Applies templates to break down work |
+| `task-planner` | Provides Sprint-level plans that feed into templates |
 | `subagent-driven-development` | Dispatches one subagent per task |
 
 ## Version History

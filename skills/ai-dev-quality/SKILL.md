@@ -31,7 +31,7 @@ description: |
   Targeted quality check for specific files with complexity concerns triggers this skill.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: review
 triggers:
@@ -206,7 +206,7 @@ Final Commit Ready
 ## Configuration
 
 ```json
-// codebox/config.json
+// .agent/config.json
 {
   "quality": {
     "confidenceThreshold": 80,

@@ -66,7 +66,7 @@ search_content() {
 # Check feature index for similar features
 check_feature_index() {
     local keywords="$1"
-    local index_file="${CODEBOX_DIR:-codebox}/knowledge/feature-index.json"
+    local index_file="${AGENT_DIR:-.agent}/knowledge/feature-index.json"
     
     if [[ ! -f "$index_file" ]]; then
         return

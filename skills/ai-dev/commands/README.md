@@ -1,3 +1,9 @@
+---
+name: ai-dev-commands-index
+description: AI-Dev commands directory index (not a command)
+internal: true
+---
+
 # AI-Dev Commands
 
 AI-Dev 使用 `ai-xxx` 系列命令，支持分阶段执行或完整工作流。
@@ -92,7 +98,7 @@ AI-Dev 使用 `ai-xxx` 系列命令，支持分阶段执行或完整工作流。
 | 选项 | 描述 |
 |------|------|
 | `--deep` | 多模型深度调研 (Gemini + Codex + Claude) |
-| `--save` | 保存结果到 `codebox/research/` |
+| `--save` | 保存结果到 `.agent/research/` |
 
 ### /ai-design
 | 选项 | 描述 |

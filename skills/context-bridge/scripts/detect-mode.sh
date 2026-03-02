@@ -15,18 +15,18 @@ NC='\033[0m' # No Color
 
 # Default mode
 MODE="standalone"
-CONTEXT_DIR="codebox/context"
+CONTEXT_DIR=".agent/context"
 
 detect_mode() {
-    # Check if codebox/changes/active directory exists
-    if [ -d "codebox/changes/active" ]; then
+    # Check if .agent/changes/active directory exists
+    if [ -d ".agent/changes/active" ]; then
         # Count active changes
         local active_count
-        active_count=$(find codebox/changes/active -maxdepth 1 -type d 2>/dev/null | tail -n +2 | wc -l | tr -d ' ')
+        active_count=$(find .agent/changes/active -maxdepth 1 -type d 2>/dev/null | tail -n +2 | wc -l | tr -d ' ')
 
         if [ "$active_count" -gt 0 ]; then
             # Check if any change has a valid state.json
-            for dir in codebox/changes/active/*/; do
+            for dir in .agent/changes/active/*/; do
                 if [ -f "${dir}state.json" ]; then
                     # Validate state.json has required fields
                     if command -v jq &> /dev/null; then
@@ -65,7 +65,7 @@ get_active_changes() {
     local changes="["
     local first=true
 
-    for dir in codebox/changes/active/*/; do
+    for dir in .agent/changes/active/*/; do
         if [ -f "${dir}state.json" ]; then
             if [ "$first" = true ]; then
                 first=false

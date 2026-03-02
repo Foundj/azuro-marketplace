@@ -80,7 +80,7 @@ default_analysis:
 ```
 
 ### 3. Output
-Updates `codebox/knowledge/implementation-constraints.json`:
+Updates `.agent/knowledge/implementation-constraints.json`:
 ```json
 {
   "version": "1.0.0",

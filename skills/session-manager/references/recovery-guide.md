@@ -13,13 +13,13 @@ pwd
 ### Step 2: Read Progress
 ```bash
 # Load last 50 lines of progress.txt
-tail -50 codebox/progress.txt
+tail -50 .agent/progress.txt
 ```
 
 ### Step 3: Load Features
 ```bash
 # Parse feature_list.json
-jq '.features[] | select(.status != "completed")' codebox/feature_list.json
+jq '.features[] | select(.status != "completed")' .agent/feature_list.json
 ```
 
 ### Step 4: Check Git Status
@@ -30,7 +30,7 @@ git status
 
 ### Step 5: Start Environment
 ```bash
-./codebox/init.sh
+# init.sh 从未创建。若需初始化项目，请运行 project-initializer 技能或 /ai:dev "初始化项目"
 ```
 
 ### Step 6: Run Smoke Tests
@@ -47,10 +47,10 @@ npm test -- --grep "smoke" 2>/dev/null || true
 
 ### Recovery Fails
 - Ensure in correct project directory
-- Check codebox/ directory exists
+- Check .agent/ directory exists
 - Validate JSON file formats
 
 ### Environment Issues
-- Check init.sh is executable
+- **init.sh**: 项目默认不包含此文件；若需初始化，请运行 project-initializer 或 `/ai:dev "初始化项目"`
 - Verify dependencies installed
 - Check port availability

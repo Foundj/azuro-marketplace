@@ -65,7 +65,8 @@ PENDING_LIST=""
 TASKS_DIR="${HOME}/.claude/tasks"
 if [[ -d "$TASKS_DIR" ]]; then
     # Find all task files and count pending
-    for task_file in "$TASKS_DIR"/*/*.json 2>/dev/null; do
+    shopt -s nullglob 2>/dev/null || true
+    for task_file in "$TASKS_DIR"/*/*.json; do
         if [[ -f "$task_file" ]]; then
             status=$(jq -r '.status // "pending"' "$task_file" 2>/dev/null || echo "unknown")
             if [[ "$status" == "pending" || "$status" == "in_progress" ]]; then
@@ -75,12 +76,13 @@ if [[ -d "$TASKS_DIR" ]]; then
             fi
         fi
     done
+    shopt -u nullglob 2>/dev/null || true
 fi
 
-# Check 2: codebox tasks.md (project-specific)
-CODEBOX_TASKS="codebox/changes/active"
-if [[ -d "$CODEBOX_TASKS" ]]; then
-    ACTIVE_CHANGE=$(find "$CODEBOX_TASKS" -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
+# Check 2: .agent tasks.md (project-specific)
+AGENT_TASKS=".agent/changes/active"
+if [[ -d "$AGENT_TASKS" ]]; then
+    ACTIVE_CHANGE=$(find "$AGENT_TASKS" -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
     if [[ -n "$ACTIVE_CHANGE" && -f "${ACTIVE_CHANGE}/tasks.md" ]]; then
         TASKS_FILE="${ACTIVE_CHANGE}/tasks.md"
         UNCHECKED=$(grep -cE '^\s*-\s*\[\s*\]' "$TASKS_FILE" 2>/dev/null || echo 0)

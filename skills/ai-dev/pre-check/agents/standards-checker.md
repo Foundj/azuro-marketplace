@@ -142,10 +142,10 @@ Called by:
 ## Constraints Sources
 
 Primary (must load):
-- `codebox/implementation-constraints.json`
+- `.agent/implementation-constraints.json`
 
 Fallback (if constraints not cached):
-- `codebox/design.md`
-- `codebox/CLAUDE.md`
-- `codebox/constraints.md`
+- `.agent/design.md`
+- `.agent/CLAUDE.md`
+- `.agent/constraints.md`
 - `package.json`

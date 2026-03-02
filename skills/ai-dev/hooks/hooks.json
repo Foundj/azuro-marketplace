@@ -92,7 +92,7 @@
     }
   ],
   "config": {
-    "stateFile": "codebox/changes/active/{changeId}/state.json",
+    "stateFile": ".agent/changes/active/{changeId}/state.json",
     "oodaStateKey": "ooda",
     "completionPromise": "DONE",
     "maxIterations": 50,

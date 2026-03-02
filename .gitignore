@@ -5,7 +5,7 @@ bak/
 AGENTS.md
 CLAUDE.md
 
-codebox/
+.agent/
 components/
 tests/
 .cache/

@@ -31,7 +31,7 @@ description: |
   Autonomous execution request with explicit TDD requirement triggers this skill with mandatory test-first flow.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: dev
 triggers:
@@ -281,7 +281,7 @@ Ralph Loop 是一种自引用循环模式，通过 Stop Hook 实现任务的持�
 #!/bin/bash
 # ooda-stop-hook.sh
 
-TASKS_FILE="codebox/changes/active/*/tasks.md"
+TASKS_FILE=".agent/changes/active/*/tasks.md"
 COMPLETION_PROMISE="DONE"
 
 # 检查是否有未完成的任务

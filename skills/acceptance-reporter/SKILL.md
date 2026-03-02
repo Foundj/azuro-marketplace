@@ -31,7 +31,7 @@ description: |
   Request for acceptance report aggregation and historical analysis triggers this skill.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: review
 triggers:
@@ -210,8 +210,8 @@ HTML 报告特点:
 ```bash
 # 从现有状态文件生成报告
 node scripts/generate-html.js \
-  --state codebox/acceptance/2026-02-27/CHG-xxx/state.json \
-  --output codebox/acceptance/2026-02-27/CHG-xxx/report.html
+  --state .agent/acceptance/2026-02-27/CHG-xxx/state.json \
+  --output .agent/acceptance/2026-02-27/CHG-xxx/report.html
 ```
 
 ---
@@ -326,18 +326,18 @@ frontend_acceptance:
 
     - name: "Review report"
       action: read_file
-      path: codebox/acceptance/${DATE}/${CHANGE_ID}/report.md
+      path: .agent/acceptance/${DATE}/${CHANGE_ID}/report.md
 ```
 
 ### With Change Management
 
 ```json
-// codebox/changes/active/{changeId}/state.json
+// .agent/changes/active/{changeId}/state.json
 {
   "acceptance": {
     "latestId": "ACC-20260227-001",
     "latestStatus": "passed",
-    "reportPath": "codebox/acceptance/2026-02-27/CHG-xxx/report.md",
+    "reportPath": ".agent/acceptance/2026-02-27/CHG-xxx/report.md",
     "history": [...]
   }
 }

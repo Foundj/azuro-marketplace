@@ -1,3 +1,9 @@
+---
+name: commands-index
+description: Commands directory index (not a command)
+internal: true
+---
+
 # Commands 命令说明
 
 ## 用户命令 (6 个)
@@ -79,12 +85,12 @@
 
 **用法：**
 ```bash
-/ai:session-save       # 保存进度到 codebox/context/
+/ai:session-save       # 保存进度到 .agent/context/
 ```
 
 **生成文件：**
-- `codebox/context/session_summary.md` - 会话摘要
-- `codebox/context/next_steps.md` - 下一步任务
+- `.agent/context/session_summary.md` - 会话摘要
+- `.agent/context/next_steps.md` - 下一步任务
 
 ### `/ai:session-resume [<id>] [--full]`
 

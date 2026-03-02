@@ -88,8 +88,8 @@ def query_address_at_time(user_id, query_time):
 
 | ai-dev Component | Memory Type |
 |---------------------------|-------------|
-| codebox/knowledge/patterns.json | Long-Term (structured) |
-| codebox/knowledge/errors.json | Long-Term (structured) |
+| .agent/knowledge/patterns.json | Long-Term (structured) |
+| .agent/knowledge/errors.json | Long-Term (structured) |
 | ~/.claude/learnings-queue.json | Short-Term (pending) |
 | CLAUDE.md | Permanent (preferences) |
 | changes/active/{id}/state.json | Working (current task) |
@@ -125,10 +125,10 @@ Memories accumulate and require periodic consolidation:
 5. Consider privacy implications
 6. Monitor memory growth over time
 
-## Integration with codebox
+## Integration with .agent
 
 ```
-codebox/
+.agent/
 ├── knowledge/
 │   ├── patterns.json      # Successful patterns (graph-like)
 │   ├── errors.json        # Error prevention (graph-like)

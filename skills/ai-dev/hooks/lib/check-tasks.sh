@@ -64,7 +64,7 @@ all_tasks_complete() {
 
 # Find active change directory
 find_active_change_dir() {
-    local base_dir="${1:-codebox/changes/active}"
+    local base_dir="${1:-.agent/changes/active}"
     
     if [[ ! -d "$base_dir" ]]; then
         echo ""

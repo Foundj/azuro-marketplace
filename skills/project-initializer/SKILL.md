@@ -2,14 +2,14 @@
 name: project-initializer
 description: |
   This skill should be used when the user wants to initialize AI development mode for projects.
-  It creates the codebox/ directory, initializes knowledge base, and performs deep project
+  It creates the .agent/ directory, initializes knowledge base, and performs deep project
   structure scanning. Use when the user mentions "init project", "setup ai-dev", "initialize",
   "启用 AI 模式", "初始化项目", or wants to start a new AI-assisted development workflow.
 
   <example>
   Context: User has a new project and wants to set up AI-assisted development from scratch
   user: "init project 电商后台管理系统，技术栈是 Next.js + Prisma + PostgreSQL"
-  assistant: "I'll use the project-initializer skill to set up the codebox/ directory, scan your tech stack, and initialize the knowledge base for this e-commerce admin project."
+  assistant: "I'll use the project-initializer skill to set up the .agent/ directory, scan your tech stack, and initialize the knowledge base for this e-commerce admin project."
   <commentary>
   Trigger phrase "init project" with specific project description and tech stack triggers full initialization workflow.
   </commentary>
@@ -32,7 +32,7 @@ description: |
   Chinese triggers "初始化项目" and "启用 AI 模式" together clearly activate project initialization.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: dev
 triggers:
@@ -49,7 +49,7 @@ triggers:
 
 ## 🎯 一句话说明
 
-**为项目启用 AI 开发模式，创建 codebox/ 配置目录并执行深度扫描。**
+**为项目启用 AI 开发模式，创建 .agent/ 配置目录并执行深度扫描。**
 
 ## ⚡ 快速使用
 
@@ -66,10 +66,10 @@ triggers:
 - **项目规模评估**：Simple → Medium → Complex
 - **Git 状态检查**：确保项目可追踪
 
-### 2. 创建 codebox/ 目录结构
+### 2. 创建 .agent/ 目录结构
 
 ```
-codebox/                          # AI 配置目录
+.agent/                          # AI 配置目录
 ├── config.json                   # 项目配置
 ├── requirements.md               # 全局需求 (EARS)
 ├── design.md                     # 架构设计
@@ -98,11 +98,11 @@ codebox/                          # AI 配置目录
 
 ```
 1. 检测环境 (目录、技术栈、Git)
-2. 创建目录结构 (codebox/, knowledge/, changes/)
+2. 创建目录结构 (.agent/, knowledge/, changes/)
 3. 创建全局约束 (requirements.md, design.md, CLAUDE.md)
 4. 初始化知识库 (patterns.json, errors.json)
 5. 生成特性列表 (feature_list.json)
-6. Git 初始化 (commit codebox/)
+6. Git 初始化 (commit .agent/)
 ```
 
 ## Common Pitfalls
@@ -119,11 +119,11 @@ codebox/                          # AI 配置目录
 **后果**: feature_list.json 中有不合理的特性拆分，设计方向偏差
 **修正**: 初始化后检查 requirements.md 和 feature_list.json，确认后再继续
 
-### Pitfall 3: 在已有 codebox/ 的项目上重复初始化
+### Pitfall 3: 在已有 .agent/ 的项目上重复初始化
 
-**症状**: 项目已有 codebox/ 目录，再次运行初始化
+**症状**: 项目已有 .agent/ 目录，再次运行初始化
 **后果**: 覆盖已有配置和知识库，丢失积累的模式和错误记录
-**修正**: 检测到现有 codebox/ 时提示用户确认，默认跳过已存在的文件
+**修正**: 检测到现有 .agent/ 时提示用户确认，默认跳过已存在的文件
 
 ## 💡 使用技巧
 
@@ -142,7 +142,7 @@ codebox/                          # AI 配置目录
 | Agent | Role |
 |-------|------|
 | `session-manager` | Use initialized files for session recovery |
-| `ai-dev` | Consume codebox/ config for development workflow |
+| `ai-dev` | Consume .agent/ config for development workflow |
 
 ## 📚 详细参考
 

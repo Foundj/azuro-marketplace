@@ -158,10 +158,8 @@ If NOT_INITIALIZED:
 
 **Phase 0: Context Awareness**
 
-> Note: `codebox/scripts/` 和 `codebox/knowledge/` 作为工具层保留，不在迁移范围内。
-
-1. Run project scan: !`./codebox/scripts/scan-project.sh incremental 2>/dev/null || echo "Scan skipped"`
-2. Query knowledge base: !`./codebox/scripts/query-knowledge.sh "$ARGUMENTS" 2>/dev/null || echo "No prior knowledge"`
+1. Run project scan: !`./skills/ai-dev/scripts/scan-project.sh incremental 2>/dev/null || echo "Scan skipped"`
+2. Query knowledge base: !`./skills/ai-dev/scripts/query-knowledge.sh "$ARGUMENTS" 2>/dev/null || echo "No prior knowledge"`
 3. Generate context summary in phase0-context.md
 
 **Phase 0.5: Competitor Research** (unless --skip-research)

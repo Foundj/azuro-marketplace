@@ -31,7 +31,7 @@ description: |
   Bug fix request with quick/fix keywords triggers ai-dev in quick mode, skipping phases 0.5, 1, and 2.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: dev
 triggers:
@@ -110,8 +110,8 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 
 **Phase 0: Context & Knowledge**
 - **Use:** [`confidence-gate`](../confidence-gate/SKILL.md), [`knowledge-graph`](../knowledge-graph/SKILL.md), [`mcp-integration`](../mcp-integration/SKILL.md)
-- Load `codebox/project-snapshot.json` (incremental via git diff)
-- Query `codebox/knowledge/` for patterns and errors
+- Load `.agent/project-snapshot.json` (incremental via git diff)
+- Query `.agent/knowledge/` for patterns and errors
 - Detect blocking issues (🔴), warnings (🟡), info (🟢)
 - **★ Run Confidence Gate** (v5.0.7)
   - ≥90%: Proceed immediately
@@ -131,7 +131,7 @@ ai 好好思考 设计架构                # Ultra-think mode (中文)
 
 **Phase 2: Design Approval**
 - Present 2-3 design approaches
-- Reference global constraints (`codebox/design.md`)
+- Reference global constraints (`.agent/design.md`)
 - Generate `design.md`
 
 **Phase 2.5: Worktree Setup** (v5.0.7)
@@ -334,7 +334,7 @@ See `references/agents.md` for full agent list.
 ## Project Structure
 
 ```
-codebox/                         # Tool layer (preserved)
+.agent/                         # Tool layer (preserved)
 ├── config.json                  # Project config
 ├── requirements.md              # Global requirements
 ├── design.md                    # Architecture constraints
@@ -385,5 +385,5 @@ See `references/project-structure.md` for full structure.
 | `references/commands.md` | Full command documentation |
 | `references/agents.md` | Agent reference |
 | `references/hooks-scripts.md` | Hooks and scripts |
-| `references/project-structure.md` | codebox/ structure |
+| `references/project-structure.md` | .agent/ structure |
 | `references/integrated-skills.md` | Skill integration details |

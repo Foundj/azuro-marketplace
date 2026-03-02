@@ -25,7 +25,7 @@ ICON_DEBUG="🔍"
 
 # Config
 LOG_CONTEXT="${LOG_CONTEXT:-Core}"
-LOG_FILE="codebox/logs/ai-dev.log"
+LOG_FILE=".agent/logs/ai-dev.log"
 QUIET_MODE="${QUIET_MODE:-false}"
 
 # Ensure log directory exists

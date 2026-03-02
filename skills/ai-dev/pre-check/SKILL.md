@@ -5,7 +5,7 @@ description: |
   duplication, and ensure technical standards compliance. It performs pre-implementation
   analysis through code search, duplicate detection, and impact analysis.
   Triggers on "pre-check", "analysis before coding", "实现前检查", "预检", "代码查重".
-version: 6.0.23
+version: 6.0.24
 triggers:
   - pre-check
   - analysis before coding
@@ -36,13 +36,13 @@ Pre-check runs automatically before each task implementation to:
 **Trigger**: `/init` or `/ai:update-constraints`
 
 **Files Generated**:
-- `codebox/implementation-constraints.json` (~50 lines)
-- `codebox/knowledge/feature-index.json` (~30 lines)
+- `.agent/implementation-constraints.json` (~50 lines)
+- `.agent/knowledge/feature-index.json` (~30 lines)
 
 **Source Files** (read only during generation):
-- `codebox/design.md` - Architecture constraints
-- `codebox/CLAUDE.md` - AI behavior rules
-- `codebox/constraints.md` - Global constraints
+- `.agent/design.md` - Architecture constraints
+- `.agent/CLAUDE.md` - AI behavior rules
+- `.agent/constraints.md` - Global constraints
 - `package.json` - Tech stack
 - `tsconfig.json` - TypeScript config
 - Existing code sampling - Implicit patterns
@@ -199,7 +199,7 @@ Same integration as /ai:loop, called for each task.
 
 ```
 /init project_name
-├── Create codebox structure
+├── Create .agent/ structure
 ├── Run generate-constraints.sh  ← Generate constraints
 └── Initialize feature-index.json
 ```

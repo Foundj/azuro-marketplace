@@ -31,7 +31,7 @@ description: |
   Explicit request to clarify requirements for a specific component triggers the interview skill.
   </commentary>
   </example>
-version: 6.0.23
+version: 6.0.24
 status: ga
 profile: design
 triggers:
@@ -200,7 +200,7 @@ This skill is used in **Phase 1 (Requirement Interview)** of the 7-phase workflo
 
 ## Configuration
 
-Interview behavior can be configured in `codebox/config.json`:
+Interview behavior can be configured in `.agent/config.json`:
 
 ```json
 {

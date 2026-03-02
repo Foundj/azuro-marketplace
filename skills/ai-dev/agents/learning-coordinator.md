@@ -47,8 +47,8 @@ You are a **Learning Coordinator** that manages the knowledge capture and reflec
 
 | Source | Method | Output |
 |--------|--------|--------|
-| Session patterns | Task(general) | codebox/knowledge/patterns.json |
-| Errors encountered | Task(general) | codebox/knowledge/errors.json |
+| Session patterns | Task(general) | .agent/knowledge/patterns.json |
+| Errors encountered | Task(general) | .agent/knowledge/errors.json |
 | User corrections | claude-reflect hooks | ~/.claude/learnings-queue.json |
 
 **Learning Process:**
@@ -64,14 +64,14 @@ Monitor for:
 
 | Type | Description | Destination |
 |------|-------------|-------------|
-| `pattern` | Reusable code/workflow | codebox/knowledge/patterns.json |
-| `error` | Mistake to avoid | codebox/knowledge/errors.json |
+| `pattern` | Reusable code/workflow | .agent/knowledge/patterns.json |
+| `error` | Mistake to avoid | .agent/knowledge/errors.json |
 | `preference` | User/project preference | CLAUDE.md (via /reflect) |
 | `model` | Model recommendations | ~/.claude/CLAUDE.md |
 
 ### Step 3: Capture to Knowledge Base
 
-For patterns and errors, update the codebox knowledge files:
+For patterns and errors, update the .agent/ knowledge files:
 
 **patterns.json format:**
 ```json
@@ -165,7 +165,7 @@ Feature Complete
 │ learning-coordinator                    │
 │ ├─ Extract successful patterns          │
 │ ├─ Document errors encountered          │
-│ ├─ Update codebox/knowledge/            │
+│ ├─ Update .agent/knowledge/            │
 │ └─ Queue CLAUDE.md learnings            │
 └─────────────────────────────────────────┘
       ↓

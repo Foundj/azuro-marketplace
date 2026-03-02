@@ -266,7 +266,7 @@ Output:
     Creates SUMMARY.md in the change directory
 
 Examples:
-    $(basename "$0") codebox/changes/active/CHG-20250106-001 CHG-20250106-001
+    $(basename "$0") .agent/changes/active/CHG-20250106-001 CHG-20250106-001
 EOF
 }
 

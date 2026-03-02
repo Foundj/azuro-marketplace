@@ -90,8 +90,8 @@ Context 加载完成
 ```
 
 **关键操作**:
-- 加载 `codebox/project-snapshot.json`
-- 查询 `codebox/knowledge/` 中的 patterns 和 errors
+- 加载 `.agent/project-snapshot.json`
+- 查询 `.agent/knowledge/` 中的 patterns 和 errors
 - 检测阻塞问题
 
 ---
@@ -110,12 +110,12 @@ Context 加载完成
     ↓
 competitor-research (多模型调研)
     ↓
-codebox/research/[feature]-research.json
+.agent/research/[feature]-research.json
     ↓
 Phase 1 使用
 ```
 
-**输出位置**: `codebox/research/`
+**输出位置**: `.agent/research/`
 
 ---
 
@@ -160,7 +160,7 @@ proposal.md
 ```
 proposal.md
     +
-codebox/design.md (全局约束)
+.agent/design.md (全局约束)
     ↓
 展示 2-3 种设计方案
     ↓
@@ -169,7 +169,7 @@ codebox/design.md (全局约束)
 生成 design.md (功能专用)
 ```
 
-**输出位置**: `codebox/changes/active/[id]/design.md`
+**输出位置**: `.agent/changes/active/[id]/design.md`
 
 ---
 
@@ -323,7 +323,7 @@ Phase 6
     ↓
 knowledge-graph (记录成功模式)
     ↓
-归档到 codebox/changes/archived/
+归档到 .agent/changes/archived/
     ↓
 git commit
 ```
@@ -349,7 +349,7 @@ git commit
     ↓
 检测 context 使用率
     ↓
-自动保存到 codebox/context/
+自动保存到 .agent/context/
   - session_summary.md
   - next_steps.md
     ↓
@@ -372,7 +372,7 @@ git commit
 ## 数据文件流转图
 
 ```
-codebox/
+.agent/
 ├── project-snapshot.json  ← Phase 0 读取
 ├── requirements.md        ← Phase 0/4 参考
 ├── design.md              ← Phase 2/4 参考

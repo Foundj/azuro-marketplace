@@ -22,7 +22,7 @@ status: ga
 /ai:acceptance http://localhost:3000 --change CHG-xxx
     ↓
 Launch Task tool with subagent:
-  - Create acceptance directory: codebox/acceptance/{date}/{changeId}/
+  - Create acceptance directory: .agent/acceptance/{date}/{changeId}/
   - Initialize browser session
   - Execute page validation
   - Capture screenshots
@@ -166,7 +166,7 @@ echo "📊 验收模式: $EXEC_MODE (${PAGE_COUNT} 页面)"
 ### Directory Structure
 
 ```
-codebox/acceptance/
+.agent/acceptance/
 ├── index.json                    # 验收索引
 ├── {YYYY-MM-DD}/                 # 按日期归档
 │   └── {changeId}/               # 关联变更
@@ -184,7 +184,7 @@ codebox/acceptance/
 ```bash
 DATE=$(date +%Y-%m-%d)
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-ACCEPTANCE_DIR="codebox/acceptance"
+ACCEPTANCE_DIR=".agent/acceptance"
 
 # 生成验收 ID
 ACCEPTANCE_ID="ACC-$(date +%Y%m%d)-$(printf '%03d' $(ls -1 $ACCEPTANCE_DIR/$DATE 2>/dev/null | wc -l | awk '{print $1+1}'))"
@@ -376,7 +376,7 @@ agent-browser screenshot "$ACCEPTANCE_DIR/$DATE/${CHANGE_ID:-default}/screenshot
 
 ## Step 7: Update Index
 
-更新 `codebox/acceptance/index.json`:
+更新 `.agent/acceptance/index.json`:
 
 ```bash
 # 读取现有索引
@@ -410,7 +410,7 @@ echo "$INDEX" | jq ".acceptances += [$NEW_ENTRY]" > "$ACCEPTANCE_DIR/index.json"
 如果指定了 `--change`:
 
 ```bash
-CHANGE_STATE="codebox/changes/active/$CHANGE_ID/state.json"
+CHANGE_STATE=".agent/changes/active/$CHANGE_ID/state.json"
 
 if [ -f "$CHANGE_STATE" ]; then
   # 添加验收记录
@@ -429,10 +429,10 @@ fi
 ### Acceptance Testing
 - Run `/ai:acceptance http://localhost:3000 --change CHG-xxx`
 - Verify all pages load correctly
-- Check screenshots in `codebox/acceptance/`
+- Check screenshots in `.agent/acceptance/`
 
 ### Acceptance Evidence
-- [验收报告](codebox/acceptance/2026-02-27/CHG-xxx/report.md)
+- [验收报告](.agent/acceptance/2026-02-27/CHG-xxx/report.md)
 ```
 
 ---
@@ -644,7 +644,7 @@ fi
 ✅ Acceptance completed: ACC-20260227-001
    - Pages validated: 5
    - Screenshots: 5
-   - Report: codebox/acceptance/2026-02-27/CHG-xxx/report.md
+   - Report: .agent/acceptance/2026-02-27/CHG-xxx/report.md
 ```
 
 ### Failure
@@ -652,7 +652,7 @@ fi
 ```
 ❌ Acceptance failed: ACC-20260227-001
    - Issues found: 2
-   - Report: codebox/acceptance/2026-02-27/CHG-xxx/report.md
+   - Report: .agent/acceptance/2026-02-27/CHG-xxx/report.md
 ```
 
 ---

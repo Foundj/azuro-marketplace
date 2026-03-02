@@ -6,8 +6,8 @@
 
 set -euo pipefail
 
-CODEBOX_DIR="${CODEBOX_DIR:-codebox}"
-INDEX_FILE="${CODEBOX_DIR}/knowledge/feature-index.json"
+AGENT_DIR="${AGENT_DIR:-.agent}"
+INDEX_FILE="${AGENT_DIR}/knowledge/feature-index.json"
 
 log_info() {
     echo "📚 Feature Index: $1"

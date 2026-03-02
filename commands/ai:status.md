@@ -166,7 +166,7 @@ Use /ai:status --list to see available versions
 ## Task List
 - [x] s1-1: 创建 task-planner 独立技能
 - [x] s1-review: Sprint 1 代码审查
-- [ ] s2-1: codebox 完全迁移
+- [ ] s2-1: .agent 完全迁移
 - [ ] s2-review: Sprint 2 代码审查
 
 ## Related Files

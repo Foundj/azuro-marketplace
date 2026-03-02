@@ -10,8 +10,8 @@ set -euo pipefail
 # Configuration
 # ============================================================================
 
-CODEBOX_DIR="codebox"
-SNAPSHOT_FILE="${CODEBOX_DIR}/project-snapshot.json"
+AGENT_DIR=".agent"
+SNAPSHOT_FILE="${AGENT_DIR}/project-snapshot.json"
 MAX_FILE_SIZE=100000  # 100KB max for content reading
 
 # ============================================================================

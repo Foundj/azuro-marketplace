@@ -50,7 +50,7 @@ Session 结束前提醒保存：
   "hooks": {
     "post-init": {
       "trigger": "session_start",
-      "condition": "file_exists('codebox/context/next_steps.md')",
+      "condition": "file_exists('.agent/context/next_steps.md')",
       "action": "suggest",
       "message": "🔄 Previous session found. Resume with /ai:session-resume?"
     }

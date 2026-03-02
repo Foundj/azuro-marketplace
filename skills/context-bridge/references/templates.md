@@ -264,10 +264,10 @@ Starting execution...
 
 | File | Location | Purpose |
 |------|----------|---------|
-| `session_summary.md` | `codebox/context/` | Current session summary |
-| `next_steps.md` | `codebox/context/` | Next steps for resume |
-| `current_focus.md` | `codebox/context/` | Real-time focus (optional) |
-| `session-{NNN}.md` | `codebox/context/sessions/` | Archived sessions |
+| `session_summary.md` | `.agent/context/` | Current session summary |
+| `next_steps.md` | `.agent/context/` | Next steps for resume |
+| `current_focus.md` | `.agent/context/` | Real-time focus (optional) |
+| `session-{NNN}.md` | `.agent/context/sessions/` | Archived sessions |
 
 ---
 
@@ -329,10 +329,10 @@ Blockers:
 ## Lite Mode Templates (v4.2.0 统一命名)
 
 > **v4.2.0 变更**：Lite Mode 使用统一的文件命名和位置
-> - 位置：`codebox/context/` (与 Full Mode 相同)
+> - 位置：`.agent/context/` (与 Full Mode 相同)
 > - 文件：`tasks.md`, `notes.md`, `session_summary.md`
 
-### codebox/context/tasks.md (Lite Mode)
+### .agent/context/tasks.md (Lite Mode)
 
 ```markdown
 # Tasks: {brief_description}
@@ -363,7 +363,7 @@ Blockers:
 **Currently in Phase X** - {what_doing_now}
 ```
 
-### codebox/context/notes.md (Lite Mode)
+### .agent/context/notes.md (Lite Mode)
 
 ```markdown
 # Notes: {topic}
@@ -389,7 +389,7 @@ Blockers:
 - {decision}: {rationale}
 ```
 
-### codebox/context/session_summary.md (Lite Mode)
+### .agent/context/session_summary.md (Lite Mode)
 
 ```markdown
 # Session Summary
@@ -436,7 +436,7 @@ Resume with: `/lite-resume` or `/ai:session-resume`
 🎯 Goal: {goal_from_tasks.md}
 📍 Status: Phase {n} - {phase_description}
 
-Location: codebox/context/
+Location: .agent/context/
 
 Phases:
   {✅|⏳} Phase 1: Planning

@@ -27,15 +27,15 @@ focus                   # 简写
 
 ```bash
 # 优先级顺序检测目标文件
-if [ -f "codebox/context/next_steps.md" ]; then
+if [ -f ".agent/context/next_steps.md" ]; then
   MODE="full"
-  FOCUS_FILE="codebox/context/next_steps.md"
+  FOCUS_FILE=".agent/context/next_steps.md"
 elif [ -f "task_plan.md" ]; then
   MODE="lite"
   FOCUS_FILE="task_plan.md"
-elif [ -f "codebox/context/current_focus.md" ]; then
+elif [ -f ".agent/context/current_focus.md" ]; then
   MODE="full"
-  FOCUS_FILE="codebox/context/current_focus.md"
+  FOCUS_FILE=".agent/context/current_focus.md"
 else
   # 无目标文件，从 ai-dev 状态提取
   MODE="ai-dev"
@@ -64,7 +64,7 @@ fi
 #### AI-Dev Mode
 
 ```bash
-# 扫描 codebox/changes/active/*/state.json
+# 扫描 .agent/changes/active/*/state.json
 # 提取 currentPhase, ooda.iterationCount
 # 读取 tasks.md 获取未完成任务
 ```
@@ -170,7 +170,7 @@ Next Action: {从 Status 部分提取}
 用户: "/focus"
 
 Claude 执行:
-1. 检测到 codebox/context/next_steps.md 存在
+1. 检测到 .agent/context/next_steps.md 存在
 2. 读取 next_steps.md
 3. 解析 P0/P1/P2 任务
 4. 输出 Focus Report

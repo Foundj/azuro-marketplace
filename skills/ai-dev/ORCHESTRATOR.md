@@ -529,8 +529,8 @@ async function executeWithRetry(
 
 ```typescript
 async function detectProjectMode(): Promise<ProjectMode> {
-  // 检查是否存在codebox/目录
-  const projectDir = path.join(process.cwd(), 'codebox');
+  // 检查是否存在.agent/目录
+  const projectDir = path.join(process.cwd(), '.agent');
 
   if (!fs.existsSync(projectDir)) {
     return {

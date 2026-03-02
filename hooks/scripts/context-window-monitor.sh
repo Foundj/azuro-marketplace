@@ -14,7 +14,7 @@ THRESHOLD_WARN=85
 THRESHOLD_SPAWN=80
 
 # Find active change directory and state
-ACTIVE_CHANGE=$(find codebox/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
+ACTIVE_CHANGE=$(find .agent/changes/active -maxdepth 1 -type d ! -name "active" 2>/dev/null | head -1)
 STATE_FILE="${ACTIVE_CHANGE}/state.json"
 SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../scripts" && pwd)"
 

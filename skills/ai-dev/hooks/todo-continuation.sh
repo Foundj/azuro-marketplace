@@ -28,7 +28,7 @@ LAST_OUTPUT=$(echo "$HOOK_INPUT" | jq -r '.last_assistant_message // ""' 2>/dev/
 
 # Try to find tasks.md in common locations
 TASKS_FILE=""
-for loc in "codebox/changes/active/*/tasks.md" "tasks.md" ".claude/tasks.md"; do
+for loc in ".agent/changes/active/*/tasks.md" "tasks.md" ".claude/tasks.md"; do
     found=$(ls $loc 2>/dev/null | head -1)
     if [[ -n "$found" && -f "$found" ]]; then
         TASKS_FILE="$found"

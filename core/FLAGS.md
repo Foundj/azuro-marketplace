@@ -91,7 +91,7 @@ Flags 可以组合使用：
 
 ## 默认 Flag 配置
 
-在 `codebox/config.json` 中配置默认 flags：
+在 `.agent/config.json` 中配置默认 flags：
 
 ```json
 {
