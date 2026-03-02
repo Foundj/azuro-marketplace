@@ -132,15 +132,15 @@ for i in $(seq 0 $((AGENT_COUNT - 1))); do
   RESPONSE=$(cat "$RESPONSE_FILE")
 
   # 提取推荐方案
-  RECOMMEND=$(echo "$RESPONSE" | grep -oE '#recommend\([^)]+\)' | head -1 | sed 's/#recommend(//;s/)//')
+  RECOMMEND=$(echo "$RESPONSE" | { grep -oE '#recommend\([^)]+\)' || true; } | head -1 | sed 's/#recommend(//;s/)//')
   if [ -z "$RECOMMEND" ]; then
     # 降级提取：查找"推荐"/"建议"后的关键词
-    RECOMMEND=$(echo "$RESPONSE" | grep -oiE '(推荐|建议|选择).{0,5}方案[[:space:]]*[^,，。.;；[:space:]]+' | head -1 | sed 's/.*方案[[:space:]]*/方案/')
+    RECOMMEND=$(echo "$RESPONSE" | { grep -oiE '(推荐|建议|选择).{0,5}方案[[:space:]]*[^,，。.;；[:space:]]+' || true; } | head -1 | sed 's/.*方案[[:space:]]*/方案/')
   fi
   RECOMMEND="${RECOMMEND:-未明确}"
 
   # 提取置信度
-  CONFIDENCE=$(echo "$RESPONSE" | grep -oE '\[confidence:[[:space:]]*[0-9.]+\]' | head -1 | grep -oE '[0-9.]+')
+  CONFIDENCE=$(echo "$RESPONSE" | { grep -oE '\[confidence:[[:space:]]*[0-9.]+\]' || true; } | head -1 | { grep -oE '[0-9.]+' || true; })
   CONFIDENCE="${CONFIDENCE:-0.7}"
 
   RECOMMENDATIONS+=("$RECOMMEND")

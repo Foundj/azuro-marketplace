@@ -32,7 +32,7 @@ description: |
   Chinese trigger phrase "历史方案" combined with wanting to reuse past error resolution knowledge activates this skill.
   </commentary>
   </example>
-version: 6.0.22
+version: 6.0.23
 status: ga
 profile: design
 triggers:

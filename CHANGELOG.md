@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.23] - 2026-03-02
+
+### Fixed
+- Protect 6 unguarded `grep` calls in pipefail pipelines across `evaluate-convergence.sh`, `ensemble-vote.sh`, `verify-draft.sh` — prevents silent crash when STATUS panel has no preset/round or agent response has no #recommend tag
+
+
 ## [6.0.22] - 2026-03-02
 
 ### Added

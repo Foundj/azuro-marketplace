@@ -31,7 +31,7 @@ description: |
   User needs multi-angle investigation for a production issue, matching the problem investigation scenario template.
   </commentary>
   </example>
-version: 6.0.22
+version: 6.0.23
 status: ga
 profile: dev
 triggers:

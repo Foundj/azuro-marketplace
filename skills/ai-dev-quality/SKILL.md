@@ -31,7 +31,7 @@ description: |
   Targeted quality check for specific files with complexity concerns triggers this skill.
   </commentary>
   </example>
-version: 6.0.22
+version: 6.0.23
 status: ga
 profile: review
 triggers:

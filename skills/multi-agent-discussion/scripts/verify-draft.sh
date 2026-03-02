@@ -41,7 +41,7 @@ DRAFT=$(cat "$DRAFT_FILE")
 evaluate_completeness() {
   local score=0
   local topics
-  topics=$(echo "$DISCUSSION" | grep -oE '#consensus\([^)]+\)' | sed 's/#consensus(//;s/)//' | sort -u)
+  topics=$(echo "$DISCUSSION" | { grep -oE '#consensus\([^)]+\)' || true; } | sed 's/#consensus(//;s/)//' | sort -u)
   local total_topics
   total_topics=$(echo "$topics" | grep -c '.' || true)
 

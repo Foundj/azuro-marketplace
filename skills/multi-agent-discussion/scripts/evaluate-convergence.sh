@@ -114,7 +114,7 @@ if [ -f "$TOPIC_WEIGHTS_FILE" ] && command -v jq &>/dev/null; then
 fi
 
 # 从 STATUS 面板提取 preset，推断 topic 类型
-PRESET=$(echo "$CONTENT" | sed -n '/<!-- STATUS/,/-->/p' | grep 'preset:' | head -1 | sed 's/.*preset:\s*//' | tr -d ' ')
+PRESET=$(echo "$CONTENT" | sed -n '/<!-- STATUS/,/-->/p' | { grep 'preset:' || true; } | head -1 | sed 's/.*preset:\s*//' | tr -d ' ')
 PRESET="${PRESET:-custom}"
 
 TOPIC_TYPE="default"
@@ -348,7 +348,7 @@ UNRESOLVED_MENTIONS=$(echo "$CONTENT" | \
 # === 获取当前轮次 ===
 CURRENT_ROUND=$(echo "$CONTENT" | \
   sed -n '/<!-- STATUS/,/-->/p' | \
-  grep 'round:' | head -1 | \
+  { grep 'round:' || true; } | head -1 | \
   sed 's/.*round:\s*//' | tr -d ' ')
 CURRENT_ROUND="${CURRENT_ROUND:-0}"
 
