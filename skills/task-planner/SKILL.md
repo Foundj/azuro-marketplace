@@ -8,7 +8,7 @@ description: >
   "create a version", or when multi-agent-discussion or ai-dev need to produce structured task
   output. Also triggers when user mentions "docs/tasks", "版本计划", "任务看板", "Sprint规划",
   or wants to archive a completed version.
-version: 6.0.25
+version: 6.0.28
 status: ga
 ---
 
@@ -45,6 +45,10 @@ assistant: "我来使用 task-planner 技能检查归档条件并执行归档。
 </example>
 
 ## 生成流程
+
+### Step 0: 初始化 docs/tasks/ 结构
+
+检查 `docs/tasks/README.md` 是否存在。若不存在，读取 `references/readme-template.md` 生成全局配置文件。此文件是 task-executor 的配置源，只在首次使用时创建。
 
 ### Step 1: 确定输入来源
 
@@ -151,6 +155,7 @@ bash scripts/archive-version.sh [--dry-run] <version>
 | multi-agent-discussion | 上游调用方 | Phase 4 Summarize 时调用 task-planner 生成产出 |
 | ai-dev | 上游调用方 | Phase 3 设计完成后调用 task-planner 生成版本化任务 |
 | requirement-analyzer | 被调用 | Step 2 中评估可行性 |
+| task-executor | 下游消费方 | 读取 plan.md + task.md + README.md 驱动自动执行 |
 | task-templates | 可选配合 | 需要更细粒度的 TDD 任务拆解时调用 |
 | task-dependency-analyzer | 可选配合 | 分析 Sprint/Task 间的依赖关系 |
 | knowledge-graph | 归档时交互 | 归档时创建 version_release 节点 |

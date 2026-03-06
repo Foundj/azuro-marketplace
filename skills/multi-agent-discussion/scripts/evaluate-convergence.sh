@@ -114,7 +114,7 @@ if [ -f "$TOPIC_WEIGHTS_FILE" ] && command -v jq &>/dev/null; then
 fi
 
 # 从 STATUS 面板提取 preset，推断 topic 类型
-PRESET=$(echo "$CONTENT" | sed -n '/<!-- STATUS/,/-->/p' | { grep 'preset:' || true; } | head -1 | sed 's/.*preset:\s*//' | tr -d ' ')
+PRESET=$(echo "$CONTENT" | sed -n '/<!-- STATUS/,/-->/p' | { grep 'preset:' || true; } | head -1 | sed 's/.*preset:[[:space:]]*//' | tr -d ' ')
 PRESET="${PRESET:-custom}"
 
 TOPIC_TYPE="default"
@@ -124,10 +124,6 @@ if [ -n "$TOPIC_WEIGHTS_DATA" ]; then
 fi
 
 calculate_weighted_consensus() {
-  local weighted_sum=0
-  local weight_total=0
-  local entry_count=0
-
   # 预提取历史权重修正数据为 awk 可用格式: "key1=val1,key2=val2"
   local history_modifiers=""
   if [ -n "$HISTORY_DATA" ]; then
@@ -190,8 +186,18 @@ calculate_weighted_consensus() {
       hm = get_history_mod(cur_tool, cur_role)
       ts = get_tool_score(cur_tool)
       ew = base_w * conf * qb * ts * hm
+
+      # 撤销该角色的旧贡献（latest-round-wins：后来覆盖先来）
+      if (cur_role in role_ws) {
+        ws -= role_ws[cur_role]
+        wt -= role_wt[cur_role]
+      }
+
+      # 加入新贡献并记录
       ws += ew * vote
       wt += ew
+      role_ws[cur_role] = ew * vote
+      role_wt[cur_role] = ew
       ec++
     }
 
@@ -206,13 +212,11 @@ calculate_weighted_consensus() {
       # 解析 alias
       if (tool in alias_map) tool = alias_map[tool]
       score = 0
-      dims[1] = "thoroughness"; dims[2] = "accuracy"
-      dims[3] = "creativity"; dims[4] = "execution"
       has_data = 0
       for (d = 1; d <= 4; d++) {
-        key = tool ":" dims[d]
+        key = tool ":" dim_names[d]
         if (key in tscore_map) {
-          tw_key = dims[d]
+          tw_key = dim_names[d]
           tw = (tw_key in tweight_map) ? tweight_map[tw_key] : 0.25
           score += tscore_map[key] * tw
           has_data = 1
@@ -222,6 +226,9 @@ calculate_weighted_consensus() {
     }
 
     BEGIN {
+      # 维度名称（只初始化一次）
+      dim_names[1] = "thoroughness"; dim_names[2] = "accuracy"
+      dim_names[3] = "creativity"; dim_names[4] = "execution"
       n = split(hist, pairs, ",")
       for (i = 1; i <= n; i++) {
         split(pairs[i], kv, "=")
@@ -296,12 +303,17 @@ calculate_weighted_consensus() {
 
       # 质量维度检测（累加，最多5分）
       line = tolower($0)
-      # 维度1: 代码引用
-      if (qd1 == 0 && (index($0, "```") > 0 || $0 ~ /[a-zA-Z0-9_\/-]+\.(ts|js|py|sh|md|json)/ || index($0, "`") > 0)) {
+      # 维度1: 代码引用（对齐 score-response.sh：含 yaml/yml、目录模式）
+      if (qd1 == 0 && (index($0, "```") > 0 || index($0, "`") > 0 || \
+          $0 ~ /[a-zA-Z0-9_\/-]+\.(ts|js|py|sh|md|json|yaml|yml)/ || \
+          $0 ~ /(src|lib|components|scripts|docs)\//)) {
         qscore++; qd1 = 1
       }
-      # 维度2: 风险识别
-      if (qd2 == 0 && (index($0, "#risk") > 0 || index(line, "风险") > 0 || index(line, "安全") > 0 || index(line, "漏洞") > 0 || index(line, "vulnerability") > 0 || index(line, "bottleneck") > 0)) {
+      # 维度2: 风险识别（对齐 score-response.sh：含 [!warning]/[!caution]）
+      if (qd2 == 0 && (index($0, "#risk") > 0 || index(line, "风险") > 0 || \
+          index(line, "安全") > 0 || index(line, "漏洞") > 0 || \
+          index(line, "vulnerability") > 0 || index(line, "bottleneck") > 0 || \
+          index($0, "[!warning]") > 0 || index($0, "[!caution]") > 0)) {
         qscore++; qd2 = 1
       }
       # 维度3: 方案对比
@@ -343,17 +355,17 @@ WEIGHTED_CONSENSUS=$(calculate_weighted_consensus)
 # === 统计未解决的 @ 提及 ===
 UNRESOLVED_MENTIONS=$(echo "$CONTENT" | \
   sed -n '/<!-- STATUS/,/-->/p' | \
-  { grep -c '^\s*- target:' || true; })
+  { grep -c '^[[:space:]]*- target:' || true; })
 
 # === 获取当前轮次 ===
 CURRENT_ROUND=$(echo "$CONTENT" | \
   sed -n '/<!-- STATUS/,/-->/p' | \
   { grep 'round:' || true; } | head -1 | \
-  sed 's/.*round:\s*//' | tr -d ' ')
+  sed 's/.*round:[[:space:]]*//' | tr -d ' ')
 CURRENT_ROUND="${CURRENT_ROUND:-0}"
 
 # === 统计发言总数 ===
-TOTAL_ENTRIES=$(echo "$CONTENT" | { grep -c '^\#\#\s*\[Round' || true; })
+TOTAL_ENTRIES=$(echo "$CONTENT" | { grep -cE '^##[[:space:]]*\[Round' || true; })
 
 # === 收敛判定（加权版本）===
 # 条件:

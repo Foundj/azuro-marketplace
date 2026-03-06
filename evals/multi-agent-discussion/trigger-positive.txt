@@ -1,0 +1,7 @@
+开始一个多代理讨论
+让几个 AI 角色一起讨论这个需求方案
+start a discussion with architecture-design preset
+邀请 AI 讨论微服务拆分方案
+检查讨论进度，看看各角色都发言了没
+汇总讨论结果生成 plan.md 和 task.md
+多工具协作讨论这个技术选型

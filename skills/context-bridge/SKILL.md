@@ -1,6 +1,6 @@
 ---
 name: context-bridge
-version: 6.0.25
+version: 6.0.28
 status: ga
 profile: default
 description: |

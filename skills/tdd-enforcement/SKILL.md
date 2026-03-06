@@ -32,7 +32,7 @@ description: |
   The Iron Law requires deleting code written before tests. No keeping it as "reference" - delete means delete.
   </commentary>
   </example>
-version: 6.0.25
+version: 6.0.28
 status: ga
 profile: dev
 triggers:

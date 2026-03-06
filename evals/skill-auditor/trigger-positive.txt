@@ -1,0 +1,5 @@
+审计 skill-auditor 这个技能
+检查我的技能评分
+验证 multi-agent-discussion 技能是否合格
+validate my skill quality
+技能质量审计

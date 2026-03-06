@@ -35,7 +35,7 @@ description: |
   Trigger phrase "汇总讨论结果" combined with explicit output request activates the Summarize phase.
   </commentary>
   </example>
-version: 6.0.25
+version: 6.0.28
 status: ga
 profile: design
 triggers:
@@ -300,7 +300,8 @@ docs/discussions/<topic>/
 ├── plans/                       # Decision deliverables (local copies)
 │   ├── plan.md                 # Implementation plan
 │   └── task.md                 # Task breakdown
-├── notepads/                    # Process notes
+├── notepads/                    # Process notes & working memory
+│   ├── notes.md               # Key decisions, rejected approaches, research findings
 │   ├── ensemble-*.json         # Parallel voting results
 │   └── convergence.log         # Convergence snapshots
 ├── prompts/                     # Agent invocation prompts
@@ -351,6 +352,13 @@ Claude Code automatically orchestrates each discussion round:
 - Use callouts for structured content
 - Update the `<!-- STATUS -->` panel after each entry
 - @Critic 必须包含至少一个反对意见
+- 每个 entry 结束前必须以**独立行**写出总体立场 tag（`#consensus`/`#rejected`/`#pending`），与决策表中的行内 tag 区分。决策表内的 tag 只描述具体选项，不代表整体立场。示例：
+  ```markdown
+  - [x] 方案A #consensus(方案A)
+  - [ ] 方案B #rejected(太重)
+
+  #consensus(整体立场：采用方案A)  ← 独立行，代表此角色的最终总体立场
+  ```
 
 **Convergence rules:**
 - Default: 3 discussion rounds + 1 optional draft round
@@ -393,12 +401,21 @@ Draft → Verify → (score < 7?) → Revise → Verify → ... → Accept
 
 ### Phase 4: Summarize
 
+**Pre-flight: G-REQ Gate**
+
+Before proceeding, run:
+```bash
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-g-req.sh discussion.md notepads/notes.md
+```
+If `pass == false`, resolve all issues listed in the output before continuing to summarize. Do NOT skip this gate.
+
 When convergence is reached (auto) or user triggers manually:
 
 1. Read entire `discussion.md`
 2. **Update agent history**: Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/update-history.sh discussion.md data/agent-history.json` to persist performance data
-3. **Deep extract**: scan all tags, callouts, `#consensus`, `> [!decision]`
-3. **Invoke `task-planner` skill** to generate versioned plan.md + task.md:
+3. **Persist working memory**: Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/populate-notes.sh discussion.md notepads/notes.md` to auto-extract key decisions, rejected approaches, risk findings, and unverified assumptions
+4. **Deep extract**: scan all tags, callouts, `#consensus`, `> [!decision]`
+5. **Invoke `task-planner` skill** to generate versioned plan.md + task.md:
    - Pass extracted decisions, consensus items, and pending questions as input
    - task-planner handles version determination, requirement-analyzer evaluation, and template rendering
    - Output goes to `docs/tasks/v<VERSION>/`
@@ -473,13 +490,15 @@ Use [`interaction-protocol`](../interaction-protocol/SKILL.md) as the default in
 - **`scripts/invoke-agent.sh`** — Unified agent invocation wrapper
 - **`scripts/parse-response.sh`** — Parse agent response into structured format
 - **`scripts/evaluate-convergence.sh`** — Evaluate discussion convergence (five-factor weighted voting)
-- **`scripts/score-response.sh`** — Quality + tool dimension scoring engine
+- **`scripts/score-response.sh`** — Quality + tool dimension scoring engine (called per-response by orchestrate-round.sh)
 - **`scripts/verify-draft.sh`** — Draft verification loop (generator-verifier cycle)
 - **`scripts/ensemble-vote.sh`** — Parallel ensemble voting for decision points
 - **`scripts/update-history.sh`** — Update agent performance history after discussion
 - **`scripts/orchestrate-round.sh`** — Orchestrate a single discussion round
 - **`scripts/init-discussion.sh`** — Initialize discussion directory structure
 - **`scripts/populate-context.sh`** — Auto-scan project and populate context.md
+- **`scripts/populate-notes.sh`** — Auto-extract decisions/rejected/risks from discussion.md into notes.md
+- **`scripts/check-g-req.sh`** — G-REQ gate: pre-summarize quality checks (blocker, needs-input, consensus, assumptions)
 
 ### Data Files
 - **`data/agent-history.json`** — Agent historical performance data (auto-updated)

@@ -480,8 +480,8 @@ fi
 PROJECT_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 if [[ -f "$PROJECT_ROOT/components/hooks/hooks.json" ]]; then
     if bash "$PROJECT_ROOT/components/hooks/scripts/validate-hooks.sh" "$PROJECT_ROOT/components/hooks/hooks.json" >/dev/null 2>&1; then
-        log_pass "Global hooks.json is valid (+3)"
-        INTEGRATION_SCORE=$((INTEGRATION_SCORE + 3))
+        log_pass "Global hooks.json is valid (+1)"
+        INTEGRATION_SCORE=$((INTEGRATION_SCORE + 1))
     else
         log_error "Global hooks.json has structural errors"
     fi
@@ -489,30 +489,74 @@ fi
 
 # Check for workflow integration
 if grep -qiE "(workflow|phase|ai-dev|pipeline)" "$SKILL_MD"; then
-
-    log_pass "Workflow integration documented (+6)"
-    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 6))
+    log_pass "Workflow integration documented (+2)"
+    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 2))
 else
     log_info "Consider documenting workflow integration"
-    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 2))
 fi
 
 # Check for hook configuration
 if grep -qiE "(hook|trigger|event|PreToolUse|PostToolUse)" "$SKILL_MD"; then
-    log_pass "Hook/event awareness (+5)"
-    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 5))
+    log_pass "Hook/event awareness (+2)"
+    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 2))
 else
     log_info "Consider documenting hook integration"
-    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 2))
 fi
 
 # Check for agent collaboration
 if grep -qiE "(agent|delegate|collaborate|specialist)" "$SKILL_MD"; then
-    log_pass "Agent collaboration documented (+4)"
-    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 4))
+    log_pass "Agent collaboration documented (+2)"
+    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 2))
 else
     log_info "Consider documenting agent collaboration"
-    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 1))
+fi
+
+# --- 新增检查项 ---
+
+# Check for problem: field (4 points)
+EVALS_DIR="$PROJECT_ROOT/evals/$SKILL_NAME"
+if grep -qE "^problem:" "$SKILL_MD" 2>/dev/null; then
+    log_pass "problem: field present (+4)"
+    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 4))
+else
+    log_warning "⚠ 建议添加 problem: 字段（描述技能解决的核心用户问题）"
+fi
+
+# Check for layer: field with valid enum (3 points)
+if grep -qE "^layer:[[:space:]]*(component|interactive|workflow)" "$SKILL_MD" 2>/dev/null; then
+    log_pass "layer: field valid (+3)"
+    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 3))
+elif grep -qE "^layer:" "$SKILL_MD" 2>/dev/null; then
+    log_warning "⚠ layer: 字段值无效（应为 component/interactive/workflow 之一）"
+else
+    log_warning "⚠ 建议添加 layer: 字段（component/interactive/workflow）"
+fi
+
+# Check for evals directory (4 points)
+if [[ -d "$EVALS_DIR" ]]; then
+    log_pass "evals/$SKILL_NAME/ directory exists (+4)"
+    INTEGRATION_SCORE=$((INTEGRATION_SCORE + 4))
+
+    # Check trigger-positive.txt has >= 3 lines (4 points)
+    TRIGGER_POS="$EVALS_DIR/trigger-positive.txt"
+    if [[ -f "$TRIGGER_POS" ]]; then
+        TRIGGER_LINE_COUNT=$(wc -l < "$TRIGGER_POS" | tr -d ' ')
+        if [[ $TRIGGER_LINE_COUNT -ge 3 ]]; then
+            log_pass "trigger-positive.txt valid (${TRIGGER_LINE_COUNT} lines) (+4)"
+            INTEGRATION_SCORE=$((INTEGRATION_SCORE + 4))
+        else
+            log_warning "trigger-positive.txt should have >= 3 lines (has $TRIGGER_LINE_COUNT)"
+        fi
+    else
+        log_warning "evals/$SKILL_NAME/trigger-positive.txt not found"
+    fi
+else
+    log_warning "⚠ evals/$SKILL_NAME/ 目录不存在（建议添加触发词评估文件）"
+fi
+
+# 维度上限 cap：Integration 总分不超过 15
+if [[ $INTEGRATION_SCORE -gt 15 ]]; then
+    INTEGRATION_SCORE=15
 fi
 
 if [[ "$JSON_OUTPUT" == "false" ]]; then

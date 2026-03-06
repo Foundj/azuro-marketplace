@@ -32,7 +32,7 @@ description: |
   User requests supervised mode, changing execution.mode from autonomous to supervised.
   </commentary>
   </example>
-version: 6.0.25
+version: 6.0.28
 status: ga
 profile: dev
 triggers:
@@ -135,7 +135,7 @@ bash skills/task-executor/scripts/resolve-config.sh <version> [project-root]
 
 ### Step 2: 解析任务
 
-读取 `docs/tasks/vX.Y/task.md` YAML frontmatter，构建 Sprint/Task 依赖图。
+读取 `docs/tasks/vX.Y/task.md` YAML frontmatter，构建 Sprint/Task 依赖图。同时提取 task.md 中的 `rules`（版本级规则），与 Step 1 的全局 rules 合并遵循（版本级优先）。
 
 ```bash
 bash skills/task-executor/scripts/parse-task-yaml.sh <task-file>
@@ -195,7 +195,7 @@ bash skills/task-executor/scripts/verify-task.sh <verify-command>
 ```yaml
 ---
 active: true
-version: 6.0.25
+version: 6.0.28
 current_sprint: sprint-1
 current_task: s1-2
 current_phase: implement
